@@ -1,11 +1,13 @@
-
+import MainLayout from "@/components/MainLayout";
 
 const Home = () => {
     // ここに色々書き込む
 
     return(
         <>
-            <h1>Home</h1>
+            <MainLayout>
+                <h1>Home</h1>
+            </MainLayout>
         </>
     )
 }

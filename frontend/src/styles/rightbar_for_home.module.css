@@ -1,0 +1,8 @@
+.all {
+    position: fixed;
+    right: 0;
+
+    background-color: #F8F0F0;
+    width: 30vw;
+    height: 100vh;
+}
