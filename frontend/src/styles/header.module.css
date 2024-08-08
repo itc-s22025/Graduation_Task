@@ -1,0 +1,49 @@
+.all{
+    background-color: #FF92AD;
+    display: flex;
+    width: 40vw;
+    height: 80px;
+    margin: 0;
+    /*border: #000fff 1px solid;*/
+}
+
+.ul{
+    display: flex;
+}
+
+.li{
+    list-style: none;
+}
+
+.tabFirst{
+    background: #fff;
+    margin-top: 25px;
+    width: 12vw;
+    height: 70%;
+    border: #fff 1px solid;
+}
+
+.tabSecond{
+    background: #FFDCDD;
+    margin-top: 25px;
+    width: 12vw;
+    height: 70%;
+    border: #fff 1px solid;
+}
+
+.tabThird{
+    background: #FFBFC0;
+    margin-top: 25px;
+    width: 12vw;
+    height: 70%;
+    border: #fff 1px solid;
+}
+
+.add{
+    background: #FF989A;
+    margin-left: 13px;
+    margin-top: 25px;
+    height: 70%;
+    width: 60px;
+    border: 1px solid #fff;
+}

@@ -4,9 +4,7 @@ const RightBar = () => {
 
     return(
         <>
-            <div className={s.all}>
-                <h1>R</h1>
-            </div>
+            <div className={s.all}/>
         </>
     )
 }
