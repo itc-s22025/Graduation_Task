@@ -1,4 +1,5 @@
 import MainLayout from "@/components/MainLayout";
+import s from "./page.module.css"
 
 const Home = () => {
     // ここに色々書き込む
@@ -6,7 +7,7 @@ const Home = () => {
     return(
         <>
             <MainLayout>
-                <h1>Home</h1>
+                <h1 className={s.all}>Home</h1>
             </MainLayout>
         </>
     )
