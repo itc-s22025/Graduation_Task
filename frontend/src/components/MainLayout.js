@@ -7,7 +7,7 @@ export default function MainLayout({ children }) {
   return (
     <div className="left_and_right_bars">
       <LeftBar/>
-        <div className="header_and_main">
+        <div>
             <Header />
             <main>{children}</main>
         </div>

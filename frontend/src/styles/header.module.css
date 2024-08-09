@@ -28,6 +28,9 @@
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
 
+    /*順番*/
+    z-index: 3;
+
     /*font*/
     padding-top: 12px;
     text-align: center;
@@ -43,6 +46,9 @@
     border: #fff 1px solid;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
+
+    /*順番*/
+    z-index: 2;
 
     /*font*/
     padding-top: 12px;
@@ -60,6 +66,9 @@
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
 
+    /*順番*/
+    z-index: 1;
+
     /*font*/
     padding-top: 12px;
     text-align: center;
@@ -69,7 +78,7 @@
 
 .add{
     position: relative;
-    left: 73px;
+    left: 74px;
     background: #FF989A;
     margin-left: 13px;
     margin-top: 25px;
