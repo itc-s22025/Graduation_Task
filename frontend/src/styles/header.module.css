@@ -2,7 +2,7 @@
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
-    height: 80px;
+    height: 70px;
     margin: 0;
     /*border: #000fff 1px solid;*/
 }
@@ -19,31 +19,39 @@
     background: #fff;
     margin-top: 25px;
     width: 12vw;
-    height: 70%;
+    height: 65%;
     border: #fff 1px solid;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
 }
 
 .tabSecond{
     background: #FFDCDD;
     margin-top: 25px;
     width: 12vw;
-    height: 70%;
+    height: 65%;
     border: #fff 1px solid;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;;
 }
 
 .tabThird{
     background: #FFBFC0;
     margin-top: 25px;
     width: 12vw;
-    height: 70%;
+    height: 65%;
     border: #fff 1px solid;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
 }
 
 .add{
     background: #FF989A;
     margin-left: 13px;
     margin-top: 25px;
-    height: 70%;
+    height: 65%;
     width: 60px;
     border: 1px solid #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
