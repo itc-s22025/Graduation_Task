@@ -11,7 +11,7 @@
     display: flex;
 }
 
-.li{
+.tabs{
     list-style: none;
     padding: 0;
     margin: 0;
@@ -20,6 +20,7 @@
 }
 
 .tabFirst{
+    outline: none;
     background: #fff;
     margin-top: 25px;
     width: 15vw;
@@ -39,6 +40,7 @@
 }
 
 .tabSecond{
+    outline: none;
     background: #FFDCDD;
     margin-top: 25px;
     width: 15vw;
@@ -58,6 +60,7 @@
 }
 
 .tabThird{
+    outline: none;
     background: #FFBFC0;
     margin-top: 25px;
     width: 15vw;
@@ -73,6 +76,22 @@
     padding-top: 12px;
     text-align: center;
     color: #fff;
+}
+
+.tabFirst, .tabSecond, .tabThird {
+  position: relative;
+}
+
+.zIndex1 {
+  z-index: 1;
+}
+
+.zIndex2 {
+  z-index: 2;
+}
+
+.zIndex3 {
+  z-index: 3;
 }
 
 
@@ -92,4 +111,27 @@
     padding-top: 3px;
     color: #fff;
     font-size: 20px;
+}
+
+/*responsive*/
+@media (max-width: 1200px) {
+    .all{
+        width: 70vw;
+    }
+
+    .tabFirst{
+        width: 240px;
+    }
+
+    .tabSecond{
+        width: 240px;
+    }
+
+    .tabThird{
+        width: 240px;
+    }
+
+    .add{
+        right: 0;
+    }
 }

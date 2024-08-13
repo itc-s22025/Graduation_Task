@@ -9,7 +9,7 @@ const Home = () => {
     return(
         <>
             <MainLayout>
-                <Post />
+                {/*<Post />*/}
                 <PostButton/>
             </MainLayout>
         </>
