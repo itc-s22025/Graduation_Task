@@ -10,7 +10,7 @@ const LeftBar = () => {
     return(
         <>
             <div className={s.all}>
-                <h1 className={s.logo}>♡LOGO</h1>
+                <h1 className={s.logo}>♡PRETTi</h1>
                 <div className={s.button_container}>
                     <button className={`${s.button} ${ pathname === '/Home' ? s.active : '' }`} onClick={() => router.push('/Home')}>Home</button>
                     <button className={`${s.button} ${ pathname === '/Search' ? s.active : '' }`} onClick={() => router.push('/')}>Search</button>
