@@ -29,13 +29,13 @@
 }
 
 .buttonB {
-  bottom: 10vh;
+  bottom: 90px;
   right: 38vw;
 }
 
 .buttonC {
-  bottom: 15vh;
-  right: 33vw;
+  bottom: 143px;
+  right: 33.5vw;
 }
 
 .buttonA:hover ~ .buttonB,
@@ -56,4 +56,28 @@
   border: #FF92AD 3px solid;
   color: #FF92AD;
   font-size: 32px;
+}
+
+@media (max-width: 1200px) {
+  .buttonA{
+    position: absolute;
+    right: 30px;
+  }
+
+  .buttonA:hover, .buttonA:focus{
+    position: absolute;
+    right: 50px;
+  }
+
+  .buttonB{
+    position: absolute;
+    right: 125px;
+    bottom: 80px;
+  }
+
+  .buttonC{
+    position: absolute;
+    right: 40px;
+    bottom: 140px;
+  }
 }
