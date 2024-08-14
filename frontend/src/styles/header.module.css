@@ -2,7 +2,7 @@
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
-    height: 70px;
+    height: 71px;
     margin: 0;
     /*border: #000fff 1px solid;*/
 }
@@ -26,6 +26,7 @@
     width: 15vw;
     height: 65%;
     border: 1px solid #fff;
+    border-bottom: none;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
 
@@ -46,6 +47,7 @@
     width: 15vw;
     height: 65%;
     border: #fff 1px solid;
+    border-bottom: none;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
 
@@ -55,7 +57,7 @@
     /*font*/
     padding-top: 12px;
     text-align: center;
-    color: #FF92AD;
+    color: #FF989A;
 
 }
 
@@ -63,9 +65,10 @@
     outline: none;
     background: #FFBFC0;
     margin-top: 25px;
-    width: 15vw;
+    width: 14vw;
     height: 65%;
     border: #fff 1px solid;
+    border-bottom: none;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
 
@@ -84,6 +87,7 @@
 
 .zIndex1 {
   z-index: 1;
+    border-bottom: #F8F0F0 2px solid;
 }
 
 .zIndex2 {
@@ -104,6 +108,7 @@
     height: 46px;
     width: 60px;
     border: 1px solid #fff;
+    border-bottom: none;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 

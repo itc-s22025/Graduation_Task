@@ -19,7 +19,7 @@ const Header = () => {
                 <TabList className={s.all}>
                         <ul className={s.ul}>
                             <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : '' } ${focusedTab === 'tabThird' ? s.zIndex1 : '' }`}
-                                 onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Tab1</Tab>
+                                     onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Now</Tab>
                             <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
                                  onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Tab2</Tab>
                             <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`}

@@ -1,21 +1,59 @@
-.all{
-    position: absolute;
-    bottom: 5vh;
-    right: 33vw;
-
-    background-color: #FF92AD;
-    width: 100px;
-    height: 100px;
-    border: #FF989A 2px solid;
-    border-radius: 50%;
-
-    /*font*/
-    color: #fff;
-    font-size: 2.5rem;
+.buttonContainer {
+  position: relative; /* 相対位置を設定 */
 }
 
-@media (max-width: 1200px){
-    .all{
-        right: 32px;
-    }
+.buttonA {
+  position: absolute;
+  bottom: 5vh;
+  right: 33vw;
+  background-color: #FF92AD;
+  width: 100px;
+  height: 100px;
+  border: #fff 2px solid;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 2.5rem;
+}
+
+.buttonB, .buttonC {
+  display: none; /* 初期状態では非表示 */
+  position: absolute;
+  background-color: #FF92AD;
+  width: 90px;
+  height: 90px;
+  border: #fff 2px solid;
+  border-radius: 50%;
+
+  /*font*/
+  color: #fff;
+}
+
+.buttonB {
+  bottom: 10vh;
+  right: 38vw;
+}
+
+.buttonC {
+  bottom: 15vh;
+  right: 33vw;
+}
+
+.buttonA:hover ~ .buttonB,
+.buttonA:focus ~ .buttonB,
+.buttonA:hover ~ .buttonC,
+.buttonA:focus ~ .buttonC {
+  display: inline-block; /* ホバーまたはフォーカス時に表示 */
+}
+
+.buttonA:hover,
+.buttonA:focus {
+  position: absolute;
+  bottom: 6vh;
+  right: 34vw;
+  width: 70px;
+  height: 70px;
+  background-color: #fff;
+  border: #FF92AD 3px solid;
+  color: #FF92AD;
+  font-size: 32px;
 }
