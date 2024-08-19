@@ -4,14 +4,25 @@ import s from '@/styles/header.module.css'
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Post from "@/components/post";
 import {useState} from "react";
+import AddTab from "@/components/addTab";
 
 const Header = () => {
     //state
     const [focusedTab, setFocusedTab] = useState('');
+    const [showAddTab, setShowAddTab] = useState(false);
 
     const handleFocus = (tabName) => {
     setFocusedTab(tabName);
     };
+
+    const handleAddClick = () => {
+        console.log("handleAddClick");
+        setShowAddTab(true); // AddTabを表示
+    }
+
+    const handleCloseAddTab = () => {
+        setShowAddTab(false); // AddTabを非表示
+    }
 
     return(
         <>
@@ -25,13 +36,13 @@ const Header = () => {
                             <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`}
                                  onFocus={() => handleFocus('tabThird')} tabIndex={0}>Tab3</Tab>
                         </ul>
-                        <button className={s.add}>+</button>
+                        <button className={s.add} onClick={handleAddClick}>+</button>
                 </TabList>
 
                 {/*tab-first*/}
                 <TabPanel>
                     <article>
-                        <Post />
+                        <p>first</p>
                     </article>
                 </TabPanel>
 
@@ -49,6 +60,16 @@ const Header = () => {
                     </article>
                 </TabPanel>
             </Tabs>
+
+            {/*タブ追加ボタン押したとき*/}
+             {showAddTab && (
+                <div className={s.addTabOverlay}>
+                    <div className={s.addTabContent}>
+                        <AddTab />
+                        <button onClick={handleCloseAddTab} className={s.buttonCansel}>Cansel</button>
+                    </div>
+                </div>
+            )}
         </>
     )
 }
