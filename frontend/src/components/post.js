@@ -13,7 +13,9 @@ const Post = () => {
                             <p className={s.time}>.1h</p>
                             <p className={s.pc}>ブルベ</p>
                         </div>
-                        <p className={s.content}>text text text text</p>
+                        <p className={s.content}>text text text text    <br/>
+                            excelのプライマー欲し〜
+                        </p>
                     </div>
                 </div>
             </div>

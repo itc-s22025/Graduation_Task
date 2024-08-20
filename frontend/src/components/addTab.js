@@ -31,7 +31,7 @@ const AddTab = () => {
                             <input type="text" placeholder="(例)〇〇くん" className={s.checkboxInput}/>
                         </div>
                     </div>
-                    <input type="submit" onChange={(e) => console.log(e)} value="Save" className={s.save}/>
+                    <input type="submit" onChange={(e) => console.log(e)} value="Save" className={s.save} onClick={() => alert("saveボタンをクリックしました")}/>
                 </form>
             </div>
         </>

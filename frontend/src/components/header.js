@@ -42,7 +42,7 @@ const Header = () => {
                 {/*tab-first*/}
                 <TabPanel>
                     <article>
-                        <p>first</p>
+                        <Post />
                     </article>
                 </TabPanel>
 
