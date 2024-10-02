@@ -1,0 +1,79 @@
+
+.container {
+    width: 30vw;
+    height: 240px;
+
+    /*background: beige;*/
+}
+
+.h1{
+    background-color: #FF92AD;
+    padding: 5px 20px 5px;
+    color: #FFF;
+}
+
+.title{
+    padding-left: 10px;
+
+    font-size: 1.5rem;
+    border-left: #FF92AD 3px solid;
+}
+
+.tabName{
+    margin: 10px;
+    /*border: 1px solid #FF92AD;*/
+}
+
+.inputName{
+    border: none;
+    outline: none;
+
+    width: 15vw;
+    height: 45px;
+    margin-left: 10px;
+    padding-left: 10px;
+
+    font-size: 1.5rem;
+
+    border-bottom: 2px solid #FF92AD;
+}
+
+.showPostsFromContainer{
+    margin: 10px;
+}
+
+.checkboxes{
+    width: 27vw;
+    margin: 5px 10px;
+}
+
+.checkbox{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.checkboxLabel{
+    margin-right: 10px;
+}
+
+.checkboxInput{
+    border: none;
+    outline: none;
+    padding-left: 2px;
+
+    border-bottom: #FF92AD 2px solid;
+}
+
+.save{
+    width: 100px;
+    height: 40px;
+    margin: 15px 55% 5px;
+
+    background-color: #FF92AD;
+    border: 2px solid #FF989A;
+    border-radius: 50px;
+
+    font-size: 1.2rem;
+    color: #FFF;
+    font-weight: bold;
+}
