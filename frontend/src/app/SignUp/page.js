@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
+import s from './signUp.module.css';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -36,31 +37,34 @@ const SignUp = () => {
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSignUp}>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Name"
-        />
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-      {error && <p>{error}</p>}
-    </div>
+      <div className={s.all}>
+        <h1>Sign Up</h1>
+        <div className={s.column}>
+        <h3 className={s.backUi}>← 戻る</h3>
+        </div>
+        <form onSubmit={handleSignUp}>
+          <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
+          />
+          <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+          />
+          <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+          />
+          <button type="submit">Sign Up</button>
+        </form>
+        {error && <p>{error}</p>}
+      </div>
   );
 };
 
