@@ -1,7 +1,13 @@
+"use client";
+
 import Image from 'next/image';
 import s from './First.module.css';
+import {useRouter} from "next/navigation";
 
 const Page = () => {
+
+    const router = useRouter();
+
     return (
         <>
             <div className={s.all}>
@@ -9,7 +15,7 @@ const Page = () => {
                 <p className={s.logo}>Prettie</p>
                 <div className={s.container}>
                     <h3 className={s.box1}>新しいアカウントを作成</h3>
-                    <h3 className={s.box2}>サインイン</h3>
+                    <h3 className={s.box2} onClick={() => router.push('/SignIn')}>サインイン</h3>
                 </div>
             </div>
         </>
