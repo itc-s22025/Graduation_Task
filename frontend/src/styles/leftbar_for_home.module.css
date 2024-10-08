@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Yusei+Magic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
 .all {
     background-color: #F8F0F0;
@@ -13,9 +13,7 @@
     margin: 30px auto 20px;
     font-size: 50px;
 
-    font-family: "Yomogi", cursive;
     font-weight: 400;
-    font-style: normal;
     /*border: 1px solid red;*/
 }
 
@@ -36,6 +34,10 @@
 
     border: 1px solid #6E665C;
     border-radius: 100px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .button:hover{
