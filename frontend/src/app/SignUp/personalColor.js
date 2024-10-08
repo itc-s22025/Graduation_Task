@@ -9,7 +9,22 @@ const Pc = () => {
 
     return(
         <>
-            <h1 className={s.question}>あなたのパーソナルカラーは？</h1>
+            <h1 className={s.question}>
+                <span className={s.letter}>あ</span>
+                <span className={s.letter}>な</span>
+                <span className={s.letter}>た</span>
+                <span className={s.letter}>の</span>
+                <span className={s.letter}>パ</span>
+                <span className={s.letter}>ー</span>
+                <span className={s.letter}>ソ</span>
+                <span className={s.letter}>ナ</span>
+                <span className={s.letter}>ル</span>
+                <span className={s.letter}>カ</span>
+                <span className={s.letter}>ラ</span>
+                <span className={s.letter}>ー</span>
+                <span className={s.letter}>は</span>
+                <span className={s.letter}>？</span>
+            </h1>
             <form>
                 <div className={s.pcContainer}>
                     <div className={s.flex}>
