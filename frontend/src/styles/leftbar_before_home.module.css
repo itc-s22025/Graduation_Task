@@ -20,7 +20,7 @@
     width: 12vw;
     height: 70px;
 
-    border: 2px solid #ff839f;
+    border: 1px solid #ff839f;
     border-radius: 50px;
 
     font-size: 1.5rem;
@@ -33,6 +33,7 @@
 
 .button:hover{
     border: 4px solid #fff;
+    font-size: 1.6rem;
 }
 
 .button:active{
