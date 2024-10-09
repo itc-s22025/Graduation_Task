@@ -37,9 +37,10 @@ const Detail = () => {
   };
 
   return (
-      <div className={s.all}>
-        <h1>Sign Up</h1>
-        <form onSubmit={handleSignUp}>
+      <div className={s.allContainer}>
+        <h1 className={s.title}>サインアップ</h1>
+
+        <form onSubmit={handleSignUp} className={s.formContainer}>
           <input
               type="text"
               value={name}
@@ -58,8 +59,9 @@ const Detail = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
           />
-          <button type="submit">Sign Up</button>
+          <button type="submit">登録</button>
         </form>
+
         {error && <p>{error}</p>}
       </div>
   );

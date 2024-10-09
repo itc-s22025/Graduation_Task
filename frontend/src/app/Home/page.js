@@ -1,7 +1,9 @@
+"use client";
+
 import MainLayout from "@/components/MainLayout";
 import s from "./page.module.css"
 import PostButton from "@/components/post_button";
-import Post from "@/components/post";
+import withAuth from "@/components/withAuth";
 
 const Home = () => {
     // ここに色々書き込む
@@ -15,4 +17,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default withAuth(Home);
