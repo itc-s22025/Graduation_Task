@@ -115,7 +115,7 @@
     animation: fadeIn 0.5s forwards;
 }
 
-.spring:hover, .spring:focus{
+.spring:hover, .spring:focus, .selectedSpring{
     background-color: #FFCC92;
     color: #fff;
     border-radius: 100px;
@@ -139,7 +139,7 @@
     animation: fadeIn 1.2s forwards;
 }
 
-.summer:hover, .summer:focus{
+.summer:hover, .summer:focus, .selectedSummer{
     background-color: #66BAFF;
     color: #fff;
     border-radius: 100px;
@@ -163,7 +163,7 @@
     animation: fadeIn 2.2s forwards;
 }
 
-.autumn:hover, .autumn:focus{
+.autumn:hover, .autumn:focus, .selectedAutumn{
     background-color: #FF989A;
     color: #fff;
     border-radius: 100px;
@@ -187,7 +187,7 @@
     animation: fadeIn 3.2s forwards;
 }
 
-.winter:hover, .winter:focus{
+.winter:hover, .winter:focus, .selectedWinter{
     background-color: #9293FF;
     color: #fff;
     border-radius: 100px;

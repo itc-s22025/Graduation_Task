@@ -1,13 +1,16 @@
 "use client";
-
+import { useState } from 'react';
 import s from './personalColor.module.css';
 
-import {useRouter} from "next/navigation";
+const Pc = ({ onNext, onSelectColor }) => {
+    const [selectedColor, setSelectedColor] = useState(null); // 選択された色を管理
 
-const Pc = () => {
-    const router = useRouter();
+    const handleColorSelect = (color) => {
+        setSelectedColor(color);
+        onSelectColor(color); // 選択を親コンポーネントに通知
+    };
 
-    return(
+    return (
         <>
             <h1 className={s.question}>
                 <span className={s.letter}>Q</span>
@@ -29,20 +32,59 @@ const Pc = () => {
             </h1>
             <form>
                 <div className={s.pcContainer}>
-                        <button type="button" value="Spring" className={s.spring}>イエベ春</button>
-                        <button type="button"　value="Summer" className={s.summer}>ブルベ夏</button>
-                        <button type="button" value="Autumn" className={s.autumn}>イエベ秋</button>
-                        <button type="button" value="Winter" className={s.winter}>ブルベ冬</button>
+                    <button
+                        type="button"
+                        value="Spring"
+                        className={`${s.spring} ${selectedColor === 'Spring' ? s.selectedSpring : ''}`}
+                        onClick={() => handleColorSelect('Spring')}
+                    >
+                        イエベ春
+                    </button>
+                    <button
+                        type="button"
+                        value="Summer"
+                        className={`${s.summer} ${selectedColor === 'Summer' ? s.selectedSummer : ''}`}
+                        onClick={() => handleColorSelect('Summer')}
+                    >
+                        ブルベ夏
+                    </button>
+                    <button
+                        type="button"
+                        value="Autumn"
+                        className={`${s.autumn} ${selectedColor === 'Autumn' ? s.selectedAutumn : ''}`}
+                        onClick={() => handleColorSelect('Autumn')}
+                    >
+                        イエベ秋
+                    </button>
+                    <button
+                        type="button"
+                        value="Winter"
+                        className={`${s.winter} ${selectedColor === 'Winter' ? s.selectedWinter : ''}`}
+                        onClick={() => handleColorSelect('Winter')}
+                    >
+                        ブルベ冬
+                    </button>
                 </div>
 
                 <div className={s.submitContainer}>
-                    <button type="button" className={s.next}>次へ</button>
+                    <button
+                        type="button"
+                        className={s.next}
+                        onClick={onNext}
+                        disabled={!selectedColor} // 選択がない場合は無効化
+                    >
+                        次へ
+                    </button>
                     <p className={s.or}>or</p>
-                    <input type="submit" value="わからないので診断してみる" className={s.toTest}/>
+                    <input
+                        type="submit"
+                        value="わからないので診断してみる"
+                        className={s.toTest}
+                    />
                 </div>
             </form>
         </>
-    )
-}
+    );
+};
 
-export default Pc
+export default Pc;
