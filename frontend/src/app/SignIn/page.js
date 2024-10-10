@@ -1,6 +1,5 @@
 "use client";
 
-import FirstLayout from "@/components/FirstLayout";
 import s from "./page.module.css"
 
 import React, { useState } from 'react';
@@ -15,18 +14,20 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
-    const handleLogin = async (event) => {
+    // emailログイン
+    const handleEmailLogin = async (event) => {
         event.preventDefault();
+
         try {
         await signInWithEmailAndPassword(auth, email, password);
-        alert('ログイン成功');
+        // alert('ログイン成功');
         router.push('/Home')
         } catch (error) {
-        alert('ログイン失敗')
-        // setError(error.message);
+        alert('ログインできませんでした')
         }
     };
 
+    // Googleログイン
     const handleGoogleLogin = async () => {
     try {
         const provider = new GoogleAuthProvider();
@@ -42,7 +43,7 @@ const SignIn = () => {
               <h1 className={s.logo}>♥Prettie</h1>
               <div className={s.MainContainer}>
                   <h1 className={s.title}>Sign in</h1>
-                  <form onSubmit={handleLogin} className={s.grid}>
+                  <form onSubmit={handleEmailLogin} className={s.grid}>
                       <input
                           type="email"
                           value={email}
@@ -57,7 +58,7 @@ const SignIn = () => {
                           placeholder="Password"
                           className={s.input}
                       />
-                      <p className={s.forgotPwd}>Forgot your password?</p>
+                      <button type="button" className={s.forgotPwd}>Forgot your password?</button>
                       <button type="submit" className={s.submit}>Sign in</button>
                   </form>
 
@@ -65,6 +66,7 @@ const SignIn = () => {
                   <button onClick={handleGoogleLogin} className={s.google}>Sign in with Google</button>
 
                   <div className={s.signUpContainer}>
+                      {/* eslint-disable-next-line react/no-unescaped-entities */}
                       <p className={s.signUpText}>Don't have an account yet?</p>
                       <button type="button" className={s.signUp} onClick={() => router.push('/SignUp')}>Sign up now</button>
                   </div>

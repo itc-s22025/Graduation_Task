@@ -1,10 +1,10 @@
 import SignIn from "@/app/SignIn/page";
 
-const Home = () => {
+const Index = () => {
   return(
       <>
       <SignIn/>
       </>
   )
 }
-export default Home;
+export default Index;

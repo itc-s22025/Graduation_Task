@@ -5,13 +5,14 @@ import { useEffect } from "react";
 import { useAuth } from "@/app/context/AuthProvider";
 
 const withAuth = (WrappedComponent) => {
+  // eslint-disable-next-line react/display-name
   return (props) => {
     const { currentUser, loading } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
       if (!loading && !currentUser) {
-        router.replace("/login");
+        router.replace("/");
       }
     }, [currentUser, loading, router]);
 

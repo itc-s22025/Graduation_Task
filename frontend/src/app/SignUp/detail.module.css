@@ -1,22 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
 .allContainer {
     justify-content: center;
     align-items: center;
 
-    width: 450px;
-    height: 80vh;
+    border: 3px solid #FF92AD;
+    border-radius: 10px;
 
-    border: 1px solid springgreen;
+    width: 470px;
+    height: 500px;
+
+    margin-top: 23vh;
+    margin-left: 14vw;
+    padding: 10px;
 }
 
 .title {
-    color: #FF92AD;
+    color: #423a3a;
     width: 100%;
     max-width: 200px;
     margin-left: 130px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 30px;
 }
 
 .formContainer{
     display: grid;
+}
+
+.inputContainer{
+    display: flex;
+    align-items: center;
+    margin: 15px 50px 5px;
+    color: #423a3a;
+}
+
+.label{
+    width: 140px;
+}
+
+.inputBox{
+    outline: none;
+    border: #FF92AD solid 1px;
+    height: 40px;
+    width: 200px;
+    margin-left: 0;
+    padding: 4px 10px 4px;
+    background-color: #fff;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+}
+
+.pcText{
+    outline: none;
+    border: none;
+    width: 100px;
+    margin: 0 0 10px 190px;
+    background-color: #fff;
+    color: #ff839f;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+}
+
+.pcText:hover{
+    color: #ff95af;
+}
+
+.submit{
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    border: 1px solid #FF92AD;
+    border-radius: 5px;
+    outline: none;
+
+    background-color: #FF92AD;
+
+    width: 280px;
+    height: 45px;
+
+    margin: 30px 85px 10px;
+    padding: 6px 20px 5px;
+
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.submit:hover{
+    background-color: #ff839f;
+    font-weight: 500;
+}
+
+.submit:active{
+    background-color: #fff;
+    border: 2px solid #ff839f;
+    color: #ff839f;
 }

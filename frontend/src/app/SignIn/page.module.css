@@ -7,7 +7,7 @@
 .logo{
     height: 100%;
     margin-top: 40vh;
-    margin-left: 20vw;
+    margin-left: 18vw;
     color: #FF92AD;
     font-size: 7rem;
     font-weight: 400;
@@ -58,13 +58,17 @@
 }
 
 .forgotPwd{
+    outline: none;
+    border: none;
+    width: 150px;
+    background-color: #fff;
     font-size: 0.9rem;
     color: #ff839f;
     margin: 0 50px 10px;
 }
 
 .forgotPwd:hover{
-    color: #FF92AD;
+    color: #ff95af;
 }
 
 .submit{
@@ -90,6 +94,7 @@
 
 .submit:hover{
     background-color: #ff839f;
+    font-weight: 500;
 }
 
 .submit:active{
@@ -99,6 +104,7 @@
 }
 
 .or {
+    color: #4A4444;
     font-size: 0.9rem;
 
     margin: 10px 170px 10px;
@@ -148,6 +154,11 @@
 
 .google:hover{
     border: 2px solid #FF92AD;
+    font-weight: 500;
+    padding: 4px 0 4px;
+    margin: 9px 49px 9px;
+    width: 282px;
+    height: 47px;
 }
 
 .signUpContainer{
@@ -156,6 +167,7 @@
 }
 
 .signUpText{
+    color: #4A4444;
     font-size: 0.9rem;
 }
 
@@ -165,4 +177,8 @@
     margin-left: 10px;
     font-size: 1rem;
     color: #ff839f;
+}
+
+.signUp:hover{
+    color: #ff95af;
 }

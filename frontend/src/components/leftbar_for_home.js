@@ -2,10 +2,18 @@
 
 import s from '../styles/leftbar_for_home.module.css';
 import {usePathname, useRouter} from "next/navigation";
+import { signOut } from "firebase/auth";
+import { auth } from "@/firebase";
 
 const LeftBar = () => {
     const router = useRouter();
     const pathname = usePathname()
+
+    //ログアウト
+    const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/");
+    }
 
     return(
         <>
@@ -20,6 +28,7 @@ const LeftBar = () => {
                     <button className={`${s.button} ${ pathname === '/Keeps' ? s.active : '' }`} onClick={() => router.push('/')}>Keeps</button>
                     <button className={`${s.button} ${ pathname === '/ColorDiagnosis' ? s.active : '' }`} onClick={() => router.push('/')}>Color Diagnosis</button>
                     <button className={`${s.button} ${ pathname === '/MyCosmetics' ? s.active : '' }`} onClick={() => router.push('/')}>My Cosmetics</button>
+                    <button onClick={handleLogout}>logout</button>
                 </div>
             </div>
         </>

@@ -1,12 +1,12 @@
 "use client";
 
 import MainLayout from "@/components/MainLayout";
-import s from "./page.module.css"
 import PostButton from "@/components/post_button";
 import withAuth from "@/components/withAuth";
+import {useRouter} from "next/navigation";
 
 const Home = () => {
-    // ここに色々書き込む
+    const router = useRouter();
 
     return(
         <>
@@ -17,4 +17,5 @@ const Home = () => {
     )
 }
 
-export default withAuth(Home);
+// export default withAuth(Home);
+export default Home;

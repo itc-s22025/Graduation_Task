@@ -11,6 +11,9 @@ const Detail = () => {
   const [password, setPassword] = useState('');
   //追加でfirestoreに登録するやつ
   const [name, setName] = useState('');
+  const [personalColor, setPersonalColor] = useState('');
+  const [fav, setFav] = useState('');
+
   const [error, setError] = useState(null);
 
   const handleSignUp = async (event) => {
@@ -24,6 +27,7 @@ const Detail = () => {
         uid: user.uid,
         name,
         email,
+        personalColor,
       });
 
       alert('User created successfully');
@@ -31,6 +35,7 @@ const Detail = () => {
       setEmail('');
       setPassword('');
       setName('');
+      setPersonalColor('');
     } catch (error) {
       setError(error.message);
     }
@@ -41,25 +46,56 @@ const Detail = () => {
         <h1 className={s.title}>サインアップ</h1>
 
         <form onSubmit={handleSignUp} className={s.formContainer}>
-          <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Name"
-          />
-          <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-          />
-          <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-          />
-          <button type="submit">登録</button>
+          <div className={s.inputContainer}>
+            <label htmlFor="name" className={s.label}>ユーザー名</label>
+            <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={s.inputBox}
+                placeholder="Name"
+            />
+          </div>
+
+          <div className={s.inputContainer}>
+            <label htmlFor="personalColor" className={s.label}>パーソナルカラー</label>
+              <select name="personalColor" value={personalColor} onChange={(e) => setPersonalColor(e.target.value)} className={s.inputBox} required>
+                <option value="">選択してください</option>
+                <option value="イエベ春">イエベ春</option>
+                <option value="ブルベ夏">ブルベ夏</option>
+                <option value="イエベ秋">イエベ秋</option>
+                <option value="ブルベ冬">ブルベ冬</option>
+              </select>
+          </div>
+
+          <button type="button" className={s.pcText}>診断してみる</button>
+
+          <div className={s.inputContainer}>
+            <label htmlFor="email" className={s.label}>メールアドレス</label>
+            <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={s.inputBox}
+                placeholder="E-mail"
+            />
+          </div>
+
+          <div className={s.inputContainer}>
+            <label htmlFor="password" className={s.label}>パスワード</label>
+            <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={s.inputBox}
+                placeholder="Password"
+            />
+          </div>
+
+          <button type="submit" className={s.submit}>サインアップ</button>
         </form>
 
         {error && <p>{error}</p>}
