@@ -1,0 +1,71 @@
+.all {
+    display: flex;
+    position: relative;
+    top: 11vh;
+    left: 3vw;
+    margin: 25px;
+    width: 575px;
+    height: 300px;
+    border: 2px solid #D2CCCC;
+}
+
+.font1 {
+    position: relative;
+    top: 3vh;
+    left: 4vw;
+    /*color: ;*/
+}
+
+
+.box {
+    position: absolute;
+    top: 3.5vh;
+    left: 15vw;
+    height: 30px;
+    width: 230px;
+    border: 2px solid #D2CCCC;
+}
+
+.font2 {
+    position: absolute;
+    top: 8.5vh;
+    left: 4vw;
+}
+
+.box2 {
+    position: absolute;
+    top: 9.5vh;
+    left: 15vw;
+    height: 30px;
+    width: 230px;
+    border: 2px solid #D2CCCC;
+
+}
+
+.sakujo {
+    position: absolute;
+    top: 22vh;
+    left: 3.8vw;
+    background-color: #FFF;
+    height: 50px;
+    width: 200px;
+    border: 1px solid #FF92AD;
+    color: red;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.sakujo:hover {
+    background-color: #000;
+}
+
+.keep {
+    position: absolute;
+    top: 22vh;
+    left: 16.7vw;
+    background-color: #FF989A;
+    height: 50px;
+    width: 200px;
+    font-weight: bold;
+    color: white;
+    border: 1px solid #ff839f;
+}

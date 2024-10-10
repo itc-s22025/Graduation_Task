@@ -29,9 +29,9 @@ const Profile = () => {
         setFocusedTab(tabName);
     };
 
-    const handleAddClick = () => {
-        setShowAddTab(true);
-    }
+    // const handleAddClick = () => {
+    //     setShowAddTab(true);
+    // }
 
     const handleCloseAddTab = () => {
         setShowAddTab(false);
