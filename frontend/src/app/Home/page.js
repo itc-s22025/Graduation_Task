@@ -4,6 +4,7 @@ import MainLayout from "@/components/MainLayout";
 import PostButton from "@/components/post_button";
 import withAuth from "@/components/withAuth";
 import {useRouter} from "next/navigation";
+import Header from "@/components/header";
 
 const Home = () => {
     const router = useRouter();
@@ -11,6 +12,7 @@ const Home = () => {
     return(
         <>
             <MainLayout>
+                <Header />
                 <PostButton/>
             </MainLayout>
         </>
