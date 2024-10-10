@@ -1,34 +1,49 @@
 "use client";
 
-import FirstLayout from "@/components/FirstLayout";
 import s from "./page.module.css"
 
 import React, { useState } from 'react';
-import { auth } from '../../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/firebase';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {useRouter} from "next/navigation";
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+    const router = useRouter()
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
+
+    // emailログイン
+    const handleEmailLogin = async (event) => {
+        event.preventDefault();
+
+        try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // alert('ログイン成功');
+        router.push('/Home')
+        } catch (error) {
+        alert('ログインできませんでした')
+        }
+    };
+
+    // Googleログイン
+    const handleGoogleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert('ログイン成功');
+        const provider = new GoogleAuthProvider();
+        return signInWithPopup(auth, provider);
     } catch (error) {
-      alert('ログイン失敗')
-      // setError(error.message);
+      alert('Googleログイン失敗: ' + error.message);
     }
   };
 
   return (
       <>
-          <FirstLayout >
-              <div className={s.all}>
-                  <h1 className={s.signIn}>サインイン</h1>
-                  <form onSubmit={handleLogin} className={s.grid}>
+          <div className={s.allContainer}>
+              <h1 className={s.logo}>♥Prettie</h1>
+              <div className={s.MainContainer}>
+                  <h1 className={s.title}>Sign in</h1>
+                  <form onSubmit={handleEmailLogin} className={s.grid}>
                       <input
                           type="email"
                           value={email}
@@ -43,12 +58,22 @@ const SignIn = () => {
                           placeholder="Password"
                           className={s.input}
                       />
-                      <button type="submit" className={s.submit}>サインイン</button>
+                      <button type="button" className={s.forgotPwd}>Forgot your password?</button>
+                      <button type="submit" className={s.submit}>Sign in</button>
                   </form>
+
+                  <p className={s.or}>OR</p>
+                  <button onClick={handleGoogleLogin} className={s.google}>Sign in with Google</button>
+
+                  <div className={s.signUpContainer}>
+                      {/* eslint-disable-next-line react/no-unescaped-entities */}
+                      <p className={s.signUpText}>Don't have an account yet?</p>
+                      <button type="button" className={s.signUp} onClick={() => router.push('/SignUp')}>Sign up now</button>
+                  </div>
                   {error && <p>{error}</p>}
               </div>
-      </FirstLayout>
-    </>
+          </div>
+      </>
   );
 };
 

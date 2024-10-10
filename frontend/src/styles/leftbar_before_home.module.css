@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
 .all{
     background-color: #FF92AD;
 
@@ -18,15 +20,20 @@
     width: 12vw;
     height: 70px;
 
-    border: 2px solid #ff839f;
+    border: 1px solid #ff839f;
     border-radius: 50px;
 
     font-size: 1.5rem;
     color: #ff839f;
+
+   font-family: "Zen Maru Gothic", serif;
+   font-weight: 400;
+   font-style: normal;
 }
 
 .button:hover{
     border: 4px solid #fff;
+    font-size: 1.6rem;
 }
 
 .button:active{
