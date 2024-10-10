@@ -3,15 +3,16 @@ import RightBar from "@/components/rightbar_for_home";
 import "../styles/MainLayout.css"
 import Header from "@/components/header";
 
-export default function MainLayout({ children }) {
+export default function MainLayout({ children })  {
   return (
     <div className="left_and_right_bars">
       <LeftBar/>
         <div>
-            <Header />
+            {/*<Header />*/}
             <main>{children}</main>
         </div>
       <RightBar/>
     </div>
   );
 }
+import React from 'react';
