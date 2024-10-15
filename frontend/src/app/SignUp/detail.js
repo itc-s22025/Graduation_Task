@@ -5,14 +5,17 @@ import { auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
 import s from './detail.module.css';
+import {useRouter} from "next/navigation";
 
 const Detail = () => {
+  const router = useRouter();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //追加でfirestoreに登録するやつ
   const [name, setName] = useState('');
   const [personalColor, setPersonalColor] = useState('');
-  const [fav, setFav] = useState('');
+  const [bio, setBio] = useState('');
 
   const [error, setError] = useState(null);
 
@@ -28,14 +31,17 @@ const Detail = () => {
         name,
         email,
         personalColor,
+        bio
       });
 
       alert('User created successfully');
+      await router.push('/');
 
       setEmail('');
       setPassword('');
       setName('');
       setPersonalColor('');
+      setBio('')
     } catch (error) {
       setError(error.message);
     }
