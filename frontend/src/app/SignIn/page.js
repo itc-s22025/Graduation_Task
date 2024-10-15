@@ -1,5 +1,6 @@
 "use client";
 
+
 import FirstLayout from "@/components/FirstLayout";
 import s from "./page.module.css"
 
