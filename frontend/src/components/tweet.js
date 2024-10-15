@@ -1,0 +1,42 @@
+"use client";
+
+import s from '@/styles/tweet.module.css';
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import React, { useState } from "react";
+
+const Tweet = () => {
+    const [focusedTab, setFocusedTab] = useState('tabFirst');
+
+    const handleFocus = (tabName) => {
+        setFocusedTab(tabName);
+    };
+
+    return (
+        <>
+            <Tabs>
+                <TabList className={s.all}>
+                    <ul className={s.ul}>
+                        <Tab
+                            className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''}`}
+                            onFocus={() => handleFocus('tabFirst')} tabIndex={0}>投稿</Tab>
+                        <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
+                             onFocus={() => handleFocus('tabSecond')} tabIndex={0}>レビュー投稿</Tab>
+                    </ul>
+                </TabList>
+
+                <TabPanel>
+                <article>
+                    </article>
+                </TabPanel>
+
+                <TabPanel>
+                    <article>
+                    </article>
+                </TabPanel>
+            </Tabs>
+
+        </>
+    );
+};
+
+export default Tweet;

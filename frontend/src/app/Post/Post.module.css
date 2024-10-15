@@ -1,0 +1,88 @@
+.title {
+    background-color: #FF92AD;
+    color: white;
+    padding-top: 30px;
+    padding-left: 80px;
+}
+
+.box {
+    position: absolute;
+    top: 20vh;
+    right: 32vw;
+    margin: 10px auto;
+    padding: 8px 10px;
+    background-color: #fff;
+    width: 36vw;
+    height: 250px; /* 高さを少し大きく */
+    border: 1px solid #FF92AD;
+    border-radius: 30px;
+}
+
+.flex {
+    display: flex;
+    align-items: flex-start;
+}
+
+.iconContainer {
+    margin-right: 10px;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.name {
+    font-size: 20px;
+    margin-top: -10px;
+    margin-left: -85px;
+    padding: 10px;
+    left: 100px;
+    position: relative;
+}
+
+.textarea {
+    border: none;
+    width: 95%;
+    margin-top: 35px;
+    margin-left: 20px;
+    padding: 10px;
+    font-size: 18px;
+    resize: none;
+    box-sizing: border-box;
+    outline: none;
+    overflow: hidden;
+    height: calc(100% - 40px);
+}
+
+.iconWrapper {
+    display: flex;
+    justify-content: flex-start; /* 左揃え */
+    gap: 60px; /* 画像の間にスペースを追加 */
+    margin-top: 65px; /* 下側に配置 */
+    margin-left: 80px;
+}
+
+.iconLabel {
+    cursor: pointer;
+}
+
+.iconImg {
+    width: 35px;
+    height: 35px;
+}
+
+.post {
+    display: flex;
+    background-color: #FF92AD;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 160px;
+}
