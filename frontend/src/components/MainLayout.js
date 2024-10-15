@@ -8,7 +8,7 @@ export default function MainLayout({ children })  {
     <div className="left_and_right_bars">
       <LeftBar/>
         <div>
-            {/*<Header />*/}
+            {/*<AccountHeader />*/}
             <main>{children}</main>
         </div>
       <RightBar/>
