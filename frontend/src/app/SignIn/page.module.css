@@ -1,12 +1,27 @@
-.all{
-    border: 1px solid #FF92AD;
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.allContainer{
+    display: flex;
+}
+
+.logo{
+    height: 100%;
+    margin-top: 40vh;
+    margin-left: 18vw;
+    color: #FF92AD;
+    font-size: 7rem;
+    font-weight: 400;
+}
+
+.MainContainer {
+    border: 3px solid #FF92AD;
     border-radius: 10px;
 
-    width: 450px;
-    height: 300px;
+    width: 400px;
+    height: 500px;
 
-    margin-top: 32vh;
-    margin-left: 20vw;
+    margin-top: 23vh;
+    margin-left: 12vw;
     padding: 10px;
 }
 
@@ -14,54 +29,156 @@
     display: grid;
 }
 
-.signIn{
-    color: #FF92AD;
+.title{
+    color: #4A4444;
+    font-size: 1.9rem;
 
     width: 100%;
     max-width: 200px;
 
-    margin-left: 130px;
-    margin-top: 10px;
-    margin-bottom: 30px;
+    margin: 30px 140px 30px;
 }
 
 .input{
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+
     border: 1px solid #FF92AD;
     outline: none;
 
-    width: 300px;
+    width: 280px;
     height: 40px;
 
-    margin: 0 65px 10px;
-    padding: 6px 20px 5px;
+    margin: 0 50px 10px;
+    padding: 5px 20px 5px;
 
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #423a3a;
 }
 
+.forgotPwd{
+    outline: none;
+    border: none;
+    width: 150px;
+    background-color: #fff;
+    font-size: 0.9rem;
+    color: #ff839f;
+    margin: 0 50px 10px;
+}
+
+.forgotPwd:hover{
+    color: #ff95af;
+}
+
 .submit{
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+
     border: 1px solid #FF92AD;
     border-radius: 5px;
     outline: none;
 
     background-color: #FF92AD;
 
-    width: 300px;
+    width: 280px;
     height: 45px;
 
-    margin: 20px 65px 10px;
+    margin: 20px 50px 10px;
     padding: 6px 20px 5px;
 
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .submit:hover{
     background-color: #ff839f;
+    font-weight: 500;
 }
 
 .submit:active{
     background-color: #fff;
     border: 2px solid #ff839f;
     color: #ff839f;
+}
+
+.or {
+    color: #4A4444;
+    font-size: 0.9rem;
+
+    margin: 10px 170px 10px;
+    display: inline-block;
+    position: relative;
+    padding: 0 10px;
+}
+
+.or::before,
+.or::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 110px; /* 線の長さを調整 */
+    height: 2px; /* 線の太さ */
+    background-color: #ff87a3; /* 線の色 */
+}
+
+.or::before {
+    left: -118px; /* 「または」の前の線 */
+}
+
+.or::after {
+    right: -118px; /* 「または」の後の線 */
+}
+
+.google{
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    border: 1px solid #FF92AD;
+    border-radius: 5px;
+    outline: none;
+
+    background-color: #FFF;
+
+    width: 280px;
+    height: 45px;
+
+    margin: 10px 50px 10px;
+    padding: 6px 20px 5px;
+
+    color: #ff839f;
+    font-size: 1.2rem;
+}
+
+.google:hover{
+    border: 2px solid #FF92AD;
+    font-weight: 500;
+    padding: 4px 0 4px;
+    margin: 9px 49px 9px;
+    width: 282px;
+    height: 47px;
+}
+
+.signUpContainer{
+    display: flex;
+    margin: 10px 10px 50px 55px;
+}
+
+.signUpText{
+    color: #4A4444;
+    font-size: 0.9rem;
+}
+
+.signUp{
+    border: none;
+    background-color: #fff;
+    margin-left: 10px;
+    font-size: 1rem;
+    color: #ff839f;
+}
+
+.signUp:hover{
+    color: #ff95af;
 }

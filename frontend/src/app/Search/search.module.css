@@ -1,0 +1,36 @@
+.header {
+    display: flex;
+    background-color: #FF92AD;
+    width: 45vw;
+    height: 80px;
+    position: fixed;
+    top: 0;
+    left: 30vw;
+}
+.contener {
+    box-sizing: border-box;
+    top: 2vh;
+    left: 1.5vw;
+    background-color: #FFF;
+    position: relative;
+    border: 1px solid #999;
+    display: block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    height: 2.3em;
+    width: 83%;
+
+}
+.content {
+    width: 100%;
+    border: none;
+    position: relative;
+    outline: none;
+    padding-left: 1rem;
+    color: black;
+    background-color: transparent;
+    height: 2.0em;
+}
+.content:focus {
+    outline: 0;
+}
