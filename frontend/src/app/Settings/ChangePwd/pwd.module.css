@@ -1,0 +1,79 @@
+.all{
+    position: absolute;
+    left: 32vw;
+    top: 100px;
+}
+
+.box{
+    border: #968C7F 2px solid;
+    display: flex;
+    height: 50px;
+    width: 35vw;
+    /*margin-left: 5vw;*/
+    margin-top:   1.5em; /* 上の余白 */
+    margin-bottom:1.5em; /* 下の余白 */
+    position: relative;
+}
+
+.text {
+    position: absolute;
+    height: 20px;
+    width: 34vw;
+    top: 50%;
+    margin-top: -10px;
+    color: #808080;
+    outline: none;
+    border: none;
+    padding-left: 1rem;
+}
+
+.color {
+    color: red;
+}
+
+.save{
+    position: relative;
+    top: 7px;
+    right: 0.5vw;
+    border: 1px solid #EE6E18;
+    border-radius: 8px;
+    outline: none;
+    background-color: #FF92AD;
+    color: #F8F4F0;
+    height: 50px;
+    width: 100px;
+    margin-top: 30px;
+    margin-left:30vw;
+    padding-top: 3px;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.logout{
+    position: relative;
+    top: -7vh;
+    left: -30vw;
+    border: 2px solid #EE6E18;
+    border-radius: 8px;
+    outline: none;
+    background-color: #FFF;
+    color: #FF92AD;
+    text-align: center;
+    height: 50px;
+    width: 100px;
+    margin-top: 20px;
+    margin-left:30vw;
+    padding-top: 3px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.logout:hover{
+    background-color: #FF69A3;
+    color: #FFFFFF;
+}
+
+.logout:active{
+    background-color: #ec6102;
+}
