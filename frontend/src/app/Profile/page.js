@@ -6,11 +6,8 @@ import { useRouter } from 'next/navigation';
 import s from './profile.module.css';
 import MainLayout from "@/components/MainLayout";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import Post from "@/components/post";
-import AddTab from "@/components/addTab";
-import Edit from './edit';
-import PostButton from "@/components/post_button";
 import {useAuth} from "@/app/context/AuthProvider";
+import Edit from '@/app/Profile/edit'
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
@@ -21,22 +18,13 @@ const Profile = () => {
     const [showEditModal, setShowEditModal] = useState(false); // Modal state
 
     const [icon, setIcon] = useState('defaultIcon.png');
-    const [username, setUsername] = useState('ユーザー名');
+    const [username, setUsername] = useState('user ユーザ');
     const [bio, setBio] = useState('ここにBioが表示されます');
     const router = useRouter();
 
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
-
-    // const handleAddClick = () => {
-    //     setShowAddTab(true);
-    // }
-
-    const handleCloseAddTab = () => {
-        setShowAddTab(false);
-    }
-
 
     const preventScroll = (e) => {
         e.preventDefault();
@@ -59,6 +47,7 @@ const Profile = () => {
     //         setUsername(newUserName);
     //         setBio(newBio);
     // }
+
     const handleSave = ({ icon: newIcon, username: newUserName, bio: newBio }) => {
         setIcon(newIcon);
         setUsername(newUserName);
@@ -86,54 +75,52 @@ const Profile = () => {
     return (
         <>
             <MainLayout>
+                {/*ヘッダー画像*/}
                 <div className={s.header}></div>
-                <div className={s.container}>
-                    <div className={s.profileImage}>
-                        {/*{profileData?.icon && <img src={profileData.icon} alt="Profile Icon" />}*/}
-                        <img src={icon} alt="User Icon" />
-                    </div>
 
-                    <div className={s.userInfo}>
+                {/*main*/}
+                <div className={s.container}>
+                        {/*{profileData?.icon && <img src={profileData.icon} alt="Profile Icon" />}*/}
+                    <img src={icon} alt="icon" className={s.profileImage} />
+
+                    <div>
                         <button className={s.edit} onClick={handleEditClick}>
                             Edit Profile
                         </button>
-                        <h2 className={s.userName}>{username}</h2>
-                        <a className={s.userId}>@ユーザーID</a>
 
-                        <div className={s.followInfo}>
-                            <span>フォロー中 <strong>150</strong></span>
-                            <span>フォロワー <strong>200</strong></span>
+                        <div className={s.infoContainer}>
+                            <h2 className={s.userName}>{username}</h2>
+
+                            <div className={s.idAndFollow}>
+                                <p className={s.userId}>@userID</p>
+
+                                <div className={s.followContainer}>
+                                    <span className={s.follow}><strong>150</strong> Following</span>
+                                    <span className={s.follower}><strong>200</strong> Follower</span>
+                                </div>
+                            </div>
                         </div>
 
-                            <a className={s.bio}>{bio}</a>
-                        </div>
+                        <p className={s.bio}>{bio}</p>
                     </div>
-                    <div className={s.content}>
-                    <PostButton/>
                 </div>
-            </MainLayout>
 
-            <Tabs>
-                <div className={s.adder}>
-                    <TabList className={s.all}>
-                        <ul className={s.ul}>
-                            <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Now</Tab>
-                            <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Tab2</Tab>
-                            <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Tab3</Tab>
-                        </ul>
+                <Tabs>
+                    <TabList className={s.tabsContainer}>
+                        <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
+                        <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
+                        <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
                     </TabList>
 
                     <TabPanel>
-                        <div className={s.adder2}>
-                            <article>
-                                <Post />
-                            </article>
-                        </div>
+                        <article>
+                            <p>posts</p>
+                        </article>
                     </TabPanel>
 
                     <TabPanel>
                         <article>
-                            <p>second</p>
+                            <p>media</p>
                         </article>
                     </TabPanel>
 
@@ -142,30 +129,19 @@ const Profile = () => {
                             <p>third</p>
                         </article>
                     </TabPanel>
-                </div>
             </Tabs>
 
-
-
-            {showAddTab && (
-                <div className={s.addTabOverlay}>
-                    <div className={s.addTabContent}>
-                        <AddTab />
-                        <button onClick={handleCloseAddTab} className={s.buttonCansel}>Cancel</button>
-                    </div>
-                </div>
-            )}
 
             {/* Edit Profile Modal */}
             {showEditModal && (
                 <div className={s.modalOverlay}>
                     <div className={s.modalContent}>
                         <Edit onSave={handleSave} />
-                        {/*<Edit userData={profileData} onClose={handleSave} />*/}
                         <button onClick={handleCloseEditModal} className={s.closeButton}>Close</button>
                     </div>
                 </div>
             )}
+            </MainLayout>
         </>
     );
 };

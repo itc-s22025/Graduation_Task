@@ -1,71 +1,34 @@
 "use client";
 
-import React, { useState } from 'react';
-import { auth, db } from '../../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
-import s from './signUp.module.css';
+import { useState } from 'react';
+import Pc from "@/app/SignUp/personalColor";
+import Detail from "@/app/SignUp/detail";
+import FirstLayout from "@/components/FirstLayout";
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  //追加でfirestoreに登録するやつ
-  const [name, setName] = useState('');
-  const [error, setError] = useState(null);
+    const [step, setStep] = useState(1); // ステップ管理
+    const [personalColor, setPersonalColor] = useState(null); // 選択されたパーソナルカラー
 
-  const handleSignUp = async (event) => {
-    event.preventDefault();
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+    const handleNextStep = () => {
+        if (personalColor) {
+            setStep(2); // 次のステップへ
+        } else {
+            alert('パーソナルカラーを選択してください。');
+        }
+    };
 
-      // Firestoreにユーザー情報を保存
-      await addDoc(collection(db, 'users'), {
-        uid: user.uid,
-        name,
-        email,
-      });
+    const handleSetPersonalColor = (color) => {
+        setPersonalColor(color);
+    };
 
-      alert('User created successfully');
-
-      setEmail('');
-      setPassword('');
-      setName('');
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  return (
-      <div className={s.all}>
-        <h1>Sign Up</h1>
-        <div className={s.column}>
-        <h3 className={s.backUi}>← 戻る</h3>
-        </div>
-        <form onSubmit={handleSignUp}>
-          <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Name"
-          />
-          <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-          />
-          <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-          />
-          <button type="submit">Sign Up</button>
-        </form>
-        {error && <p>{error}</p>}
-      </div>
-  );
+    return (
+        <>
+            <FirstLayout>
+                {step === 1 && <Pc onNext={handleNextStep} onSelectColor={handleSetPersonalColor} />} {/* personalColor.js を表示 */}
+                {step === 2 && <Detail personalColor={personalColor} />} {/* detail.js を表示 */}
+            </FirstLayout>
+        </>
+    );
 };
 
 export default SignUp;

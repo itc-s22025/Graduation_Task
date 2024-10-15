@@ -1,10 +1,22 @@
 /* Reset CSS */
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-button{
-  font-family: var(--zen-kaku-gothic-new), serif;
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+
+  font-family: "Zen Maru Gothic", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+li{
+  list-style: none;
 }
