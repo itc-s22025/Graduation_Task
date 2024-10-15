@@ -14,7 +14,6 @@
 .tabs{
     list-style: none;
     padding: 0;
-    margin: 0;
 
     margin-right: -80px; /* 前のliと重なる量 */
 }
@@ -156,6 +155,43 @@
     font-weight: bold;
 }
 
+
+/* /Home 用のスタイル */
+
+
+/* /MyCosmetics 用のスタイル */
+.headerMyCosmetics {
+    /*border: 1px solid greenyellow;*/
+    margin-top: 0;
+    height: 50px;
+}
+
+.tabMyCosmetics{
+    /*border: 1px solid red;*/
+}
+
+.tab1MC{
+    /*border: 1px solid red;*/
+    margin-top: 5px;
+    height: 90%;
+}
+
+.tab2MC{
+    /*border: 1px solid blue;*/
+    margin-top: 5px;
+    height: 90%;
+}
+
+.tab3MC{
+    /*border: 1px solid deeppink;*/
+    margin-top: 5px;
+    height: 90%;
+}
+
+.addTabMC{
+    /*border: 1px solid yellow;*/
+    margin-top: 4px;
+}
 
 
 /*responsive*/
