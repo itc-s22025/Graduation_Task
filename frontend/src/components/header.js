@@ -1,4 +1,3 @@
-// components/Header.js
 "use client";
 
 import s from '@/styles/header.module.css';

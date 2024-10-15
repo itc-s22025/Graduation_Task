@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
 .headerContainer {
+    /*border: 1px solid red;*/
     background-color: #FF92AD;
     width: 40vw;
     height: 100px;
@@ -11,6 +13,81 @@
     font-size: 2.3rem;
     color: #fff;
 }
+
+
+.searchAndAddContainer{
+    /*border: 1px solid red;*/
+    height: 62px;
+    margin-top: 80px;
+    display: flex;
+}
+
+.searchContainer{
+    display: flex;
+    /*border: 1px solid #007bff;*/
+    width: 450px;
+    height: 62px;
+    margin-left: 70px;
+}
+
+.searchImg{
+    /*border: 1px solid #007bff;*/
+    margin: 22px 10px 0 40px;
+    width: 20px;
+    height: 20px;
+}
+
+.searchBox{
+    outline: none;
+    border: 2px solid #FF92AD;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+
+    height: 40px;
+    width: 270px;
+    margin: 10px 0 10px 10px;
+    padding: 10px 20px 10px 20px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.searchButton{
+    outline: none;
+    border: none;
+    background-color: #FF92AD;
+
+    width: 80px;
+    height: 40px;
+    margin: 10px 0 10px 0;
+    padding: 0 5px 0 0;
+
+    font-size: 1rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #fff;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.addButton{
+    outline: none;
+    border: 2px solid #ff839f;
+    border-radius: 40px;
+    width: 100px;
+    height: 40px;
+    margin: 10px;
+
+    font-size: 1rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #ff839f;
+    background-color: #FFf;
+}
+
 
 /*responsive*/
 @media (max-width: 1200px) {
