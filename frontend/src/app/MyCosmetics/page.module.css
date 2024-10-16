@@ -72,6 +72,10 @@
     border-bottom-right-radius: 50px;
 }
 
+.searchButton:hover{
+    font-weight: 600;
+}
+
 .addButton{
     outline: none;
     border: 2px solid #ff839f;
@@ -86,6 +90,12 @@
     font-style: normal;
     color: #ff839f;
     background-color: #FFf;
+}
+
+.addButton:hover{
+    scale: calc(1.04);
+    border: 3px solid #ff839f;
+    font-weight: 600;
 }
 
 

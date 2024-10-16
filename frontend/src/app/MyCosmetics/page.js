@@ -1,6 +1,7 @@
 import MainLayout from "@/components/MainLayout";
 import s from "./page.module.css"
 import Header from "@/components/header";
+import MyCosmeticItems from "@/components/myCosmeticItems";
 
 const MyCosmetics = () => {
 
@@ -23,6 +24,8 @@ const MyCosmetics = () => {
                     </div>
                     <button type="button" className={s.addButton}>Add</button>
                 </div>
+
+                <MyCosmeticItems/>
 
             </MainLayout>
         </>
