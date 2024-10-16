@@ -17,6 +17,7 @@ const Profile = () => {
     const [showAddTab, setShowAddTab] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false); // Modal state
 
+    const [headerImage, setHeaderImage] = useState('defaultHeader.png');
     const [icon, setIcon] = useState('defaultIcon.png');
     const [username, setUsername] = useState('user ユーザ');
     const [bio, setBio] = useState('ここにBioが表示されます');
@@ -48,7 +49,8 @@ const Profile = () => {
     //         setBio(newBio);
     // }
 
-    const handleSave = ({ icon: newIcon, username: newUserName, bio: newBio }) => {
+    const handleSave = ({ headerImage: newHeader, icon: newIcon, username: newUserName, bio: newBio }) => {
+        setHeaderImage(newHeader);
         setIcon(newIcon);
         setUsername(newUserName);
         setBio(newBio);
@@ -76,7 +78,9 @@ const Profile = () => {
         <>
             <MainLayout>
                 {/*ヘッダー画像*/}
-                <div className={s.header}></div>
+                <div className={s.header}>
+                    <img src={headerImage} alt="User icon" className={s.headerImage}/>
+                </div>
 
                 {/*main*/}
                 <div className={s.container}>

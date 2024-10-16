@@ -2,7 +2,8 @@
 "use client";
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import { auth } from '@/firebase';
+// import { auth } from '@/firebase'
+import { auth } from "../../firebase"; // 相対パスに変更
 import { onAuthStateChanged } from 'firebase/auth';
 
 const AuthContext = createContext();
