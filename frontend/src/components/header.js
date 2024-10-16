@@ -4,7 +4,6 @@ import s from '@/styles/header.module.css';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useState } from "react";
 import AddTab from "@/components/addTab";
-import addTab from "@/components/addTab";
 
 const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, additionalFeatures, pageType }) => {
     // state

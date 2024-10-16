@@ -6,6 +6,7 @@ import withAuth from "@/components/withAuth";
 import {useRouter} from "next/navigation";
 import Header from "@/components/header";
 import Post from "@/components/post";
+import s from "@/app/Home/page.module.css"
 
 const Home = () => {
     const router = useRouter();
@@ -17,9 +18,11 @@ const Home = () => {
     return(
         <>
             <MainLayout>
-                <Header firstTabText="Now" secondTabText="Following" thirdTabText="tab3" firstTabContent={<Post/>}
-                        additionalFeatures={homeAdditionalFeatures} pageType="home"/>
-                <PostButton/>
+                <div className={s.allContainer}>
+                    <Header firstTabText="Now" secondTabText="Following" thirdTabText="tab3" firstTabContent={<Post/>}
+                            additionalFeatures={homeAdditionalFeatures} pageType="home"/>
+                    <PostButton/>
+                </div>
             </MainLayout>
         </>
     )

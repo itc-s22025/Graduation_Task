@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
+.allContainer{
+    position: absolute;
+    left: 30vw;
+    width: 40vw;
+}
+
 .headerContainer {
-    /*border: 1px solid red;*/
+    position: fixed;
     background-color: #FF92AD;
     width: 40vw;
     height: 100px;
@@ -16,9 +22,14 @@
 
 
 .searchAndAddContainer{
-    /*border: 1px solid red;*/
-    height: 62px;
-    margin-top: 80px;
+    /*border: 1px solid #007bff;*/
+    background-color: #fff;
+    position: fixed;
+    top: 12vh;
+    height: 160px;
+    width: 40vw;
+    margin-top: 19px;
+    padding-top: 80px;
     display: flex;
 }
 
@@ -96,6 +107,10 @@
     scale: calc(1.04);
     border: 3px solid #ff839f;
     font-weight: 600;
+}
+
+.itemsContainer{
+    margin-top: 300px;
 }
 
 

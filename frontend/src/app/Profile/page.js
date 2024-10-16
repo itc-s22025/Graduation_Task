@@ -75,72 +75,76 @@ const Profile = () => {
     return (
         <>
             <MainLayout>
-                {/*ヘッダー画像*/}
-                <div className={s.header}></div>
 
-                {/*main*/}
-                <div className={s.container}>
+                <div className={s.allContainer}>
+                    {/*ヘッダー画像*/}
+                    <div className={s.header}></div>
+
+                    {/*main*/}
+                    <div className={s.container}>
                         {/*{profileData?.icon && <img src={profileData.icon} alt="Profile Icon" />}*/}
-                    <img src={icon} alt="icon" className={s.profileImage} />
+                        <img src={icon} alt="icon" className={s.profileImage} />
 
-                    <div>
-                        <button className={s.edit} onClick={handleEditClick}>
-                            Edit Profile
-                        </button>
+                        <div>
+                            <button className={s.edit} onClick={handleEditClick}>
+                                Edit Profile
+                            </button>
 
-                        <div className={s.infoContainer}>
-                            <h2 className={s.userName}>{username}</h2>
+                            <div className={s.infoContainer}>
+                                <h2 className={s.userName}>{username}</h2>
 
-                            <div className={s.idAndFollow}>
-                                <p className={s.userId}>@userID</p>
+                                <div className={s.idAndFollow}>
+                                    <p className={s.userId}>@userID</p>
 
-                                <div className={s.followContainer}>
-                                    <span className={s.follow}><strong>150</strong> Following</span>
-                                    <span className={s.follower}><strong>200</strong> Follower</span>
+                                    <div className={s.followContainer}>
+                                        <span className={s.follow}><strong>150</strong> Following</span>
+                                        <span className={s.follower}><strong>200</strong> Follower</span>
+                                    </div>
                                 </div>
                             </div>
+
+                            <p className={s.bio}>{bio}</p>
                         </div>
-
-                        <p className={s.bio}>{bio}</p>
                     </div>
+
+                    <Tabs>
+                        <TabList className={s.tabsContainer}>
+                            <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
+                            <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
+                            <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
+                        </TabList>
+
+                        <TabPanel>
+                            <article>
+                                <p>posts</p>
+                            </article>
+                        </TabPanel>
+
+                        <TabPanel>
+                            <article>
+                                <p>media</p>
+                            </article>
+                        </TabPanel>
+
+                        <TabPanel>
+                            <article>
+                                <p>third</p>
+                            </article>
+                        </TabPanel>
+                    </Tabs>
+
+
+                    {/* Edit Profile Modal */}
+                    {showEditModal && (
+                        <div className={s.modalOverlay}>
+                            <div className={s.modalContent}>
+                                <Edit onSave={handleSave} />
+                                <button onClick={handleCloseEditModal} className={s.closeButton}>Close</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                <Tabs>
-                    <TabList className={s.tabsContainer}>
-                        <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
-                        <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
-                        <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
-                    </TabList>
-
-                    <TabPanel>
-                        <article>
-                            <p>posts</p>
-                        </article>
-                    </TabPanel>
-
-                    <TabPanel>
-                        <article>
-                            <p>media</p>
-                        </article>
-                    </TabPanel>
-
-                    <TabPanel>
-                        <article>
-                            <p>third</p>
-                        </article>
-                    </TabPanel>
-            </Tabs>
-
-
-            {/* Edit Profile Modal */}
-            {showEditModal && (
-                <div className={s.modalOverlay}>
-                    <div className={s.modalContent}>
-                        <Edit onSave={handleSave} />
-                        <button onClick={handleCloseEditModal} className={s.closeButton}>Close</button>
-                    </div>
-                </div>
-            )}
             </MainLayout>
         </>
     );
