@@ -1,7 +1,4 @@
-.all{
-    /*border: #000fff 1px solid;*/
-    margin-top: 3px;
-    padding: 10px;
-    height: 92vh;
-    width: 100%;
+.allContainer{
+    position: absolute;
+    left: 30vw;
 }
