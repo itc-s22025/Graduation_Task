@@ -77,6 +77,10 @@
     margin-bottom: 10px;
     padding: 0 5px 0 5px;
 }
+.add {
+    text-decoration: none;
+    color: black;
+}
 
 .follow{
     margin-right: 10px;
