@@ -3,7 +3,8 @@
 .allContainer{
     position: absolute;
     left: 30vw;
-    width: 40vw;
+    width: calc(100% - 60vw);
+    height: auto;
 }
 
 .headerContainer {
@@ -111,7 +112,12 @@
 
 .itemsContainer{
     margin-top: 300px;
+    display: flex;
+    flex-direction: row; /* 横並び */
+    flex-wrap: wrap; /* アイテムが多いときに折り返す */
+    justify-content: flex-start; /* 左詰め */
 }
+
 
 
 /*responsive*/

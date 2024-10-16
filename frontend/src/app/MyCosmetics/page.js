@@ -24,12 +24,11 @@ const MyCosmetics = () => {
                         <button type="button" className={s.addButton}>Add</button>
                     </div>
 
-                    {/* MyCosmeticItems を searchAndAddContainer の下に配置 */}
                     <div className={s.itemsContainer}>
                         <MyCosmeticItems />
                         <MyCosmeticItems />
-                        <MyCosmeticItems />
-                        <MyCosmeticItems />
+                        {/*<MyCosmeticItems />*/}
+                    {/*    <MyCosmeticItems />*/}
                     </div>
                 </div>
             </MainLayout>

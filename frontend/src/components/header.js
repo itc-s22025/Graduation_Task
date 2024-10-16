@@ -4,8 +4,9 @@ import s from '@/styles/header.module.css';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useState } from "react";
 import AddTab from "@/components/addTab";
+import Post from "./post";
 
-const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, additionalFeatures, pageType }) => {
+const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, secondTabContent, thirdTabContent, additionalFeatures, pageType }) => {
     // state
     const [focusedTab, setFocusedTab] = useState('');
     const [showAddTab, setShowAddTab] = useState(false);
@@ -61,13 +62,13 @@ const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, ad
 
                 <TabPanel>
                     <article>
-                        <p>second</p>
+                        {secondTabContent}
                     </article>
                 </TabPanel>
 
                 <TabPanel>
                     <article>
-                        <p>third</p>
+                        {thirdTabContent}
                     </article>
                 </TabPanel>
             </Tabs>
