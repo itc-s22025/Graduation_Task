@@ -2,21 +2,22 @@
 
 .itemContainer {
     /*border: 1px solid #ccc;*/
-    margin: 10px;
-    padding: 10px;
+    margin: 10px 10px 0 63px;
+    padding: 5px 10px;
 }
 
 .flame {
     border: 1px solid #FF92AD;
     border-radius: 30px;
-    width: 600px;
-    height: auto; /* 自動で高さを調整 */
-    margin: 0 10px 0 55px;
+    width: 100%; /* 幅を自動調整に */
+    height: auto;
+    margin: 10px 0;
     padding: 20px;
-    display: flex; /* Flexboxレイアウトを適用 */
-    flex-direction: column; /* 縦方向にコンテンツを配置 */
-    overflow: visible; /* コンテンツのオーバーフローを許可 */
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
 }
+
 
 
 /*一段目*/

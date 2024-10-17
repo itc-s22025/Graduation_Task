@@ -3,24 +3,13 @@
 import s from '@/styles/header.module.css';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useState } from "react";
-import AddTab from "@/components/addTab";
 
-const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, additionalFeatures, pageType }) => {
+const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, secondTabContent, thirdTabContent, additionalFeatures, pageType }) => {
     // state
     const [focusedTab, setFocusedTab] = useState('');
-    const [showAddTab, setShowAddTab] = useState(false);
 
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
-    };
-
-    const handleAddClick = () => {
-        console.log("handleAddClick");
-        setShowAddTab(true); // AddTabを表示
-    };
-
-    const handleCloseAddTab = () => {
-        setShowAddTab(false); // AddTabを非表示
     };
 
     // ページタイプに基づいてクラスを決定
@@ -28,7 +17,6 @@ const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, ad
     const tabFirst = pageType === 'myCosmetics' ? s.tab1MC : s.tab1Home;
     const tabSecond = pageType === 'myCosmetics' ? s.tab2MC : s.tab2Home;
     const tabThird = pageType === 'myCosmetics' ? s.tab3MC : s.tab3Home;
-    const addTab = pageType === 'myCosmetics' ? s.addTabMC : s.addTabHome;
 
     return (
         <>
@@ -48,7 +36,6 @@ const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, ad
                             {thirdTabText}
                         </Tab>
                     </ul>
-                    <button className={`${s.add} ${addTab}`} onClick={handleAddClick}>+</button>
                 </TabList>
 
 
@@ -61,26 +48,16 @@ const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, ad
 
                 <TabPanel>
                     <article>
-                        <p>second</p>
+                        {secondTabContent}
                     </article>
                 </TabPanel>
 
                 <TabPanel>
                     <article>
-                        <p>third</p>
+                        {thirdTabContent}
                     </article>
                 </TabPanel>
             </Tabs>
-
-            {/* タブ追加ボタン押したとき */}
-            {showAddTab && (
-                <div className={s.addTabOverlay}>
-                    <div className={s.addTabContent}>
-                        <AddTab pageType={pageType} /> {/* pageTypeを渡す */}
-                        <button onClick={handleCloseAddTab} className={s.buttonCancel}>Cancel</button>
-                    </div>
-                </div>
-            )}
 
             {/* 追加機能 */}
             {additionalFeatures && (
