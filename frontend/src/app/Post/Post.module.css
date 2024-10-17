@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
 .title {
     background-color: #FF92AD;
     color: white;
     padding-top: 30px;
     padding-left: 80px;
+    position: absolute;
+    left: 30vw;
+    width: 40vw;
+    z-index: 1;
 }
 
 .box {
@@ -10,10 +16,10 @@
     top: 20vh;
     right: 32vw;
     margin: 10px auto;
-    padding: 8px 10px;
+    padding: 15px 20px;
     background-color: #fff;
     width: 36vw;
-    height: 250px; /* 高さを少し大きく */
+    height: 280px; /* 高さを少し大きく */
     border: 1px solid #FF92AD;
     border-radius: 30px;
 }
@@ -80,9 +86,14 @@
     color: white;
     border: none;
     border-radius: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
+
+    padding: 20px 30px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-left: 160px;
+    margin-left: 150px;
+
+    font-size: 1.2rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 500;
+    font-style: normal;
 }
