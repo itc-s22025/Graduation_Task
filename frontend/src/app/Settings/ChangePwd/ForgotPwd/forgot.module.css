@@ -1,0 +1,65 @@
+.container {
+    position: absolute;
+    top: 20vh;
+    right: 36.5vw;
+    margin: 10px auto;
+    padding: 8px 10px;
+    background-color: #fff;
+    width: 32vw;
+    height: 500px; /* 高さを少し大きく */
+    border: 1px solid #FF69A3;
+    border-radius: 30px;
+}
+
+.font {
+    color: #FF92AD;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 15px;
+    padding-bottom: 15px;
+    padding-top: 20px;
+}
+.field {
+    margin-bottom: 20px;
+}
+
+
+.input {
+    position: relative;
+    left: 1.5vw;
+    width: 90%;
+    height: 60px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    outline: none;
+}
+.next {
+    position: absolute;
+    top: 43vh;
+    left: 8.5vw;
+    display: block;
+    height: 60px;
+    width: 270px;
+    border-radius: 10px;
+    border-color: #EE6E18;
+    background-color: #FFF;
+    color: #FF989A;
+}
+.next:hover {
+    transform: scale(1.1,1.1);
+
+}
+.close {
+    position: absolute;
+    top: 0px;
+    right: 35px;
+    padding: 10px;
+    font-size: 35px;
+    font-weight: bold;
+    color: #ff839f;
+}
+.close:hover {
+    transform: scale(1.1,1.1);
+}
