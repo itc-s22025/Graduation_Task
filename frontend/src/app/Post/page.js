@@ -55,7 +55,7 @@ const Post = () => {
                     </label>
                     <img src="/comments.jpeg" className={s.iconImg} alt="Comments"/>
                     <img src="/data.jpeg" className={s.iconImg} alt="Comments"/>
-                    <button className={s.post} onClick={handlesubmit}>  P o s t  </button>
+                    <button type="button" className={s.post} onClick={handlesubmit}>  Post  </button>
                     <input
                         id="imageInput"
                         type="file"

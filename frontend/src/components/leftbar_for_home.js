@@ -27,7 +27,7 @@ const LeftBar = () => {
                     <button className={`${s.button} ${ pathname === '/Settings' ? s.active : '' }`} onClick={() => router.push('/Settings')}>Settings</button>
                     <button className={`${s.button} ${ pathname === '/Keeps' ? s.active : '' }`} onClick={() => router.push('/')}>Keeps</button>
                     <button className={`${s.button} ${ pathname === '/ColorDiagnosis' ? s.active : '' }`} onClick={() => router.push('/')}>Color Diagnosis</button>
-                    <button className={`${s.button} ${ pathname === '/MyCosmetics' ? s.active : '' }`} onClick={() => router.push('/')}>My Cosmetics</button>
+                    <button className={`${s.button} ${ pathname === '/MyCosmetics' ? s.active : '' }`} onClick={() => router.push('/MyCosmetics')}>My Cosmetics</button>
                     <button onClick={handleLogout}>logout</button>
                 </div>
             </div>

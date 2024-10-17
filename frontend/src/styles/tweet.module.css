@@ -1,3 +1,9 @@
+.allContainer{
+    position: absolute;
+    left: 30vw;
+    top: 76px;
+}
+
 .all{
     background-color: #FF92AD;
     display: flex;
@@ -15,8 +21,6 @@
 .tabs{
     list-style: none;
     padding: 47px;
-    margin: 0;
-
     margin-right: -80px; /* 前のliと重なる量 */
 }
 
@@ -38,6 +42,7 @@
     padding-top: 12px;
     text-align: center;
     color: #FF92AD;
+    font-size: 1.2rem;
 
 }
 
@@ -59,6 +64,7 @@
     padding-top: 12px;
     text-align: center;
     color: #FF989A;
+    font-size: 1.2rem;
 
 }
 
