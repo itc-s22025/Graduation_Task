@@ -1,6 +1,7 @@
 import MainLayout from "@/components/MainLayout";
 import AccountHeader from "@/components/AccountHeader";
 import s from "./pwd.module.css";
+import Link from "next/link";
 
 const Password = (props) => {
     return (
@@ -12,7 +13,7 @@ const Password = (props) => {
                         <div className={s.box}>
                             <input type="text"  placeholder="現在のパスワード" className={s.text} />
                         </div>
-                        <h3 className={s.color}>パスワードをお忘れですか？</h3>
+                        <Link href="/Settings/ChangePwd/ForgotPwd" className={s.color}>パスワードをお忘れですか？</Link>
                         <p className={s.border}>-------------------------------------------------------------------------------------------</p>
                         <div className={s.box}>
                             <input type="text"  placeholder="新しいパスワード" className={s.text} />

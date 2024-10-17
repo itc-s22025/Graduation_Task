@@ -109,7 +109,6 @@ const Profile = () => {
                                     <Link href="/Profile/Follow" className={s.add}>
                                         <span className={s.follower}><strong>200</strong> Follower</span>
                                     </Link>
-
                                 </div>
                             </div>
 
