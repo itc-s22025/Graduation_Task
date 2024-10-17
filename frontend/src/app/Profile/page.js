@@ -8,6 +8,7 @@ import MainLayout from "@/components/MainLayout";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import {useAuth} from "@/app/context/AuthProvider";
 import Edit from '@/app/Profile/edit'
+import Link from "next/link";
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
@@ -100,10 +101,15 @@ const Profile = () => {
                                 <div className={s.idAndFollow}>
                                     <p className={s.userId}>@userID</p>
 
-                                    <div className={s.followContainer}>
+
+                                <div className={s.followContainer}>
+                                    <Link href="/Profile/Follow" className={s.add}>
                                         <span className={s.follow}><strong>150</strong> Following</span>
+                                    </Link>
+                                    <Link href="/Profile/Follow" className={s.add}>
                                         <span className={s.follower}><strong>200</strong> Follower</span>
-                                    </div>
+                                    </Link>
+
                                 </div>
                             </div>
 
