@@ -20,21 +20,23 @@ const FollowPage = () => {
             <TabList>
                 <Tabs>
                     <AccountHeader/>
-                    <div className={s.all}>
-                        <ul className={s.ul}>
-                            <Tab
-                                className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''}`}
-                                onClick={() => handleFocus('tabFirst')}
-                            >
-                                Followers
-                            </Tab>
-                            <Tab
-                                className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabFirst' ? s.zIndex1 : ''}`}
-                                onClick={() => handleFocus('tabSecond')}
-                            >
-                                Following
-                            </Tab>
-                        </ul>
+                    <div className={s.allContainer}>
+                        <div className={s.all}>
+                            <ul className={s.ul}>
+                                <Tab
+                                    className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''}`}
+                                    onClick={() => handleFocus('tabFirst')}
+                                >
+                                    Followers
+                                </Tab>
+                                <Tab
+                                    className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabFirst' ? s.zIndex1 : ''}`}
+                                    onClick={() => handleFocus('tabSecond')}
+                                >
+                                    Following
+                                </Tab>
+                            </ul>
+                        </div>
                     </div>
                 </Tabs>
             </TabList>

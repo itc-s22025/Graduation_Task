@@ -1,10 +1,16 @@
+.allContainer{
+    position: absolute;
+    left: 30vw;
+}
+
 .all{
     position: relative;
-    top: 7.5vh;
+    top: 6vh;
+    /*left: 30vw;*/
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
-    height: 85px;
+    height: 9vh;
     margin: 0;
     /*border: #000fff 1px solid;*/
 }

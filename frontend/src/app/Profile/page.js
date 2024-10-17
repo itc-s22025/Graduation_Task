@@ -153,6 +153,7 @@ const Profile = () => {
                         </div>
                     )}
                 </div>
+                </div>
 
             </MainLayout>
         </>
