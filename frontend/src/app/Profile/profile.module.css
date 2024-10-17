@@ -126,6 +126,7 @@
 /*　タブ群　*/
 .tabsContainer{
     margin-top: 5px;
+    margin-left: -21px;
     display: flex;
 }
 
