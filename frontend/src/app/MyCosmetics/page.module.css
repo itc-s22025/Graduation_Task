@@ -204,45 +204,37 @@
     font-style: normal;
 }
 
-.inputBox::placeholder, .inputBox[type="date"], .inputMemo::placeholder, .inputBoxMini::placeholder{
+.inputBox::placeholder, .inputBox[type="date"], .inputMemo::placeholder, .inputBoxMini::placeholder, .inputTabBox::placeholder{
     color: #aaa;
 }
 
 
 .inputButtonContainer{
     width: 255px;
-    height: 42px;
-    margin-left: 52px;
-    padding: 5px 10px;
+    margin: 10px auto;
+    padding: 5px;
 }
 
-.inputCancel{
-    width: 110px;
+.inputCancel ,.addTabCancel{
     border: 2px solid #FF92AD;
     border-radius: 50px;
     background-color: #fff;
-    margin: 1px 3px;
-    padding:3px 10px;
+    width: 110px;
+    margin: 0 5px;
+    padding: 3px 10px;
 
+    color: #ff839f;
     font-family: "Zen Maru Gothic", serif;
     font-weight: 400;
     font-style: normal;
-    color: #ff839f;
 }
 
-.inputCancel:hover{
-    border: 3px solid #FF92AD;
-    font-weight: 500;
-    margin: 0 3px;
-    scale: calc(1.03);
-}
-
-.inputAdd{
+.inputAdd, .addTabAdd{
     width: 110px;
     background-color: #FF92AD;
     border: 1px solid #ff839f;
     border-radius: 50px;
-    margin: 0 3px;
+    margin: 0 5px;
     padding:3px 10px;
 
     font-family: "Zen Maru Gothic", serif;
@@ -251,12 +243,67 @@
     color: #fff;
 }
 
-.inputAdd:hover{
+
+/*AddTab*/
+.addTabContainer{
+    /*border: 1px solid red;*/
+    width: 450px;
+    /*padding: 10px;*/
+}
+
+.addTabTitle{
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    background-color: #FF92AD;
+    color: #fff;
+}
+
+.addTabInputContainer{
+    margin: 20px 10px;
+    padding: 10px;
+}
+
+.inputTabLabel{
+    border-left: 2px solid #FF92AD;
+    margin: 5px;
+    padding: 0 10px;
+    color: #423a3a;
+    font-size: 0.9rem;
+}
+
+.inputTabBox {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #FF92AD;
+    width: 250px;
+    padding: 0 10px;
+
+    color: #423a3a;
+    font-size: 0.9rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.tabButtonContainer{
+    /*border: 1px solid #007bff;*/
+    width: 265px;
+    margin: 10px auto;
+    padding: 10px 10px 5px;
+}
+
+
+/*button hover*/
+.inputCancel:hover, .addTabCancel:hover{
     border: 2px solid #ff839f;
-    background-color: #ff839f;
-    font-weight: 500;
-    margin: 0 3px;
     scale: calc(1.03);
+    font-weight: 500;
+}
+
+.inputAdd:hover, .addTabAdd:hover{
+    background-color: #ff839f;
+    scale: calc(1.03);
+    font-weight: 500;
 }
 
 /*responsive*/
