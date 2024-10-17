@@ -1,17 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
-.allContainer{
-    position: absolute;
-    left: 30vw;
-    width: calc(100% - 60vw);
-    height: auto;
+.allContainer {
+    /*border: 1px solid black;*/
+    position: relative;
+    margin-left: 30vw; /* LeftBarの幅に合わせる */
+    margin-right: 30vw; /* RightBarの幅に合わせる */
+    width: calc(100% - 60vw); /* 両サイドのバーを考慮した幅 */
+    min-height: 100vh;
 }
+
 
 .headerContainer {
     position: fixed;
+    top: 0;
     background-color: #FF92AD;
     width: 40vw;
     height: 100px;
+    z-index: 1;
 }
 
 .headerText{
@@ -20,7 +25,6 @@
     font-size: 2.3rem;
     color: #fff;
 }
-
 
 .searchAndAddContainer{
     /*border: 1px solid #007bff;*/
@@ -32,6 +36,7 @@
     margin-top: 19px;
     padding-top: 80px;
     display: flex;
+    z-index: 1;
 }
 
 .searchContainer{
@@ -106,19 +111,153 @@
 
 .addButton:hover{
     scale: calc(1.04);
-    border: 3px solid #ff839f;
+    /*border: 3px solid #ff839f;*/
     font-weight: 600;
 }
 
 .itemsContainer{
+    width: 40vw;
+    /*border: 1px solid red;*/
     margin-top: 300px;
     display: flex;
     flex-direction: row; /* 横並び */
     flex-wrap: wrap; /* アイテムが多いときに折り返す */
     justify-content: flex-start; /* 左詰め */
+    /*z-index: 1;*/
 }
 
 
+/*新しいコスメを追加*/
+.addTabContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.newCosmeticContainer{
+    position: absolute;
+    top: 25vh;
+    left: 9vw;
+    border: 1px solid #ff839f;
+    border-radius: 20px;
+    background-color:#fff ;
+    width: 400px;
+    margin: 10px;
+    padding: 30px 20px;
+}
+
+.newCosmeticTitle{
+    color: #FF92AD;
+    border-left: 3px solid #FF92AD;
+    padding-left: 10px;
+}
+
+.inputContainer{
+    border: 1px solid #5d5252;
+    display: grid;
+    margin: 20px 50px;
+    padding: 30px 10px;
+}
+
+.inputBox{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #FF92AD;
+    width: 210px;
+    margin: 10px;
+    padding: 0 0 0 10px;
+    color: #423a3a;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.inputBoxMini{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #FF92AD;
+    width: 170px;
+    margin: 10px;
+    padding: 0 0 0 10px;
+    color: #423a3a;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.inputLabel{
+    color: #4A4444;
+    font-size: 0.8rem;
+}
+
+.inputMemo{
+    outline: none;
+    border: 1px solid #FF92AD;
+    margin: 10px;
+    padding: 5px;
+    color: #423a3a;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.inputBox::placeholder, .inputBox[type="date"], .inputMemo::placeholder, .inputBoxMini::placeholder{
+    color: #aaa;
+}
+
+
+.inputButtonContainer{
+    width: 255px;
+    height: 42px;
+    margin-left: 52px;
+    padding: 5px 10px;
+}
+
+.inputCancel{
+    width: 110px;
+    border: 2px solid #FF92AD;
+    border-radius: 50px;
+    background-color: #fff;
+    margin: 1px 3px;
+    padding:3px 10px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #ff839f;
+}
+
+.inputCancel:hover{
+    border: 3px solid #FF92AD;
+    font-weight: 500;
+    margin: 0 3px;
+    scale: calc(1.03);
+}
+
+.inputAdd{
+    width: 110px;
+    background-color: #FF92AD;
+    border: 1px solid #ff839f;
+    border-radius: 50px;
+    margin: 0 3px;
+    padding:3px 10px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #fff;
+}
+
+.inputAdd:hover{
+    border: 2px solid #ff839f;
+    background-color: #ff839f;
+    font-weight: 500;
+    margin: 0 3px;
+    scale: calc(1.03);
+}
 
 /*responsive*/
 @media (max-width: 1200px) {

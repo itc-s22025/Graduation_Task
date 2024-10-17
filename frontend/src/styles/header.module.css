@@ -137,9 +137,9 @@
     border-radius: 10px;
 }
 
-.buttonCansel{
+.buttonCancel{
     position: relative;
-    bottom: 5px;
+    bottom: 10px;
     left: 150px;
 
     width: 100px;

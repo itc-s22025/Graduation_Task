@@ -2,7 +2,6 @@
 .container {
     width: 30vw;
     height: 320px;
-
 }
 
 .h1{
@@ -66,10 +65,10 @@
 .save{
     width: 100px;
     height: 40px;
-    margin: 15px 55% 5px;
+    margin: 20px 55% 5px;
 
     background-color: #FF92AD;
-    border: 2px solid #FF989A;
+    border: 2px solid #ff839f;
     border-radius: 50px;
 
     font-size: 1.2rem;
