@@ -1,76 +1,72 @@
 "use client";
 
-import s from '@/styles/header.module.css'
+import s from '@/styles/header.module.css';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import Post from "@/components/post";
-import {useState} from "react";
-import AddTab from "@/components/addTab";
+import { useState } from "react";
 
-const Header = () => {
-    //state
+const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, secondTabContent, thirdTabContent, additionalFeatures, pageType }) => {
+    // state
     const [focusedTab, setFocusedTab] = useState('');
-    const [showAddTab, setShowAddTab] = useState(false);
 
     const handleFocus = (tabName) => {
-    setFocusedTab(tabName);
+        setFocusedTab(tabName);
     };
 
-    const handleAddClick = () => {
-        console.log("handleAddClick");
-        setShowAddTab(true); // AddTabを表示
-    }
+    // ページタイプに基づいてクラスを決定
+    const headerClass = pageType === 'myCosmetics' ? s.headerMyCosmetics : s.headerHome;
+    const tabFirst = pageType === 'myCosmetics' ? s.tab1MC : s.tab1Home;
+    const tabSecond = pageType === 'myCosmetics' ? s.tab2MC : s.tab2Home;
+    const tabThird = pageType === 'myCosmetics' ? s.tab3MC : s.tab3Home;
 
-    const handleCloseAddTab = () => {
-        setShowAddTab(false); // AddTabを非表示
-    }
-
-    return(
+    return (
         <>
             <Tabs>
-                <TabList className={s.all}>
-                        <ul className={s.ul}>
-                            <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : '' } ${focusedTab === 'tabThird' ? s.zIndex1 : '' }`}
-                                     onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Now</Tab>
-                            <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
-                                 onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Tab2</Tab>
-                            <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`}
-                                 onFocus={() => handleFocus('tabThird')} tabIndex={0}>Tab3</Tab>
-                        </ul>
-                        <button className={s.add} onClick={handleAddClick}>+</button>
+                <TabList className={`${s.all} ${headerClass}`}>
+                    <ul className={s.ul}>
+                        <Tab className={`${s.tabs} ${tabFirst} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`}
+                            onFocus={() => handleFocus('tabFirst')} tabIndex={0}>
+                            {firstTabText}
+                        </Tab>
+                        <Tab className={`${s.tabs} ${tabSecond} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
+                            onFocus={() => handleFocus('tabSecond')} tabIndex={0}>
+                            {secondTabText}
+                        </Tab>
+                        <Tab className={`${s.tabs} ${tabThird} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`}
+                            onFocus={() => handleFocus('tabThird')} tabIndex={0}>
+                            {thirdTabText}
+                        </Tab>
+                    </ul>
                 </TabList>
 
-                {/*tab-first*/}
+
+                {/* Tab Panels */}
                 <TabPanel>
                     <article>
-                        <Post />
+                        {firstTabContent}
                     </article>
                 </TabPanel>
 
-                {/*tab-second*/}
                 <TabPanel>
                     <article>
-                        <p>second</p>
+                        {secondTabContent}
                     </article>
                 </TabPanel>
 
-                {/*tab-third*/}
                 <TabPanel>
                     <article>
-                        <p>third</p>
+                        {thirdTabContent}
                     </article>
                 </TabPanel>
             </Tabs>
 
-            {/*タブ追加ボタン押したとき*/}
-             {showAddTab && (
-                <div className={s.addTabOverlay}>
-                    <div className={s.addTabContent}>
-                        <AddTab />
-                        <button onClick={handleCloseAddTab} className={s.buttonCansel}>Cansel</button>
-                    </div>
+            {/* 追加機能 */}
+            {additionalFeatures && (
+                <div className={s.additionalFeatures}>
+                    {additionalFeatures}
                 </div>
             )}
         </>
-    )
-}
-export default Header
+    );
+};
+
+export default Header;

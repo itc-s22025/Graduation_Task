@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.itemContainer {
+    /*border: 1px solid #ccc;*/
+    margin: 10px 10px 0 63px;
+    padding: 5px 10px;
+}
+
+.flame {
+    border: 1px solid #FF92AD;
+    border-radius: 30px;
+    width: 100%; /* 幅を自動調整に */
+    height: auto;
+    margin: 10px 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+}
+
+
+
+/*一段目*/
+.topContainer {
+    display: flex;
+    /* 高さは自動 */
+    margin-left: 10px;
+}
+
+.heart {
+    border: none;
+    background-color: #fff;
+    margin: 0 5px 7px 5px;
+    color: #ff839f;
+    font-size: 1.5rem;
+    position: relative; /* 位置を相対的に設定 */
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.heart::before {
+    content: "♡"; /* デフォルトは♡を表示 */
+}
+
+.heart:hover::before{
+    content: "♥"; /* hover または focus 時に♥に切り替える */
+}
+
+.itemType {
+    border: 1px solid #ff839f;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    margin: 10px;
+    padding: 2px 15px;
+    max-width: 200px;
+    background-color: #FF92AD;
+    color: #fff;
+}
+
+.openDayContainer,
+.updateDayContainer {
+    display: flex;
+    font-size: 0.8rem;
+    padding-top: 2px;
+    margin: 10px;
+}
+
+.dayText {
+    color: #ff839f;
+}
+
+.dayDate {
+    color: #5d5252;
+}
+
+.edit{
+    background-color: #fff;
+    color: #5d5757;
+    font-size: 1.3rem;
+    height: 20px;
+    width: 40px;
+    margin-top: 5px;
+    margin-left: 60px;
+    padding-bottom: 30px;
+    border: none;
+    border-radius: 50px;
+}
+
+.edit:hover{
+    color: #7E665F;
+}
+
+/* 二段目 */
+.middleContainer {
+    display: flex;
+    height: auto;
+    padding: 10px;
+    flex-wrap: wrap; /* 必要に応じて折り返し */
+}
+
+.img {
+    background-color: #F8F0F0;
+    border-radius: 10px;
+    width: 90px;
+    height: 90px;
+    margin-right: 10px;
+    margin-left: 10px;
+    flex-shrink: 0; /* 画像が縮まないように */
+}
+
+/*二段目の中*/
+.mMContainer {
+    width: 400px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* 残りのスペースを占める */
+}
+
+.eachContainer {
+    display: flex;
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+}
+
+.eachText {
+    color: #423a3a;
+    flex: 1; /* 残りのスペースを占める */
+    word-break: break-word; /* 単語の途中で折り返し */
+}
+
+.amountAndPriceContainer {
+    display: flex;
+    justify-content: space-between; /* 個数と価格を左右に配置 */
+}
+
+.amountContainer,
+.priceContainer {
+    display: flex;
+    flex: 1;
+}
+
+.memoContainer {
+    display: flex;
+    font-size: 0.8rem;
+    align-items: flex-start; /* テキストの垂直位置を揃える */
+}
+
+.category {
+    color: #ff839f;
+    margin-right: 10px;
+    white-space: nowrap; /* テキストの折り返しを防ぐ */
+    flex: 0 0 10px;
+}
+
+.memoText {
+    color: #423a3a;
+    flex: 1; /* 残りのスペースを占める */
+    word-break: break-word; /* テキストの折り返しを許可 */
+}
