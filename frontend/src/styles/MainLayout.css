@@ -1,7 +1,40 @@
-.left_and_right_bars{
+.left_and_right_bars {
     display: flex;
+    height: 100vh; /* 画面全体の高さを指定 */
 }
 
-.header_and_main{
-    display: grid;
+.leftBar {
+    width: 30vw;
+    background-color: #f8e8e8; /* 左バーの背景色（仮設定） */
+}
+
+.rightBar {
+    width: 30vw;
+    background-color: #f8e8e8; /* 右バーの背景色（仮設定） */
+}
+
+main {
+    flex-grow: 1;
+    min-width: 0; /* コンテンツが広がりすぎないように */
+    overflow-y: auto; /* 縦方向のスクロールを有効に */
+}
+
+@media (max-width: 1200px) {
+    .rightBar {
+        display: none;
+    }
+
+    main {
+        width: calc(100% - 30vw); /* 左バーを考慮してmainの幅を調整 */
+    }
+}
+
+@media (max-width: 800px) {
+    .leftBar {
+        display: none;
+    }
+
+    main {
+        width: 100%; /* 全画面幅を使用 */
+    }
 }

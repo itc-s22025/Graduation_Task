@@ -3,7 +3,8 @@ import {
   Zen_Maru_Gothic
 } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from '@/app/context/AuthProvider';
+// import { AuthProvider } from '@/app/context/AuthProvider';
+import { AuthProvider } from "./context/AuthProvider"; // layout.js の位置によって調整
 
 const inter = Inter({ subsets: ["latin"] });
 const zenMaruGothic = Zen_Maru_Gothic({
