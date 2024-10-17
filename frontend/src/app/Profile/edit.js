@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import s from './edit.module.css';
+import Image from "next/image";
 
 const Edit = ({ userData, onSave }) => {
     // const [newIcon, setNewIcon] = useState(userData?.icon);
     // const [newName, setNewName] = useState(userData?.username);
     // const [newBio, setNewBio] = useState(userData?.bio);
 
+    const [newHeaderImage, setNewHeaderImage] = useState(userData?.headerImage || 'defaultHeader.png');
     const [newIcon, setNewIcon] = useState(userData?.icon || 'defaultIcon.png');
     const [newName, setNewName] = useState(userData?.username || 'ユーザー名');
     const [newBio, setNewBio] = useState(userData?.bio || 'ここにBioが表示されます');
 
     const handleSave = () => {
         if (typeof onSave === 'function') {
-            onSave({ icon: newIcon, username: newName, bio: newBio });
+            onSave({ headerImage: newHeaderImage, icon: newIcon, username: newName, bio: newBio });
         } else {
             console.log("onSave is not a function or missing");
         }
@@ -22,7 +24,18 @@ const Edit = ({ userData, onSave }) => {
         <div className={s.container}>
             <h2 className={s.font}>Edit Profile</h2>
             <div className={s.field}>
-                <label htmlFor="avatar" className={s.label}>Icon</label>
+                <label htmlFor="headerImage" className={s.label}>Header Image</label>
+                <input
+                    type="file"
+                    accept="image/*"
+                    id="headerImage"
+                    onChange={(e) => setNewHeaderImage(URL.createObjectURL(e.target.files[0]))}
+                />
+                {newHeaderImage && <img src={newHeaderImage} alt="New Header" className={s.newHeaderImage} />}
+            </div>
+            <div className={s.field}>
+                <label
+                    htmlFor="avatar" className={s.label}>Icon</label>
                 <input
                     type="file"
                     accept="image/*"
