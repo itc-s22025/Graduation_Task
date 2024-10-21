@@ -1,13 +1,18 @@
-.bg {
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.allContainer {
+    position: absolute;
+    left: 30vw;
+}
+
+.headerContainer {
     display: flex;
-    /*position: absolute;*/
-    /*left: 30vw;*/
     width: 40vw;
     height: 80px;
     background-color: #FF92AD;
 }
 
-.yajirushi{
+.backButton{
     border: none;
     outline: none;
     background-color: #FF92AD;
@@ -29,4 +34,12 @@
     margin: 15px 20px;
 
     color: #fff;
+}
+
+.explanationContainer{
+    border: 1px solid #ec6102;
+}
+
+.deleteButton{
+
 }

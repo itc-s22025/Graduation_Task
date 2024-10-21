@@ -24,14 +24,14 @@ const Edit = ({ userData, onSave }) => {
         <div className={s.container}>
             <h2 className={s.font}>Edit Profile</h2>
             <div className={s.field}>
-                <label htmlFor="headerImage" className={s.label}>Header Image</label>
+                <label htmlFor="headerImage" className={s.label}>HeaderTab Image</label>
                 <input
                     type="file"
                     accept="image/*"
                     id="headerImage"
                     onChange={(e) => setNewHeaderImage(URL.createObjectURL(e.target.files[0]))}
                 />
-                {newHeaderImage && <img src={newHeaderImage} alt="New Header" className={s.newHeaderImage} />}
+                {newHeaderImage && <img src={newHeaderImage} alt="New HeaderTab" className={s.newHeaderImage} />}
             </div>
             <div className={s.field}>
                 <label

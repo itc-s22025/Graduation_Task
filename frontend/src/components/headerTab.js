@@ -1,10 +1,10 @@
 "use client";
 
-import s from '@/styles/header.module.css';
+import s from '@/styles/headerTab.module.css';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useState } from "react";
 
-const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, secondTabContent, thirdTabContent, additionalFeatures, pageType }) => {
+const HeaderTab = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, secondTabContent, thirdTabContent, additionalFeatures, pageType }) => {
     // state
     const [focusedTab, setFocusedTab] = useState('');
 
@@ -69,4 +69,4 @@ const Header = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, se
     );
 };
 
-export default Header;
+export default HeaderTab;

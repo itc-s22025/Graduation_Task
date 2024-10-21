@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.allContainer{
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    width: 40vw;
+    height: 100vh;
+    z-index: 10;
+}
+
+.postContainer{
+    border: 2px solid #FF92AD;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    width: 40vw;
+    height: auto;
+}
+
+.iconAndInfoContainer{
+    /*border: 1px solid springgreen;*/
+    margin: 10px 0;
+    display: flex;
+}
+
+.icon{
+    border: 2px solid #F8F0F0;
+    border-radius: 50px;
+    background-color: #F8F0F0;
+
+    margin: 10px;
+    width: 70px;
+    height: 70px;
+}
+
+.infoContainer{
+    /*border: 1px solid #007bff;*/
+    margin: 10px 0;
+    padding: 10px;
+    width: 500px;
+    max-width: 500px;
+}
+
+.userName{
+    font-size: 1.2rem;
+    color: #423a3a;
+}
+
+.userID{
+    color: #5d5757;
+}
+
+.date{
+    /*border: 1px solid blue;*/
+    margin: 10px 10px 10px 20px;
+    padding: 12px;
+    color: #5d5757;
+    font-size: 0.9rem;
+}
+
+.content{
+    /*border: 1px solid red;*/
+    padding: 10px;
+    margin: 0 0 10px 14px;
+    max-width: 710px;
+    height: auto;
+    color: #423a3a;
+}
+
+.reactionContainer{
+    border-top: 1px solid #FF92AD;
+    border-bottom: 1px solid #ff92AD;
+    height: 50px;
+    margin: 10px 3vw;
+    padding: 10px 2vw;
+}
+
+.reply {
+    width: 22px;
+    height: 27px;
+    padding-top: 4px;
+    margin-right: 6vw;
+}
+
+.repost{
+    width: 20px;
+    height: 21px;
+    margin-right: 6vw;
+    margin-bottom: 1px;
+}
+
+.like{
+    width: 18px;
+    height: 19px;
+    margin-right: 6vw;
+    margin-bottom: 2px;
+}
+
+.save{
+    width: 16px;
+    height: 18px;
+    margin-right: 6vw;
+    margin-bottom: 2px;
+}
+
+.share{
+    width: 17px;
+    height: 20px;
+    margin-bottom: 2px;
+}
+
+
+.replyContentContainer{
+    /*border: 1px solid #ec6102;*/
+    display: flex;
+    width: 34vw;
+    height: auto;
+    margin: 10px 3vw;
+    padding: 10px;
+}
+
+.replyIcon{
+    border: 2px solid #F8F0F0;
+    border-radius: 50px;
+    background-color: #F8F0F0;
+
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+}
+
+.replyContent{
+    outline: none;
+    border: none;
+    resize: none;
+    width: 22vw;
+    margin: 2px 10px;
+    padding: 10px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.replyButton{
+    width: 100px;
+    height: 30px;
+    border: #ff839f 1px solid;
+    border-radius: 50px;
+    background-color: #ff92AD;
+    margin: 20px 10px 10px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #fff;
+}

@@ -7,7 +7,8 @@ const Password = (props) => {
     return (
         <>
             <MainLayout>
-                <AccountHeader title="Password"/>
+                <div className={s.allContainer}>
+                    <AccountHeader title="Password"/>
                     <div className={s.all}>
                         <h2>パスワードを変更して下さい</h2>
                         <div className={s.box}>
@@ -24,7 +25,7 @@ const Password = (props) => {
                         <p className={s.save}>Save</p>
                         <p className={s.logout}>Logout</p>
                     </div>
-
+                </div>
             </MainLayout>
         </>
     )

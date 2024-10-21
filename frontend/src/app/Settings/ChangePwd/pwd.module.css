@@ -1,6 +1,11 @@
+.allContainer{
+    position: absolute;
+    left: 30vw;
+}
+
 .all{
     position: absolute;
-    left: 32vw;
+    left: 2vw;
     top: 100px;
 }
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import MainLayout from "@/components/MainLayout";
 import s from "./page.module.css";
 import home from "@/app/Home/page.module.css"
-import Header from "@/components/header";
+import HeaderTab from "@/components/headerTab";
 import MyCosmeticItems from "@/components/myCosmeticItems";
 
 const MyCosmetics = ({ pageType }) => {
@@ -43,15 +43,15 @@ const MyCosmetics = ({ pageType }) => {
                     {/* header */}
                     <div className={s.headerContainer}>
                         <p className={s.headerText}>My Cosmetics</p>
-                        <Header firstTabText={"カラコン"} secondTabText={"コスメ"} thirdTabText={"♥"}
-                                pageType="myCosmetics"/>
+                        <HeaderTab firstTabText={"カラコン"} secondTabText={"コスメ"} thirdTabText={"♥"}
+                                   pageType="myCosmetics"/>
                         <button className={`${home.addButton}`} style={{ top: '63px' }} onClick={() => handleAddClick()}>+</button>
                     </div>
 
                     <div className={s.searchAndAddContainer}>
                     {/* search */}
                         <div className={s.searchContainer}>
-                            <img alt="虫眼鏡アイコン" src="/虫眼鏡アイコン.png" className={s.searchImg}/>
+                            <img alt="虫眼鏡アイコン" src="/search_black.png" className={s.searchImg}/>
                             <input type="search" className={s.searchBox} placeholder="search..."/>
                             <button type="button" className={s.searchButton}>Search</button>
                         </div>
