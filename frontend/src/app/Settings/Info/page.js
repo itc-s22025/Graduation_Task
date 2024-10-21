@@ -7,8 +7,8 @@ const Page = () => {
     return (
         <>
             <MainLayout>
-                <AccountHeader title="Account Information" />
                 <div className={s.allContainer}>
+                    <AccountHeader title="Account Information" />
                     <div className={s.all}>
                         <container>
                             <h2 className={s.font1}>UserName</h2>

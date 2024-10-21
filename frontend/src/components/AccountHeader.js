@@ -5,34 +5,38 @@ import {useEffect} from "react";
 import {useRouter} from "next/navigation";
 
 export default function AccountHeader({title}) {
-
     const router = useRouter();
 
-    useEffect(() => {
-        let initialLoad = true;
-        const handleNavigation = () => {
+    const handleBackButtonClick = () => {
+        router.back()
+        console.log("バックボタンクリック")
+    }
 
-            if (initialLoad) {
-                initialLoad = false;
-                return;
-
-            }
-            router.back();
-        };
-
-        window.addEventListener('popstate', handleNavigation);
-
-        return () => {
-            window.removeEventListener('popstate', handleNavigation);
-        };
-    }, [router]);
+    // useEffect(() => {
+    //     let initialLoad = true;
+    //     const handleNavigation = () => {
+    //
+    //         if (initialLoad) {
+    //             initialLoad = false;
+    //             return;
+    //
+    //         }
+    //         router.back();
+    //     };
+    //
+    //     window.addEventListener('popstate', handleNavigation);
+    //
+    //     return () => {
+    //         window.removeEventListener('popstate', handleNavigation);
+    //     };
+    // }, [router]);
 
     return (
-        <div className={s.bg}>
-            <h1 className={s.text}>{title}</h1>
-            <div className={s.yajirushi} onClick={() => router.back()}>
-                <span>←</span>
+        <>
+            <div className={s.bg}>
+               <button type="button" className={s.yajirushi} onClick={handleBackButtonClick}>←</button>
+               <h1 className={s.title}>{title}</h1>
             </div>
-        </div>
+        </>
     )
 }
