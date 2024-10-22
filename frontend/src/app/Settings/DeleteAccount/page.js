@@ -4,6 +4,7 @@ import MainLayout from "@/components/MainLayout";
 import s from './page.module.css'
 import { useRouter} from "next/navigation";
 import AccountHeader from "@/components/AccountHeader";
+import Link from "next/link";
 
 const DeleteAccount = () => {
     const router = useRouter();
@@ -18,11 +19,13 @@ const DeleteAccount = () => {
                 <div className={s.allContainer}>
                     <AccountHeader title="Delete Account" />
                     <div className={s.explanationContainer}>
-                        <p>アカウントの削除プロセスを開始します。</p>
-                        <p>ユーザ名、ユーザID、公開プロフィールは本サイトに表示されなくなります。</p>
-                        <p>GoogleやBingなどの検索エンジンに一部のアカウント情報が残っている場合があります。</p>
+                        <h2>アカウントの削除プロセスを開始します。</h2>
+                        <p >・ユーザ名、ユーザID、公開プロフィールは本サイトに表示されなくなります。</p>
+                        <p>・GoogleやBingなどの検索エンジンに一部のアカウント情報が残っている場合があります。</p>
                     </div>
-                    <button type="button">アカウント削除</button>
+                    <div className={s.box}>
+                        <Link href='/Settings/DeleteAccount/AuthenticationCode' className={s.deleteButton}>Disable</Link>
+                    </div>
                 </div>
             </MainLayout>
 

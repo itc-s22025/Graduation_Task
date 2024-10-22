@@ -40,6 +40,27 @@
     border: 1px solid #ec6102;
 }
 
-.deleteButton{
+.box {
+    position: relative;
+    top: 5vh;
+    left: 28vw;
+    background-color: #FFF;
+    height: 50px;
+    width: 200px;
+    border: 1px solid #FF92AD;
+    align-items: center;
+}
+.box:hover {
+    background-color: #000;
 
+}
+.deleteButton{
+        position: absolute;
+        top: 1vh;
+        left: 3.8vw;
+        color: red;
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-align: center;
+        text-decoration: none;
 }

@@ -51,7 +51,7 @@ const MyCosmetics = ({ pageType }) => {
                     <div className={s.searchAndAddContainer}>
                     {/* search */}
                         <div className={s.searchContainer}>
-                            <img alt="虫眼鏡アイコン" src="/search_black.png" className={s.searchImg}/>
+                            <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
                             <input type="search" className={s.searchBox} placeholder="search..."/>
                             <button type="button" className={s.searchButton}>Search</button>
                         </div>

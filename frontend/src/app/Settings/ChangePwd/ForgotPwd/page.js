@@ -3,6 +3,7 @@
 import s from './forgot.module.css';
 import {useState} from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const ForgotPwdPage = () => {
     const [email, setEmail] = useState('');
@@ -15,13 +16,15 @@ const ForgotPwdPage = () => {
             return;
         }
 
-        router.push(`/Settings/ChangePwd/ForgotPwd/AuthenticationCode?email=${email}`);
+        router.push(`/Settings/ChangePwd/ForgotPwd/Authentication?email=${email}`);
     };
 
     return (
         <>
             <div className={s.container}>
-                <a className={s.close}>✕</a>
+                <Link href="/Settings" className={s.close}>
+                    ✕
+                </Link>
                 <h2 className={s.font}>- パスワードを忘れた方へ -</h2>
                 <div className={s.field}>
                     <p>アカウントに関連付けられた電子メール、電話番号、またはユーザー名を入力してください</p>
