@@ -23,7 +23,7 @@ const Page = () => {
                             </div>
                         </container>
                         <div>
-                            <button className={s.sakujo}>Delete Account</button>
+                            {/*<button className={s.sakujo}>Delete Account</button>*/}
                             <button className={s.keep}>Save</button>
                         </div>
                     </div>

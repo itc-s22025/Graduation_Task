@@ -29,7 +29,8 @@ const SettingPage = (props) => {
                       <h2 className={s.font2}>Change Password</h2>
                   </Link>
                   <Link href="/Settings/DeleteAccount" className={s.box}>
-                      <h2 >Delete Account</h2>
+                      <Image src="/delete_icon.png" alt="i" width={25} height={25} className={s.img}/>
+                      <h2 className={s.font3}>Delete Account</h2>
                   </Link>
               </ul>
           </div>

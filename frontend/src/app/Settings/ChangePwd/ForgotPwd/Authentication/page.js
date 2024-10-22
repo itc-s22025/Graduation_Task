@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { auth } from '@/firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import s from './Authentication.module.css';
+import s from './Authen.module.css';
+import Link from "next/link";
 
 const AuthenticationCode = () => {
     const router = useRouter();
@@ -27,7 +28,7 @@ const AuthenticationCode = () => {
 
         try {
             await sendPasswordResetEmail(auth, email);
-            setStatus("A password reset link has been sent to your email.");
+            setStatus("パスワードリセットされ、リンクがメールに送信されました");
         } catch (error) {
             console.error("Error sending password reset email:", error);
             setStatus("Error sending email. Please try again.");
@@ -37,7 +38,9 @@ const AuthenticationCode = () => {
     return (
         <>
             <div className={s.container}>
-                <a className={s.close}>✕</a>
+                <Link href="/Settings" className={s.close}>
+                    ✕
+                </Link>
                 <h2 className={s.font}>確認コードの送信</h2>
                 <div className={s.p}>
                     <p>次のメールアドレスに確認コードを送信します</p>
