@@ -3,9 +3,9 @@
 .allContainer{
     background-color: #fff;
     position: absolute;
-    top: 0;
+    top: 80px;
     width: 40vw;
-    height: 100vh;
+    height: 100%;
     z-index: 10;
 }
 
@@ -15,10 +15,10 @@
     border-bottom-right-radius: 30px;
     width: 40vw;
     height: auto;
+    background-color: #fff;
 }
 
 .iconAndInfoContainer{
-    /*border: 1px solid springgreen;*/
     margin: 10px 0;
     display: flex;
 }
@@ -68,45 +68,77 @@
 }
 
 .reactionContainer{
+    display: flex;
     border-top: 1px solid #FF92AD;
     border-bottom: 1px solid #ff92AD;
     height: 50px;
-    margin: 10px 3vw;
+    margin: 50px 1.5vw 20px;
     padding: 10px 2vw;
+}
+
+.eachReactionContainer{
+    display: flex;
+    margin-right: 6vw;
+}
+
+.reactionText{
+    color: #5d5757;
+    margin-left: 2px;
 }
 
 .reply {
     width: 22px;
     height: 27px;
-    padding-top: 4px;
-    margin-right: 6vw;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-right: 2px;
 }
 
-.repost{
+.repost {
+    background-image: url('/repost_before.png');
     width: 20px;
     height: 21px;
-    margin-right: 6vw;
-    margin-bottom: 1px;
+    margin-top: 3px;
+    margin-right: 2px;
+    background-size: cover;
+}
+.repost:hover {
+    background-image: url('/repost_after.png');
 }
 
 .like{
-    width: 18px;
+    background-image: url("/cutie_heart_before.png");
+    width: 19px;
     height: 19px;
-    margin-right: 6vw;
-    margin-bottom: 2px;
+    margin-right: 2px;
+    margin-top: 4px;
+    background-size: cover;
+}
+.like:hover, .like:focus{
+    background-image: url("/cutie_heart_after.png");
 }
 
-.save{
-    width: 16px;
+.keep{
+    background-image: url("/keep_before.png");
+    width: 18px;
     height: 18px;
-    margin-right: 6vw;
-    margin-bottom: 2px;
+    margin-top: 4px;
+    margin-right: 2px;
+    background-size: cover;
+}
+.keep:hover{
+    background-image: url("/keep_after.png");
 }
 
 .share{
-    width: 17px;
-    height: 20px;
-    margin-bottom: 2px;
+    background-image: url("/share_before.png");
+    width: 18px;
+    height: 18px;
+    margin-top: 5px;
+    background-size: cover;
+}
+.share:hover{
+    background-image: url("/share_after.png");
 }
 
 
@@ -154,4 +186,34 @@
     font-weight: 500;
     font-style: normal;
     color: #fff;
+}
+
+
+@media screen and (max-width: 1024px){
+    .allContainer, .postContainer{
+        width: 70vw;
+    }
+    .replyContentContainer{
+        width: 63vw;
+    }
+
+    .infoContainer{
+        width: 400px;
+    }
+    .date{
+        margin-left: 10px;
+    }
+
+    .reply, .repost, .like, .save{
+        margin-left: 2vw;
+        margin-right: 9vw;
+    }
+
+    .share{
+        margin-left: 1vw;
+    }
+
+    .replyContent{
+        width: 40vw;
+    }
 }

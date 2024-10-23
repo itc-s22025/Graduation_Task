@@ -20,6 +20,7 @@ const LeftBar = () => {
             <div className={s.all}>
                 <h1 className={s.logo}>♡Prettie</h1>
                 <div className={s.button_container}>
+
                     <button className={`${s.button} ${ pathname === '/Home' ? s.active : '' }`} onClick={() => router.push('/Home')}>Home</button>
                     <button className={`${s.button} ${ pathname === '/Search' ? s.active : '' }`} onClick={() => router.push('/Search')}>Search</button>
                     <button className={`${s.button} ${ pathname === '/Profile' ? s.active : '' }`} onClick={() => router.push('/Profile')}>Profile</button>
@@ -28,6 +29,7 @@ const LeftBar = () => {
                     <button className={`${s.button} ${ pathname === '/Keeps' ? s.active : '' }`} onClick={() => router.push('/')}>Keeps</button>
                     <button className={`${s.button} ${ pathname === '/ColorDiagnosis' ? s.active : '' }`} onClick={() => router.push('/ColorDiagnosis')}>Color Diagnosis</button>
                     <button className={`${s.button} ${ pathname === '/MyCosmetics' ? s.active : '' }`} onClick={() => router.push('/MyCosmetics')}>My Cosmetics</button>
+
                     <button onClick={handleLogout}>logout</button>
                 </div>
             </div>
