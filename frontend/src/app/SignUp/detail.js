@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
+import {doc, setDoc} from 'firebase/firestore';
 import s from './detail.module.css';
 import {useRouter} from "next/navigation";
 
@@ -26,7 +26,7 @@ const Detail = () => {
       const user = userCredential.user;
 
       // Firestoreにユーザー情報を保存
-      await addDoc(collection(db, 'users'), {
+      await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         name,
         email,
