@@ -1,11 +1,10 @@
 import s from '@/styles/eachPost.module.css'
-import AccountHeader from "@/components/AccountHeader";
 
 const EachPost = () => {
     return(
         <>
             <div className={s.allContainer}>
-                <AccountHeader title="Post"/>
+
                 <div className={s.postContainer}>
                     <div className={s.iconAndInfoContainer}>
                         <img className={s.icon} alt="icon"/>

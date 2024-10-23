@@ -97,3 +97,66 @@
     margin-left: 70px;
     margin-bottom: 10px;
 }
+
+.headerContainer{
+    position: absolute;
+    top: 0;
+    display: flex;
+    width: calc(100vw - 60vw);
+    height: 80px;
+    background-color: #FF92AD;
+    z-index: 10;
+}
+
+.backButton{
+    border: none;
+    outline: none;
+    background-color: #FF92AD;
+    height: 50px;
+    padding: 0 10px;
+    margin: 15px 0 15px 20px;
+
+    color: #fff;
+    font-size: 1.8rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+
+    cursor: pointer;
+}
+
+.headerTitle{
+    width: 400px;
+    margin: 22px 20px 0 20px;
+
+    color: #fff;
+}
+
+/*☓ボタン*/
+.closeEachPost{
+    display: block;
+    position: relative;
+    border: 1px solid #ff839f;
+    border-radius: 3px;
+    width: 26px;
+    height: 25px;
+    margin: 30px 20px 0 160px;
+    background-color: #fff;
+}
+
+.closeEachPost::before, .closeEachPost::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px; /* 棒の幅（太さ） */
+  height: 20px; /* 棒の高さ */
+  background: #ff839f; /* バツ印の色 */
+}
+
+.closeEachPost::before {
+  transform: translate(-50%,-50%) rotate(45deg);
+}
+.closeEachPost::after {
+  transform: translate(-50%,-50%) rotate(-45deg);
+}

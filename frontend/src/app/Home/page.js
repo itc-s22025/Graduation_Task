@@ -16,7 +16,6 @@ const Home = ({pageType}) => {
 
     //state
     const [showAddTab, setShowAddTab] = useState(false);
-    const [showEachPost, setShowEachPost] = useState(false);
 
     const handleAddClick = () => {
         console.log("handleAddClick");
@@ -29,10 +28,6 @@ const Home = ({pageType}) => {
 
     const addTab = pageType === 'myCosmetics' ? s.addTabMC : s.addTabHome;
 
-    const handleEachPostClick = () => {
-        setShowEachPost(true);
-    };
-
     return(
         <>
             <MainLayout>
@@ -41,7 +36,7 @@ const Home = ({pageType}) => {
                                pageType="home"/>
                     <button className={`${s.addButton} ${addTab}`} onClick={handleAddClick}>+</button>
                     {/*<button type="button" className={s.addButton} onClick={handleAddClick}>+</button>*/}
-                    <EachPost/>
+
                     <PostButton/>
                 </div>
 
