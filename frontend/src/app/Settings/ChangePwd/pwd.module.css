@@ -61,32 +61,3 @@
 .save:hover {
     transform: scale(1.1,1.1);
 }
-
-.logout{
-    position: relative;
-    top: -7vh;
-    left: -30vw;
-    border: 2px solid #EE6E18;
-    border-radius: 8px;
-    outline: none;
-    background-color: #FFF;
-    color: #FF92AD;
-    text-align: center;
-    height: 50px;
-    width: 100px;
-    margin-top: 20px;
-    margin-left:30vw;
-    padding-top: 3px;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.logout:hover{
-    background-color: #FF69A3;
-    color: #FFFFFF;
-    transform: scale(1.1,1.1);
-}
-
-.logout:active{
-    background-color: #ec6102;
-}

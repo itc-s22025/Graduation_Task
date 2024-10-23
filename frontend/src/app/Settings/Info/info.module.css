@@ -49,21 +49,21 @@
 
 }
 
-.sakujo {
-    position: absolute;
-    top: 22vh;
-    left: 3.8vw;
-    background-color: #FFF;
-    height: 50px;
-    width: 200px;
-    border: 1px solid #FF92AD;
-    color: red;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-.sakujo:hover {
-    background-color: #000;
-}
+/*.sakujo {*/
+/*    position: absolute;*/
+/*    top: 22vh;*/
+/*    left: 3.8vw;*/
+/*    background-color: #FFF;*/
+/*    height: 50px;*/
+/*    width: 200px;*/
+/*    border: 1px solid #FF92AD;*/
+/*    color: red;*/
+/*    font-weight: bold;*/
+/*    font-size: 1.2rem;*/
+/*}*/
+/*.sakujo:hover {*/
+/*    background-color: #000;*/
+/*}*/
 
 .keep {
     position: absolute;

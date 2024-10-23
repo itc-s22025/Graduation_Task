@@ -1,0 +1,41 @@
+.parent {
+    display: flex;
+}
+
+.colum1 {
+    flex-grow: 1;
+}
+
+.colum2 {
+    flex-grow: 3; /* 質問のスペースを広く */
+    padding: 20px; /* 余白を追加 */
+}
+
+.font {
+    font-family: "Zen Maru Gothic", serif;
+    color: #FF92AD;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/*.parent {*/
+/*    display: flex;*/
+/*}*/
+/*.colum1 {*/
+/*    flex-grow: 1;*/
+/*}*/
+/*.colum2 {*/
+/*    position: relative;*/
+/*    flex-grow: 1;*/
+/*}*/
+/*.font {*/
+/*    font-family: "Zen Maru Gothic", serif;*/
+/*    color: #FF92AD;*/
+/*    position: relative;*/
+/*    top: 5vh;*/
+/*    right: 20vw;*/
+/*}*/
+/*.question {*/
+
+/*}*/
