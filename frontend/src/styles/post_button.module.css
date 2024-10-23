@@ -1,12 +1,12 @@
 .buttonContainer {
-  position: relative;
+  position: fixed;
   z-index: 100;
 }
 
 .buttonA {
   position: absolute;
-  bottom: -850px;
-  right: 30px;
+  top: 85vh;
+  left: 63vw;
 
   background-color: #FF92AD;
   width: 100px;
@@ -26,8 +26,8 @@
 
 /* フォーカス時 */
 .buttonAFocus {
-  right: 45px;
-  bottom: -835px;
+  top: 86.5vh;
+  left: 63.7vw;
   width: 70px;
   height: 70px;
   background-color: #fff;
@@ -43,6 +43,7 @@
 .buttonB, .buttonC {
   opacity: 0; /*透明度*/
   position: absolute;
+  left: 60vw;
   background-color: #FF92AD;
   width: 90px;
   height: 90px;
@@ -57,17 +58,36 @@
 }
 
 .buttonB {
-  bottom: -828px;
-  right: 128px;
+  bottom: -890px;
+  left: 58vw;
 }
 
 .buttonC {
-  bottom: -753px;
-  right: 55px;
+  bottom: -817px;
+  left: 62vw;
 }
 
 .buttonAFocus ~ .buttonB,
 .buttonAFocus ~ .buttonC {
   opacity: 1;
   transition: opacity 0.3s;
+}
+
+
+@media screen and (max-width: 1024px) {
+  .buttonA{
+    left: 85vw;
+  }
+
+  .buttonAFocus{
+    left: 87vw;
+  }
+
+  .buttonB {
+    left: 75vw;
+  }
+
+  .buttonC{
+    left: 83vw;
+  }
 }

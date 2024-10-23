@@ -35,10 +35,9 @@ const Home = ({pageType}) => {
                     <HeaderTab firstTabText="Now" secondTabText="Following" thirdTabText="tab3" firstTabContent={<Post/>}
                                pageType="home"/>
                     <button className={`${s.addButton} ${addTab}`} onClick={handleAddClick}>+</button>
-                    {/*<button type="button" className={s.addButton} onClick={handleAddClick}>+</button>*/}
-
-                    <PostButton/>
                 </div>
+
+                <PostButton/>
 
 
                 {/* タブ追加ボタン押したとき */}

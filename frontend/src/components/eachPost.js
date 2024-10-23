@@ -16,11 +16,23 @@ const EachPost = () => {
                     </div>
                     <p className={s.content}>あああああああああああああああああああああああああああああああああああああああああああああああああ</p>
                     <div className={s.reactionContainer}>
-                        <img alt="reply" src="/comment.png" className={s.reply}/>
-                        <img alt="repost" src="/repost_before.png" className={s.repost}/>
-                        <img alt="like" src="/cutie_heart.png" className={s.like}/>
-                        <img alt="save" src="/keep_before.png" className={s.save}/>
-                        <img alt="share" src="/share.png" className={s.share}/>
+                        <div className={s.eachReactionContainer}>
+                            <img alt="reply" src="/comment.png" className={s.reply}/>
+                            <p className={s.reactionText}>0</p>
+                        </div>
+                        <div className={s.eachReactionContainer}>
+                        <div className={s.repost}/>
+                            <p className={s.reactionText}>0</p>
+                        </div>
+                        <div className={s.eachReactionContainer}>
+                            <div className={s.like}/>
+                            <p className={s.reactionText}>0</p>
+                        </div>
+                        <div className={s.eachReactionContainer}>
+                            <div className={s.keep}/>
+                            <p className={s.reactionText}>0</p>
+                        </div>
+                        <div className={s.share}/>
                     </div>
                     <div className={s.replyContentContainer}>
                         <img alt="icon" className={s.replyIcon} />
