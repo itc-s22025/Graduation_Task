@@ -9,7 +9,6 @@ import Post from "@/components/post";
 import s from "@/app/Home/page.module.css"
 import AddTab from "@/components/addTab";
 import {useState} from "react";
-import EachPost from "@/components/eachPost";
 
 const Home = ({pageType}) => {
     const router = useRouter();
@@ -55,5 +54,5 @@ const Home = ({pageType}) => {
     )
 }
 
-// export default withAuth(Home);
-export default Home;
+export default withAuth(Home);
+// export default Home;
