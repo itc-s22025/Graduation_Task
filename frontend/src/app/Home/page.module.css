@@ -10,10 +10,10 @@
     height: 100vh;
 }
 
-
+/*Addタブ*/
 .addButton{
-    position: absolute;
-    left: 36.7vw;
+    position: fixed;
+    left: 66.8vw;
     background: #FF989A;
     margin-top: 25px;
     margin-right: 1px;
@@ -28,6 +28,8 @@
     padding-top: 3px;
     color: #fff;
     font-size: 20px;
+
+    z-index: 10;
 }
 .addTabOverlay {
     position: fixed;
