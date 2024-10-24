@@ -7,14 +7,14 @@ import EachPost from "@/components/eachPost";
 const Post = () => {
     //state
     const [showEachPost, setShowEachPost] = useState(false);
-    const [showEditMore, setShowEditMore] = useState(false);
+    const [showReport, setShowReport] = useState(false);
 
     const handleEachPostClick = () => {
         setShowEachPost(true);
     };
 
-    const handleEditButtonClick = () => {
-        setShowEditMore(prev => !prev);
+    const handleReportButtonClick = () => {
+        setShowReport(prev => !prev);
     };
 
 
@@ -36,7 +36,7 @@ const Post = () => {
                                     <p className={s.time}>.1h</p>
                                     <p className={s.pc}>ブルベ</p>
                                 </div>
-                                <button type="button" className={s.editButton} onClick={handleEditButtonClick}>…</button>
+                                <button type="button" className={s.editButton} onClick={handleReportButtonClick}>…</button>
                             </div>
 
                             <p className={s.content} onClick={handleEachPostClick}>text text text text <br/>
@@ -63,10 +63,10 @@ const Post = () => {
                     </div>
                 </div>
 
-                {/*EditButton*/}
-                {showEditMore && (
+                {/*ReportButton*/}
+                {showReport && (
                     <div className={s.reportAllContainer}>
-                        <button type="button" onClick={handleEditButtonClick} className={s.closeReportButton}/>
+                        <button type="button" onClick={handleReportButtonClick} className={s.closeReportButton}/>
                         <div className={s.reportContainer}>
                             <button type="button" className={s.reportPostButton}>ポストを報告</button>
                             <button type="button" className={s.reportUserButton}>ユーザーを報告</button>
