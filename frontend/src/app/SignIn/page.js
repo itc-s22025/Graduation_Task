@@ -30,13 +30,14 @@ const SignIn = () => {
 
     // Googleログイン
     const handleGoogleLogin = async () => {
-    try {
-        const provider = new GoogleAuthProvider();
-        return signInWithPopup(auth, provider);
-    } catch (error) {
-      alert('Googleログイン失敗: ' + error.message);
-    }
-  };
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            router.push('/Home');
+        } catch (error) {
+            alert('Googleログイン失敗: ' + error.message);
+        }
+    };
 
   return (
       <>

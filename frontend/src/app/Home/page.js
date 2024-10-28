@@ -2,17 +2,14 @@
 
 import MainLayout from "@/components/MainLayout";
 import PostButton from "@/components/post_button";
-import withAuth from "@/components/withAuth";
 import {useRouter} from "next/navigation";
 import HeaderTab from "@/components/headerTab";
 import Post from "@/components/post";
 import s from "@/app/Home/page.module.css"
 import AddTab from "@/components/addTab";
 import {useState} from "react";
-import EachPost from "@/components/eachPost";
 
 const Home = ({pageType}) => {
-    const router = useRouter();
 
     //state
     const [showAddTab, setShowAddTab] = useState(false);
@@ -55,5 +52,4 @@ const Home = ({pageType}) => {
     )
 }
 
-// export default withAuth(Home);
 export default Home;

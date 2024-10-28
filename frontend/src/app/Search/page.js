@@ -1,3 +1,5 @@
+'use client';
+
 import MainLayout from "@/components/MainLayout";
 import React from "react";
 import s from './search.module.css'

@@ -1,4 +1,5 @@
 .all{
+    /*position: fixed;*/
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
@@ -101,11 +102,13 @@
 
 
 /* /Home 用のスタイル */
-
+.headerHome{
+    position: fixed;
+    z-index: 1;
+}
 
 /* /MyCosmetics 用のスタイル */
 .headerMyCosmetics {
-    /*border: 1px solid greenyellow;*/
     margin-top: 0;
     height: 50px;
 }
