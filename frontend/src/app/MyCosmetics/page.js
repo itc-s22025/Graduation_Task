@@ -33,6 +33,20 @@ const MyCosmetics = ({ pageType }) => {
         alert("新規コスメ登録のAddボタンをクリックしました")
     }
 
+    const DateInput = () => {
+          const [inputType, setInputType] = useState('text');
+
+          return (
+              <input
+                  type={inputType}
+                  name="openDate"
+                  placeholder="開封日"
+                  onFocus={() => setInputType('date')}
+                  onBlur={() => setInputType('text')}
+                  className={s.inputBox}/>
+          );
+    }
+
     // const addTab = pageType === 'myCosmetics' ? home.addTabMC : home.addTabHome;
 
 
@@ -95,8 +109,9 @@ const MyCosmetics = ({ pageType }) => {
                                     <h2 className={s.newCosmeticTitle}>新しいコスメを追加</h2>
                                     <form>
                                     <div className={s.inputContainer}>
-                                            <input type="date" className={s.inputBox} placeholder="開封日" />
-                                            <input type="text" className={s.inputBox} placeholder="ブランド" />
+                                            {/*<input type="date" className={s.inputBox} onfocusin="this.type='date'" onfocusout="this.type='text'" placeholder="開封日"/>*/}
+                                            <DateInput/>
+                                            <input type="text" className={s.inputBox} placeholder="ブランド"/>
                                             <input type="text" className={s.inputBox} placeholder="商品名" />
                                             <div>
                                                 <label className={s.inputLabel}><input type="number" className={s.inputBoxMini} placeholder="個数" />個</label>
