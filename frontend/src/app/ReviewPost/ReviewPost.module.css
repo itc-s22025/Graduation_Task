@@ -9,13 +9,14 @@
     position: absolute;
     top: 20vh;
     right: 32vw;
-    margin: 10px auto;
+    margin: 0 auto;
     padding: 8px 10px;
     background-color: #fff;
     width: 36vw;
-    height: 350px; /* 高さを少し大きく */
+    height: auto;
     border: 1px solid #FF92AD;
     border-radius: 30px;
+    max-height: 500px;
 }
 
 .flex {
@@ -36,10 +37,11 @@
 
 .name {
     font-size: 20px;
-    margin-top: -55px;
-    margin-left: 70px;
+    margin-top: -65px;
+    margin-left: -25px;
+    padding: 10px;
+    left: 100px;
     position: relative;
-    margin-bottom: 25px;
 }
 
 .label {
@@ -72,3 +74,4 @@
     margin-left: 60px;
     color: #FF92AD;
 }
+

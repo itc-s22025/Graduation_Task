@@ -9,13 +9,14 @@
     position: absolute;
     top: 20vh;
     right: 32vw;
-    margin: 10px auto;
+    margin: 0 auto;
     padding: 8px 10px;
     background-color: #fff;
     width: 36vw;
-    height: 250px; /* 高さを少し大きく */
+    height: auto;
     border: 1px solid #FF92AD;
     border-radius: 30px;
+    max-height: 1000px;
 }
 
 .flex {
@@ -25,6 +26,7 @@
 
 .iconContainer {
     margin-right: 10px;
+    object-fit: cover;
 }
 
 .icon {
@@ -45,24 +47,27 @@
 
 .textarea {
     border: none;
-    width: 95%;
-    margin-top: 35px;
-    margin-left: 20px;
+    width: 80%;
+    margin-left: 10px;
     padding: 10px;
     font-size: 18px;
     resize: none;
     box-sizing: border-box;
     outline: none;
-    overflow: hidden;
-    height: calc(100% - 40px);
+    height: 60px;
+    line-height: 1.5;
+    display: inline-block;
+    visibility: visible;
 }
 
 .iconWrapper {
     display: flex;
-    justify-content: flex-start; /* 左揃え */
-    gap: 60px; /* 画像の間にスペースを追加 */
-    margin-top: 65px; /* 下側に配置 */
+    justify-content: flex-start;
+    gap: 60px;
+    margin-top: 45px;
     margin-left: 80px;
+    flex-wrap: wrap;
+    object-fit: cover;
 }
 
 .iconLabel {
@@ -86,3 +91,73 @@
     transition: background-color 0.3s ease;
     margin-left: 160px;
 }
+
+.selectedImage {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-left: 60px;
+}
+
+.survey {
+    margin-top: 20px;
+    margin-left: 65px;
+}
+
+.inputField{
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #FF92AD;
+    border-radius: 30px;
+}
+
+.addbutton {
+    padding: 5px;
+    margin-left: 155px;
+    background-color: #FFFFFF;
+    border: 1px solid #FF92AD ;
+    border-radius: 1px;
+    color: #FF92AD;
+}
+
+.crossbutton {
+    padding: 2px;
+    margin-left: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #FF92AD ;
+    border-radius: 1px;
+    color: #FF92AD;
+}
+
+.removeButton {
+    padding: 5px;
+    margin-left: -170px;
+    border: 1px solid #FF92AD ;
+    border-radius: 1px;
+    background-color: #FFFFFF;
+    color: #FF92AD;
+}
+
+.pollLabel {
+    padding: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-left: 60px;
+    border: 1px solid #FF92AD ;
+    border-radius: 6px;
+    background-color: #FF92AD;
+    color: #FFFFFF;
+    display: inline-block;
+}
+
+.pollContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    flex-direction: row;
+    border: none;
+}
+
+
+
