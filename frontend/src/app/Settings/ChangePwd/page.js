@@ -1,6 +1,6 @@
 'use client';
 
-import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import { getAuth, updatePassword } from "firebase/auth";
 import MainLayout from "@/components/MainLayout";
 import AccountHeader from "@/components/AccountHeader";
 import s from "./pwd.module.css";
@@ -16,8 +16,6 @@ const Password = () => {
     const user = auth.currentUser;
 
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-    const [showNewPassword, setShowNewPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
     const handleSaveButton = async (e) => {
@@ -41,18 +39,18 @@ const Password = () => {
         }
     };
 
-    const handleReauthentication = async (e) => {
-        e.preventDefault();
-
-        try {
-            const credential = EmailAuthProvider.credential(user.email, currentPassword);
-            await reauthenticateWithCredential(user, credential);
-            console.log("再認証成功");
-        } catch (error) {
-            console.error("再認証失敗:", error);
-            alert("再認証に失敗しました。パスワードが正しいか確認してください。");
-        }
-    };
+    // const handleReauthentication = async (e) => {
+    //     e.preventDefault();
+    //
+    //     try {
+    //         const credential = EmailAuthProvider.credential(user.email, currentPassword);
+    //         await reauthenticateWithCredential(user, credential);
+    //         console.log("再認証成功");
+    //     } catch (error) {
+    //         console.error("再認証失敗:", error);
+    //         alert("再認証に失敗しました。パスワードが正しいか確認してください。");
+    //     }
+    // };
     const toggleConfirmPassword = (setter) => {
         setter(prevState => !prevState);
     };
