@@ -31,10 +31,11 @@
     background-color: #fff;
     position: fixed;
     top: 115px;
-    height: 15vh;
+    height: 18vh;
     width: 40vw;
     margin-top: 19px;
     padding-top: 80px;
+    padding-bottom: 30px;
     display: flex;
     z-index: 1;
 }
