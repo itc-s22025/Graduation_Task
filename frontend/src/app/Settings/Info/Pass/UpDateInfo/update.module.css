@@ -1,0 +1,52 @@
+.content {
+    display: flex;
+}
+.box {
+    position: absolute;
+    top: 12vh;
+    left: 40vw;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    height: 100px;
+    width: 500px;
+}
+.box2 {
+    position: absolute;
+    top: 32vh;
+    left: 40vw;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    height: 100px;
+    width: 500px;
+
+}
+.box3 {
+    position: absolute;
+    top: 52vh;
+    left: 40vw;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    height: 100px;
+    width: 500px;
+
+}
+.all {
+    position: fixed;
+    right: 0;
+    background-color: #F8F0F0;
+    width: 30vw;
+    height: 100vh;
+    border-left: 1px solid #D2CCCC;
+}
+
+@media (max-width: 1200px) {
+    .all {
+        width: 20vw; /* 狭い画面では幅を狭める */
+    }
+}
+
+@media (max-width: 800px) {
+    .all {
+        display: none; /* さらに狭い画面では非表示 */
+    }
+}
