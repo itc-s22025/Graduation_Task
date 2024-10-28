@@ -4,6 +4,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth } from "@/app/context/AuthProvider";
+import LoadingPage from "@/components/loadingPage";
 
 const withAuth = (WrappedComponent) => {
   return (props) => {
@@ -19,7 +20,9 @@ const withAuth = (WrappedComponent) => {
 
     // ローディング中、またはユーザーが存在しない場合はコンテンツを表示しない
     if (loading || !currentUser) {
-      return <p>Loading...</p>;
+      return(
+        <LoadingPage/>
+      )
     }
 
     // 認証が成功した場合のみコンポーネントを表示
