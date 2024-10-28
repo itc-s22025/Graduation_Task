@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.allContainer{
+    position: relative;
+    top: 100px;
+    /*border: 1px solid red;*/
+    padding: 0 37px 10px ;
+}
+
 .all{
     margin: 40px auto 10px;
     padding: 0px 10px 8px;
@@ -72,13 +81,19 @@
     border: none;
     outline: none;
     background-color: #fff;
-    height: 20px;
-    width: 30px;
-    font-size: 1.3rem;
     margin-top: 10px;
     margin-left: 14vw;
-    padding-bottom: 30px;
+    height: 30px;
+    width: 30px;
+    padding-bottom: 10px;
+
+    font-size: 1.3rem;
     color: #6E665C;
+    font-family: serif;
+    font-weight: 400;
+}
+.editButton:hover{
+    color: #ff92AD;
 }
 
 .content{
@@ -147,9 +162,19 @@
 
 
 /*eachPost*/
-.headerContainer{
-    position: absolute;
+.eachPostContainer{
+    position: fixed;
     top: 0;
+    left: 30vw;
+    /*border: 1px solid  blue;*/
+    height: 100vh;
+    z-index: 3;
+}
+
+.headerContainer{
+    position: fixed;
+    top: 0;
+    left: 30vw;
     display: flex;
     width: calc(100vw - 60vw);
     height: 80px;
@@ -176,13 +201,15 @@
 
 .headerTitle{
     width: 400px;
-    margin: 22px 20px 0 20px;
+    margin: 18px 20px 0 20px;
 
     color: #fff;
+    font-size: 1.8rem;
 }
 
 /*☓ボタン*/
 .closeEachPost{
+    cursor: pointer;
     display: block;
     position: relative;
     border: 1px solid #ff839f;
@@ -208,6 +235,80 @@
 }
 .closeEachPost::after {
   transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+/*報告*/
+.reportAllContainer{
+    position: relative;
+    top: -222px;
+    left: 27.1vw;
+    height: 0;
+}
+
+.reportContainer{
+    display: grid;
+    position: relative;
+    top: -10px;
+    /*left: 28.5vw;*/
+    background-color: #fff;
+    border: 1px solid #ff92AD;
+    border-radius: 10px;
+    padding: 10px;
+    width: 120px;
+}
+
+.closeReportButton{
+    cursor: pointer;
+    display: block;
+    position: relative;
+    left: 5.3vw;
+    border: 1px solid #ff839f;
+    border-radius: 3px;
+    width: 24px;
+    height: 23px;
+    background-color: #fff;
+    z-index: 10;
+}
+.closeReportButton::before, .closeReportButton::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px; /* 棒の幅（太さ） */
+    height: 20px; /* 棒の高さ */
+    background: #ff839f; /* バツ印の色 */
+}
+.closeReportButton::before {
+    transform: translate(-50%,-50%) rotate(45deg);
+}
+.closeReportButton::after {
+    transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+.reportPostButton{
+    border: none;
+    border-bottom: 1px solid #ff92AD;
+    background-color: #fff;
+    height: 30px;
+    font-size: 0.8rem;
+    padding-bottom: 5px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #5d5757;
+}
+
+.reportUserButton{
+    border: none;
+    background-color: #fff;
+    height: 30px;
+    font-size: 0.8rem;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #5d5757;
 }
 
 @media screen and (max-width: 1024px){

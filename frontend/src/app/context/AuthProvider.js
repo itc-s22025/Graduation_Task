@@ -1,14 +1,14 @@
-// app/context/AuthProvider.js
 "use client";
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
-// import { auth } from '@/firebase'
-import { auth } from "../../firebase"; // 相対パスに変更
+import { auth } from "@/firebase";
 import { onAuthStateChanged } from 'firebase/auth';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+
+  //state
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true); // ローディング状態を追加
 
