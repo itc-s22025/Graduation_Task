@@ -160,3 +160,36 @@
     flex: 1; /* 残りのスペースを占める */
     word-break: break-word; /* テキストの折り返しを許可 */
 }
+
+
+/*is edit*/
+.editContainer{
+    position: relative;
+    top: -20vh;
+    left: 34vw;
+    border: 1px solid #FF92AD;
+    border-radius: 10px;
+    padding: 3px 10px;
+    background-color: #fff;
+
+    width: 100px;
+    height: 60px;
+}
+
+.editButton, .deleteButton{
+    border: none;
+    outline: none;
+    width: 80px;
+    background-color: #fff;
+
+    color: #423a3a;
+    font-size: 0.8rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.editButton{
+    border-bottom: 1px solid #ff92AD;
+    padding-bottom: 3px;
+}

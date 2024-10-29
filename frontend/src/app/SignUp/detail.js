@@ -18,6 +18,7 @@ const Detail = ({ myPC }) => {
   const [name, setName] = useState('');
   const [personalColor, setPersonalColor] = useState(myPC || ''); // myPCを初期値に設定
   const [bio, setBio] = useState('');
+  const [icon, setIcon] = useState('/user_white.png')
 
   const [error, setError] = useState(null);
 
@@ -34,7 +35,8 @@ const Detail = ({ myPC }) => {
         name,
         email,
         personalColor,
-        bio
+        bio,
+        icon
       });
 
       alert('User created successfully');
@@ -45,6 +47,7 @@ const Detail = ({ myPC }) => {
       setName('');
       setPersonalColor('');
       setBio('');
+      setIcon('');
     } catch (error) {
       setError(error.message);
     }

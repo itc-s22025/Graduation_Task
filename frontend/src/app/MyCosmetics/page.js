@@ -11,10 +11,12 @@ import HeaderTab from "@/components/headerTab";
 import MyCosmeticItems from "@/components/myCosmeticItems";
 
 const MyCosmetics = ({ pageType }) => {
+    // state
     const [cosmeticsData, setCosmeticsData] = useState([]);
-    const [currentUserUid, setCurrentUserUid] = useState(null);
-    const [showAddTab, setShowAddTab] = useState(false);
-    const [isAdding, setIsAdding] = useState(false);
+    const [currentUserUid, setCurrentUserUid] = useState(null);   // 今ログインしているユーザ
+    const [showAddTab, setShowAddTab] = useState(false);    //addTab
+    const [isAdding, setIsAdding] = useState(false);    //コスメaddボタン
+    // DBに登録するMyCosmeticsデータ
     const [formData, setFormData] = useState({
         openDate: '',
         brand: '',
@@ -74,7 +76,7 @@ const MyCosmetics = ({ pageType }) => {
                 pricePerUnit: '',
                 memo: ''
             });
-            setIsAdding(false); // フォームを非表示に
+            setIsAdding(false); // Addフォームを非表示に
         } catch (error) {
             console.error("Error adding document: ", error);
             alert("コスメの登録中にエラーが発生しました");
@@ -90,19 +92,11 @@ const MyCosmetics = ({ pageType }) => {
         });
     };
 
-    const handleAddClick = () => {
-        setShowAddTab(true);
-    };
-    const handleCloseAddTab = () => {
-        setShowAddTab(false);
-    };
-
-    const handleAddButtonClick = () => {
-        setIsAdding(!isAdding);
-    };
-    const handleCancelAdd = () => {
-        setIsAdding(false);
-    };
+    // タブ表示
+    const handleAddClick = () => {　setShowAddTab(true);　};
+    const handleCloseAddTab = () => {　setShowAddTab(false);　};
+    const handleAddButtonClick = () => {　setIsAdding(!isAdding);　};
+    const handleCancelAdd = () => {　setIsAdding(false);　};
 
     // 開封日用のDateInputコンポーネント
     const DateInput = () => {
@@ -124,12 +118,15 @@ const MyCosmetics = ({ pageType }) => {
     return (
         <MainLayout>
             <div className={s.allContainer}>
+
+                {/*ヘッダー(タブ)*/}
                 <div className={s.headerContainer}>
                     <p className={s.headerText}>My Cosmetics</p>
                     <HeaderTab firstTabText={"カラコン"} secondTabText={"コスメ"} thirdTabText={"♥"} pageType="myCosmetics"/>
                     <button className={`${home.addButton}`} style={{ top: '63px' }} onClick={handleAddClick}>+</button>
                 </div>
 
+                {/*サーチ欄*/}
                 <div className={s.searchAndAddContainer}>
                         <div className={s.searchContainer}>
                             <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
@@ -139,20 +136,24 @@ const MyCosmetics = ({ pageType }) => {
                         <button type="button" className={s.addButton} onClick={handleAddButtonClick}>Add</button>
                     </div>
 
+                {/*アイテム群*/}
                 <div className={s.itemsContainer}>
                     {cosmeticsData.map((cosmetic) => (
                         <MyCosmeticItems
                             key={cosmetic.id}
+                            id={cosmetic.id}  // idを渡す
                             openDate={cosmetic.openDate}
                             brand={cosmetic.brand}
                             productName={cosmetic.productName}
                             quantity={cosmetic.quantity}
                             price={cosmetic.pricePerUnit}
                             memo={cosmetic.memo}
+                            fetchCosmeticsData={fetchCosmeticsData}
                         />
                     ))}
                 </div>
 
+                {/*タブ追加ボタン押下したとき*/}
                 {showAddTab && (
                         <div className={home.addTabOverlay}>
                             <div className={s.addTabContent}>
@@ -196,6 +197,7 @@ const MyCosmetics = ({ pageType }) => {
                         </div>
                     </div>
                 )}
+
             </div>
         </MainLayout>
     );

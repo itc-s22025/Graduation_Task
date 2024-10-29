@@ -10,6 +10,7 @@
 }
 
 
+/*tabs*/
 .headerContainer {
     position: fixed;
     top: 0;
@@ -26,6 +27,8 @@
     color: #fff;
 }
 
+
+/*search*/
 .searchAndAddContainer{
     /*border: 1px solid #007bff;*/
     background-color: #fff;
@@ -42,14 +45,12 @@
 
 .searchContainer{
     display: flex;
-    /*border: 1px solid #007bff;*/
     width: 450px;
     height: 62px;
     margin-left: 70px;
 }
 
 .searchImg{
-    /*border: 1px solid #007bff;*/
     margin: 22px 10px 0 40px;
     width: 20px;
     height: 20px;
@@ -118,7 +119,6 @@
 
 .itemsContainer{
     width: 40vw;
-    /*border: 1px solid red;*/
     margin-top: 300px;
     display: flex;
     flex-direction: row; /* 横並び */
@@ -208,10 +208,6 @@
 .inputBox::placeholder, .inputBox[type="date"], .inputMemo::placeholder, .inputBoxMini::placeholder, .inputTabBox::placeholder{
     color: #aaa;
 }
-
-
-
-
 
 .inputButtonContainer{
     width: 255px;
