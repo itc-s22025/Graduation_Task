@@ -171,7 +171,7 @@ const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, me
                              <textarea value={updatedData.memo} className={s.inputTextarea} onChange={(e) => setUpdatedData({...updatedData, memo: e.target.value})}/>
 
                              <div className={s.buttonContainer}>
-                                 <button type="button" className={s.cancelButton} onClick={() => setEditItems(false)}>キャンセル</button>
+                                 <button type="button" className={s.cancelButton} onClick={() => { setEditItems(false); setIsEdit(false)} }>キャンセル</button>
                                  <button type="button" className={s.saveButton} onClick={updateCosmetic}>更新</button>
                              </div>
 
