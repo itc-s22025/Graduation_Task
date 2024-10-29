@@ -46,7 +46,7 @@
     content: url("/cutie_heart_pink.png"); /* デフォルトは♡を表示 */
 }
 
-.heart:hover::before{
+.heart:hover::before, .heart:focus::before {
     content: url("/cutie_heart_after_mini.png"); /* hover または focus 時に♥に切り替える */
 }
 
