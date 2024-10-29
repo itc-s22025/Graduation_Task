@@ -4,9 +4,9 @@ import s from '@/styles/myCosmeticItems.module.css';
 import home from "@/app/Home/page.module.css";
 import { useState } from "react";
 import { db } from "@/firebase"; // firebaseの初期化が行われているファイルからimport
-import { doc, updateDoc, deleteDoc } from "firebase/firestore"; // Firestoreからの削除を行うために必要
+import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore"; // Firestoreからの削除を行うために必要
 
-const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, memo, fetchCosmeticsData }) => {
+const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, memo, updatedDate, fetchCosmeticsData }) => {
     // state
     const [isEdit, setIsEdit] = useState(false);
     const [editItems, setEditItems] = useState(false);
@@ -27,11 +27,14 @@ const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, me
     const updateCosmetic = async () => {
         const cosmeticRef = doc(db, 'MyCosmetics', id);
         try {
-            await updateDoc(cosmeticRef, updatedData);
-            alert('マイコスメの情報を更新しました')
-            fetchCosmeticsData(); // データを再取得
-            setEditItems(false); // 編集画面を閉じる
-            setIsEdit(false)
+            await updateDoc(cosmeticRef, {
+                ...updatedData,
+                updatedDate: serverTimestamp()  // Firestoreのサーバー時刻を設定
+            });
+            alert('マイコスメの情報を更新しました');
+            fetchCosmeticsData();  // データを再取得
+            setEditItems(false);
+            setIsEdit(false);
         } catch (error) {
             console.error("Error updating document: ", error);
         }
@@ -72,7 +75,7 @@ const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, me
                         </div>
                         <div className={s.updateDayContainer}>
                             <p className={s.dayText}>更新日：</p>
-                            <p className={s.dayDate}>2024/12/22</p>
+                            <p className={s.dayDate}>{updatedDate}</p>
                         </div>
                         <button type="button" className={s.edit} onClick={handleEditClick}>…</button>
                     </div>
