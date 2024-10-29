@@ -182,7 +182,6 @@
     width: 80px;
     background-color: #fff;
 
-    color: #423a3a;
     font-size: 0.8rem;
     font-family: "Zen Maru Gothic", serif;
     font-weight: 400;
@@ -191,13 +190,102 @@
 
 .editButton{
     border-bottom: 1px solid #ff92AD;
+    color: #423a3a;
     padding-bottom: 3px;
+}
+
+.deleteButton{
+    color: #ec022d;
 }
 
 
 /*show edit tab*/
-.addTabContent {
+.editContent {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
+}
+
+.editTitle{
+    background-color: #ff92AD;
+    color: #fff;
+    width: 500px;
+
+    padding: 10px 20px;
+}
+
+.labelContainer{
+    /*border: 1px solid red;*/
+    margin: 10px 20px 0;
+    font-size: 0.9rem;
+    color: #423a3a;;
+}
+
+.inputContainer{
+    display: grid;
+}
+
+.inputBox{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #ff92AD;
+    padding: 5px 10px 1px;
+    max-width: 400px;
+
+    color: #423a3a;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.inputTextarea{
+    border: 1px solid #ff92AD;
+    border-radius: 8px;
+    outline: none;
+    padding: 10px;
+    width: 445px;
+    height: auto;
+    margin: 2px 0 20px 30px;
+
+    color: #423a3a;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.buttonContainer{
+    /*border: 1px solid red;*/
+    width: 280px;
+    display: flex;
+    margin-left: 110px;
+}
+
+.cancelButton, .saveButton{
+    cursor: pointer;
+    border: none;
+    width: 110px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0 15px 10px;
+    padding: 2px 0;
+}
+
+.cancelButton{
+    border: 2px solid #ff92AD;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #ff839f;
+}
+
+.saveButton{
+    border: 2px solid #ff839f;
+    border-radius: 50px;
+    background-color: #ff92AD;
+    color: #fff;
+}
+
+.cancelButton:hover, .saveButton:hover{
+    scale: calc(1.03);
 }

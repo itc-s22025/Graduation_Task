@@ -22,8 +22,9 @@ const MyCosmetics = ({ pageType }) => {
         brand: '',
         productName: '',
         quantity: '',
-        pricePerUnit: '',
-        memo: ''
+        price: '',
+        memo: '',
+        isFavorite: false
     });
 
     // 現在のユーザ情報を取得
@@ -73,8 +74,9 @@ const MyCosmetics = ({ pageType }) => {
                 brand: '',
                 productName: '',
                 quantity: '',
-                pricePerUnit: '',
-                memo: ''
+                price: '',
+                memo: '',
+                isFavorite: false
             });
             setIsAdding(false); // Addフォームを非表示に
         } catch (error) {
@@ -146,7 +148,7 @@ const MyCosmetics = ({ pageType }) => {
                             brand={cosmetic.brand}
                             productName={cosmetic.productName}
                             quantity={cosmetic.quantity}
-                            price={cosmetic.pricePerUnit}
+                            price={cosmetic.price}
                             memo={cosmetic.memo}
                             fetchCosmeticsData={fetchCosmeticsData}
                         />
@@ -185,7 +187,7 @@ const MyCosmetics = ({ pageType }) => {
                                         <input type="number" name="quantity" className={s.inputBoxMini} placeholder="個数" value={formData.quantity} onChange={handleInputChange} />個
                                     </label>
                                     <label className={s.inputLabel}>
-                                        <input type="number" name="pricePerUnit" className={s.inputBoxMini} placeholder="1個あたりの価格" value={formData.pricePerUnit} onChange={handleInputChange} />円
+                                        <input type="number" name="price" className={s.inputBoxMini} placeholder="1個あたりの価格" value={formData.price} onChange={handleInputChange} />円
                                     </label>
                                     <textarea name="memo" className={s.inputMemo} placeholder="メモ" value={formData.memo} onChange={handleInputChange} />
                                 </div>

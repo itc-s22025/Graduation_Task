@@ -4,12 +4,13 @@ import s from '@/styles/myCosmeticItems.module.css';
 import home from "@/app/Home/page.module.css";
 import { useState } from "react";
 import { db } from "@/firebase"; // firebaseの初期化が行われているファイルからimport
-import { doc, deleteDoc } from "firebase/firestore"; // Firestoreからの削除を行うために必要
+import { doc, updateDoc, deleteDoc } from "firebase/firestore"; // Firestoreからの削除を行うために必要
 
 const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, memo, fetchCosmeticsData }) => {
     // state
     const [isEdit, setIsEdit] = useState(false);
     const [editItems, setEditItems] = useState(false);
+    const [updatedData, setUpdatedData] = useState({ openDate, brand, productName, quantity, price, memo });
 
     // show isEdit(...)
     const handleEditClick = () => {
@@ -21,7 +22,22 @@ const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, me
         setEditItems(prev => !prev);
     }
 
-    // Firestoreからコスメデータを削除する関数
+
+    // データベースのデータを更新
+    const updateCosmetic = async () => {
+        const cosmeticRef = doc(db, 'MyCosmetics', id);
+        try {
+            await updateDoc(cosmeticRef, updatedData);
+            alert('マイコスメの情報を更新しました')
+            fetchCosmeticsData(); // データを再取得
+            setEditItems(false); // 編集画面を閉じる
+            setIsEdit(false)
+        } catch (error) {
+            console.error("Error updating document: ", error);
+        }
+    };
+
+    // Firestoreからコスメデータを削除
    const deleteCosmetic = async () => {
        try {
            const cosmeticDocRef = doc(db, "MyCosmetics", id); // IDを元にドキュメントリファレンスを取得
@@ -39,8 +55,8 @@ const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, me
         const confirmDelete = window.confirm("本当に削除しますか？"); // 確認ダイアログ
         if (confirmDelete) {
             deleteCosmetic(); // 確認が取れたら削除関数を呼び出す
+            setIsEdit(false);
         }
-        setIsEdit(false);
     }
 
     return (
@@ -100,16 +116,70 @@ const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, me
                 </div>
             )}
 
-            {editItems && (
-                <>
-                    <div className={home.addTabOverlay}>
-                        <div className={s.addTabContent}>
-                            <p>edit</p>
-                            <button type="button" onClick={() => setEditItems(false)}>キャンセル</button>
-                        </div>
-                    </div>
-                </>
-            )}
+            {/*edit*/}
+             {editItems && (
+                 <div className={home.addTabOverlay}>
+                     <div className={s.editContent}>
+                         <h2 className={s.editTitle}>マイコスメを編集する</h2>
+
+                         <div className={s.inputContainer}>
+                             <label className={s.labelContainer}>開封日：
+                                 <input
+                                    type="date"
+                                    value={updatedData.openDate}
+                                    className={s.inputBox}
+                                    onChange={(e) => setUpdatedData({...updatedData, openDate: e.target.value})}
+                                 />
+                             </label>
+                             <label className={s.labelContainer}>ブランド：
+                                 <input
+                                     type="text"
+                                     value={updatedData.brand}
+                                     className={s.inputBox}
+                                     onChange={(e) => setUpdatedData({...updatedData, brand: e.target.value})}
+                                 />
+                             </label>
+
+                             <label className={s.labelContainer}>商品名：
+                                 <input
+                                     type="text"
+                                     value={updatedData.productName}
+                                     className={s.inputBox}
+                                     onChange={(e) => setUpdatedData({...updatedData, productName: e.target.value})}
+                                 />
+                             </label>
+
+                             <label className={s.labelContainer}>所持している個数：
+                                 <input
+                                     type="number"
+                                     value={updatedData.quantity}
+                                     className={s.inputBox}
+                                     onChange={(e) => setUpdatedData({...updatedData, quantity: e.target.value})}
+                                 />個
+                             </label>
+
+                             <label className={s.labelContainer}>一個あたりの価格：
+                                 <input
+                                     type="number"
+                                     value={updatedData.price}
+                                     className={s.inputBox}
+                                     onChange={(e) => setUpdatedData({...updatedData, price: e.target.value})}
+                                 />円
+                             </label>
+
+                             <label className={s.labelContainer}>メモ：</label>
+                             <textarea value={updatedData.memo} className={s.inputTextarea} onChange={(e) => setUpdatedData({...updatedData, memo: e.target.value})}/>
+
+                             <div className={s.buttonContainer}>
+                                 <button type="button" className={s.cancelButton} onClick={() => setEditItems(false)}>キャンセル</button>
+                                 <button type="button" className={s.saveButton} onClick={updateCosmetic}>更新</button>
+                             </div>
+
+                         </div>
+
+                     </div>
+                 </div>
+             )}
 
         </>
     );
