@@ -193,3 +193,11 @@
     border-bottom: 1px solid #ff92AD;
     padding-bottom: 3px;
 }
+
+
+/*show edit tab*/
+.addTabContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}

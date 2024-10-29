@@ -49,11 +49,7 @@ const HeaderTab = ({ firstTabText, secondTabText, thirdTabText, firstTabContent,
 
                 <TabPanel>
                     <article>
-                        {/*{secondTabContent}*/}
-                        <Post/>
-                        <Post/>
-                        <Post/>
-                        <Post/>
+                        {secondTabContent}
                     </article>
                 </TabPanel>
 

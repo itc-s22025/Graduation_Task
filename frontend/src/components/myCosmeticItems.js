@@ -1,6 +1,7 @@
 "use client";
 
 import s from '@/styles/myCosmeticItems.module.css';
+import home from "@/app/Home/page.module.css";
 import { useState } from "react";
 import { db } from "@/firebase"; // firebaseの初期化が行われているファイルからimport
 import { doc, deleteDoc } from "firebase/firestore"; // Firestoreからの削除を行うために必要
@@ -8,27 +9,32 @@ import { doc, deleteDoc } from "firebase/firestore"; // Firestoreからの削除
 const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, memo, fetchCosmeticsData }) => {
     // state
     const [isEdit, setIsEdit] = useState(false);
+    const [editItems, setEditItems] = useState(false);
 
-    // show isEdit
+    // show isEdit(...)
     const handleEditClick = () => {
         setIsEdit(prev => !prev);
     }
 
+    // show edit page of items
+    const handleEditItemsClick = () => {
+        setEditItems(prev => !prev);
+    }
+
     // Firestoreからコスメデータを削除する関数
    const deleteCosmetic = async () => {
-    try {
-        const cosmeticDocRef = doc(db, "MyCosmetics", id); // IDを元にドキュメントリファレンスを取得
-        await deleteDoc(cosmeticDocRef); // ドキュメント削除
-        alert("コスメデータが削除されました");
-        fetchCosmeticsData(); // データを再取得
-    } catch (error) {
-        console.error("Error deleting document: ", error);
-        alert("削除中にエラーが発生しました");
-    }
-}
+       try {
+           const cosmeticDocRef = doc(db, "MyCosmetics", id); // IDを元にドキュメントリファレンスを取得
+           await deleteDoc(cosmeticDocRef); // ドキュメント削除
+           alert("コスメデータが削除されました");
+           fetchCosmeticsData(); // データを再取得
+       } catch (error) {
+           console.error("Error deleting document: ", error);
+           alert("削除中にエラーが発生しました");
+       }
+   }
 
-
-    // delete button click handler with confirmation
+    // 本当に削除していいかきくやつ
     const onDeleteClick = () => {
         const confirmDelete = window.confirm("本当に削除しますか？"); // 確認ダイアログ
         if (confirmDelete) {
@@ -86,12 +92,25 @@ const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, me
                 </div>
             </div>
 
+            {/*　...　←押したとき*/}
             {isEdit && (
                 <div className={s.editContainer}>
-                    <button type="button" className={s.editButton}>編集</button>
+                    <button type="button" className={s.editButton} onClick={handleEditItemsClick}>編集</button>
                     <button type="button" className={s.deleteButton} onClick={onDeleteClick}>削除</button>
                 </div>
             )}
+
+            {editItems && (
+                <>
+                    <div className={home.addTabOverlay}>
+                        <div className={s.addTabContent}>
+                            <p>edit</p>
+                            <button type="button" onClick={() => setEditItems(false)}>キャンセル</button>
+                        </div>
+                    </div>
+                </>
+            )}
+
         </>
     );
 };
