@@ -19,6 +19,7 @@ const SignUp = () => {
         setIsDetail(true);
     }
 
+
     return (
                 <>
                     <FirstLayout>
