@@ -45,6 +45,35 @@
     margin-top: 50px;
     margin-bottom: 10px;
 }
+.personal {
+    display: inline-block;
+    position: absolute;
+    top: 13.2vh;
+    left: 2.9vw;
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #FF92AD;
+    background-color: #F8F4F0;
+    color: #000;
+    text-align: center;
+}
+
+.springText {
+    color: #FFCC92; /* Spring color */
+}
+
+.summerText {
+    color: #66BAFF; /* Summer color */
+}
+
+.autumnText {
+    color: #FF989A; /* Autumn color */
+}
+
+.winterText {
+    color: #9293FF; /* Winter color */
+}
 
 .userName {
     /*border: 1px solid blue;*/

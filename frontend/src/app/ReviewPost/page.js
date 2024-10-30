@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef,useState } from "react";
 import s from "./ReviewPost.module.css";
 import MainLayout from "../../components/MainLayout";
 import Tweet from "../../components/tweet";
@@ -11,11 +11,20 @@ const ReviewPost = () => {
     const [productName, setProductName] = useState("");
     const [star, setStar] = useState("");
     const [review,setReview] = useState("");
+    const [selectedImage, setSelectedImage] = useState(null);
+    const inputRef = useRef(null);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         alert(`ブランド：${brand}\n商品名：${productName}`);
     };
+
+    const handleLabelClick = () => {
+        if (inputRef.current) {
+            inputRef.current.click();
+        }
+    }
 
     return (
         <>
@@ -25,7 +34,7 @@ const ReviewPost = () => {
             </MainLayout>
             <div className={s.box}>
                 <div className={s.iconContainer}>
-                    <img src={"/icon.jpeg"} className={s.icon} alt="User icon" />
+                    <img src={"/icon.jpeg"} className={s.icon} alt="User icon"/>
                 </div>
                 <p className={s.name}>{name || "name"}</p> {/* nameの部分にユーザー名を設定可能 */}
 
@@ -59,7 +68,7 @@ const ReviewPost = () => {
                             id="star"
                             value={star}
                             onChange={(e) => setStar(e.target.value)}
-                            placeholder= "☆☆☆☆☆"
+                            placeholder="☆☆☆☆☆"
                             className={s.inputField}
                         />
                     </div>
@@ -70,12 +79,22 @@ const ReviewPost = () => {
                             id="review"
                             value={review}
                             onChange={(e) => setReview(e.target.value)}
-                            placeholder= "入力してください"
+                            placeholder="入力してください"
                             className={s.inputField}
                         />
                     </div>
                 </form>
-                <div className={s.smallbox}>+</div>
+                <label htmlFor="imageInput" onClick={handleLabelClick} >
+                    <p className={s.smallbox}>＋</p>
+                </label>
+
+                <input
+                    id="imageInput"
+                    type="file"
+                    ref={inputRef}
+                    style={{display: 'none'}}
+                    onChange={(e) => setSelectedImage(e.target.files[0])}
+                />
             </div>
         </>
     );
