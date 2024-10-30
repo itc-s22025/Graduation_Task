@@ -16,6 +16,7 @@ const Detail = () => {
   const [name, setName] = useState('');
   const [personalColor, setPersonalColor] = useState('');
   const [bio, setBio] = useState('');
+  const [icon, setIcon] = useState('/user_white.png')
 
   const [error, setError] = useState(null);
 
@@ -31,7 +32,8 @@ const Detail = () => {
         name,
         email,
         personalColor,
-        bio
+        bio,
+        icon
       });
 
       alert('User created successfully');
@@ -41,7 +43,9 @@ const Detail = () => {
       setPassword('');
       setName('');
       setPersonalColor('');
-      setBio('')
+      setBio('');
+      setIcon('');
+
     } catch (error) {
       setError(error.message);
     }
