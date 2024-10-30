@@ -1,17 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
 .itemContainer {
-    /*border: 1px solid #ccc;*/
-    margin: 10px 10px 0 63px;
+    margin: 10px 10px 0 48px;
     padding: 5px 10px;
 }
 
 .flame {
     border: 1px solid #FF92AD;
     border-radius: 30px;
-    width: 100%; /* 幅を自動調整に */
+    width: 630px;
     height: auto;
-    margin: 10px 0 10px 5px;
+    margin: 10px 0 10px 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -28,27 +27,29 @@
     margin-left: 10px;
 }
 
+.exceptEditContainer{
+    display: flex;
+    width: 500px;
+}
+
 .heart {
+    cursor: pointer;
     border: none;
     background-color: #fff;
-    margin: 0 8px 7px 2px;
+    margin: 0 8px 9px 2px;
     padding-top: 6px;
     color: #ff839f;
-    font-size: 1.5rem;
+    font-size: 1rem;
     position: relative; /* 位置を相対的に設定 */
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
 }
 
-.heart::before {
-    content: url("/cutie_heart_pink.png"); /* デフォルトは♡を表示 */
-}
+/*.heart::before, .heartBefore {*/
+/*    content: url("/cutie_heart_pink.png"); !* デフォルトは♡を表示 *!*/
+/*}*/
 
-.heart:hover::before, .heart:focus::before {
-    content: url("/cutie_heart_after_mini.png"); /* hover または focus 時に♥に切り替える */
-}
+/*.heart:hover::before, .heart:focus::before, .heartAfter {*/
+/*    content: url("/cutie_heart_after_mini.png"); !* hover または focus 時に♥に切り替える *!*/
+/*}*/
 
 .itemType {
     border: 1px solid #ff839f;
