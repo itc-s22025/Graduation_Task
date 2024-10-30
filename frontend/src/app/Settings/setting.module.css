@@ -15,7 +15,7 @@
 .font {
     text-decoration-line: none;
     position: absolute;
-    top: 18vh;
+    top: 3.5vh;
     left: 6vw;
     font-size: 30px;
     /*border: 1px solid;*/
@@ -24,17 +24,18 @@
     text-decoration-line: none;
     position: absolute;
     font-size: 30px;
-    top: 36vh;
+    top: 4vh;
     left: 6vw;
 }
 .font3 {
     text-decoration-line: none;
     position: absolute;
     font-size: 30px;
-    top: 56vh;
+    top: 4vh;
     left: 6vw;
 }
 .box{
+    position: relative;
     width: 100%;
     margin-top: 50px;
     padding: 25px;
