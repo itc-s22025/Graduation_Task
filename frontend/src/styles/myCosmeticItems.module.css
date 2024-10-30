@@ -1,17 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
 .itemContainer {
-    /*border: 1px solid #ccc;*/
-    margin: 10px 10px 0 63px;
+    margin: 10px 10px 0 50px;
     padding: 5px 10px;
 }
 
 .flame {
     border: 1px solid #FF92AD;
     border-radius: 30px;
-    width: 100%; /* 幅を自動調整に */
+    width: 630px;
     height: auto;
-    margin: 10px 0 10px 5px;
+    margin: 10px 0 10px 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -26,6 +25,11 @@
     /* 高さは自動 */
     margin-top: 8px;
     margin-left: 10px;
+}
+
+.exceptEditContainer{
+    display: flex;
+    width: 500px;
 }
 
 .heart {

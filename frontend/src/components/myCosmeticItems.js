@@ -6,11 +6,11 @@ import { useState } from "react";
 import { db } from "@/firebase"; // firebaseの初期化が行われているファイルからimport
 import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore"; // Firestoreからの削除を行うために必要
 
-const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, memo, updatedDate, fetchCosmeticsData }) => {
+const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quantity, price, memo, updatedDate, fetchCosmeticsData }) => {
     // state
     const [isEdit, setIsEdit] = useState(false);
     const [editItems, setEditItems] = useState(false);
-    const [updatedData, setUpdatedData] = useState({ openDate, brand, productName, quantity, price, memo });
+    const [updatedData, setUpdatedData] = useState({ cosmeticsType, openDate, brand, productName, quantity, price, memo });
 
     // show isEdit(...)
     const handleEditClick = () => {
@@ -67,21 +67,24 @@ const MyCosmeticItems = ({ id, openDate, brand, productName, quantity, price, me
             <div className={s.itemContainer}>
                 <div className={s.flame}>
                     <div className={s.topContainer}>
-                        <button type="button" className={s.heart} /> {/* ♡ */}
-                        <p className={s.itemType}>アイシャドウ</p>
-                        <div className={s.openDayContainer}>
-                            <p className={s.dayText}>開封日：</p>
-                            <p className={s.dayDate}>{openDate}</p>
-                        </div>
-                        <div className={s.updateDayContainer}>
-                            <p className={s.dayText}>更新日：</p>
-                            <p className={s.dayDate}>{updatedDate}</p>
+                        <div className={s.exceptEditContainer}>
+                            <button type="button" className={s.heart}/>
+                            {/* ♡ */}
+                            <p className={s.itemType}>{cosmeticsType}</p>
+                            <div className={s.openDayContainer}>
+                                <p className={s.dayText}>開封日：</p>
+                                <p className={s.dayDate}>{openDate}</p>
+                            </div>
+                            <div className={s.updateDayContainer}>
+                                <p className={s.dayText}>更新日：</p>
+                                <p className={s.dayDate}>{updatedDate}</p>
+                            </div>
                         </div>
                         <button type="button" className={s.edit} onClick={handleEditClick}>…</button>
                     </div>
 
                     <div className={s.middleContainer}>
-                        <p className={s.img} />
+                        <p className={s.img}/>
                         <div className={s.mMContainer}>
                             <div className={s.eachContainer}>
                                 <p className={s.category}>ブランド：</p>

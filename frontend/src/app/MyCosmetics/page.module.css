@@ -148,9 +148,27 @@
 }
 
 .newCosmeticTitle{
+    width: 378px;
     color: #FF92AD;
     border-left: 3px solid #FF92AD;
     padding-left: 10px;
+}
+
+.selectBox{
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    width: 235px;
+    height: 35px;
+    background-color: #F8F0F0;
+    color: #5d5757;
+    margin-left: 10px;
+    margin-bottom: 2px;
+    padding: 0 5px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .inputContainer{

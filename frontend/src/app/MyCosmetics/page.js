@@ -19,6 +19,7 @@ const MyCosmetics = ({ pageType }) => {
     const [isAdding, setIsAdding] = useState(false);    //コスメaddボタン
     // DBに登録するMyCosmeticsデータ
     const [formData, setFormData] = useState({
+        cosmeticsType:'',
         openDate: '',
         brand: '',
         productName: '',
@@ -78,7 +79,15 @@ const MyCosmetics = ({ pageType }) => {
     }, [currentUserUid]);
 
     // 新しいコスメを追加
+    // MyCosmetics component内
     const handleAddNewCosmeClick = async () => {
+        // 必須項目チェックバリデーション
+        const { cosmeticsType, openDate, brand, productName, quantity, price } = formData;
+        if (!cosmeticsType || !openDate || !brand || !productName || !quantity || !price) {
+            alert("必須項目をすべて入力してください"); // エラーメッセージを表示
+            return;
+        }
+
         try {
             await addDoc(collection(db, "MyCosmetics"), {
                 ...formData,
@@ -89,6 +98,7 @@ const MyCosmetics = ({ pageType }) => {
             alert("新しいコスメが登録されました");
             await fetchCosmeticsData();
             setFormData({
+                cosmeticsType: '',
                 openDate: '',
                 brand: '',
                 productName: '',
@@ -104,6 +114,7 @@ const MyCosmetics = ({ pageType }) => {
             alert("コスメの登録中にエラーが発生しました");
         }
     }
+
 
         // フォーム入力の変更を管理
         const handleInputChange = (e) => {
@@ -174,6 +185,7 @@ const MyCosmetics = ({ pageType }) => {
                            <MyCosmeticItems
                                key={cosmetic.id}
                                id={cosmetic.id}
+                               cosmeticsType={cosmetic.cosmeticsType}
                                openDate={formatDateTime(cosmetic.openDate)}
                                brand={cosmetic.brand}
                                productName={cosmetic.productName}
@@ -216,6 +228,31 @@ const MyCosmetics = ({ pageType }) => {
                                 <h2 className={s.newCosmeticTitle}>新しいコスメを追加</h2>
                                 <form>
                                     <div className={s.inputContainer}>
+
+                                        <div>
+                                            <select name="cosmeticsType" className={s.selectBox}
+                                                    onChange={handleInputChange} value={formData.cosmeticsType}>
+                                                <option value="">コスメの種類を選択してください</option>
+                                                <option value="アイシャドウ">アイシャドウ</option>
+                                                <option value="アイブロウ用品">アイブロウ用品</option>
+                                                <option value="アイライナー">アイライナー</option>
+                                                <option value="香水・フレグランス">香水・フレグランス</option>
+                                                <option value="基礎化粧品">基礎化粧品</option>
+                                                <option value="化粧下地">化粧下地</option>
+                                                <option value="コンシーラー">コンシーラー</option>
+                                                <option value="チーク">チーク</option>
+                                                <option value="ハイライター">ハイライター</option>
+                                                <option value="日焼け止め">日焼け止め</option>
+                                                <option value="ファンデーション">ファンデーション</option>
+                                                <option value="フェイスパウダー">フェイスパウダー</option>
+                                                <option value="ヘアケア用品">ヘアケア用品</option>
+                                                <option value="ボディケア用品">ボディケア用品</option>
+                                                <option value="マスカラ">マスカラ</option>
+                                                <option value="メイクアップグッズ">メイクアップグッズ</option>
+                                                <option value="リップ">リップ</option>
+                                                <option value="その他">その他</option>
+                                            </select>
+                                        </div>
                                         <DateInput/>
                                         <input type="text" name="brand" className={s.inputBox} placeholder="ブランド"
                                                value={formData.brand} onChange={handleInputChange}/>
