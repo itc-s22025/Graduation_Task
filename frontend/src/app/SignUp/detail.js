@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import s from './detail.module.css';
+
 import { useRouter } from "next/navigation";
 //firebase
 import { auth, db } from '@/firebase';
