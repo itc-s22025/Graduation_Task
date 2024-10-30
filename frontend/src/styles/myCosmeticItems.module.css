@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
 .itemContainer {
-    margin: 10px 10px 0 50px;
+    margin: 10px 10px 0 48px;
     padding: 5px 10px;
 }
 
@@ -33,26 +33,23 @@
 }
 
 .heart {
+    cursor: pointer;
     border: none;
     background-color: #fff;
-    margin: 0 8px 7px 2px;
+    margin: 0 8px 9px 2px;
     padding-top: 6px;
     color: #ff839f;
-    font-size: 1.5rem;
+    font-size: 1rem;
     position: relative; /* 位置を相対的に設定 */
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
 }
 
-.heart::before {
-    content: url("/cutie_heart_pink.png"); /* デフォルトは♡を表示 */
-}
+/*.heart::before, .heartBefore {*/
+/*    content: url("/cutie_heart_pink.png"); !* デフォルトは♡を表示 *!*/
+/*}*/
 
-.heart:hover::before, .heart:focus::before {
-    content: url("/cutie_heart_after_mini.png"); /* hover または focus 時に♥に切り替える */
-}
+/*.heart:hover::before, .heart:focus::before, .heartAfter {*/
+/*    content: url("/cutie_heart_after_mini.png"); !* hover または focus 時に♥に切り替える *!*/
+/*}*/
 
 .itemType {
     border: 1px solid #ff839f;

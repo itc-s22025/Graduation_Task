@@ -3,25 +3,25 @@
 import s from '@/styles/myCosmeticItems.module.css';
 import home from "@/app/Home/page.module.css";
 import { useState } from "react";
-import { db } from "@/firebase"; // firebaseの初期化が行われているファイルからimport
-import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore"; // Firestoreからの削除を行うために必要
+import { db } from "@/firebase";
+import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 
-const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quantity, price, memo, updatedDate, fetchCosmeticsData }) => {
+const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quantity, price, memo, updatedDate, isFavorite, fetchCosmeticsData }) => {
     // state
     const [isEdit, setIsEdit] = useState(false);
     const [editItems, setEditItems] = useState(false);
+    const [isFavoriteState, setIsFavoriteState] = useState(isFavorite || false);
     const [updatedData, setUpdatedData] = useState({ cosmeticsType, openDate, brand, productName, quantity, price, memo });
 
-    // show isEdit(...)
+    // 編集ボタンの表示を切り替える
     const handleEditClick = () => {
         setIsEdit(prev => !prev);
     }
 
-    // show edit page of items
+    // アイテム編集画面の表示を切り替える
     const handleEditItemsClick = () => {
         setEditItems(prev => !prev);
     }
-
 
     // データベースのデータを更新
     const updateCosmetic = async () => {
@@ -29,10 +29,10 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
         try {
             await updateDoc(cosmeticRef, {
                 ...updatedData,
-                updatedDate: serverTimestamp()  // Firestoreのサーバー時刻を設定
+                updatedDate: serverTimestamp()
             });
             alert('マイコスメの情報を更新しました');
-            fetchCosmeticsData();  // データを再取得
+            fetchCosmeticsData();
             setEditItems(false);
             setIsEdit(false);
         } catch (error) {
@@ -40,24 +40,51 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
         }
     };
 
-    // Firestoreからコスメデータを削除
-   const deleteCosmetic = async () => {
-       try {
-           const cosmeticDocRef = doc(db, "MyCosmetics", id); // IDを元にドキュメントリファレンスを取得
-           await deleteDoc(cosmeticDocRef); // ドキュメント削除
-           alert("コスメデータが削除されました");
-           fetchCosmeticsData(); // データを再取得
-       } catch (error) {
-           console.error("Error deleting document: ", error);
-           alert("削除中にエラーが発生しました");
-       }
-   }
+    const toggleFavorite = async () => {
+        const newFavoriteState = !isFavoriteState; // 新しい状態を計算
+        setIsFavoriteState(newFavoriteState); // UI更新用に状態を反転
 
-    // 本当に削除していいかきくやつ
+        try {
+            await handleFavoriteToggle(newFavoriteState); // DB更新用に新しい状態を渡す
+        } catch (error) {
+            console.error("Error updating favorite status: ", error);
+            alert("お気に入りの更新に失敗しました");
+        }
+    };
+
+
+    // お気に入り状態を切り替える関数
+    const handleFavoriteToggle = async (newFavoriteState) => {
+        const cosmeticDoc = doc(db, "MyCosmetics", id);
+        try {
+            await updateDoc(cosmeticDoc, {
+                isFavorite: newFavoriteState, // 新しい状態を渡す
+            });
+            fetchCosmeticsData();  // お気に入り状態を更新後にデータを再取得
+        } catch (error) {
+            console.error("お気に入りの更新中にエラーが発生しました: ", error);
+        }
+    };
+
+
+    // Firestoreからコスメデータを削除
+    const deleteCosmetic = async () => {
+        try {
+            const cosmeticDocRef = doc(db, "MyCosmetics", id);
+            await deleteDoc(cosmeticDocRef);
+            alert("コスメデータが削除されました");
+            fetchCosmeticsData();
+        } catch (error) {
+            console.error("Error deleting document: ", error);
+            alert("削除中にエラーが発生しました");
+        }
+    }
+
+    // 本当に削除していいか確認
     const onDeleteClick = () => {
-        const confirmDelete = window.confirm("本当に削除しますか？"); // 確認ダイアログ
+        const confirmDelete = window.confirm("本当に削除しますか？");
         if (confirmDelete) {
-            deleteCosmetic(); // 確認が取れたら削除関数を呼び出す
+            deleteCosmetic();
             setIsEdit(false);
         }
     }
@@ -68,8 +95,8 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
                 <div className={s.flame}>
                     <div className={s.topContainer}>
                         <div className={s.exceptEditContainer}>
-                            <button type="button" className={s.heart}/>
                             {/* ♡ */}
+                            <div className={s.heart} onClick={toggleFavorite}><img src={isFavoriteState ? '/cutie_heart_after_mini.png' : '/cutie_heart_pink.png'} alt="Favorite Heart" /></div>
                             <p className={s.itemType}>{cosmeticsType}</p>
                             <div className={s.openDayContainer}>
                                 <p className={s.dayText}>開封日：</p>
@@ -110,11 +137,10 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            {/*　...　←押したとき*/}
+            {/*　...　←押したとき */}
             {isEdit && (
                 <div className={s.editContainer}>
                     <button type="button" className={s.editButton} onClick={handleEditItemsClick}>編集</button>
@@ -122,71 +148,68 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
                 </div>
             )}
 
-            {/*edit*/}
-             {editItems && (
-                 <div className={home.addTabOverlay}>
-                     <div className={s.editContent}>
-                         <h2 className={s.editTitle}>マイコスメを編集する</h2>
+            {/* edit */}
+            {editItems && (
+                <div className={home.addTabOverlay}>
+                    <div className={s.editContent}>
+                        <h2 className={s.editTitle}>マイコスメを編集する</h2>
 
-                         <div className={s.inputContainer}>
-                             <label className={s.labelContainer}>開封日：
-                                 <input
+                        <div className={s.inputContainer}>
+                            <label className={s.labelContainer}>開封日：
+                                <input
                                     type="date"
                                     value={updatedData.openDate}
                                     className={s.inputBox}
-                                    onChange={(e) => setUpdatedData({...updatedData, openDate: e.target.value})}
-                                 />
-                             </label>
-                             <label className={s.labelContainer}>ブランド：
-                                 <input
-                                     type="text"
-                                     value={updatedData.brand}
-                                     className={s.inputBox}
-                                     onChange={(e) => setUpdatedData({...updatedData, brand: e.target.value})}
-                                 />
-                             </label>
+                                    onChange={(e) => setUpdatedData({ ...updatedData, openDate: e.target.value })}
+                                />
+                            </label>
+                            <label className={s.labelContainer}>ブランド：
+                                <input
+                                    type="text"
+                                    value={updatedData.brand}
+                                    className={s.inputBox}
+                                    onChange={(e) => setUpdatedData({ ...updatedData, brand: e.target.value })}
+                                />
+                            </label>
 
-                             <label className={s.labelContainer}>商品名：
-                                 <input
-                                     type="text"
-                                     value={updatedData.productName}
-                                     className={s.inputBox}
-                                     onChange={(e) => setUpdatedData({...updatedData, productName: e.target.value})}
-                                 />
-                             </label>
+                            <label className={s.labelContainer}>商品名：
+                                <input
+                                    type="text"
+                                    value={updatedData.productName}
+                                    className={s.inputBox}
+                                    onChange={(e) => setUpdatedData({ ...updatedData, productName: e.target.value })}
+                                />
+                            </label>
 
-                             <label className={s.labelContainer}>所持している個数：
-                                 <input
-                                     type="number"
-                                     value={updatedData.quantity}
-                                     className={s.inputBox}
-                                     onChange={(e) => setUpdatedData({...updatedData, quantity: e.target.value})}
-                                 />個
-                             </label>
+                            <label className={s.labelContainer}>所持している個数：
+                                <input
+                                    type="number"
+                                    value={updatedData.quantity}
+                                    className={s.inputBox}
+                                    onChange={(e) => setUpdatedData({ ...updatedData, quantity: e.target.value })}
+                                />個
+                            </label>
 
-                             <label className={s.labelContainer}>一個あたりの価格：
-                                 <input
-                                     type="number"
-                                     value={updatedData.price}
-                                     className={s.inputBox}
-                                     onChange={(e) => setUpdatedData({...updatedData, price: e.target.value})}
-                                 />円
-                             </label>
+                            <label className={s.labelContainer}>一個あたりの価格：
+                                <input
+                                    type="number"
+                                    value={updatedData.price}
+                                    className={s.inputBox}
+                                    onChange={(e) => setUpdatedData({ ...updatedData, price: e.target.value })}
+                                />円
+                            </label>
 
-                             <label className={s.labelContainer}>メモ：</label>
-                             <textarea value={updatedData.memo} className={s.inputTextarea} onChange={(e) => setUpdatedData({...updatedData, memo: e.target.value})}/>
+                            <label className={s.labelContainer}>メモ：</label>
+                            <textarea value={updatedData.memo} className={s.inputTextarea} onChange={(e) => setUpdatedData({ ...updatedData, memo: e.target.value })}/>
 
-                             <div className={s.buttonContainer}>
-                                 <button type="button" className={s.cancelButton} onClick={() => { setEditItems(false); setIsEdit(false)} }>キャンセル</button>
-                                 <button type="button" className={s.saveButton} onClick={updateCosmetic}>更新</button>
-                             </div>
-
-                         </div>
-
-                     </div>
-                 </div>
-             )}
-
+                            <div className={s.buttonContainer}>
+                                <button type="button" className={s.cancelButton} onClick={() => { setEditItems(false); setIsEdit(false) }}>キャンセル</button>
+                                <button type="button" className={s.saveButton} onClick={updateCosmetic}>更新</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

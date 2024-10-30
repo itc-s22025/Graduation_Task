@@ -11,7 +11,6 @@ import HeaderTab from "@/components/headerTab";
 import MyCosmeticItems from "@/components/myCosmeticItems";
 
 const MyCosmetics = ({ pageType }) => {
-
     // state
     const [cosmeticsData, setCosmeticsData] = useState([]);
     const [currentUserUid, setCurrentUserUid] = useState(null);   // 今ログインしているユーザ
@@ -38,7 +37,6 @@ const MyCosmetics = ({ pageType }) => {
         const day = ("0" + d.getDate()).slice(-2);
         return `${year}/${month}/${day}`;
     };
-
 
     // 現在のユーザ情報を取得
     useEffect(() => {
@@ -206,9 +204,9 @@ const MyCosmetics = ({ pageType }) => {
                                 <div className={s.addTabContainer}>
                                     <h2 className={s.addTabTitle}>新しいタブを追加する</h2>
                                     <div className={s.addTabInputContainer}>
-                                        <label className={s.inputTabLabel}>タブのタイトル：<input type="text"
-                                                                                                 className={s.inputTabBox}
-                                                                                                 placeholder="タブのタイトル"/></label>
+                                        <label className={s.inputTabLabel}>タブのタイトル：
+                                            <input type="text" className={s.inputTabBox} placeholder="タブのタイトル"/>
+                                        </label>
                                     </div>
                                     <div className={s.tabButtonContainer}>
                                         <button type="button" onClick={handleCloseAddTab}
