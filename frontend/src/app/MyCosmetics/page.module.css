@@ -7,13 +7,12 @@
     margin-right: 30vw; /* RightBarの幅に合わせる */
     width: calc(100% - 60vw); /* 両サイドのバーを考慮した幅 */
     min-height: 100vh;
+    overflow-y: auto;
 }
-
 
 /*tabs*/
 .headerContainer {
     position: fixed;
-    top: 0;
     background-color: #FF92AD;
     width: 40vw;
     height: 100px;
@@ -117,16 +116,20 @@
     font-weight: 600;
 }
 
-.itemsContainer{
+.itemsContainer {
     width: 40vw;
-    margin-top: 300px;
+    margin-top: 180px;
     display: flex;
-    flex-direction: row; /* 横並び */
-    flex-wrap: wrap; /* アイテムが多いときに折り返す */
-    justify-content: flex-start; /* 左詰め */
-    /*z-index: 1;*/
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow-y: auto; /* スクロールを有効化 */
+    max-height: 65vh; /* 必要に応じて設定 */
+    scrollbar-width: none; /* Firefox */
 }
-
+.itemsContainer::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
 
 /*新しいコスメを追加*/
 .addTabContent {

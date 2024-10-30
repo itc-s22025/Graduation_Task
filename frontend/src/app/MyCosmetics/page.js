@@ -113,7 +113,6 @@ const MyCosmetics = ({ pageType }) => {
         }
     }
 
-
         // フォーム入力の変更を管理
         const handleInputChange = (e) => {
             const {name, value} = e.target;
@@ -124,18 +123,10 @@ const MyCosmetics = ({ pageType }) => {
         };
 
         // タブ表示
-        const handleAddClick = () => {
-            setShowAddTab(true);
-        };
-        const handleCloseAddTab = () => {
-            setShowAddTab(false);
-        };
-        const handleAddButtonClick = () => {
-            setIsAdding(!isAdding);
-        };
-        const handleCancelAdd = () => {
-            setIsAdding(false);
-        };
+        const handleAddClick = () => {　setShowAddTab(true);　};
+        const handleCloseAddTab = () => {　setShowAddTab(false);　};
+        const handleAddButtonClick = () => {　setIsAdding(!isAdding);　};
+        const handleCancelAdd = () => {　setIsAdding(false);　};
 
         // 開封日用のDateInputコンポーネント
         const DateInput = () => {
@@ -154,6 +145,7 @@ const MyCosmetics = ({ pageType }) => {
             );
         };
 
+
         return (
             <MainLayout>
                 <div className={s.allContainer}>
@@ -161,7 +153,22 @@ const MyCosmetics = ({ pageType }) => {
                     {/*ヘッダー(タブ)*/}
                     <div className={s.headerContainer}>
                         <p className={s.headerText}>My Cosmetics</p>
-                        <HeaderTab firstTabText={"カラコン"} secondTabText={"コスメ"} thirdTabText={"♥"}
+                        <HeaderTab firstTabText={"All"} secondTabText={"コスメ"} thirdTabText={"♥"} firstTabContent={
+                            <div className={s.itemsContainer}>{cosmeticsData.map((cosmetic) => (
+                                <MyCosmeticItems
+                                    key={cosmetic.id}
+                                    id={cosmetic.id}
+                                    cosmeticsType={cosmetic.cosmeticsType}
+                                    openDate={formatDateTime(cosmetic.openDate)}
+                                    brand={cosmetic.brand}
+                                    productName={cosmetic.productName}
+                                    quantity={cosmetic.quantity}
+                                    price={cosmetic.price}
+                                    memo={cosmetic.memo}
+                                    updatedDate={formatDateTime(cosmetic.updatedDate)}
+                                    fetchCosmeticsData={fetchCosmeticsData}
+                                />
+                            ))}</div>}
                                    pageType="myCosmetics"/>
                         <button className={`${home.addButton}`} style={{top: '63px'}} onClick={handleAddClick}>+
                         </button>
@@ -178,24 +185,24 @@ const MyCosmetics = ({ pageType }) => {
                     </div>
 
                     {/*アイテム群*/}
-                    <div className={s.itemsContainer}>
-                        {cosmeticsData.map((cosmetic) => (
-                           <MyCosmeticItems
-                               key={cosmetic.id}
-                               id={cosmetic.id}
-                               cosmeticsType={cosmetic.cosmeticsType}
-                               openDate={formatDateTime(cosmetic.openDate)}
-                               brand={cosmetic.brand}
-                               productName={cosmetic.productName}
-                               quantity={cosmetic.quantity}
-                               price={cosmetic.price}
-                               memo={cosmetic.memo}
-                               updatedDate={formatDateTime(cosmetic.updatedDate)}
-                               fetchCosmeticsData={fetchCosmeticsData}
-                           />
+                    {/*<div className={s.itemsContainer}>*/}
+                    {/*    {cosmeticsData.map((cosmetic) => (*/}
+                    {/*       <MyCosmeticItems*/}
+                    {/*           key={cosmetic.id}*/}
+                    {/*           id={cosmetic.id}*/}
+                    {/*           cosmeticsType={cosmetic.cosmeticsType}*/}
+                    {/*           openDate={formatDateTime(cosmetic.openDate)}*/}
+                    {/*           brand={cosmetic.brand}*/}
+                    {/*           productName={cosmetic.productName}*/}
+                    {/*           quantity={cosmetic.quantity}*/}
+                    {/*           price={cosmetic.price}*/}
+                    {/*           memo={cosmetic.memo}*/}
+                    {/*           updatedDate={formatDateTime(cosmetic.updatedDate)}*/}
+                    {/*           fetchCosmeticsData={fetchCosmeticsData}*/}
+                    {/*       />*/}
 
-                        ))}
-                    </div>
+                    {/*    ))}*/}
+                    {/*</div>*/}
 
                     {/*タブ追加ボタン押下したとき*/}
                     {showAddTab && (

@@ -66,7 +66,6 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
         }
     };
 
-
     // Firestoreからコスメデータを削除
     const deleteCosmetic = async () => {
         try {
@@ -88,6 +87,7 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
             setIsEdit(false);
         }
     }
+
 
     return (
         <>
