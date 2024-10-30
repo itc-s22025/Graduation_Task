@@ -20,8 +20,8 @@ const Profile = () => {
 
     const [headerImage, setHeaderImage] = useState('defaultHeader.png');
     const [icon, setIcon] = useState('defaultIcon.png');
-    const [username, setUsername] = useState('user ユーザ');
-    const [bio, setBio] = useState('ここにBioが表示されます');
+    const [username, setUsername] = useState('');
+    const [bio, setBio] = useState('');
     const router = useRouter();
 
     const handleFocus = (tabName) => {

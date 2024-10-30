@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 //firebase
 import { auth, db } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
+import {collection, addDoc, doc} from 'firebase/firestore';
 
 const Detail = ({ myPC }) => {
   const router = useRouter();
@@ -19,6 +19,7 @@ const Detail = ({ myPC }) => {
   const [name, setName] = useState('');
   const [personalColor, setPersonalColor] = useState(myPC || ''); // myPCを初期値に設定
   const [bio, setBio] = useState('');
+  const [displayId, setDisplayId] = useState('');
 
   const [error, setError] = useState(null);
 
@@ -30,12 +31,13 @@ const Detail = ({ myPC }) => {
       const user = userCredential.user;
 
       // Firestoreにユーザー情報を保存
-      await addDoc(collection(db, 'users'), {
+      await addDoc(doc(db, 'users', user.uid),{
         uid: user.uid,
         name,
         email,
         personalColor,
-        bio
+        bio,
+        displayId
       });
 
       alert('User created successfully');
@@ -46,6 +48,7 @@ const Detail = ({ myPC }) => {
       setName('');
       setPersonalColor('');
       setBio('');
+      setDisplayId('');
     } catch (error) {
       setError(error.message);
     }
@@ -60,22 +63,34 @@ const Detail = ({ myPC }) => {
           <div className={s.inputContainer}>
             <label htmlFor="name" className={s.label}>ユーザー名</label>
             <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className={s.inputBox}
-              placeholder="Name"
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={s.inputBox}
+                placeholder="Name"
+            />
+          </div>
+
+          <div className={s.inputContainer}>
+            <label htmlFor="displayId" className={s.label}>UserID</label>
+            <input
+                type="text"
+                name="displayId"
+                value={displayId}
+                onChange={(e) => setDisplayId(e.target.value)}
+                className={s.inputBox}
+                placeholder="ID"
             />
           </div>
 
           <div className={s.inputContainer}>
             <label htmlFor="personalColor" className={s.label}>パーソナルカラー</label>
             <select
-              name="personalColor"
-              value={personalColor}
-              onChange={(e) => setPersonalColor(e.target.value)}
-              className={s.inputBox} required
+                name="personalColor"
+                value={personalColor}
+                onChange={(e) => setPersonalColor(e.target.value)}
+                className={s.inputBox} required
             >
               <option value="" disabled>選択してください</option>
               <option value="イエベ春">イエベ春</option>
@@ -85,32 +100,31 @@ const Detail = ({ myPC }) => {
             </select>
           </div>
 
-
           <button type="button" className={s.pcText}>診断してみる</button>
 
           <div className={s.inputContainer}>
             <label htmlFor="email" className={s.label}>メールアドレス</label>
             <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={s.inputBox}
-              placeholder="E-mail"
-              autoComplete="email"
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={s.inputBox}
+                placeholder="E-mail"
+                autoComplete="email"
             />
           </div>
 
           <div className={s.inputContainer}>
             <label htmlFor="password" className={s.label}>パスワード</label>
             <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={s.inputBox}
-              placeholder="Password"
-              autoComplete="current-password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={s.inputBox}
+                placeholder="Password"
+                autoComplete="current-password"
             />
           </div>
           <button type="submit" className={s.submit}>サインアップ</button>

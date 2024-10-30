@@ -4,6 +4,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { useAuth } from '@/app/context/AuthProvider';
 
+
 const Edit = ({ userData, onSave }) => {
     const [newHeaderImage, setNewHeaderImage] = useState(userData?.headerImage || 'defaultHeader.png');
     const [newIcon, setNewIcon] = useState(userData?.icon || 'defaultIcon.png');
