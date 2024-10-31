@@ -26,103 +26,10 @@
     color: #fff;
 }
 
-
-/*search*/
-.searchAndAddContainer{
-    /*border: 1px solid #007bff;*/
-    background-color: #fff;
-    position: relative;
-    top: 115px;
-    height: 18vh;
-    width: 40vw;
-    margin-top: 19px;
-    padding-top: 80px;
-    padding-bottom: 30px;
-    display: flex;
-    z-index: 1;
-}
-
-.searchContainer{
-    display: flex;
-    width: 450px;
-    height: 62px;
-    margin-left: 70px;
-}
-
-.searchImg{
-    margin: 22px 10px 0 40px;
-    width: 20px;
-    height: 20px;
-}
-
-.searchBox{
-    outline: none;
-    border: 2px solid #FF92AD;
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
-
-    height: 40px;
-    width: 270px;
-    margin: 10px 0 10px 10px;
-    padding: 10px 20px 10px 20px;
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.searchButton{
-    outline: none;
-    border: none;
-    background-color: #FF92AD;
-
-    width: 80px;
-    height: 40px;
-    margin: 10px 0 10px 0;
-    padding: 0 5px 0 0;
-
-    font-size: 1rem;
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #fff;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-}
-
-.searchButton:hover{
-    font-weight: 600;
-}
-
-
-/*add items button*/
-.addButton{
-    outline: none;
-    border: 2px solid #ff839f;
-    border-radius: 40px;
-    width: 100px;
-    height: 40px;
-    margin: 10px;
-
-    font-size: 1rem;
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #ff839f;
-    background-color: #FFf;
-}
-
-.addButton:hover{
-    scale: calc(1.04);
-    /*border: 3px solid #ff839f;*/
-    font-weight: 600;
-}
-
-
 /*items*/
 .itemsContainer {
     width: 40vw;
-    margin-top: 180px;
+    margin-top: 50px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -131,147 +38,27 @@
     max-height: 68vh; /* 必要に応じて設定 */
     scrollbar-width: none; /* Firefox */
 }
+
 .itemsContainer::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
 }
 
-/*新しいコスメを追加*/
-.addTabContent {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
+.noFavs{
+    margin: 5px auto;: #FFBFC0;
+    color: #807070;
+    font-size: 0.9rem;
+    /*border: 1px solid #ccc;*/
 }
-
-.newCosmeticContainer{
-    position: absolute;
-    top: 25vh;
-    left: 9vw;
-    border: 1px solid #ff839f;
-    border-radius: 20px;
-    background-color:#fff ;
-    width: 400px;
-    margin: 10px;
-    padding: 30px 20px;
-}
-
-.newCosmeticTitle{
-    width: 378px;
-    color: #FF92AD;
-    border-left: 3px solid #FF92AD;
-    padding-left: 10px;
-}
-
-.selectBox{
-    border: none;
-    border-radius: 3px;
-    outline: none;
-    width: 235px;
-    height: 35px;
-    background-color: #F8F0F0;
-    color: #5d5757;
-    margin-left: 10px;
-    margin-bottom: 2px;
-    padding: 0 5px;
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.inputContainer{
-    border: 1px solid #5d5252;
-    display: grid;
-    margin: 20px 50px;
-    padding: 30px 10px;
-}
-
-.inputBox{
-    outline: none;
-    border: none;
-    border-bottom: 1px solid #FF92AD;
-    width: 210px;
-    margin: 10px;
-    padding: 0 0 0 10px;
-    color: #423a3a;
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.inputBoxMini{
-    outline: none;
-    border: none;
-    border-bottom: 1px solid #FF92AD;
-    width: 170px;
-    margin: 10px;
-    padding: 0 0 0 10px;
-    color: #423a3a;
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.inputLabel{
-    color: #4A4444;
-    font-size: 0.8rem;
-}
-
-.inputMemo{
-    outline: none;
-    border: 1px solid #FF92AD;
-    margin: 10px;
-    padding: 5px;
-    color: #423a3a;
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.inputBox::placeholder, .inputBox[type="date"], .inputMemo::placeholder, .inputBoxMini::placeholder, .inputTabBox::placeholder{
-    color: #aaa;
-}
-
-.inputButtonContainer{
-    width: 255px;
-    margin: 10px auto;
-    padding: 5px;
-}
-
-.inputCancel ,.addTabCancel{
-    border: 2px solid #FF92AD;
-    border-radius: 50px;
-    background-color: #fff;
-    width: 110px;
-    margin: 0 5px;
-    padding: 3px 10px;
-
-    color: #ff839f;
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
-.inputAdd, .addTabAdd{
-    width: 110px;
-    background-color: #FF92AD;
-    border: 1px solid #ff839f;
-    border-radius: 50px;
-    margin: 0 5px;
-    padding:3px 10px;
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #fff;
-}
-
 
 /*AddTab*/
 .addTabContainer{
     width: 450px;
+}
+
+.addTabContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .addTabTitle{
@@ -314,18 +101,46 @@
     padding: 10px 10px 5px;
 }
 
-/*button hover*/
-.inputCancel:hover, .addTabCancel:hover{
+.addTabCancel{
+    border: 2px solid #FF92AD;
+    border-radius: 50px;
+    background-color: #fff;
+    width: 110px;
+    margin: 0 5px;
+    padding: 3px 10px;
+
+    color: #ff839f;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.addTabAdd{
+    width: 110px;
+    background-color: #FF92AD;
+    border: 1px solid #ff839f;
+    border-radius: 50px;
+    margin: 0 5px;
+    padding:3px 10px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #fff;
+}
+/*hover*/
+.addTabCancel:hover{
     border: 2px solid #ff839f;
     scale: calc(1.03);
     font-weight: 500;
 }
 
-.inputAdd:hover, .addTabAdd:hover{
+.addTabAdd:hover{
     background-color: #ff839f;
     scale: calc(1.03);
     font-weight: 500;
 }
+
 
 /*responsive*/
 @media (max-width: 1200px) {
