@@ -118,9 +118,10 @@ const MyCosmetics = ({ pageType }) => {
     const handleAddButtonClick = () => setIsAdding(!isAdding);
     const handleCancelAdd = () => setIsAdding(false);
 
+    // search
     const SearchArea = () => {
        return (
-           <div className={s.searchAndAddContainer}>
+           <div className={s.searchAndAddContainer} >
                <div className={s.searchContainer}>
                    <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
                    <input type="search" className={s.searchBox} placeholder="search..."/>

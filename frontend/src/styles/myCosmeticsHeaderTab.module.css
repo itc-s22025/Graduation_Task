@@ -1,0 +1,78 @@
+.all{
+    position: fixed;
+    left: 30vw;
+    background-color: #FF92AD;
+    display: flex;
+    width: 40vw;
+    height: 71px;
+    margin: 0;
+}
+.ul{
+    display: flex;
+}
+
+.tabs{
+    list-style: none;
+    padding: 0;
+
+    margin-right: -80px; /* 前のliと重なる量 */
+}
+
+.tabFirst{
+    outline: none;
+    background: #fff;
+    margin-top: 25px;
+    width: 17vw;
+    height: 65%;
+    border: 1px solid #fff;
+    border-bottom: none;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+
+    /*順番*/
+    z-index: 3;
+
+    /*font*/
+    padding-top: 12px;
+    text-align: center;
+    color: #FF92AD;
+
+}
+
+.tabSecond{
+    outline: none;
+    background: #FFDCDD;
+    margin-top: 25px;
+    width: 17vw;
+    height: 65%;
+    border: #fff 1px solid;
+    border-bottom: none;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+
+    /*順番*/
+    z-index: 2;
+
+    /*font*/
+    padding-top: 12px;
+    text-align: center;
+    color: #FF989A;
+
+}
+
+.tabFirst, .tabSecond{
+    position: relative;
+}
+
+.zIndex1 {
+    z-index: 1;
+    border-bottom: #F8F0F0 2px solid;
+}
+
+.zIndex2 {
+    z-index: 2;
+}
+
+.zIndex3 {
+    z-index: 3;
+}

@@ -39,7 +39,7 @@
     padding-top: 80px;
     padding-bottom: 30px;
     display: flex;
-    /*z-index: 1;*/
+    z-index: 1;
 }
 
 .searchContainer{
