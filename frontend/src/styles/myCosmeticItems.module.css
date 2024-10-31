@@ -158,7 +158,6 @@
 /* edit(...) 押したとき*/
 .editContainer{
     display: flex;
-    /*border: 1px solid blue;*/
     height: 37px;
 }
 
@@ -175,7 +174,6 @@
 }
 
 .editButton, .deleteButton{
-    /*border: 1px solid blue;*/
     border: none;
     outline: none;
     width: 185px;
@@ -196,21 +194,18 @@
     color: #ec022d;
 }
 
-.editButton:hover{
+.editButton:hover, .deleteButton:hover{
     background-color: #F8F0F0;
-    border-right: 1px solid #F8F0F0;
     border-radius: 50px;
 }
 
-.deleteButton:hover{
-    background-color: #F8F0F0;
-    border-radius: 50px;
+.editButton:hover{
+    border-right: 1px solid #F8F0F0;
 }
 
 .noBorder{
-    border-right: 1px solid #F8F0F0;
+    border-right: 1px solid #fff;
 }
-
 
 .closeIsEdit{ /* Xボタン */
     cursor: pointer;
@@ -243,18 +238,19 @@
   transform: translate(-50%,-50%) rotate(-45deg);
 }
 
-/*show edit tab*/
+
+/* 編集画面 */
 .editContent {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    /*border: 1px solid red;*/
+    border: 1px solid red;
 }
+
 .editTitle{
     background-color: #ff92AD;
     color: #fff;
     width: 500px;
-
     padding: 10px 20px;
 }
 

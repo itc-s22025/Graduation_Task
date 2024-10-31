@@ -118,6 +118,19 @@ const MyCosmetics = ({ pageType }) => {
     const handleAddButtonClick = () => setIsAdding(!isAdding);
     const handleCancelAdd = () => setIsAdding(false);
 
+    const SearchArea = () => {
+       return (
+           <div className={s.searchAndAddContainer}>
+               <div className={s.searchContainer}>
+                   <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
+                   <input type="search" className={s.searchBox} placeholder="search..."/>
+                   <button type="button" className={s.searchButton}>Search</button>
+               </div>
+               <button type="button" className={s.addButton} onClick={handleAddButtonClick}>Add</button>
+           </div>
+       )
+    }
+
     const DateInput = () => {
         const [inputType, setInputType] = useState('text');
         return (
@@ -137,6 +150,8 @@ const MyCosmetics = ({ pageType }) => {
     return (
         <MainLayout>
             <div className={s.allContainer}>
+
+                {/*header タブ部分*/}
                 <div className={s.headerContainer}>
                     <p className={s.headerText}>My Cosmetics</p>
                     <HeaderTab
@@ -170,16 +185,10 @@ const MyCosmetics = ({ pageType }) => {
                     <button className={home.addButton} style={{ top: '63px' }} onClick={handleAddClick}>+</button>
                 </div>
 
-                <div className={s.searchAndAddContainer}>
-                    <div className={s.searchContainer}>
-                        <img alt="search_black" src="/search_black.png" className={s.searchImg} />
-                        <input type="search" className={s.searchBox} placeholder="search..." />
-                        <button type="button" className={s.searchButton}>Search</button>
-                    </div>
-                    <button type="button" className={s.addButton} onClick={handleAddButtonClick}>Add</button>
-                </div>
+                {/*search*/}
+                <SearchArea/>
 
-                  {/*タブ追加ボタン押下したとき*/}
+                {/*タブ追加ボタン押下したとき*/}
                     {showAddTab && (
                         <div className={home.addTabOverlay}>
                             <div className={s.addTabContent}>

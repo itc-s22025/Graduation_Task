@@ -39,7 +39,7 @@
     padding-top: 80px;
     padding-bottom: 30px;
     display: flex;
-    z-index: 1;
+    /*z-index: 1;*/
 }
 
 .searchContainer{
@@ -94,6 +94,8 @@
     font-weight: 600;
 }
 
+
+/*add items button*/
 .addButton{
     outline: none;
     border: 2px solid #ff839f;
@@ -116,6 +118,8 @@
     font-weight: 600;
 }
 
+
+/*items*/
 .itemsContainer {
     width: 40vw;
     margin-top: 180px;
