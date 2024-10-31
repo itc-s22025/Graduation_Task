@@ -24,6 +24,7 @@ const Tweet = () => {
 
     return (
         <>
+
             <Tabs>
                 <TabList className={s.all}>
                     <ul className={s.ul}>
@@ -54,7 +55,7 @@ const Tweet = () => {
                     </article>
                 </TabPanel>
             </Tabs>
-
+            
         </>
     );
 };

@@ -1,4 +1,5 @@
 .all{
+    /*position: fixed;*/
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
@@ -15,7 +16,6 @@
     list-style: none;
 
     padding: 0;
-    margin: 0;
 
     margin-right: -80px; /* 前のliと重なる量 */
 }
@@ -100,63 +100,45 @@
 }
 
 
-.add{
-    position: absolute;
-    right: 30vw;
-    background: #FF989A;
-    margin-top: 25px;
-    margin-right: 1px;
-    height: 46px;
-    width: 60px;
-    border: 1px solid #fff;
-    border-bottom: none;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
 
-    /*font*/
-    padding-top: 3px;
-    color: #fff;
-    font-size: 20px;
-}
-
-.addTabOverlay {
+/* /Home 用のスタイル */
+.headerHome{
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5); /* 背景を半透明に */
-    z-index: 1000; /* 上に表示するための z-index */
+    z-index: 1;
 }
 
-.addTabContent {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
+/* /MyCosmetics 用のスタイル */
+.headerMyCosmetics {
+    margin-top: 0;
+    height: 50px;
 }
 
-.buttonCansel{
-    position: relative;
-    bottom: 5px;
-    left: 150px;
-
-    width: 100px;
-    height: 40px;
-
-    z-index: 100;
-
-    background-color: #FFF;
-    border: 2px solid #FF92AD;
-    border-radius: 50px;
-
-    font-size: 1.2rem;
-    color: #FF92AD;
-    font-weight: bold;
+.tabMyCosmetics{
+    /*border: 1px solid red;*/
 }
 
+.tab1MC{
+    /*border: 1px solid red;*/
+    margin-top: 5px;
+    height: 90%;
+}
+
+.tab2MC{
+    /*border: 1px solid blue;*/
+    margin-top: 5px;
+    height: 90%;
+}
+
+.tab3MC{
+    /*border: 1px solid deeppink;*/
+    margin-top: 5px;
+    height: 90%;
+}
+
+.addTabMC{
+    /*border: 1px solid yellow;*/
+    margin-top: 4px;
+}
 
 
 /*responsive*/

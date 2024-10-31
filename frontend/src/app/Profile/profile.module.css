@@ -1,9 +1,20 @@
+.allContainer{
+    position: absolute;
+    left: 30vw;
+}
+
 .header{
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
     height: 180px;
     margin: 0;
+}
+.headerImage {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    /*z-index: 1;*/
 }
 
 .edit {
@@ -29,20 +40,39 @@
     width: 99%;
 }
 
-.banner {
-    position: relative;
-}
-
-.bannerImage {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
 .infoContainer{
     /*border: 1px solid springgreen;*/
     margin-top: 50px;
     margin-bottom: 10px;
+}
+.personal {
+    display: inline-block;
+    position: absolute;
+    top: 13.2vh;
+    left: 2.9vw;
+    width: 50px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #FF92AD;
+    background-color: #F8F4F0;
+    color: #000;
+    text-align: center;
+}
+
+.springText {
+    color: #FFCC92; /* Spring color */
+}
+
+.summerText {
+    color: #66BAFF; /* Summer color */
+}
+
+.autumnText {
+    color: #FF989A; /* Autumn color */
+}
+
+.winterText {
+    color: #9293FF; /* Winter color */
 }
 
 .userName {
@@ -77,6 +107,10 @@
     margin-bottom: 10px;
     padding: 0 5px 0 5px;
 }
+.add {
+    text-decoration: none;
+    color: black;
+}
 
 .follow{
     margin-right: 10px;
@@ -100,7 +134,7 @@
     height: 150px;
     position: absolute;
     top: 12vh;
-    left: 33vw;
+    left: 3vw;
     line-height: 94px;
     background-color: #d0c0c0;
     border: 3px solid #F8F0F0;
@@ -121,6 +155,7 @@
 /*　タブ群　*/
 .tabsContainer{
     margin-top: 5px;
+    margin-left: -21px;
     display: flex;
 }
 

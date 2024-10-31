@@ -1,18 +1,18 @@
 import LeftBar from "@/components/leftbar_for_home";
 import RightBar from "@/components/rightbar_for_home";
-import "../styles/MainLayout.css"
-import Header from "@/components/header";
+import "../styles/MainLayout.css";
+import withAuth from "@/components/withAuth"; // withAuthのインポート
 
-export default function MainLayout({ children })  {
+function MainLayout({ children }) {
   return (
     <div className="left_and_right_bars">
-      <LeftBar/>
-        <div>
-            {/*<AccountHeader />*/}
-            <main>{children}</main>
-        </div>
-      <RightBar/>
+      <LeftBar className="leftBar" />
+      <div>
+        <main>{children}</main>
+      </div>
+      <RightBar className="rightBar" />
     </div>
   );
 }
-import React from 'react';
+
+export default withAuth(MainLayout); // MainLayoutをwithAuthでラップ

@@ -1,36 +1,77 @@
+.allContainer {
+    position: absolute;
+    /*left: 15vw;*/
+}
+
+.allContainer {
+    /*border: 1px solid black;*/
+    position: relative;
+    margin-left: 30vw; /* LeftBarの幅に合わせる */
+    margin-right: 30vw; /* RightBarの幅に合わせる */
+    width: calc(100% - 60vw); /* 両サイドのバーを考慮した幅 */
+    min-height: 100vh;
+}
+
+.searchImg{
+    /*border: 1px solid #007bff;*/
+    position: absolute;
+    top: 9.8vh;
+    left: 4vw;
+    margin: 22px 10px 0 40px;
+    width: 20px;
+    height: 20px;
+}
+
+.searchBox{
+    outline: none;
+    border: 2px solid #FF92AD;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+
+    position: absolute;
+    top: 10vh;
+    left: 8.3vw;
+    height: 40px;
+    width: 350px;
+    margin: 10px 0 10px 10px;
+    padding: 10px 20px 10px 20px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.searchButton{
+    outline: none;
+    border: none;
+    background-color: #FF92AD;
+
+    position: absolute;
+    top: 10vh;
+    right: 8vw;
+    width: 80px;
+    height: 40px;
+    margin: 10px 0 10px 0;
+    padding: 0 5px 0 0;
+
+    font-size: 1rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #fff;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.searchButton:hover{
+    font-weight: 600;
+}
+
 .header {
     display: flex;
-    background-color: #FF92AD;
     width: 45vw;
     height: 80px;
     position: fixed;
-    top: 0;
+    top: 10vh;
     left: 30vw;
-}
-.contener {
-    box-sizing: border-box;
-    top: 2vh;
-    left: 1.5vw;
-    background-color: #FFF;
-    position: relative;
-    border: 1px solid #999;
-    display: block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    height: 2.3em;
-    width: 83%;
-
-}
-.content {
-    width: 100%;
-    border: none;
-    position: relative;
-    outline: none;
-    padding-left: 1rem;
-    color: black;
-    background-color: transparent;
-    height: 2.0em;
-}
-.content:focus {
-    outline: 0;
 }

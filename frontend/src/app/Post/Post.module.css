@@ -1,4 +1,7 @@
 .title {
+    position: absolute;
+    left: 30vw;
+    width: 40vw;
     background-color: #FF92AD;
     color: white;
     padding-top: 30px;

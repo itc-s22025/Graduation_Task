@@ -67,7 +67,8 @@ const Post = () => {
     return (
         <>
             <MainLayout>
-                <h1 className={s.title}>Post</h1>
+
+                <h1 className={s.title}>投稿</h1>
                 <Tweet />
             </MainLayout>
 

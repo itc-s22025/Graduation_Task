@@ -1,16 +1,22 @@
 .all {
     position: fixed;
     right: 0;
-
     background-color: #F8F0F0;
     width: 30vw;
     height: 100vh;
     border-left: 1px solid #D2CCCC;
-
 }
 
-@media (max-width: 1200px) {
+@media screen and (max-width: 1500px){
     .all{
-        width: 0;
+        width: 20vw;
     }
 }
+
+@media screen and (max-width: 1024px) {
+    .all {
+        display: none;
+    }
+}
+
+
