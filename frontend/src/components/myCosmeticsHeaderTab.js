@@ -64,6 +64,40 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
         fetchCosmeticsData();
     }, [currentUserUid]);
 
+
+    // 検索関連
+    const [searchTerm, setSearchTerm] = useState(""); // 検索用の状態を追加
+    const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
+    const handleSearch = async () => {
+        if (!currentUserUid || !searchTerm) return;
+
+        const cosmeticsCollection = collection(db, "MyCosmetics");
+        const cosmeticsQuery = query(
+            cosmeticsCollection,
+            where("user_id", "==", currentUserUid)
+        );
+
+        const cosmeticsSnapshot = await getDocs(cosmeticsQuery);
+        const matchingCosmetics = cosmeticsSnapshot.docs.filter((doc) => {
+            const data = doc.data();
+            // searchTermを含んでいるかチェック
+            return (data.productName && data.productName.includes(searchTerm)) ||  // 商品名
+                (data.brand && data.brand.includes(searchTerm)) ||   // ブランド名
+                (data.cosmeticsType && data.cosmeticsType.includes(searchTerm)) ||  // コスメの種類
+                (data.memo && data.memo.includes(searchTerm)) ; // memo
+        });
+
+        if (matchingCosmetics.length > 0) {
+            alert("ありました");
+            console.log("見つかりました：", cosmeticsCollection);
+        } else {
+            alert("見つかりませんでした");
+        }
+    };
+
+
+
     // コスメ追加ボタン(Add)押したときに出現させる
     const handleAddButtonClick = () => setIsAdding(!isAdding);
     // コスメ追加ボタン(Add)押した後に出現するキャンセルボタン
@@ -159,11 +193,13 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
                 <div className={s.searchAndAddContainer}>
                     <div className={s.searchContainer}>
                         <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
-                        <input type="search" className={s.searchBox} placeholder="search..."/>
-                        <button type="button" className={s.searchButton}>Search</button>
+                        <input type="search" className={s.searchBox} placeholder="search..." value={searchTerm} onChange={handleSearchChange}/>
+                        <button type="button" className={s.searchButton} onClick={handleSearch}>Search</button>
                     </div>
                     <button type="button" className={s.addButton} onClick={handleAddButtonClick}>Add</button>
                 </div>
+
+
 
                 {/* Tab Panels */}
                 <TabPanel>

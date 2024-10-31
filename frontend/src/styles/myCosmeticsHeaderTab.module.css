@@ -82,7 +82,7 @@
 
 /*search*/
 .searchAndAddContainer{
-    /*border: 1px solid #007bff;*/
+    border: 1px solid #007bff;
     background-color: #fff;
     position: relative;
     top: 55px;
@@ -145,6 +145,17 @@
 
 .searchButton:hover{
     font-weight: 600;
+}
+
+.searchHistory {
+    border: #5d5757 1px solid;
+    margin-top: 8px;
+}
+
+.searchHistoryItem {
+    font-size: 14px;
+    color: #666;
+    margin: 4px 0;
 }
 
 
