@@ -22,6 +22,9 @@ const Profile = () => {
     const [icon, setIcon] = useState('defaultIcon.png');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
+    // const [userId, setUserId] = useState('');
+    const [displayId, setDisplayId] = useState('');
+
     const router = useRouter();
 
     const handleFocus = (tabName) => {
@@ -54,7 +57,9 @@ const Profile = () => {
                     headerImage: newHeader,
                     icon: newIcon,
                     name: newUserName,
-                    bio: newBio
+                    bio: newBio,
+                    // Id: user.id,
+                    displayId: displayId,
                 });
 
                 // ステートを更新して即座にUIに反映
@@ -62,6 +67,7 @@ const Profile = () => {
                 setIcon(newIcon);
                 setUsername(newUserName);
                 setBio(newBio);
+                // setDisplayId(displayId);
 
                 alert('Profile updated successfully');
             } catch (error) {
@@ -85,6 +91,9 @@ const Profile = () => {
                     setHeaderImage(data.headerImage || 'defaultHeader.png');
                     setIcon(data.icon || 'defaultIcon.png');
                     setUsername(data.name || 'user ユーザ');
+                    // setUserId(data.id || 'user ID')
+                    setDisplayId(data.displayId || 'User ID not set');
+
                     setBio(data.bio || 'ここにBioが表示されます');
 
                     // Set personal color (extract the fourth character)
@@ -131,7 +140,7 @@ const Profile = () => {
                                 <h2 className={s.userName}>{username}</h2>
 
                                 <div className={s.idAndFollow}>
-                                    <p className={s.userId}>@userID</p>
+                                    <p className={s.userId}>{displayId}</p>
 
 
                                     <div className={s.followContainer}>

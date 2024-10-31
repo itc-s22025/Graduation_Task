@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react';
 import s from './detail.module.css';
 
 import { useRouter } from "next/navigation";
-//firebase
+
 import { auth, db } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {collection, addDoc, doc} from 'firebase/firestore';
+import {collection, setDoc, doc} from 'firebase/firestore';
 
 const Detail = ({ myPC }) => {
   const router = useRouter();
@@ -23,15 +23,14 @@ const Detail = ({ myPC }) => {
 
   const [error, setError] = useState(null);
 
-  //DBに登録
-  const handleSignUp = async (event) => {
-    event.preventDefault();
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+    const handleSignUp = async (event) => {
+      event.preventDefault();
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
       // Firestoreにユーザー情報を保存
-      await addDoc(doc(db, 'users', user.uid),{
+      await setDoc(doc(db, 'users', user.uid),{
         uid: user.uid,
         name,
         email,

@@ -16,10 +16,9 @@ const UpdateInfo = () => {
     const auth = useAuth();
     const db = getFirestore();
     const [showEditModel, setShowEditModel] = useState(false);
+    const [displayId, setDisplayId] = useState("");
 
-    const preventScroll = (e) => {
-        e.preventDefault();
-    };
+    const preventScroll = (e) => e.preventDefault();
 
     const handleEditClick = () => {
         setShowEditModel(true);
@@ -33,30 +32,28 @@ const UpdateInfo = () => {
         window.removeEventListener('touchmove', preventScroll);
     };
 
-    const handleSave = ({ name: newName, id: newId, email: newEmail }) => {
-        setName(newName);
-        setUserId(newId);
-        setEmail(newEmail);
+    const fetchUserData = async () => {
+        const user = auth.currentUser;
+        if (user) {
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                setUserData(data);
+                setName(data.name || 'User');
+                setUserId(data.id || 'User ID');
+                setEmail(data.email || 'Email');
+                setDisplayId(data.displayId || 'User ID');
+            }
+        }
+    };
+
+    const handleSave = async (updatedData) => {
+        await fetchUserData(); // Re-fetch user data from Firebase
         handleCloseEditModal(); // Close modal after saving
     };
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const user = auth.currentUser;
-            if (user) {
-                const docRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    setUserData(data);
-
-                    setName(data.name || 'User');
-                    setUserId(data.uid || 'User ID');
-                    setEmail(data.email || 'Email');
-                }
-            }
-        };
         fetchUserData();
     }, [auth, db]);
 
@@ -69,7 +66,7 @@ const UpdateInfo = () => {
                     <h3 className={s.box}>{name}</h3>
 
                     <h2 className={s.font2}>UserID</h2>
-                    <h3 className={s.box2}>{userId}</h3>
+                    <h3 className={s.box2}>{displayId}</h3>
 
                     <h2 className={s.font3}>Email-Address</h2>
                     <h3 className={s.box3}>{email}</h3>
