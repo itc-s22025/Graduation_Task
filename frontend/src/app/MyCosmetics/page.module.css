@@ -31,7 +31,7 @@
 .searchAndAddContainer{
     /*border: 1px solid #007bff;*/
     background-color: #fff;
-    position: fixed;
+    position: relative;
     top: 115px;
     height: 18vh;
     width: 40vw;
@@ -124,7 +124,7 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     overflow-y: auto; /* スクロールを有効化 */
-    max-height: 65vh; /* 必要に応じて設定 */
+    max-height: 68vh; /* 必要に応じて設定 */
     scrollbar-width: none; /* Firefox */
 }
 .itemsContainer::-webkit-scrollbar {
@@ -267,9 +267,7 @@
 
 /*AddTab*/
 .addTabContainer{
-    /*border: 1px solid red;*/
     width: 450px;
-    /*padding: 10px;*/
 }
 
 .addTabTitle{
@@ -307,12 +305,10 @@
 }
 
 .tabButtonContainer{
-    /*border: 1px solid #007bff;*/
     width: 265px;
     margin: 10px auto;
     padding: 10px 10px 5px;
 }
-
 
 /*button hover*/
 .inputCancel:hover, .addTabCancel:hover{

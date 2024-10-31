@@ -12,16 +12,14 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
     const [editItems, setEditItems] = useState(false);
     const [isFavoriteState, setIsFavoriteState] = useState(isFavorite || false);
     const [updatedData, setUpdatedData] = useState({ cosmeticsType, openDate, brand, productName, quantity, price, memo });
+    const [isHovered, setIsHovered] = useState(false) // isEdit=trueのときのホバー
 
     // 編集ボタンの表示を切り替える
-    const handleEditClick = () => {
-        setIsEdit(prev => !prev);
-    }
+    const handleEditButtonClick = () => { setIsEdit(prev => !prev); }
+
 
     // アイテム編集画面の表示を切り替える
-    const handleEditItemsClick = () => {
-        setEditItems(prev => !prev);
-    }
+    const handleEditItemsClick = () => { setEditItems(prev => !prev); }
 
     // データベースのデータを更新
     const updateCosmetic = async () => {
@@ -98,16 +96,16 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
                             {/* ♡ */}
                             <div className={s.heart} onClick={toggleFavorite}><img src={isFavoriteState ? '/cutie_heart_after_mini.png' : '/cutie_heart_pink.png'} alt="Favorite Heart" /></div>
                             <p className={s.itemType}>{cosmeticsType}</p>
-                            <div className={s.openDayContainer}>
+                            <div className={s.openDateContainer}>
                                 <p className={s.dayText}>開封日：</p>
                                 <p className={s.dayDate}>{openDate}</p>
                             </div>
-                            <div className={s.updateDayContainer}>
+                            <div className={s.updateDateContainer}>
                                 <p className={s.dayText}>更新日：</p>
                                 <p className={s.dayDate}>{updatedDate}</p>
                             </div>
                         </div>
-                        <button type="button" className={s.edit} onClick={handleEditClick}>…</button>
+                        <button type="button" className={s.edit} onClick={handleEditButtonClick}>…</button>
                     </div>
 
                     <div className={s.middleContainer}>
@@ -143,8 +141,11 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
             {/*　...　←押したとき */}
             {isEdit && (
                 <div className={s.editContainer}>
-                    <button type="button" className={s.editButton} onClick={handleEditItemsClick}>編集</button>
-                    <button type="button" className={s.deleteButton} onClick={onDeleteClick}>削除</button>
+                    <div className={s.editButtonContainer}>
+                        <button type="button" className={`${s.editButton} ${isHovered ? s.noBorder : ''}`} onClick={handleEditItemsClick}>編集</button>
+                        <button type="button" className={s.deleteButton} onClick={onDeleteClick} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>削除</button>
+                    </div>
+                    <button type="button" className={s.closeIsEdit} onClick={handleEditButtonClick}/>
                 </div>
             )}
 
