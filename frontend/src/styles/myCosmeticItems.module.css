@@ -155,10 +155,11 @@
 }
 
 
-/* edit(...) 押したとき*/
+/* edit(...) 押したときの編集・削除ボタン*/
 .editContainer{
     display: flex;
     height: 37px;
+    margin-bottom: 10px;
 }
 
 .editButtonContainer{
@@ -244,7 +245,6 @@
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    border: 1px solid red;
 }
 
 .editTitle{

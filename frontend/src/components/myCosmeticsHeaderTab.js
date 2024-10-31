@@ -32,7 +32,6 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
     };
 
 
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUserUid(user ? user.uid : null);
@@ -61,8 +60,6 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
         setCosmeticsData(cosmeticsList);
     };
 
-    // const favoriteItems = cosmeticsData.filter(item => item.isFavorite);
-
     useEffect(() => {
         fetchCosmeticsData();
     }, [currentUserUid]);
@@ -87,7 +84,6 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
                 user_id: currentUserUid,
             });
             alert("新しいコスメが登録されました");
-            await fetchCosmeticsData();
             setFormData({
                 cosmeticsType: '',
                 openDate: '',
@@ -100,6 +96,7 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
                 isFavorite: false,
             });
             setIsAdding(false);
+            await fetchCosmeticsData();
         } catch (error) {
             console.error("Error adding document: ", error);
             alert("コスメの登録中にエラーが発生しました");

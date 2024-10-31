@@ -13,17 +13,7 @@ import MyCosmeticsHeaderTab from "@/components/myCosmeticsHeaderTab";
 const MyCosmetics = () => {
     const [cosmeticsData, setCosmeticsData] = useState([]);
     const [currentUserUid, setCurrentUserUid] = useState(null);
-    const [showAddTab, setShowAddTab] = useState(false);
     const [error, setError] = useState(null);
-
-    const formatDateTime = (date) => {
-        if (!date) return "";
-        const d = date instanceof Timestamp ? date.toDate() : new Date(date);
-        const year = d.getFullYear();
-        const month = ("0" + (d.getMonth() + 1)).slice(-2);
-        const day = ("0" + d.getDate()).slice(-2);
-        return `${year}/${month}/${day}`;
-    };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -62,10 +52,24 @@ const MyCosmetics = () => {
         fetchCosmeticsData();
     }, [currentUserUid]);
 
+
+    // お気に入り登録関連
     const favoriteItems = cosmeticsData.filter(item => item.isFavorite);
 
+    // addTab(+)の出現・キャンセル
+    const [showAddTab, setShowAddTab] = useState(false);
     const handleAddClick = () => setShowAddTab(true);
     const handleCloseAddTab = () => setShowAddTab(false);
+
+    //日付のフォーマット整えるやつ
+    const formatDateTime = (date) => {
+        if (!date) return "";
+        const d = date instanceof Timestamp ? date.toDate() : new Date(date);
+        const year = d.getFullYear();
+        const month = ("0" + (d.getMonth() + 1)).slice(-2);
+        const day = ("0" + d.getDate()).slice(-2);
+        return `${year}/${month}/${day}`;
+    };
 
     return (
         <MainLayout>
