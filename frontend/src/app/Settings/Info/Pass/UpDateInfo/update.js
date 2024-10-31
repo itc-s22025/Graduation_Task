@@ -2,17 +2,16 @@
 
 import s from './upEdit.module.css';
 import { useState } from "react";
-import Link from "next/link";
 import { useAuth } from "@/app/context/AuthProvider";
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import { doc, getDoc, getFirestore, updateDoc, setDoc } from "firebase/firestore";
 
 const UpdatePage = ({ onSave }) => {
     const [newName, setNewName] = useState('');
     const [newId, setNewId] = useState('');
     const [newEmail, setNewEmail] = useState('');
-
     const auth = useAuth();
     const db = getFirestore();
+
 
     const handleSave = async () => {
         try {
@@ -23,6 +22,8 @@ const UpdatePage = ({ onSave }) => {
             }
 
             const userDocRef = doc(db, "users", user.uid);
+
+            // Save data to Firebase
             await updateDoc(userDocRef, {
                 name: newName,
                 id: newId,
@@ -31,7 +32,7 @@ const UpdatePage = ({ onSave }) => {
 
             alert('Account information updated successfully.');
 
-            // Call the onSave callback to pass updated values back to UpdateInfo
+            // Call the onSave callback with updated data
             if (typeof onSave === 'function') {
                 onSave({ name: newName, id: newId, email: newEmail });
             }
