@@ -24,38 +24,38 @@ const Tweet = () => {
 
     return (
         <>
-            <div className={s.allContainer}>
-                <Tabs>
-                    <TabList className={s.all}>
-                        <ul className={s.ul}>
-                            <Tab
-                                className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''}`}
-                                onFocus={() => handleFocus('tabFirst')}
-                                onClick={() =>  handleTabClick('tabFirst')}
-                                tabIndex={0}>投稿
-                            </Tab>
 
-                            <Tab
-                                className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
-                                onFocus={() => handleFocus('tabSecond')}
-                                onClick={() => handleTabClick('tabSecond')}
-                                tabIndex={0}>レビュー投稿
-                            </Tab>
+            <Tabs>
+                <TabList className={s.all}>
+                    <ul className={s.ul}>
+                        <Tab
+                            className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''}`}
+                            onFocus={() => handleFocus('tabFirst')}
+                            onClick={() =>  handleTabClick('tabFirst')}
+                            tabIndex={0}>投稿
+                        </Tab>
 
-                        </ul>
-                    </TabList>
+                        <Tab
+                            className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
+                            onFocus={() => handleFocus('tabSecond')}
+                            onClick={() => handleTabClick('tabSecond')}
+                            tabIndex={0}>レビュー投稿
+                        </Tab>
 
-                    <TabPanel>
-                        <article>
-                        </article>
-                    </TabPanel>
+                    </ul>
+                </TabList>
 
-                    <TabPanel>
-                        <article>
-                        </article>
-                    </TabPanel>
-                </Tabs>
-            </div>
+                <TabPanel>
+                <article>
+                    </article>
+                </TabPanel>
+
+                <TabPanel>
+                    <article>
+                    </article>
+                </TabPanel>
+            </Tabs>
+            
         </>
     );
 };
