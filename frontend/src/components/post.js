@@ -34,19 +34,17 @@ const Post = () => {
     }, []);
 
     // いいね機能
-    const [likedPosts, setLikedPosts] = useState(new Set());
-    // いいね機能の変更
     const handleLikeClick = async (postId) => {
         const postIndex = posts.findIndex(post => post.id === postId);
         const post = posts[postIndex];
         const alreadyLiked = post.likedBy.includes(currentUserUid);
+        console.log('likedBy:', post.likedBy);
+
         try {
             if (alreadyLiked) {
-                // すでにいいねしている場合、DBから削除
-                // likesコレクションからpostIdとuserIdに基づいてドキュメントを取得
+                // すでにいいねしている場合、DBからドキュメントを削除
                 const likesQuery = query(collection(db, "likes"), where("postId", "==", postId), where("userId", "==", currentUserUid));
                 const querySnapshot = await getDocs(likesQuery);
-
                 querySnapshot.forEach((doc) => {
                     deleteDoc(doc.ref); // 取得したドキュメントを削除
                 });
@@ -56,27 +54,32 @@ const Post = () => {
                     updatedPosts[postIndex].likedBy = updatedPosts[postIndex].likedBy.filter(uid => uid !== currentUserUid);
                     return updatedPosts;
                 });
+
                 console.log("Post unliked!");
+
             } else {
-                // いいねしていない場合、DBに追加
-                await addDoc(collection(db, "likes"), {
-                    postId: postId,
-                    userId: currentUserUid,
-                    timestamp: new Date(),
-                });
-                setPosts(prevPosts => {
-                    const updatedPosts = [...prevPosts];
-                    updatedPosts[postIndex].likedBy.push(currentUserUid);
-                    return updatedPosts;
-                });
-                console.log("Post liked!");
+                // いいねしていない場合のみDBに追加
+                if (!post.likedBy.includes(currentUserUid)) {
+                    await addDoc(collection(db, "likes"), {
+                        postId: postId,
+                        userId: currentUserUid,
+                        timestamp: new Date(),
+                    });
+                    setPosts(prevPosts => {
+                        const updatedPosts = [...prevPosts];
+                        // 追加する前に、再度 likedBy 配列に重複がないか確認
+                        if (!updatedPosts[postIndex].likedBy.includes(currentUserUid)) {
+                            updatedPosts[postIndex].likedBy.push(currentUserUid);
+                        }
+                        return updatedPosts;
+                    });
+                    console.log("Post liked!");
+                }
             }
         } catch (error) {
             console.error("Error toggling like: ", error);
         }
     };
-
-
 
 
 
@@ -107,7 +110,7 @@ const Post = () => {
 
                                 <div className={s.reactionContainer}>
                                     <div className={s.flex}>
-                                        <img src="/comment.png" className={s.reply} onClick={handleEachPostClick}/>
+                                        <img alt="リプライアイコン" src="/comment.png" className={s.reply} onClick={handleEachPostClick}/>
                                         <p className={s.reactionText}>0</p>
                                     </div>
                                     <div className={s.flex}>
@@ -116,6 +119,7 @@ const Post = () => {
                                     </div>
                                     <div className={s.flex}>
                                         <img
+                                            alt="いいねアイコン"
                                             src={post.likedBy.includes(currentUserUid) ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
                                             className={s.like}
                                             onClick={() => handleLikeClick(post.id)}
