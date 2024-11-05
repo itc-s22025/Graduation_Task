@@ -3,7 +3,7 @@ import s from '@/styles/post.module.css';
 import EachPost from "@/components/eachPost";
 //firebase
 import { auth, db } from "@/firebase"; // Firebase Firestoreをインポート
-import { collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 const Post = () => {
@@ -35,22 +35,30 @@ const Post = () => {
 
     // いいね機能
     const [likedPosts, setLikedPosts] = useState(new Set());
+    // いいね機能の変更
     const handleLikeClick = async (postId) => {
         const postIndex = posts.findIndex(post => post.id === postId);
         const post = posts[postIndex];
         const alreadyLiked = post.likedBy.includes(currentUserUid);
-
         try {
             if (alreadyLiked) {
-                await deleteDoc(doc(db, "likes", `${postId}_${currentUserUid}`));
+                // すでにいいねしている場合、DBから削除
+                // likesコレクションからpostIdとuserIdに基づいてドキュメントを取得
+                const likesQuery = query(collection(db, "likes"), where("postId", "==", postId), where("userId", "==", currentUserUid));
+                const querySnapshot = await getDocs(likesQuery);
+
+                querySnapshot.forEach((doc) => {
+                    deleteDoc(doc.ref); // 取得したドキュメントを削除
+                });
+
                 setPosts(prevPosts => {
                     const updatedPosts = [...prevPosts];
                     updatedPosts[postIndex].likedBy = updatedPosts[postIndex].likedBy.filter(uid => uid !== currentUserUid);
                     return updatedPosts;
                 });
-                setLikedPosts(prev => new Set([...prev].filter(id => id !== postId)));
                 console.log("Post unliked!");
             } else {
+                // いいねしていない場合、DBに追加
                 await addDoc(collection(db, "likes"), {
                     postId: postId,
                     userId: currentUserUid,
@@ -61,13 +69,15 @@ const Post = () => {
                     updatedPosts[postIndex].likedBy.push(currentUserUid);
                     return updatedPosts;
                 });
-                setLikedPosts(prev => new Set(prev).add(postId));
                 console.log("Post liked!");
             }
         } catch (error) {
             console.error("Error toggling like: ", error);
         }
     };
+
+
+
 
 
 
