@@ -88,9 +88,18 @@ const Post = () => {
     };
 
     // 表示関連
-    const handleEachPostClick = () => { setShowEachPost(true); };
+    // showEachPost
+    const [selectedPost, setSelectedPost] = useState(null);
+    const handleEachPostClick = (post) => {
+        setSelectedPost(post);  // クリックした投稿のデータを設定
+        setShowEachPost(true);  // `EachPost` を表示
+    };
+
     const handleReportButtonClick = () => { setShowReport(prev => !prev); };
     const handleCloseEachPost = () => { setShowEachPost(false); };
+
+
+
 
     return (
         <div className={s.allContainer}>
@@ -107,7 +116,7 @@ const Post = () => {
                                 </div>
                                 <button type="button" className={s.editButton} onClick={handleReportButtonClick}>…</button>
                             </div>
-                            <p className={s.content} onClick={handleEachPostClick}>{post.tweet}</p>
+                            <p className={s.content} onClick={() => handleEachPostClick(post)}>{post.tweet}</p>
                             {post.imageUrl && <img src={post.imageUrl} alt="投稿画像" className={s.image} />}
                             <div className={s.reactionContainer}>
                                 <div className={s.flex}>
@@ -135,6 +144,30 @@ const Post = () => {
                     </div>
                 </div>
             ))}
+
+            {/*ReportButton*/}
+                {showReport && (
+                    <div className={s.reportAllContainer}>
+                        <button type="button" onClick={handleReportButtonClick} className={s.closeReportButton}/>
+                        <div className={s.reportContainer}>
+                            <button type="button" className={s.reportPostButton}>ポストを報告</button>
+                            <button type="button" className={s.reportUserButton}>ユーザーを報告</button>
+                        </div>
+                    </div>
+                )}
+
+            {/*EachPostクリックしたとき*/}
+            {showEachPost && selectedPost && (
+                <div className={s.eachPostContainer}>
+                    <div className={s.headerContainer}>
+                        <button type="button" className={s.backButton} onClick={handleCloseEachPost}>←</button>
+                        <h1 className={s.headerTitle}>Post</h1>
+                        <button type="button" className={s.closeEachPost} onClick={handleCloseEachPost}/>
+                    </div>
+                    <EachPost post={selectedPost} /> {/* 選択された投稿データを渡す */}
+                </div>
+            )}
+
         </div>
     );
 };
