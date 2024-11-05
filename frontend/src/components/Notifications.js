@@ -1,6 +1,7 @@
 "use client";
 
-import s from '@/styles/tweet.module.css';
+import { useEffect } from 'react';
+import s from '../styles/Notification.module.css';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -16,37 +17,38 @@ const Tweet = () => {
 
     const handleTabClick = (tab) => {
         if (tab === 'tabFirst') {
-            router.push('/Post');
-       } else if (tab === 'tabSecond') {
-            router.push('/ReviewPost');
+            router.push('/Notifications/ALL');
+        } else if (tab === 'tabSecond') {
+            router.push('/Notifications/Following');
         }
     }
 
     return (
         <>
+            <h1 className={s.title}>通  知</h1>
 
-            <Tabs className={s.allContainer}>
+            <Tabs>
                 <TabList className={s.all}>
                     <ul className={s.ul}>
                         <Tab
                             className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''}`}
                             onFocus={() => handleFocus('tabFirst')}
-                            onClick={() =>  handleTabClick('tabFirst')}
-                            tabIndex={0}>投稿
+                            onClick={() => handleTabClick('tabFirst')}
+                            tabIndex={0}>ALL
                         </Tab>
 
                         <Tab
                             className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
                             onFocus={() => handleFocus('tabSecond')}
                             onClick={() => handleTabClick('tabSecond')}
-                            tabIndex={0}>レビュー投稿
+                            tabIndex={0}>Following
                         </Tab>
 
                     </ul>
                 </TabList>
 
                 <TabPanel>
-                <article>
+                    <article>
                     </article>
                 </TabPanel>
 
@@ -55,7 +57,7 @@ const Tweet = () => {
                     </article>
                 </TabPanel>
             </Tabs>
-            
+
         </>
     );
 };
