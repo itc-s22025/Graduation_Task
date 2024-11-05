@@ -24,8 +24,10 @@
 }
 
 .infoContainer{
+    /*border: 1px solid blue;*/
     display: flex;
     margin-top: 8px;
+    width: 520px;
     height: 50px;
 }
 
@@ -43,21 +45,27 @@
 }
 
 .name{
+    /*border: 1px solid springgreen;*/
     color: #4A4444;
     font-size: 1.3rem;
 
+    max-width: 150px;
     margin-top: 6px;
     margin-left: 10px;
 }
 
 .userID{
+    /*border: 1px solid hotpink;*/
     color: #6E665C;
 
+    width: 200px;
     margin-top: 10px;
     margin-left: 10px;
 }
 
 .time{
+    /*border: 1px solid red;*/
+    width: 150px;
     color: #4A4444;
 
     margin-top: 10px;
@@ -82,7 +90,7 @@
     outline: none;
     background-color: #fff;
     margin-top: 10px;
-    margin-left: 14vw;
+    /*margin-left: 10vw;*/
     height: 30px;
     width: 30px;
     padding-bottom: 10px;

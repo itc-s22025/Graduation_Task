@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation";
 import Tweet from "../../components/tweet";
 import MainLayout from "../../components/MainLayout";
 import s from "./Post.module.css";
-import { db, storage, auth } from "../../firebase";  // Firebase FirestoreとStorageをインポート
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db, storage, auth } from "@/firebase";  // Firebase FirestoreとStorageをインポート
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const Post = () => {
     const router = useRouter();
+
     const [tweet, setTweet] = useState('');
     const [name, setName] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
@@ -22,6 +23,7 @@ const Post = () => {
     const inputRef = useRef(null);
 
     const handleTweetChange = (event) => {
+        // content 文字数制限100文字
         const inputText = event.target.value;
         const maxLength = 100;
         if (inputText.length <= maxLength) {
@@ -35,52 +37,69 @@ const Post = () => {
         }
     };
 
+    //post
     const handleSubmit = async () => {
-        if (!tweet.trim()) return;
+    if (!tweet.trim()) return;
 
-        try {
-            const user = getAuth().currentUser;
-            if (!user) {
-                console.error("ユーザーがサインインしていません");
-                return;
-            }
-
-            let imageUrl = null;
-
-            // 画像が選択されている場合はStorageにアップロード
-            if (selectedImage) {
-                const imageRef = ref(storage, `images/${selectedImage.name}`);
-                const response = await fetch(`/api/proxy/v0/b/${yourBucket}/o?name=${encodeURIComponent(yourImageName)}`, {
-                    method: 'POST',
-                    // 他のオプションを追加
-                });
-
-                await uploadBytes(imageRef, selectedImage);
-                imageUrl = await getDownloadURL(imageRef);
-            }
-
-            // Firestoreに投稿を保存
-            await addDoc(collection(db, "posts"), {
-                tweet,
-                name: name || "Anonymous",
-                imageUrl: imageUrl,
-                pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
-                timestamp: serverTimestamp(),
-                uid: user.uid,
-            });
-
-            // 投稿後のリセット
-            setTweet('');
-            setSelectedImage(null);
-            setPollVisible(false);
-            setPollOptions(["", ""]);
-
-            // Home画面に遷移
-            await router.push('/Home');
-        } catch (error) {
-            console.error("投稿の保存に失敗しました:", error);
+    try {
+        const user = getAuth().currentUser;
+        if (!user) {
+            console.error("ユーザーがサインインしていません");
+            return;
         }
-    };
+
+        // usersコレクションから現在のユーザーのデータを取得
+        const usersCollection = collection(db, "users");
+        const q = query(usersCollection, where("uid", "==", user.uid));
+        const userSnapshot = await getDocs(q);
+
+        let userName = "Anonymous"; // デフォルトの名前
+        if (!userSnapshot.empty) {
+            userSnapshot.forEach((doc) => {
+                userName = doc.data().name; // ユーザー名を取得
+            });
+        }
+
+        let imageUrl = null;
+
+        // 画像が選択されている場合はStorageにアップロード
+        if (selectedImage) {
+            const imageRef = ref(storage, `images/${selectedImage.name}`);
+            await uploadBytes(imageRef, selectedImage);
+            imageUrl = await getDownloadURL(imageRef);
+        }
+
+        // Firestoreに投稿を保存し、生成されたIDを取得
+        const postDocRef = await addDoc(collection(db, "posts"), {
+            tweet,
+            name: userName, // 取得したユーザー名を使用
+            imageUrl: imageUrl,
+            pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
+            timestamp: serverTimestamp(),
+            uid: user.uid,
+            replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
+            likesCount: '',  //いいねの数
+            likedUsers: ''  //いいねしたユーザ
+        });
+
+        // 生成されたポストのIDを確認したいときはconsole見てね
+        const postId = postDocRef.id;
+        console.log("新しいポストのID:", postId);
+
+        // 投稿後のリセット
+        setTweet('');
+        setSelectedImage(null);
+        setPollVisible(false);
+        setPollOptions(["", ""]);
+
+        alert('投稿しました')
+        // Home画面に遷移
+        await router.push('/Home');
+    } catch (error) {
+        console.error("投稿の保存に失敗しました:", error);
+    }
+};
+
 
     const handlePollOptionChange = (index, value) => {
         const updatedOptions = [...pollOptions];
