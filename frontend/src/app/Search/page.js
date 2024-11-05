@@ -6,6 +6,7 @@ import s from './search.module.css';  // CSSモジュール
 import AccountHeader from "@/components/AccountHeader";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
+import Post from "@/components/post";
 
 const Search = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -75,16 +76,35 @@ const Search = () => {
     };
 
     // 検索を実行する関数
-    const handleSearch = () => {
+    const handleSearch = async () => {
         if (searchKeyword.trim() !== '') {
-            const results = allPosts.filter(post =>
-                (post.content && post.content.includes(searchKeyword)) ||
-                (post.user && post.user.includes(searchKeyword))
-            );
-            setFilteredPosts(results);
-            saveSearchHistory(searchKeyword);
+            try {
+                const postsRef = collection(db, "posts");
+                const querySnapshot = await getDocs(postsRef);
+                const postsData = querySnapshot.docs.map(doc => doc.data());
+
+                // 検索結果をフィルタリング
+                const results = postsData.filter(post =>
+                    (post.name && post.name.includes(searchKeyword)) ||
+                    (post.tweet && post.tweet.includes(searchKeyword))
+                );
+
+                // 検索結果を表示
+                if (results.length > 0) {
+                    setFilteredPosts(results); // 検索結果をセット
+                } else {
+                    setFilteredPosts([]); // 結果が見つからなかった場合は空にする
+                }
+
+                // 検索履歴に追加
+                saveSearchHistory(searchKeyword);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
         }
     };
+
+
 
     return (
         <>
@@ -131,12 +151,19 @@ const Search = () => {
 
                     {/* 検索結果を表示 */}
                     <div className={s.resultsContainer}>
-                        {filteredPosts.map((post, index) => (
-                            <div key={index} className={s.resultPost}>
-                                <p>{post.user}: {post.content}</p>
-                            </div>
-                        ))}
+                        {filteredPosts.length > 0 ? (filteredPosts.map((post, index) => (
+                            <>
+                                <div key={index} className={s.resultPost}>
+                                    <p><strong>{post.name}:</strong> {post.tweet}</p>
+                                </div>
+                            </>
+
+                            ))
+                        ) : (
+                            <p className={s.noResults}>結果が見つかりませんでした。</p>
+                        )}
                     </div>
+
                 </div>
             </MainLayout>
         </>
