@@ -9,6 +9,7 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import {useAuth} from "@/app/context/AuthProvider";
 import Edit from '@/app/Profile/edit'
 import Link from "next/link";
+import Post from "@/components/post";
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
@@ -157,7 +158,7 @@ const Profile = () => {
 
                         <TabPanel>
                             <article>
-                                <p>posts</p>
+                               <Post />
                             </article>
                         </TabPanel>
 
