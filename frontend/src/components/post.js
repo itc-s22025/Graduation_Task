@@ -34,11 +34,10 @@ const Post = () => {
     }, []);
 
     // いいね機能
-    // const [likedPosts, setLikedPosts] = useState(new Set());
+    const [likedPosts, setLikedPosts] = useState(new Set());
     const handleLikeClick = async (postId) => {
         const postIndex = posts.findIndex(post => post.id === postId);
         const post = posts[postIndex];
-
         const alreadyLiked = post.likedBy.includes(currentUserUid);
 
         try {
@@ -49,7 +48,7 @@ const Post = () => {
                     updatedPosts[postIndex].likedBy = updatedPosts[postIndex].likedBy.filter(uid => uid !== currentUserUid);
                     return updatedPosts;
                 });
-                // setLikedPosts(prev => new Set([...prev].filter(id => id !== postId)));
+                setLikedPosts(prev => new Set([...prev].filter(id => id !== postId)));
                 console.log("Post unliked!");
             } else {
                 await addDoc(collection(db, "likes"), {
@@ -62,12 +61,14 @@ const Post = () => {
                     updatedPosts[postIndex].likedBy.push(currentUserUid);
                     return updatedPosts;
                 });
-                // setLikedPosts(prev => new Set(prev).add(postId));
+                setLikedPosts(prev => new Set(prev).add(postId));
                 console.log("Post liked!");
             }
         } catch (error) {
             console.error("Error toggling like: ", error);
-        }    };
+        }
+    };
+
 
 
     //表示関連
@@ -104,7 +105,11 @@ const Post = () => {
                                         <p className={s.reactionText}>0</p>
                                     </div>
                                     <div className={s.flex}>
-                                        <div className={s.like} onClick={() => handleLikeClick(post.id)} />
+                                        <img
+                                            src={post.likedBy.includes(currentUserUid) ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
+                                            className={s.like}
+                                            onClick={() => handleLikeClick(post.id)}
+                                        />
                                         <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
                                     </div>
                                     <div className={s.flex}>
@@ -115,6 +120,7 @@ const Post = () => {
                         </div>
                     </div>
                 ))}
+
 
                 {/* Report Button */}
                 {showReport && (

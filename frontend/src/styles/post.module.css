@@ -141,19 +141,23 @@
 
 /*like*/
 .like {
-    background-image: url("/cutie_heart_before.png");
+    /*background-image: url("/cutie_heart_before.png");*/
     width: 20px;
     height: 20px;
     margin: 4px 2px 0 5vw;
     background-size: cover;
 }
 
-.like.liked {
-    background-image: url("/cutie_heart_after.png");
+.likeActive {
+    /*background-image: url("/cutie_heart_after.png");*/
+    width: 20px;
+    height: 20px;
+    margin: 4px 2px 0 5vw;
+    background-size: cover;
 }
 
-.like:hover, .like:focus {
-    background-image: url("/cutie_heart_after.png");
+.like:hover{
+    /*background-image: url("/cutie_heart_after.png");*/
 }
 
 
