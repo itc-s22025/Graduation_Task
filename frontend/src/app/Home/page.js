@@ -34,8 +34,8 @@ const Home = ({pageType}) => {
                     <button className={`${s.addButton} ${addTab}`} onClick={handleAddClick}>+</button>
                 </div>
 
-                <PostButton/>
 
+                <PostButton/>
 
                 {/* タブ追加ボタン押したとき */}
                 {showAddTab && (
