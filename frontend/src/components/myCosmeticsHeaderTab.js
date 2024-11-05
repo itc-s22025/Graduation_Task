@@ -2,16 +2,20 @@
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {useEffect, useState} from "react";
+//styles
 import s from "@/styles/myCosmeticsHeaderTab.module.css";
 import home from "@/app/Home/page.module.css";
+//firebase
 import {addDoc, collection, getDocs, query, Timestamp, where} from "firebase/firestore";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "@/firebase";
 
-const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, secondTabContent, pageType }) => {
 
+const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, secondTabContent }) => {
     const [cosmeticsData, setCosmeticsData] = useState([]);
+    //ログインしているユーザ
     const [currentUserUid, setCurrentUserUid] = useState(null);
+    //新規コスメ登録
     const [isAdding, setIsAdding] = useState(false);
     const [formData, setFormData] = useState({
         cosmeticsType: '',
@@ -25,12 +29,11 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
         isFavorite: false,
     });
 
-    // タブ部分
+    // タブ部分　UI
     const [focusedTab, setFocusedTab] = useState(''); // state
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
-
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -39,6 +42,7 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
         return () => unsubscribe();
     }, []);
 
+    //DBからマイコスメ取得
     const fetchCosmeticsData = async () => {
         if (!currentUserUid) return;
 
@@ -68,7 +72,7 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
     // 検索関連
     const [searchTerm, setSearchTerm] = useState(""); // 検索用の状態を追加
     const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
+    // 検索
     const handleSearch = async () => {
         if (!currentUserUid || !searchTerm) return;
 
@@ -90,13 +94,13 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
 
         if (matchingCosmetics.length > 0) {
             alert("ありました");
-            console.log("見つかりました：", cosmeticsCollection);
+            matchingCosmetics.forEach((doc) => {
+                console.log(doc.data()); // ポストの内容を表示
+            });
         } else {
             alert("見つかりませんでした");
         }
     };
-
-
 
     // コスメ追加ボタン(Add)押したときに出現させる
     const handleAddButtonClick = () => setIsAdding(!isAdding);

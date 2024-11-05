@@ -82,7 +82,7 @@
 
 /*search*/
 .searchAndAddContainer{
-    border: 1px solid #007bff;
+    /*border: 1px solid #007bff;*/
     background-color: #fff;
     position: relative;
     top: 55px;
