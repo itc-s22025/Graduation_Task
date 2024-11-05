@@ -1,3 +1,112 @@
+/* search.module.css */
+
+.searchImg{
+    /*border: 1px solid #007bff;*/
+    position: absolute;
+    top: 9.8vh;
+    left: 4vw;
+    margin: 22px 10px 0 40px;
+    width: 20px;
+    height: 20px;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    position: relative;  /* 履歴をsearchボックスの下に表示するため */
+}
+
+.searchBox {
+    padding: 8px 12px;
+    font-size: 16px;
+    width: 300px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+    margin-right: 10px;
+}
+
+.searchButton {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* 履歴表示エリア */
+.historyContainer {
+    position: absolute;
+    top: 18vh; /* searchBoxの下に配置 */
+    left: 9vw;
+    width: 46.5%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.historyContainer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.historyItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.historyItem:hover {
+    background-color: #f8f8f8;
+}
+
+.historyKeyword {
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+
+.historyKeyword:hover {
+    color: #007BFF;
+}
+
+/* 履歴削除ボタン */
+.historyDelete {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.historyDelete:hover {
+    color: #FF6347;  /* 赤色 */
+}
+
+/* 検索結果エリア */
+.resultsContainer {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.resultPost {
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 .allContainer {
     position: absolute;
     /*left: 15vw;*/
@@ -15,7 +124,7 @@
 .searchImg{
     /*border: 1px solid #007bff;*/
     position: absolute;
-    top: 9.8vh;
+    top: 5vh;
     left: 4vw;
     margin: 22px 10px 0 40px;
     width: 20px;
@@ -29,7 +138,7 @@
     border-bottom-left-radius: 50px;
 
     position: absolute;
-    top: 10vh;
+    top: 5vh;
     left: 8.3vw;
     height: 40px;
     width: 350px;
@@ -42,13 +151,13 @@
 }
 
 .searchButton{
+    position: absolute;
+    top: 5vh;
+    left: 27vw;
     outline: none;
     border: none;
     background-color: #FF92AD;
 
-    position: absolute;
-    top: 10vh;
-    right: 8vw;
     width: 80px;
     height: 40px;
     margin: 10px 0 10px 0;

@@ -1,25 +1,90 @@
 'use client';
 
 import MainLayout from "@/components/MainLayout";
-import React, {useState} from "react";
-import s from './search.module.css'
+import React, { useEffect, useState } from "react";
+import s from './search.module.css';  // CSSモジュール
 import AccountHeader from "@/components/AccountHeader";
-import Post from "@/app/Post/page";
-
-
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase";
 
 const Search = () => {
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [filteredPosts, setFilteredPosts] = useState([]);
+    const [allPosts, setAllPosts] = useState([]);
+    const [searchHistory, setSearchHistory] = useState([]);
 
-        const [searchKeyword, setSearchKeyword] = useState('');
-        const [filteredPosts, setFilteredPosts] = useState([]); // Store filtered posts
-        const [allPosts, setAllPosts] = useState([]); // This should be initialized with actual posts
+    // Firebaseから投稿データを取得
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const postsRef = collection(db, "posts");
+                const querySnapshot = await getDocs(postsRef);
+                const postsData = querySnapshot.docs.map(doc => doc.data());
+                setAllPosts(postsData);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        };
+        fetchPosts();
+        loadSearchHistory();
+    }, []);
 
-        const handleSearch = () => {
+    // 検索結果をフィルタリング
+    useEffect(() => {
+        const results = allPosts.filter(post =>
+            (post.content && post.content.includes(searchKeyword)) ||
+            (post.user && post.user.includes(searchKeyword))
+        );
+        setFilteredPosts(results);
+    }, [searchKeyword, allPosts]);
+
+    // 検索履歴を保存
+    const saveSearchHistory = (keyword) => {
+        if (keyword) {
+            const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+            if (!history.includes(keyword)) {
+                history.push(keyword);
+                localStorage.setItem("searchHistory", JSON.stringify(history));
+                setSearchHistory(history);
+            }
+        }
+    };
+
+    // ローカルストレージから検索履歴を読み込み
+    const loadSearchHistory = () => {
+        const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+        setSearchHistory(history);
+    };
+
+    // 履歴項目をクリックして検索ボックスに入力
+    const handleHistoryClick = (keyword) => {
+        setSearchKeyword(keyword);
+    };
+
+    // 履歴項目を削除
+    const handleDeleteHistory = (keyword) => {
+        const updatedHistory = searchHistory.filter(item => item !== keyword);
+        setSearchHistory(updatedHistory);
+        localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
+    };
+    // Enterキーを押したときに検索を実行
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+    // 検索を実行する関数
+    const handleSearch = () => {
+        if (searchKeyword.trim() !== '') {
             const results = allPosts.filter(post =>
-                post.content.includes(searchKeyword) || post.user.includes(searchKeyword)
+                (post.content && post.content.includes(searchKeyword)) ||
+                (post.user && post.user.includes(searchKeyword))
             );
             setFilteredPosts(results);
-        };
+            saveSearchHistory(searchKeyword);
+        }
+    };
 
     return (
         <>
@@ -27,18 +92,44 @@ const Search = () => {
                 <div className={s.allContainer}>
                     <AccountHeader title="Search"/>
                     <div className={s.searchContainer}>
-                    <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
-                    <input
-                        type="search"
-                        className={s.searchBox}
-                        placeholder="search..."
-                        value={searchKeyword}
-                        onChange={e => setSearchKeyword(e.target.value)}
-                    />
-                    <button type="button" className={s.searchButton} onClick={handleSearch}>Search</button>
+                        <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
+                        <input
+                            type="search"
+                            className={s.searchBox}
+                            placeholder="search..."
+                            value={searchKeyword}
+                            onChange={e => setSearchKeyword(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                        />
+                        <button type="button" className={s.searchButton} onClick={handleSearch}>Search</button>
 
                     </div>
 
+                    {/* 検索履歴を表示 */}
+                    {searchKeyword && (
+                        <div className={s.historyContainer}>
+                            <ul>
+                                {searchHistory.map((keyword, index) => (
+                                    <li key={index} className={s.historyItem}>
+                                        <span
+                                            className={s.historyKeyword}
+                                            onClick={() => handleHistoryClick(keyword)}
+                                        >
+                                            {keyword}
+                                        </span>
+                                        <button
+                                            className={s.historyDelete}
+                                            onClick={() => handleDeleteHistory(keyword)}
+                                        >
+                                            ×
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* 検索結果を表示 */}
                     <div className={s.resultsContainer}>
                         {filteredPosts.map((post, index) => (
                             <div key={index} className={s.resultPost}>
@@ -46,11 +137,10 @@ const Search = () => {
                             </div>
                         ))}
                     </div>
-
                 </div>
             </MainLayout>
-
         </>
-    )
+    );
 }
+
 export default Search;
