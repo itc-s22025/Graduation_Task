@@ -1,15 +1,24 @@
-"use client";
-
-import s from '@/styles/post.module.css';
 import { useEffect, useState } from "react";
-import { db } from "../firebase";  // Firebase Firestoreをインポート
-import { collection, onSnapshot } from "firebase/firestore";
+import s from '@/styles/post.module.css';
 import EachPost from "@/components/eachPost";
+//firebase
+import { auth, db } from "@/firebase"; // Firebase Firestoreをインポート
+import { collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Post = () => {
     const [posts, setPosts] = useState([]);
     const [showEachPost, setShowEachPost] = useState(false);
     const [showReport, setShowReport] = useState(false);
+
+    // ログインしているユーザ
+    const [currentUserUid, setCurrentUserUid] = useState(null);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUserUid(user ? user.uid : null);
+        });
+        return () => unsubscribe();
+    }, []);
 
     useEffect(() => {
         // Firestoreからリアルタイムで投稿を取得
@@ -17,24 +26,54 @@ const Post = () => {
             const postsData = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
+                likedBy: doc.data().likedBy || [], // likedByをFirestoreから取得
             }));
             setPosts(postsData);  // Firestoreから取得したデータをセット
         });
-
         return () => unsubscribe();  // クリーンアップ
     }, []);
 
-    const handleEachPostClick = () => {
-        setShowEachPost(true);
-    };
+    // いいね機能
+    // const [likedPosts, setLikedPosts] = useState(new Set());
+    const handleLikeClick = async (postId) => {
+        const postIndex = posts.findIndex(post => post.id === postId);
+        const post = posts[postIndex];
 
-    const handleReportButtonClick = () => {
-        setShowReport(prev => !prev);
-    };
+        const alreadyLiked = post.likedBy.includes(currentUserUid);
 
-    const handleCloseEachPost = () => {
-        setShowEachPost(false);
-    };
+        try {
+            if (alreadyLiked) {
+                await deleteDoc(doc(db, "likes", `${postId}_${currentUserUid}`));
+                setPosts(prevPosts => {
+                    const updatedPosts = [...prevPosts];
+                    updatedPosts[postIndex].likedBy = updatedPosts[postIndex].likedBy.filter(uid => uid !== currentUserUid);
+                    return updatedPosts;
+                });
+                // setLikedPosts(prev => new Set([...prev].filter(id => id !== postId)));
+                console.log("Post unliked!");
+            } else {
+                await addDoc(collection(db, "likes"), {
+                    postId: postId,
+                    userId: currentUserUid,
+                    timestamp: new Date(),
+                });
+                setPosts(prevPosts => {
+                    const updatedPosts = [...prevPosts];
+                    updatedPosts[postIndex].likedBy.push(currentUserUid);
+                    return updatedPosts;
+                });
+                // setLikedPosts(prev => new Set(prev).add(postId));
+                console.log("Post liked!");
+            }
+        } catch (error) {
+            console.error("Error toggling like: ", error);
+        }    };
+
+
+    //表示関連
+    const handleEachPostClick = () => {setShowEachPost(true);};
+    const handleReportButtonClick = () => {setShowReport(prev => !prev);};
+    const handleCloseEachPost = () => {setShowEachPost(false);};
 
     return (
         <>
@@ -65,8 +104,8 @@ const Post = () => {
                                         <p className={s.reactionText}>0</p>
                                     </div>
                                     <div className={s.flex}>
-                                        <div className={s.like}/>
-                                        <p className={s.reactionText}>0</p>
+                                        <div className={s.like} onClick={() => handleLikeClick(post.id)} />
+                                        <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
                                     </div>
                                     <div className={s.flex}>
                                         <div className={s.keep}/>
