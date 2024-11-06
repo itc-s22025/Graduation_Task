@@ -25,6 +25,8 @@ const Profile = () => {
     const [bio, setBio] = useState('ここにBioが表示されます');
     const router = useRouter();
 
+    const user = auth.currentUser; // 現在のユーザーを取得
+
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
@@ -157,8 +159,8 @@ const Profile = () => {
                         </TabList>
 
                         <TabPanel>
-                            <article>
-                               <Post />
+                            <article className={s.articleContainer}>
+                                {/*{user ? <Post userId={user.uid} /> : <p>ログインしてください</p>}*/}
                             </article>
                         </TabPanel>
 
