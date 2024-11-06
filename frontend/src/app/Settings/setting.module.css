@@ -1,16 +1,21 @@
+.allContainer {
+    position: absolute;
+    left: 30vw;
+}
+
 .ul{
     width: 35vw;
     display: inline-flex;
     flex-direction: column;
     position: absolute;
-    left: 32.5vw;
-    padding-top: 100px;
+    left: 2.5vw;
+    padding-top: 80px;
     /*border: 1px solid #ccc;*/
 }
 .font {
     text-decoration-line: none;
     position: absolute;
-    top: 20vh;
+    top: 3.5vh;
     left: 6vw;
     font-size: 30px;
     /*border: 1px solid;*/
@@ -19,17 +24,18 @@
     text-decoration-line: none;
     position: absolute;
     font-size: 30px;
-    top: 39vh;
+    top: 4vh;
     left: 6vw;
 }
 .font3 {
     text-decoration-line: none;
     position: absolute;
     font-size: 30px;
-    top: 57vh;
+    top: 4vh;
     left: 6vw;
 }
 .box{
+    position: relative;
     width: 100%;
     margin-top: 50px;
     padding: 25px;

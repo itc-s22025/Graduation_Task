@@ -1,0 +1,92 @@
+.col {
+        height: 100vh;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        flex-grow: 1;
+}
+.content {
+        position: absolute;
+        left: 30vw;
+}
+.font1 {
+        position: absolute;
+        top: 5vw;
+        left: 32vw;
+}
+.font2 {
+        position: absolute;
+        top: 7.5vw;
+        left: 31.8vw;
+        color: #d0c0c0;
+        font-weight: bold;
+}
+
+.box {
+        border: #968C7F 2px solid;
+        display: flex;
+        height: 50px;
+        width: 30vw;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        position: absolute;
+        top: 20vh;
+        right: 35vw;
+        outline: none;
+}
+.enable {
+        position: absolute;
+        top: 30vh;
+        right: 34.9vw;
+        border: #968C7F 1px solid;
+        border-radius: 10px;
+        outline: none;
+        background-color: #FF92AD;
+        color: white;
+        height: 50px;
+        width: 100px;
+        margin-top: 30px;
+        margin-left: 30px;
+        padding-top: 3px;
+        font-size: 1.5rem;
+        text-align: center;
+}
+.enable:hover {
+        transform: scale(1.1,1.1);
+}
+.popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+.popupContent {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+}
+
+.deleteButton, .cancelButton {
+        margin: 10px;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+}
+
+.deleteButton {
+        background-color: #FF92AD;
+        color: white;
+}
+
+.cancelButton {
+        background-color: #cccccc;
+}

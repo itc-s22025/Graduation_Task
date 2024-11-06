@@ -5,7 +5,7 @@
 
 .all{
     position: relative;
-    top: 6vh;
+    /*top: 4vh;*/
     /*left: 30vw;*/
     background-color: #FF92AD;
     display: flex;
@@ -21,7 +21,6 @@
 
 .tabs{
     list-style: none;
-
     padding: 0;
     margin: 0;
 

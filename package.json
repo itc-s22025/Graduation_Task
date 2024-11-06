@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "http-proxy-middleware": "^3.0.3",
+    "next": "^15.0.2",
+    "path-browserify": "^1.0.1",
     "react-hook-form": "^7.53.0",
     "react-tabs": "^6.0.2"
   }

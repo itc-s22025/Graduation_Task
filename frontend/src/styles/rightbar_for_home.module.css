@@ -7,14 +7,16 @@
     border-left: 1px solid #D2CCCC;
 }
 
-@media (max-width: 1200px) {
-    .all {
-        width: 20vw; /* 狭い画面では幅を狭める */
+@media screen and (max-width: 1500px){
+    .all{
+        width: 20vw;
     }
 }
 
-@media (max-width: 800px) {
+@media screen and (max-width: 1024px) {
     .all {
-        display: none; /* さらに狭い画面では非表示 */
+        display: none;
     }
 }
+
+

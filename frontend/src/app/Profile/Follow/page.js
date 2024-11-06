@@ -19,8 +19,9 @@ const FollowPage = () => {
         <MainLayout>
             <TabList>
                 <Tabs>
-                    <AccountHeader/>
                     <div className={s.allContainer}>
+                        <AccountHeader title="Follow"/>
+
                         <div className={s.all}>
                             <ul className={s.ul}>
                                 <Tab

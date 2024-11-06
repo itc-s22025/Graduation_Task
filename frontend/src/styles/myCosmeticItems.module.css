@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
 .itemContainer {
-    /*border: 1px solid #ccc;*/
-    margin: 10px 10px 0 63px;
+    /*border: 1px solid red;*/
+    margin: 2vh 10px 0 3.2vw;
     padding: 5px 10px;
 }
 
 .flame {
     border: 1px solid #FF92AD;
     border-radius: 30px;
-    width: 100%; /* 幅を自動調整に */
+    width: 630px;
     height: auto;
-    margin: 10px 0;
+    margin: 10px 0 10px 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -19,70 +19,63 @@
 }
 
 
-
 /*一段目*/
 .topContainer {
     display: flex;
     /* 高さは自動 */
+    margin-top: 8px;
     margin-left: 10px;
 }
 
-.heart {
+.exceptEditContainer{  /*edit(...)以外の一段目*/
+    display: flex;
+    width: 500px;
+}
+
+.heart { /* favorite */
+    cursor: pointer;
     border: none;
     background-color: #fff;
-    margin: 0 5px 7px 5px;
-    color: #ff839f;
-    font-size: 1.5rem;
-    position: relative; /* 位置を相対的に設定 */
-
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
+    margin: 0 8px 9px 4px;
+    padding-top: 6px;
 }
 
-.heart::before {
-    content: "♡"; /* デフォルトは♡を表示 */
-}
-
-.heart:hover::before{
-    content: "♥"; /* hover または focus 時に♥に切り替える */
-}
-
-.itemType {
+.itemType { /* コスメの種類 */
     border: 1px solid #ff839f;
     border-radius: 50px;
     font-size: 0.8rem;
     margin: 10px;
+    height: 25px;
     padding: 2px 15px;
     max-width: 200px;
     background-color: #FF92AD;
     color: #fff;
 }
 
-.openDayContainer,
-.updateDayContainer {
+.openDateContainer,
+.updateDateContainer { /* 開封日のコンテナと更新日のコンテナ */
     display: flex;
     font-size: 0.8rem;
     padding-top: 2px;
     margin: 10px;
 }
 
-.dayText {
+.dayText { /* 開封日・更新日の文字 */
     color: #ff839f;
 }
 
-.dayDate {
+.dayDate { /* 開封日・更新日の日付 */
     color: #5d5252;
 }
 
-.edit{
+.edit{ /* 編集(...)ボタン */
     background-color: #fff;
     color: #5d5757;
     font-size: 1.3rem;
     height: 20px;
     width: 40px;
     margin-top: 5px;
-    margin-left: 60px;
+    margin-left: 30px;
     padding-bottom: 30px;
     border: none;
     border-radius: 50px;
@@ -96,7 +89,7 @@
 .middleContainer {
     display: flex;
     height: auto;
-    padding: 10px;
+    padding: 0 10px 10px;
     flex-wrap: wrap; /* 必要に応じて折り返し */
 }
 
@@ -159,4 +152,180 @@
     color: #423a3a;
     flex: 1; /* 残りのスペースを占める */
     word-break: break-word; /* テキストの折り返しを許可 */
+}
+
+
+/* edit(...) 押したときの編集・削除ボタン*/
+.editContainer{
+    display: flex;
+    height: 37px;
+    margin-bottom: 10px;
+}
+
+.editButtonContainer{
+    position: relative;
+    left: 7.5vw;
+    border: 1px solid #FF92AD;
+    border-radius: 50px;
+    padding: 3px 14px;
+    background-color: #fff;
+
+    width: 400px;
+    height: 35px;
+}
+
+.editButton, .deleteButton{
+    border: none;
+    outline: none;
+    width: 185px;
+    background-color: #fff;
+
+    font-size: 0.8rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.editButton{
+    border-right: 1px solid #ff92AD;
+    color: #423a3a;
+}
+
+.deleteButton{
+    color: #ec022d;
+}
+
+.editButton:hover, .deleteButton:hover{
+    background-color: #F8F0F0;
+    border-radius: 50px;
+}
+
+.editButton:hover{
+    border-right: 1px solid #F8F0F0;
+}
+
+.noBorder{
+    border-right: 1px solid #fff;
+}
+
+.closeIsEdit{ /* Xボタン */
+    cursor: pointer;
+    display: block;
+    position: relative;
+    top: -22px;
+    left: 20px;
+    border: 1px solid #ff839f;
+    border-radius: 50px;
+    width: 22px;
+    height: 22px;
+    margin: 30px 20px 0 160px;
+    background-color: #fff;
+}
+
+.closeIsEdit::before, .closeIsEdit::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 49%;
+  width: 1px; /* 棒の幅（太さ） */
+  height: 15px; /* 棒の高さ */
+  background: #ff839f; /* バツ印の色 */
+}
+
+.closeIsEdit::before {
+  transform: translate(-50%,-50%) rotate(45deg);
+}
+.closeIsEdit::after {
+  transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+
+/* 編集画面 */
+.editContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.editTitle{
+    background-color: #ff92AD;
+    color: #fff;
+    width: 500px;
+    padding: 10px 20px;
+}
+
+.labelContainer{
+    /*border: 1px solid red;*/
+    margin: 10px 20px 0;
+    font-size: 0.9rem;
+    color: #423a3a;;
+}
+
+.inputContainer{
+    display: grid;
+}
+
+.inputBox{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #ff92AD;
+    padding: 5px 10px 1px;
+    max-width: 400px;
+
+    color: #423a3a;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.inputTextarea{
+    border: 1px solid #ff92AD;
+    border-radius: 8px;
+    outline: none;
+    padding: 10px;
+    width: 445px;
+    height: auto;
+    margin: 2px 0 20px 30px;
+
+    color: #423a3a;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.buttonContainer{
+    /*border: 1px solid red;*/
+    width: 280px;
+    display: flex;
+    margin-left: 110px;
+}
+
+.cancelButton, .saveButton{
+    cursor: pointer;
+    border: none;
+    width: 110px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0 15px 10px;
+    padding: 2px 0;
+}
+
+.cancelButton{
+    border: 2px solid #ff92AD;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #ff839f;
+}
+
+.saveButton{
+    border: 2px solid #ff839f;
+    border-radius: 50px;
+    background-color: #ff92AD;
+    color: #fff;
+}
+
+.cancelButton:hover, .saveButton:hover{
+    scale: calc(1.03);
 }

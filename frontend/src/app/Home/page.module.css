@@ -1,11 +1,19 @@
-.allContainer{
+.allContainer {
     position: absolute;
     left: 30vw;
+    /* フレックスボックスを使って縦方向に配置 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* コンテンツが重ならないようにスクロールを許可 */
+    overflow-y: auto;
+    height: 100vh;
 }
 
+/*Addタブ*/
 .addButton{
-    position: absolute;
-    left: 36.7vw;
+    position: fixed;
+    left: 66.8vw;
     background: #FF989A;
     margin-top: 25px;
     margin-right: 1px;
@@ -20,6 +28,8 @@
     padding-top: 3px;
     color: #fff;
     font-size: 20px;
+
+    z-index: 2;
 }
 .addTabOverlay {
     position: fixed;
