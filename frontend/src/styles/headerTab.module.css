@@ -10,11 +10,12 @@
 
 .ul{
     display: flex;
+    width: 100%;
+    /*border: 1px solid springgreen;*/
 }
 
 .tabs{
     list-style: none;
-
     padding: 0;
 
     margin-right: -80px; /* 前のliと重なる量 */
@@ -140,6 +141,11 @@
     margin-top: 4px;
 }
 
+.article{
+    position: relative;
+    top: 100px;
+    /*border: 1px solid orange;*/
+}
 
 /*responsive*/
 @media (max-width: 1200px) {

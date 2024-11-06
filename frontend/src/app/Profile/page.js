@@ -100,83 +100,108 @@ const Profile = () => {
         fetchUserData();
     }, [auth, db]);
 
+    const [isFixed, setIsFixed] = useState(false);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            // .tabsContainerの上部が画面の一番上に来たときにposition: fixedを適用
+            const tabsContainer = document.querySelector(`.${s.tabsContainer}`);
+            if (tabsContainer) {
+                const rect = tabsContainer.getBoundingClientRect();
+                if (rect.top <= 0) {
+                    setIsFixed(true);
+                } else {
+                    setIsFixed(false);
+                }
+            }
+        };
+
+        // スクロールイベントを監視
+        window.addEventListener('scroll', handleScroll);
+
+        // クリーンアップ
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     return (
         <>
             <MainLayout>
 
                 <div className={s.allContainer}>
-                    {/*ヘッダー画像*/}
-                    <div className={s.header}>
-                        <img src={headerImage} className={s.headerImage}/>
-                    </div>
+                    {/*ヘッダーからタブまで*/}
+                    <div className={s.headerToTabsContainer}>
+                        {/*ヘッダー画像*/}
+                        <div className={s.header}>
+                            <img src={headerImage} className={s.headerImage}/>
+                        </div>
 
-                    {/*main*/}
-                    <div className={s.container}>
-                        {/*{profileData?.icon && <img src={profileData.icon} alt="Profile Icon" />}*/}
-                        <img src={icon} className={s.profileImage} />
+                        {/*main*/}
+                        <div className={s.container}>
+                            {/*{profileData?.icon && <img src={profileData.icon} alt="Profile Icon" />}*/}
+                            <img src={icon} className={s.profileImage} />
 
-                        <div>
-                            <a className={`${s.personal} 
-                                ${personalColor === '春' ? s.springText : 
-                                personalColor === '夏' ? s.summerText : 
-                                personalColor === '秋' ? s.autumnText :
-                                personalColor === '冬' ? s.winterText: ''}`}>
+                            <div>
+                                <a className={`${s.personal} 
+                                ${personalColor === '春' ? s.springText :
+                                    personalColor === '夏' ? s.summerText :
+                                        personalColor === '秋' ? s.autumnText :
+                                            personalColor === '冬' ? s.winterText: ''}`}>
 
-                                {personalColor ? `${personalColor}` : '未設定'}
-                            </a>
-                            <button className={s.edit} onClick={handleEditClick}>
-                                Edit Profile
-                            </button>
+                                    {personalColor ? `${personalColor}` : '未設定'}
+                                </a>
+                                <button className={s.edit} onClick={handleEditClick}>
+                                    Edit Profile
+                                </button>
 
-                            <div className={s.infoContainer}>
-                                <h2 className={s.userName}>{username}</h2>
+                                <div className={s.infoContainer}>
+                                    <h2 className={s.userName}>{username}</h2>
 
-                                <div className={s.idAndFollow}>
-                                    <p className={s.userId}>@userID</p>
-
-
-                                    <div className={s.followContainer}>
-                                        <Link href="/Profile/Follow" className={s.add}>
-                                            <span className={s.follow}><strong>150</strong> Following</span>
-                                        </Link>
-                                        <Link href="/Profile/Follow" className={s.add}>
-                                            <span className={s.follower}><strong>200</strong> Follower</span>
-                                        </Link>
+                                    <div className={s.idAndFollow}>
+                                        <p className={s.userId}>@userID</p>
+                                        <div className={s.followContainer}>
+                                            <Link href="/Profile/Follow" className={s.add}>
+                                                <span className={s.follow}><strong>150</strong> Following</span>
+                                            </Link>
+                                            <Link href="/Profile/Follow" className={s.add}>
+                                                <span className={s.follower}><strong>200</strong> Follower</span>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <p className={s.bio}>{bio}</p>
                             </div>
+
+                            <Tabs>
+                                <TabList className={`${s.tabsContainer} ${isFixed ? s.fixed : ''}`}>
+                                    <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
+                                    <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
+                                    <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
+                                </TabList>
+
+                                <TabPanel>
+                                    <article className={s.articleContainer}>
+                                        {user ? <Post userId={user.uid} /> : <p>ログインしてください</p>}
+                                    </article>
+                                </TabPanel>
+
+                                <TabPanel>
+                                    <article>
+                                        <p>media</p>
+                                    </article>
+                                </TabPanel>
+
+                                <TabPanel>
+                                    <article>
+                                        <p>third</p>
+                                    </article>
+                                </TabPanel>
+                            </Tabs>
+
                         </div>
-
-                        <Tabs>
-                        <TabList className={s.tabsContainer}>
-                            <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
-                            <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
-                            <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
-                        </TabList>
-
-                        <TabPanel>
-                            <article className={s.articleContainer}>
-                                {/*{user ? <Post userId={user.uid} /> : <p>ログインしてください</p>}*/}
-                            </article>
-                        </TabPanel>
-
-                        <TabPanel>
-                            <article>
-                                <p>media</p>
-                            </article>
-                        </TabPanel>
-
-                        <TabPanel>
-                            <article>
-                                <p>third</p>
-                            </article>
-                        </TabPanel>
-                    </Tabs>
-
+                    </div>
 
                     {/* Edit Profile Modal */}
                     {showEditModal && (
@@ -187,7 +212,6 @@ const Profile = () => {
                             </div>
                         </div>
                     )}
-                </div>
                 </div>
 
             </MainLayout>
