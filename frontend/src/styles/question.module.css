@@ -1,16 +1,42 @@
+.optionButton {
+    border: 1px solid gray;
+    padding: 12px;
+    margin: 20px;
+    cursor: pointer;
+    font-size: 19px;
+    border-radius: 5px;
+    background-color: white;
+    text-align: left;
+}
+
+.selected {
+    border: 2px solid #ff1493;
+}
+
+.selectedAnswer {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 .questionContainer {
     margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 8px;
+    /*padding: 10px;*/
+    /*border-radius: 8px;*/
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .questionTitle {
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: #333;
     margin-bottom: 8px;
 }
 
 .questionText {
-    font-size: 1.2rem;
+    font-size: 10rem;
     color: #0d1117;
 }

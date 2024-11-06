@@ -1,11 +1,30 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import s from '../styles/question.module.css';
 
-const Question = ({ number, questionText }) => {
+const Question = ({ number, questionText, options = [] }) => {
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const handleClick = (option) => {
+        setSelectedOption(option);
+    };
+
     return (
         <div className={s.questionContainer}>
-            <h2 className={s.questionTitle}>Q{number}.</h2>
-            <p className={s.questionText}>{questionText}</p>
+            <h2>Q{number}. {questionText}</h2>
+            <div className={s.options}>
+                {options.map((option, index) => (
+                    <button
+                        key={index}
+                        className={`${s.optionButton} ${selectedOption === option ? s.selected : ''}`}
+                        onClick={() => handleClick(option)}
+                    >
+                        {option}
+                    </button>
+                    ))}
+                </div>
+
         </div>
     );
 };
