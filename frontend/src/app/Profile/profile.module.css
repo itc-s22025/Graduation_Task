@@ -60,15 +60,15 @@
     display: inline-block;
     position: absolute;
     top: -6vh;
-    left: 2.2vw;
-    width: 50px;
+    left: 2.7vw;
+    width: 40px;
     height: 30px;
     border-radius: 50px;
-    border: 1px solid #FF92AD;
-    background-color: #F8F4F0;
+    border: 1px solid #FFf;
+    background-color: #fff;
     color: #423a3a;
-    padding-top: 5px;
-    font-size: 0.7rem;
+    padding-top: 4px;
+    font-size: 0.8rem;
     text-align: center;
 }
 
@@ -152,6 +152,7 @@
 
 /* Tabs Section */
 .tabsContainer {
+    width: 40vw;
     display: flex;
     margin-top: 5px;
     padding-bottom: 20px;

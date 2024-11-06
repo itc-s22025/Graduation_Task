@@ -1,71 +1,68 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { getFirestore, doc, getDoc, updateDoc} from "firebase/firestore";
-import { useRouter } from 'next/navigation';
 import s from './profile.module.css';
 import MainLayout from "@/components/MainLayout";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import {useAuth} from "@/app/context/AuthProvider";
 import Edit from '@/app/Profile/edit'
 import Link from "next/link";
 import Post from "@/components/post";
+// Firebase
+import { doc, getDoc, getDocs, updateDoc, where, query, collection } from "firebase/firestore";
+import { db, auth } from "@/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
-    const db = getFirestore();
-    const auth = useAuth();
     const [focusedTab, setFocusedTab] = useState('');
-    const [showEditModal, setShowEditModal] = useState(false); // Modal state
+    const [showEditModal, setShowEditModal] = useState(false);
     const [personalColor, setPersonalColor] = useState('');
-
     const [headerImage, setHeaderImage] = useState('defaultHeader.png');
     const [icon, setIcon] = useState('defaultIcon.png');
     const [username, setUsername] = useState('user ユーザ');
     const [bio, setBio] = useState('ここにBioが表示されます');
-    const router = useRouter();
+    const [currentUserUid, setCurrentUserUid] = useState(null);
+    const [isFixed, setIsFixed] = useState(false);
+    const [likesPosts, setLikesPosts] = useState([]);
 
-    const user = auth.currentUser; // 現在のユーザーを取得
+    // ユーザーの認証状態を監視
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUserUid(user ? user.uid : null);
+        });
+        return () => unsubscribe();
+    }, []);
 
-    const handleFocus = (tabName) => {
-        setFocusedTab(tabName);
-    };
+    const handleFocus = (tabName) => setFocusedTab(tabName);
 
-    const preventScroll = (e) => {
-        e.preventDefault();
-    }
+    const preventScroll = (e) => e.preventDefault();
 
     const handleEditClick = () => {
-        setShowEditModal(true); // Show modal
+        setShowEditModal(true);
         window.addEventListener('wheel', preventScroll, { passive: false });
         window.addEventListener('touchmove', preventScroll, { passive: false });
-    }
+    };
 
     const handleCloseEditModal = () => {
-        setShowEditModal(false); // Close modal
+        setShowEditModal(false);
         window.removeEventListener('wheel', preventScroll);
         window.removeEventListener('touchmove', preventScroll);
-    }
+    };
 
     const handleSave = async ({ headerImage: newHeader, icon: newIcon, username: newUserName, bio: newBio }) => {
-        const user = auth.currentUser;  // 現在のユーザーを取得
-        if (user) {
+        if (currentUserUid) {
             try {
-                // Firestoreのユーザードキュメントを更新
-                const userDocRef = doc(db, "users", user.uid);
+                const userDocRef = doc(db, "users", currentUserUid);
                 await updateDoc(userDocRef, {
                     headerImage: newHeader,
                     icon: newIcon,
                     name: newUserName,
                     bio: newBio
                 });
-
-                // ステートを更新して即座にUIに反映
                 setHeaderImage(newHeader);
                 setIcon(newIcon);
                 setUsername(newUserName);
                 setBio(newBio);
-
                 alert('Profile updated successfully');
             } catch (error) {
                 console.error("Error updating document: ", error);
@@ -74,90 +71,107 @@ const Profile = () => {
         }
     };
 
-    // Firestoreからデータを取得
+
+    // Firestoreからユーザーデータを取得
     useEffect(() => {
         const fetchUserData = async () => {
-            const user = auth.currentUser;
-            if (user) {
-                const docRef = doc(db, "users", user.uid);  // Firestoreからユーザーデータを取得
-                const docSnap = await getDoc(docRef);
+            if (currentUserUid) {
+                try {
+                    // Firestoreのユーザーコレクションでuidが一致するものをクエリ
+                    const userQuery = query(
+                        collection(db, "users"),
+                        where("uid", "==", currentUserUid)
+                    );
+                    const querySnapshot = await getDocs(userQuery);
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    setUserData(data);
-                    setHeaderImage(data.headerImage || 'defaultHeader.png');
-                    setIcon(data.icon || 'defaultIcon.png');
-                    setUsername(data.name || 'user ユーザ');
-                    setBio(data.bio || 'ここにBioが表示されます');
-
-                    // Set personal color (extract the fourth character)
-                    const personalColor = data.personalColor || '';
-                    const personalColorChar = personalColor[3] || ''; // Get the fourth character
-                    setPersonalColor(personalColorChar); // Save it in a state variable
+                    if (!querySnapshot.empty) {
+                        // ユーザーが存在する場合
+                        querySnapshot.forEach((doc) => {
+                            const userData = doc.data();
+                            setUserData(userData);
+                            setHeaderImage(userData.headerImage || 'defaultHeader.png');
+                            setIcon(userData.icon || 'defaultIcon.png');
+                            setUsername(userData.name || 'user');
+                            setBio(userData.bio || 'ここにBioが表示されます');
+                            setPersonalColor(userData.personalColor?.[3] || '');
+                        });
+                    } else {
+                        console.log("ユーザードキュメントが存在しません");
+                        console.log("ユーザーUID:", currentUserUid);
+                    }
+                } catch (error) {
+                    console.error("ユーザーデータの取得中にエラーが発生しました: ", error);
                 }
             }
         };
         fetchUserData();
-    }, [auth, db]);
+    }, [currentUserUid]);
 
-    const [isFixed, setIsFixed] = useState(false);
 
+    // FirestoreからLikesデータと対応するPostデータを取得
     useEffect(() => {
-        const handleScroll = () => {
-            // .tabsContainerの上部が画面の一番上に来たときにposition: fixedを適用
-            const tabsContainer = document.querySelector(`.${s.tabsContainer}`);
-            if (tabsContainer) {
-                const rect = tabsContainer.getBoundingClientRect();
-                if (rect.top <= 0) {
-                    setIsFixed(true);
-                } else {
-                    setIsFixed(false);
+        const fetchLikesAndPosts = async () => {
+            if (currentUserUid) {
+                try {
+                    const likesQuery = query(
+                        collection(db, "likes"),
+                        where("userId", "==", currentUserUid)
+                    );
+                    const likesSnapshot = await getDocs(likesQuery);
+                    const likesData = likesSnapshot.docs.map(doc => doc.data());
+
+                    const postsData = await Promise.all(
+                        likesData.map(async (like) => {
+                            const postRef = doc(db, "posts", like.postId);
+                            const postSnap = await getDoc(postRef);
+                            return postSnap.exists() ? { id: postSnap.id, ...postSnap.data() } : null;
+                        })
+                    );
+                    setLikesPosts(postsData.filter(post => post !== null));
+                } catch (error) {
+                    console.error("Likesデータの取得中にエラーが発生しました: ", error);
                 }
             }
         };
+        fetchLikesAndPosts();
+    }, [currentUserUid]);
 
-        // スクロールイベントを監視
-        window.addEventListener('scroll', handleScroll);
-
-        // クリーンアップ
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
+    useEffect(() => {
+        const handleScroll = () => {
+            const tabsContainer = document.querySelector(`.${s.tabsContainer}`);
+            if (tabsContainer) {
+                const rect = tabsContainer.getBoundingClientRect();
+                setIsFixed(rect.top <= 0);
+            }
         };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     return (
         <>
             <MainLayout>
-
                 <div className={s.allContainer}>
-                    {/*ヘッダーからタブまで*/}
                     <div className={s.headerToTabsContainer}>
-                        {/*ヘッダー画像*/}
                         <div className={s.header}>
                             <img src={headerImage} className={s.headerImage}/>
                         </div>
 
-                        {/*main*/}
                         <div className={s.container}>
-                            {/*{profileData?.icon && <img src={profileData.icon} alt="Profile Icon" />}*/}
                             <img src={icon} className={s.profileImage} />
-
                             <div>
                                 <a className={`${s.personal} 
-                                ${personalColor === '春' ? s.springText :
-                                    personalColor === '夏' ? s.summerText :
+                                ${personalColor === '春' ? s.springText : 
+                                    personalColor === '夏' ? s.summerText : 
                                         personalColor === '秋' ? s.autumnText :
                                             personalColor === '冬' ? s.winterText: ''}`}>
-
                                     {personalColor ? `${personalColor}` : '未設定'}
                                 </a>
-                                <button className={s.edit} onClick={handleEditClick}>
-                                    Edit Profile
-                                </button>
+                                <button className={s.edit} onClick={handleEditClick}>Edit Profile</button>
 
                                 <div className={s.infoContainer}>
                                     <h2 className={s.userName}>{username}</h2>
-
                                     <div className={s.idAndFollow}>
                                         <p className={s.userId}>@userID</p>
                                         <div className={s.followContainer}>
@@ -183,27 +197,30 @@ const Profile = () => {
 
                                 <TabPanel>
                                     <article className={s.articleContainer}>
-                                        {user ? <Post userId={user.uid} /> : <p>ログインしてください</p>}
+                                        {currentUserUid ? <Post userId={currentUserUid} /> : <p>ログインしてください</p>}
                                     </article>
                                 </TabPanel>
 
                                 <TabPanel>
-                                    <article>
-                                        <p>media</p>
-                                    </article>
+                                    <article><p>media</p></article>
                                 </TabPanel>
 
                                 <TabPanel>
-                                    <article>
-                                        <p>third</p>
+                                    <article className={s.articleContainer}>
+                                        {likesPosts.length > 0 ? (
+                                            likesPosts.map(post => (
+                                                <div key={post.id} className={s.likeItem}>
+                                                    <h3>{post.name}</h3>
+                                                    <p>{post.tweet}</p>
+                                                </div>
+                                            ))
+                                        ) : (<p>いいねがありません</p>)}
                                     </article>
                                 </TabPanel>
                             </Tabs>
-
                         </div>
                     </div>
 
-                    {/* Edit Profile Modal */}
                     {showEditModal && (
                         <div className={s.modalOverlay}>
                             <div className={s.modalContent}>
@@ -213,7 +230,6 @@ const Profile = () => {
                         </div>
                     )}
                 </div>
-
             </MainLayout>
         </>
     );
