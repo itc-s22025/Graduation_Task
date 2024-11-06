@@ -96,6 +96,9 @@ const Search = () => {
                     setFilteredPosts([]); // 結果が見つからなかった場合は空にする
                 }
 
+                console.log("/Search/page.jsのfilteredPost:", filteredPosts)
+                //この時点ではちゃんと検索ワードだけ入ってる
+
                 // 検索履歴に追加
                 saveSearchHistory(searchKeyword);
             } catch (error) {
@@ -110,19 +113,21 @@ const Search = () => {
         <>
             <MainLayout>
                 <div className={s.allContainer}>
-                    <AccountHeader title="Search"/>
-                    <div className={s.searchContainer}>
-                        <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
-                        <input
-                            type="search"
-                            className={s.searchBox}
-                            placeholder="search..."
-                            value={searchKeyword}
-                            onChange={e => setSearchKeyword(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                        />
-                        <button type="button" className={s.searchButton} onClick={handleSearch}>Search</button>
+                    <div className={s.topContainer}>
+                        <AccountHeader title="Search"/>
+                        <div className={s.searchContainer}>
+                            <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
+                            <input
+                                type="search"
+                                className={s.searchBox}
+                                placeholder="search..."
+                                value={searchKeyword}
+                                onChange={e => setSearchKeyword(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
+                            <button type="button" className={s.searchButton} onClick={handleSearch}>Search</button>
 
+                        </div>
                     </div>
 
                     {/* 検索履歴を表示 */}
@@ -151,14 +156,14 @@ const Search = () => {
 
                     {/* 検索結果を表示 */}
                     <div className={s.resultsContainer}>
-                        {filteredPosts.length > 0 ? (filteredPosts.map((post, index) => (
-                            <>
-                                <div key={index} className={s.resultPost}>
-                                    <p><strong>{post.name}:</strong> {post.tweet}</p>
-                                </div>
-                            </>
-
-                            ))
+                        {filteredPosts.length > 0 ? (filteredPosts.map((post, index) => {
+                            console.log("ポスト：",post);   //この時点ではちゃんとsearchWordを含むポストのみ
+                            return(
+                                <>
+                                    <Post searchPost={post} key={index}/>
+                                </>
+                                )
+                            })
                         ) : (
                             <p className={s.noResults}>結果が見つかりませんでした。</p>
                         )}

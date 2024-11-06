@@ -10,7 +10,16 @@
     height: 20px;
 }
 
+.topContainer{
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    background-color: #fff;
+}
+
 .searchContainer {
+    /*border: blue 1px solid;*/
+    height: 150px;
     display: flex;
     align-items: center;
     position: relative;  /* 履歴をsearchボックスの下に表示するため */
@@ -37,10 +46,10 @@
 
 /* 履歴表示エリア */
 .historyContainer {
-    position: absolute;
+    position: fixed;
     top: 18vh; /* searchBoxの下に配置 */
-    left: 9vw;
-    width: 46.5%;
+    left: 40vw;
+    width: 300px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -95,10 +104,11 @@
 
 /* 検索結果エリア */
 .resultsContainer {
-    /*border: 1px solid red;*/
-    margin: 150px auto 0;
-    padding: 0 10px;
-    width: 100%;
+    /*border: 1px solid springgreen;*/
+    position: relative;
+    top: 230px;
+    padding-right:10px;
+    width: 40vw;
 }
 
 .resultPost {

@@ -9,7 +9,8 @@ import { auth, db } from "@/firebase";
 import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
-const Post = ({ userId, searchTerm }) => {
+const Post = ({ userId, searchPost }) => {
+
     const pathname = usePathname()
 
     const [posts, setPosts] = useState([]);
@@ -57,13 +58,22 @@ const Post = ({ userId, searchTerm }) => {
             if (pathname === '/Profile') {  //もしpathnameが/Profileだったら
                 filteredPosts = postsData.filter(post => post.uid === currentUserUid);  //filteredPostsにフィルタリングしたデータ(post.uidがcurrentUserUidと一致するポスト)を入れる
             }
+
+             // searchPostが渡されている場合はそれでさらにフィルタリング
+            if (searchPost) {
+                filteredPosts = filteredPosts.filter(post =>
+                    post.tweet.includes(searchPost.tweet)
+                );
+                console.log("サーチしたポスト:", filteredPosts)
+            }
+
             // フィルタリングされたデータをセット(されてない場合はpostsDataのまま)
             setPosts(filteredPosts);
         });
 
         //リアルタイム更新の監視を解除　終わりだよ〜
         return () => unsubscribe();
-    }, [currentUserUid, pathname]);
+    }, [currentUserUid, pathname, searchPost]);
 
 
     //いいね機能
