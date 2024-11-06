@@ -96,9 +96,6 @@ const Search = () => {
                     setFilteredPosts([]); // 結果が見つからなかった場合は空にする
                 }
 
-                console.log("/Search/page.jsのfilteredPost:", filteredPosts)
-                //この時点ではちゃんと検索ワードだけ入ってる
-
                 // 検索履歴に追加
                 saveSearchHistory(searchKeyword);
             } catch (error) {
@@ -136,18 +133,10 @@ const Search = () => {
                             <ul>
                                 {searchHistory.map((keyword, index) => (
                                     <li key={index} className={s.historyItem}>
-                                        <span
-                                            className={s.historyKeyword}
-                                            onClick={() => handleHistoryClick(keyword)}
-                                        >
+                                        <span className={s.historyKeyword} onClick={() => handleHistoryClick(keyword)}>
                                             {keyword}
                                         </span>
-                                        <button
-                                            className={s.historyDelete}
-                                            onClick={() => handleDeleteHistory(keyword)}
-                                        >
-                                            ×
-                                        </button>
+                                        <button className={s.historyDelete} onClick={() => handleDeleteHistory(keyword)}>×</button>
                                     </li>
                                 ))}
                             </ul>
