@@ -51,4 +51,29 @@
     font-weight: bold;
 }
 
+/*.eachButtonContainer{*/
+/*    display: flex;*/
+/*    border: 1px solid #6E665C;*/
+/*    border-radius: 100px;*/
+/*    margin-left: 10px;*/
+/*    padding: 10px 10px 20px 10px;*/
+/*    height: 60px;*/
+/*    width: 20vw;*/
+/*    background-color: #fff;*/
 
+/*    font-size: 2rem;*/
+/*    color: #6E665C;*/
+/*}*/
+
+/*.homeIcon{*/
+/*    border: 1px solid blue;*/
+/*    margin-top: 2px;*/
+/*    margin-left: 10px;*/
+/*    width: 35px;*/
+/*    height: 35px;*/
+/*}*/
+
+/*.buttonText{*/
+/*    border: 1px solid red;*/
+/*    height: 40px;*/
+/*}*/

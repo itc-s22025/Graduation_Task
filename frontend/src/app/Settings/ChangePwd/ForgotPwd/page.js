@@ -12,7 +12,7 @@ const ForgotPwdPage = () => {
     const handleNextClick = async (e) => {
         e.preventDefault(); // prevent default behavior
         if (!email) {
-            alert("Please enter your email address."); // handle empty input
+            alert("メールアドレスを入力してください。"); // handle empty input
             return;
         }
 

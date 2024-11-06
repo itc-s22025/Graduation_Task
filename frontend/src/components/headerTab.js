@@ -3,6 +3,7 @@
 import s from '@/styles/headerTab.module.css';
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useState } from "react";
+import Post from "@/components/post";
 
 const HeaderTab = ({ firstTabText, secondTabText, thirdTabText, firstTabContent, secondTabContent, thirdTabContent, additionalFeatures, pageType }) => {
     // state

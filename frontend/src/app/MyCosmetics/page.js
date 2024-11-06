@@ -1,125 +1,140 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "@/firebase";
+import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
 import MainLayout from "@/components/MainLayout";
 import s from "./page.module.css";
-import home from "@/app/Home/page.module.css"
-import HeaderTab from "@/components/headerTab";
+import home from "@/app/Home/page.module.css";
 import MyCosmeticItems from "@/components/myCosmeticItems";
+import MyCosmeticsHeaderTab from "@/components/myCosmeticsHeaderTab";
 
-const MyCosmetics = ({ pageType }) => {
-    // state
+const MyCosmetics = () => {
+    const [cosmeticsData, setCosmeticsData] = useState([]);
+    const [currentUserUid, setCurrentUserUid] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUserUid(user ? user.uid : null);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const fetchCosmeticsData = async () => {
+        if (!currentUserUid) return;
+
+        try {
+            const cosmeticsCollection = collection(db, "MyCosmetics");
+            const cosmeticsQuery = query(
+                cosmeticsCollection,
+                where("user_id", "==", currentUserUid)
+            );
+            const cosmeticsSnapshot = await getDocs(cosmeticsQuery);
+            const cosmeticsList = cosmeticsSnapshot.docs.map((doc) => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    ...data,
+                    openDate: formatDateTime(data.openDate),
+                    updatedDate: formatDateTime(data.updatedDate),
+                };
+            });
+            setCosmeticsData(cosmeticsList);
+        } catch (err) {
+            setError("コスメデータの取得に失敗しました。");
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchCosmeticsData();
+    }, [currentUserUid]);
+
+
+    // お気に入り登録関連
+    const favoriteItems = cosmeticsData.filter(item => item.isFavorite);
+
+    // addTab(+)の出現・キャンセル
     const [showAddTab, setShowAddTab] = useState(false);
-    const [isAdding, setIsAdding] = useState(false); // 状態管理用
+    const handleAddClick = () => setShowAddTab(true);
+    const handleCloseAddTab = () => setShowAddTab(false);
 
-
-    //Tab追加
-    const handleAddClick = () => {
-        setShowAddTab(true); // AddTabを表示
+    //日付のフォーマット整えるやつ
+    const formatDateTime = (date) => {
+        if (!date) return "";
+        const d = date instanceof Timestamp ? date.toDate() : new Date(date);
+        const year = d.getFullYear();
+        const month = ("0" + (d.getMonth() + 1)).slice(-2);
+        const day = ("0" + d.getDate()).slice(-2);
+        return `${year}/${month}/${day}`;
     };
-    const handleCloseAddTab = () => {
-        setShowAddTab(false); // AddTabを非表示
-    };
-
-
-    //新規コスメADD
-    const handleAddButtonClick = () => {
-        setIsAdding(!isAdding); // クリックで状態を切り替え
-    };
-    const handleCancelAdd = () => {
-        setIsAdding(false); // AddTabを非表示
-    };
-    const handleAddNewCosmeClick = () => {
-        alert("新規コスメ登録のAddボタンをクリックしました")
-    }
-
-    // const addTab = pageType === 'myCosmetics' ? home.addTabMC : home.addTabHome;
-
 
     return (
-        <>
-            <MainLayout>
-                <div className={s.allContainer}>
-                    {/* header */}
-                    <div className={s.headerContainer}>
-                        <p className={s.headerText}>My Cosmetics</p>
-                        <HeaderTab firstTabText={"カラコン"} secondTabText={"コスメ"} thirdTabText={"♥"}
-                                   pageType="myCosmetics"/>
-                        <button className={`${home.addButton}`} style={{ top: '63px' }} onClick={() => handleAddClick()}>+</button>
-                    </div>
+        <MainLayout>
+            <div className={s.allContainer}>
 
-                    <div className={s.searchAndAddContainer}>
-                    {/* search */}
-                        <div className={s.searchContainer}>
-                            <img alt="search_black" src="/search_black.png" className={s.searchImg}/>
-                            <input type="search" className={s.searchBox} placeholder="search..."/>
-                            <button type="button" className={s.searchButton}>Search</button>
-                        </div>
-                        <button type="button" className={s.addButton} onClick={handleAddButtonClick}>Add</button>
-                    </div>
+                {/*ヘッダー*/}
+                <div className={s.headerContainer}>
+                    <p className={s.headerText}>My Cosmetics</p>
 
-                    <div className={s.itemsContainer}>
-                        <MyCosmeticItems/>
-                        <MyCosmeticItems />
-                         <MyCosmeticItems />
-                         <MyCosmeticItems />
-                    </div>
-
-
-
-                    {/* タブ追加ボタン押したとき */}
-                    {showAddTab && (
-                        <div className={home.addTabOverlay}>
-                            <div className={s.addTabContent}>
-                                <div className={s.addTabContainer}>
-                                    <h2 className={s.addTabTitle}>新しいタブを追加する</h2>
-                                    <div className={s.addTabInputContainer}>
-                                        <label className={s.inputTabLabel}>タブのタイトル：<input type="text" className={s.inputTabBox} placeholder="タブのタイトル"/></label>
-                                    </div>
-                                    <div className={s.tabButtonContainer}>
-                                        <button type="button" onClick={handleCloseAddTab}
-                                                className={s.addTabCancel}>キャンセル
-                                        </button>
-                                        <button type="button" className={s.addTabAdd}>追加</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Add用のレイアウト */}
-                    {isAdding && (
-                        <>
-                            <div className={home.addTabOverlay}>
-                                <div className={s.addTabContent}>
-                                    <h2 className={s.newCosmeticTitle}>新しいコスメを追加</h2>
-                                    <form>
-                                    <div className={s.inputContainer}>
-                                            <input type="date" className={s.inputBox} placeholder="開封日" />
-                                            <input type="text" className={s.inputBox} placeholder="ブランド" />
-                                            <input type="text" className={s.inputBox} placeholder="商品名" />
-                                            <div>
-                                                <label className={s.inputLabel}><input type="number" className={s.inputBoxMini} placeholder="個数" />個</label>
-                                            </div>
-                                            <div>
-                                                <label className={s.inputLabel}><input type="number" className={s.inputBoxMini} placeholder="1個あたりの価格" />円</label>
-                                            </div>
-                                            <textarea className={s.inputMemo} placeholder="メモ" />
-                                        </div>
-                                        <div className={s.inputButtonContainer}>
-                                            <button className={s.inputCancel} onClick={handleCancelAdd}>キャンセル</button>
-                                            <button className={s.inputAdd} type="button" onClick={() => { setIsAdding(false); handleAddNewCosmeClick() }}>追加</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </>
-                    )}
-
+                    <MyCosmeticsHeaderTab
+                       firstTabText="ALL"
+                       secondTabText="♥"
+                       firstTabContent={
+                           <div className={s.itemsContainer}>
+                               {cosmeticsData.map((cosmetic) => (
+                                   <MyCosmeticItems
+                                       key={cosmetic.id}
+                                       {...cosmetic}
+                                       fetchCosmeticsData={fetchCosmeticsData}
+                                   />
+                               ))}
+                           </div>
+                       }
+                       secondTabContent={
+                           <div className={s.itemsContainer}>
+                               {favoriteItems.length > 0 ? (
+                                   favoriteItems.map((favoriteItem) => (
+                                       <MyCosmeticItems
+                                           key={favoriteItem.id}
+                                           {...favoriteItem}
+                                           fetchCosmeticsData={fetchCosmeticsData}
+                                       />
+                                   ))
+                               ) : (
+                                   <p className={s.noFavs}>アイテムの左上にある♡をクリックするとお気に入りに登録できます</p>
+                               )}
+                           </div>
+                       }
+                    />
+                    <button className={home.addButton} style={{ top: '68px' }} onClick={handleAddClick}>+</button>
                 </div>
-            </MainLayout>
-        </>
+
+                {showAddTab && (
+                    <div className={home.addTabOverlay}>
+                        <div className={s.addTabContent}>
+                            <div className={s.addTabContainer}>
+                                <h2 className={s.addTabTitle}>新しいタブを追加する</h2>
+                                <div className={s.addTabInputContainer}>
+                                    <label className={s.inputTabLabel}>タブのタイトル：
+                                        <input type="text" className={s.inputTabBox} placeholder="タブのタイトル"/>
+                                    </label>
+                                </div>
+                                <div className={s.tabButtonContainer}>
+                                    <button type="button" onClick={handleCloseAddTab} className={s.addTabCancel}>キャンセル</button>
+                                    <button type="button" className={s.addTabAdd}>追加</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {error && <p>{error}</p>}
+            </div>
+        </MainLayout>
     );
-};
+}
 
 export default MyCosmetics;
