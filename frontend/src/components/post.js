@@ -6,7 +6,7 @@ import s from '@/styles/post.module.css';
 import EachPost from "@/components/eachPost";
 //firebase
 import { auth, db } from "@/firebase";
-import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs } from "firebase/firestore";
+import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs, orderBy } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 const Post = ({ userId, searchPost }) => {
@@ -33,7 +33,7 @@ const Post = ({ userId, searchPost }) => {
     //currentUserUidかpathnameが変わるたびに実行されるやつ
     useEffect(() => {
         //onSnapshot -> postsコレクションのデータをリアルタイムで監視、コレクションが更新されるたびに(snapshot)を受け取って最新のデータが反映される
-        const unsubscribe = onSnapshot(collection(db, "posts"), async (snapshot) => {
+        const unsubscribe = onSnapshot(collection(db, "posts"), orderBy("timestamp", "desc"), async (snapshot) => {
             const postsData = snapshot.docs.map(doc => ({   //snapshot.docs...postsコレクション内のすべてのドキュメントをpostsData配列として返す
                 id: doc.id,     //ドキュメントのid(doc.id)をidとする
                 ...doc.data(),  //ドキュメントのデータ(doc.id)のシャローコピーを作成
@@ -139,7 +139,9 @@ const Post = ({ userId, searchPost }) => {
         <>
             <div className={s.allContainer}>
                 {/*setPostしたpostsをmap*/}
-                {posts.map((post) => (
+                {posts
+                    .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
+                    .map((post) => (
                     <div key={post.id} className={s.all}>   {/*post.idで識別*/}
                         <div className={s.flex}>
                             <p className={s.icon}/>
