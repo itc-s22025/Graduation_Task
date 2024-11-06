@@ -120,7 +120,7 @@ const Post = ({ userId, searchTerm }) => {
         setSelectedPost(post);  // クリックした投稿のデータをセット
         setShowEachPost(true);  // <EachPost />を表示
     };
-
+    const [hoveredPostId, setHoveredPostId] = useState(null);
     const handleReportButtonClick = () => { setShowReport(prev => !prev); };
     const handleCloseEachPost = () => { setShowEachPost(false); };
 
@@ -161,12 +161,18 @@ const Post = ({ userId, searchTerm }) => {
                                     </div>
                                     <div className={s.flex}>    {/*like*/}
                                         {/*post.likedByにcurrentUserIdがあればcutie_heart_after、なければbeforeを表示*/}
-                                        <img
-                                            alt="いいねアイコン"
-                                            src={post.likedBy.includes(currentUserUid) ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
-                                            className={s.like}
-                                            onClick={() => handleLikeClick(post.id)}
-                                        />
+                                       <img
+                                          alt="いいねアイコン"
+                                          src={
+                                              hoveredPostId === post.id
+                                                  ? "/cutie_heart_after.png" : post.likedBy.includes(currentUserUid)
+                                                      ? "/cutie_heart_after.png" : "/cutie_heart_before.png"
+                                          }
+                                          className={s.like}
+                                          onClick={() => handleLikeClick(post.id)}
+                                          onMouseEnter={() => setHoveredPostId(post.id)}
+                                          onMouseLeave={() => setHoveredPostId(null)}
+                                       />
                                         <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
                                     </div>
                                     <div className={s.flex}>    {/*keep*/}
