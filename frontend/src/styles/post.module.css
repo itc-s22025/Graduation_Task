@@ -12,6 +12,7 @@
     padding: 0 10px 8px;
     background-color: #fff;
     height: auto;
+    /*min-height: 100px;*/
 
     /*枠線*/
     border: #FF92AD 1px solid;
@@ -34,7 +35,7 @@
 .includeIconsContainer{
     /*border: 1px solid springgreen;*/
     display: flex;
-    height: 130px;
+    height: auto;
 }
 
 .topContainer{
@@ -116,7 +117,9 @@
 .contentContainer{
     /*border: 1px solid #2196f3;*/
     width: 28vw;
+    min-height: 80px;
     height: auto;
+    margin-top: 10px;
 }
 
 .content{
@@ -125,8 +128,14 @@
     color: #423a3a;
     width: 27vw;
     height: auto;
-    min-height: 50px;
     font-size: 0.9rem;
+}
+
+.image{
+    height: 200px;
+    border: 1px solid #F8F0F0;
+    border-radius: 5px;
+    margin: 10px 10px 20px;
 }
 
 .editButton{
