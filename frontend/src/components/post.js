@@ -9,14 +9,19 @@ import { formatDistanceToNow, isBefore, subDays } from 'date-fns';
 import { auth, db } from "@/firebase";
 import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs, orderBy } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { doc, setDoc } from "firebase/firestore"; // Firestoreの関数をインポート
 
 const Post = ({ userId, searchPost, pageType }) => {
     const pathname = usePathname()
-
-    const [posts, setPosts] = useState([]);
+  
+    const [posts, setPosts] = useState([]); // 投稿リスト
     const [showEachPost, setShowEachPost] = useState(false);
     const [showReport, setShowReport] = useState(false);
     const [currentUserUid, setCurrentUserUid] = useState(null);
+    const [savedPosts, setSavedPosts] = useState([]); // 保存された投稿のIDを管理
+    const router = useRouter();
+
 
     //一度だけ実行されるやつ
     useEffect(() => {
@@ -156,6 +161,18 @@ const Post = ({ userId, searchPost, pageType }) => {
         }
     };
 
+    const handleKeepClick = async (post) => {
+        // Firestoreに保存
+        const keepRef = doc(db, "keeps", post.id);
+        await setDoc(keepRef, post);
+
+        // 保存した投稿のIDを追加または削除
+        setSavedPosts(prev =>
+            prev.includes(post.id)
+                ? prev.filter(id => id !== post.id)
+                : [...prev, post.id]
+        );
+    };
 
     return (
         <>
@@ -164,16 +181,18 @@ const Post = ({ userId, searchPost, pageType }) => {
                 {posts
                     .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
                     .map((post) => (
-                    <div key={post.id} className={`${s.all} ${s.forProfileFlame}`}>   {/*post.idで識別*/}
+                    <div key={post.id} className={`${s.all} ${s.forProfileFlame} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
                         <div className={s.includeIconsContainer}>
                             <p className={s.icon}/>
                             <div className={s.topContainer}>
                                 <div className={s.topMiddleContainer}>
                                     <div className={s.infoContainer}>
+                     
                                         <p className={s.name}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
                                         <p className={s.userID}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
                                         <p className={s.pc}> {post.personalColor || "未設定"}</p>  {/*こっちまだ*/}
                                         <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
+                                        
                                     </div>
                                     <div className={s.contentContainer}>
                                         {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
@@ -187,7 +206,6 @@ const Post = ({ userId, searchPost, pageType }) => {
                                 </button>
                             </div>
                         </div>
-
 
                         {/*リプライとか reaction*/}
                         <div className={s.reactionContainer}>
@@ -213,8 +231,8 @@ const Post = ({ userId, searchPost, pageType }) => {
                                 />
                                 <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
                             </div>
-                            <div className={s.flex}>    {/*keep*/}
-                                <div className={s.keep}/>
+                            <div className={s.flex} onClick={() => handleKeepClick(post)}>
+                                <div className={`${s.keep} ${savedPosts.includes(post.id) ? s.keepActive : ''}`} />
                             </div>
                         </div>
                     </div>
