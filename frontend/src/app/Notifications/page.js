@@ -1,18 +1,19 @@
 "use client";
 
 import MainLayout from "@/components/MainLayout";
-import Notification from "@/components/Notifications";
+import Notifications from "@/components/Notifications";
+import Message from "@/components/Message"
 
-const Notifications = () => {
+const Notification = () => {
+    return (
 
-    return(
         <>
             <MainLayout>
-                <Notification />
+                <Notifications />
+                <Message />
             </MainLayout>
-
         </>
     )
 }
 
-export default Notifications;
+export default Notification

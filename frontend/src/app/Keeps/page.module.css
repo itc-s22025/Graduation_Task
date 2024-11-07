@@ -1,64 +1,77 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
-.allContainer{
+.allContainer {
     position: relative;
-    top: 100px;
-    padding: 0 37px 10px;
+    top: 25px;
+    right: 100px;
+    padding-right: 10px;
+    width: 500px;
 }
 
-.all{
-    margin: 40px auto 10px;
-    padding: 0px 10px 8px;
-    background-color: #fff;
-    width: 36vw;
-    height: auto;
-    border: #FF92AD 1px solid;
-    border-radius: 30px;
+.post {
+    border: 1px solid #FF92AD;
+    border-radius: 10px;
+    height: 250px;
+    width: 650px;
+    margin-bottom: 20px;
 }
 
-.topContainer{
+.title {
+    margin-left: 550px;
+    background-color: #FF92AD;
+    padding: 10px 640px 10px 40px;
+    color: white;
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-weight: 500;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.topContainer {
     display: flex;
     margin-top: 2px;
 }
 
-.infoContainer{
+.infoContainer {
     display: flex;
     margin-top: 8px;
     height: 50px;
 }
 
-.flex{
+.flex {
     display: flex;
 }
 
-.icon{
+.icon {
     background-color: #D2CCCC;
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin: 20px 10px 10px 20px;
+    margin-left: 10px;
+    margin-top: 5px;
 }
 
-.name{
+.name {
     color: #4A4444;
     font-size: 1.3rem;
     margin-top: 6px;
-    margin-left: 10px;
+    margin-left: 20px;
+    font-family: "Zen Maru Gothic", sans-serif;
 }
 
-.userID{
+.userID {
     color: #6E665C;
     margin-top: 10px;
     margin-left: 10px;
 }
 
-.time{
+.time {
     color: #4A4444;
     margin-top: 10px;
     margin-left: 10px;
 }
 
-.pc{
+.pc {
     color: #6E665C;
     font-size: 0.7rem;
     border: #ff92AD 1px solid;
@@ -69,7 +82,7 @@
     padding: 2px 15px;
 }
 
-.editButton{
+.editButton {
     border: none;
     outline: none;
     background-color: #fff;
@@ -83,56 +96,51 @@
     font-family: serif;
     font-weight: 400;
 }
-.editButton:hover{
+.editButton:hover {
     color: #ff92AD;
 }
 
-.content{
+.content {
     margin-left: 10px;
     margin-bottom: 10px;
     width: 30vw;
-    height: auto;
     min-height: 10vh;
 }
 
-/*reaction*/
-.reactionContainer{
+.reactionContainer {
     display: flex;
     padding-top: 10px;
     margin-bottom: 10px;
 }
 
-.reply{
+.reply {
     width: 25px;
     height: 25px;
-    margin:0 2px 0 10px;
+    margin: 0 2px 0 10px;
 }
 
-/*repost*/
-.repost{
+.repost {
     background-image: url('/repost_before.png');
     width: 23px;
     height: 23px;
     margin: 2px 2px 0 5vw;
     background-size: cover;
 }
-.repost:hover, .repost:focus {
+.repost:hover {
     background-image: url('/repost_after.png');
 }
 
-/*like*/
-.like{
+.like {
     background-image: url("/cutie_heart_before.png");
     width: 20px;
     height: 20px;
     margin: 4px 2px 0 5vw;
     background-size: cover;
 }
-.like:hover, .like:focus{
+.like:hover {
     background-image: url("/cutie_heart_after.png");
 }
 
-/*keep*/
 .keep {
     background-image: url("/keep_before.png");
     width: 20px;
@@ -140,29 +148,21 @@
     margin: 4px 2px 10px 11vw;
     background-size: cover;
     cursor: pointer;
-    transition: background-image 0.3s;
 }
-
-.keep.clicked {
+.keep:hover {
     background-image: url("/keep_after.png");
 }
-.keep:hover, .keep:focus, .keep.saved {
-    background-image: url("/keep_after.png");
-}
-.keep.saved {
-    background-color: #FF92AD; /* 保存状態を示す色 */
+.keep.active {
+    background-image: url("/keep_after.png"); /* 保存された状態を示すスタイル */
+    opacity: 0.8;
 }
 
-.reactionText{
+.reactionText {
     color: #5d5757;
     margin-left: 2px;
 }
 
-
-
-
-/*eachPost*/
-.eachPostContainer{
+.eachPostContainer {
     position: fixed;
     top: 0;
     left: 30vw;
@@ -170,7 +170,7 @@
     z-index: 3;
 }
 
-.headerContainer{
+.headerContainer {
     position: fixed;
     top: 0;
     left: 30vw;
@@ -181,7 +181,7 @@
     z-index: 10;
 }
 
-.backButton{
+.backButton {
     border: none;
     outline: none;
     background-color: #FF92AD;
@@ -191,22 +191,18 @@
     color: #fff;
     font-size: 1.8rem;
     font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
     cursor: pointer;
 }
 
-.headerTitle{
+.headerTitle {
     width: 400px;
     margin: 18px 20px 0 20px;
     color: #fff;
     font-size: 1.8rem;
 }
 
-/*☓ボタン*/
-.closeEachPost{
+.closeEachPost {
     cursor: pointer;
-    display: block;
     position: relative;
     border: 1px solid #ff839f;
     border-radius: 3px;
@@ -215,7 +211,6 @@
     margin: 30px 20px 0 160px;
     background-color: #fff;
 }
-
 .closeEachPost::before, .closeEachPost::after {
     content: "";
     position: absolute;
@@ -225,7 +220,6 @@
     height: 20px;
     background: #ff839f;
 }
-
 .closeEachPost::before {
     transform: translate(-50%,-50%) rotate(45deg);
 }
@@ -233,83 +227,18 @@
     transform: translate(-50%,-50%) rotate(-45deg);
 }
 
-/*報告*/
-.reportAllContainer{
-    position: relative;
-    top: -222px;
-    left: 27.1vw;
-    height: 0;
-}
-
-.reportContainer{
-    display: grid;
-    position: relative;
-    top: -10px;
-    background-color: #fff;
-    border: 1px solid #ff92AD;
-    border-radius: 10px;
-    padding: 10px;
-    width: 120px;
-}
-
-.closeReportButton{
-    cursor: pointer;
-    display: block;
-    position: relative;
-    left: 5.3vw;
-    border: 1px solid #ff839f;
-    border-radius: 3px;
-    width: 24px;
-    height: 23px;
-    background-color: #fff;
-    z-index: 10;
-}
-.closeReportButton::before, .closeReportButton::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1px;
-    height: 20px;
-    background: #ff839f;
-}
-.closeReportButton::before {
-    transform: translate(-50%,-50%) rotate(45deg);
-}
-.closeReportButton::after {
-    transform: translate(-50%,-50%) rotate(-45deg);
-}
-
-.reportPostButton{
-    border: none;
-    border-bottom: 1px solid #ff92AD;
-    background-color: #fff;
-    height: 30px;
-    font-size: 0.8rem;
-    padding-bottom: 5px;
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #5d5757;
-}
-
-.reportUserButton{
-    border: none;
-    background-color: #fff;
-    height: 30px;
-    font-size: 0.8rem;
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-    color: #5d5757;
-}
-
-@media screen and (max-width: 1024px){
-    .all{
+/* モバイル対応 */
+@media screen and (max-width: 1024px) {
+    .all {
         width: 60vw;
     }
 
-    .headerContainer{
+    .headerContainer {
         width: 70vw;
     }
+}
+
+.post {
+    margin-left: 700px;
+    padding: 10px;
 }

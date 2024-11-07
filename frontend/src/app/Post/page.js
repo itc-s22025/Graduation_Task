@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import Tweet from "../../components/tweet";
 import MainLayout from "../../components/MainLayout";
 import s from "./Post.module.css";
-import { db, storage, auth } from "../../firebase";  // Firebase FirestoreとStorageをインポート
+import { db, storage, auth } from "../../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 
 const Post = () => {
     const router = useRouter();
@@ -21,6 +22,7 @@ const Post = () => {
     const [menu, setMenu] = useState('');
     const inputRef = useRef(null);
 
+    // 投稿内容の変更
     const handleTweetChange = (event) => {
         const inputText = event.target.value;
         const maxLength = 100;
@@ -35,8 +37,17 @@ const Post = () => {
         }
     };
 
+    const handleImageSelect = (event) => {
+        const files = event.target.files;
+        if (files.length > 0) {
+            setSelectedImage(files[0]);
+        }
+    };
+
+    // 投稿送信
     const handleSubmit = async () => {
-        if (!tweet.trim()) return;
+        // テキストが空でも画像が選択されていれば投稿できるように変更
+        if (!tweet.trim() && !selectedImage) return; // テキストも画像もなければ送信しない
 
         try {
             const user = getAuth().currentUser;
@@ -47,22 +58,18 @@ const Post = () => {
 
             let imageUrl = null;
 
-            // 画像が選択されている場合はStorageにアップロード
             if (selectedImage) {
                 const imageRef = ref(storage, `images/${selectedImage.name}`);
-                const response = await fetch(`/api/proxy/v0/b/${yourBucket}/o?name=${encodeURIComponent(yourImageName)}`, {
-                    method: 'POST',
-                    // 他のオプションを追加
-                });
-
                 await uploadBytes(imageRef, selectedImage);
+
+                // アップロードした画像のURLを取得
                 imageUrl = await getDownloadURL(imageRef);
             }
 
             // Firestoreに投稿を保存
             await addDoc(collection(db, "posts"), {
-                tweet,
-                name: name || "Anonymous",
+                tweet, // tweetが空でも問題なし
+                name: name,
                 imageUrl: imageUrl,
                 pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
                 timestamp: serverTimestamp(),
@@ -82,28 +89,33 @@ const Post = () => {
         }
     };
 
+    // 投票オプションの変更
     const handlePollOptionChange = (index, value) => {
         const updatedOptions = [...pollOptions];
         updatedOptions[index] = value;
         setPollOptions(updatedOptions);
     };
 
+    // 投票オプションを追加
     const addOption = () => {
         if (pollOptions.length < 4) {
             setPollOptions([...pollOptions, ""]);
         }
     };
 
+    // 投票オプションを削除
     const removePollOption = (index) => {
         const updatedOptions = pollOptions.filter((_, i) => i !== index);
         setPollOptions(updatedOptions);
     };
 
+    // 投票オプションの表示を削除
     const removePoll = () => {
         setPollVisible(false);
         setPollOptions(["", ""]);
     };
 
+    // メニューの表示/非表示
     const toggleMenuVisibility = () => {
         setInMenuVisible(!inMenuVisible);
     };
@@ -112,13 +124,13 @@ const Post = () => {
         <>
             <MainLayout>
                 <h1 className={s.title}>Post</h1>
-                <Tweet/>
+                <Tweet />
             </MainLayout>
 
             <div className={s.box}>
                 <div className={s.flex}>
                     <div className={s.iconContainer}>
-                        <img src="icon.jpeg" className={s.icon} alt="User icon"/>
+                        <img src="icon.jpeg" className={s.icon} alt="User icon" />
                     </div>
                     <p className={s.name}>{name || "name"}</p>
                 </div>
@@ -137,7 +149,7 @@ const Post = () => {
                 <div className={s.pollContainer}>
                     <textarea
                         className={s.textarea}
-                        placeholder="テキストを入力してください"
+                        placeholder="今どうしてる？"
                         value={tweet}
                         onChange={handleTweetChange}
                     />
@@ -176,10 +188,10 @@ const Post = () => {
 
                 <div className={s.iconWrapper}>
                     <label htmlFor="imageInput" className={s.iconLabel} onClick={handleLabelClick}>
-                        <img src="/pic.jpeg" className={s.iconImg} alt="Select image"/>
+                        <img src="/pic.jpeg" className={s.iconImg} alt="Select image" />
                     </label>
 
-                    <img src="/comments.jpeg" className={s.iconImg} alt="Comments"/>
+                    <img src="/comments.jpeg" className={s.iconImg} alt="Comments" />
                     <img
                         src="/data.jpeg"
                         className={s.iconImg}
@@ -191,10 +203,12 @@ const Post = () => {
                         id="imageInput"
                         type="file"
                         ref={inputRef}
-                        style={{ display: 'none' }}
+                        style={{display: 'none'}}
                         onChange={(e) => {
-                            const file = e.target.files[0];
-                            setSelectedImage(file);
+                            const file = e.target.files ? e.target.files[0] : null;
+                            if (file) {
+                                setSelectedImage(file);
+                            }
                         }}
                     />
                 </div>
