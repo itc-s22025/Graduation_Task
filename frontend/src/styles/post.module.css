@@ -128,6 +128,7 @@
     color: #423a3a;
     width: 27vw;
     height: auto;
+    overflow-wrap: break-word;
     font-size: 0.9rem;
 }
 
@@ -285,7 +286,7 @@
     border-radius: 3px;
     width: 26px;
     height: 25px;
-    margin: 30px 20px 0 160px;
+    margin: 30px 20px 0 10vw;
     background-color: #fff;
 }
 
@@ -309,8 +310,7 @@
 /*報告*/
 .reportAllContainer{
     position: relative;
-    top: -222px;
-    left: 27.1vw;
+    left: 30vw;
     height: 0;
 }
 

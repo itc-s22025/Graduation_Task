@@ -143,23 +143,30 @@ const Post = ({ userId, searchPost, pageType }) => {
 
     //投稿時刻のフォーマット
     const formatTimestamp = (timestamp) => {
-        const postDate = timestamp.toDate();
-        const now = new Date();
+    const postDate = timestamp.toDate();
+    const now = new Date();
 
-        // 1週間以上前なら "mm/dd" 形式で表示
-        if (isBefore(postDate, subDays(now, 7))) {
-            return postDate.toLocaleDateString('ja', { year:'numeric', month: '2-digit', day: '2-digit' });
-        }
+    // 1週間以上前なら "yyyy/mm/dd" 形式で表示
+    if (isBefore(postDate, subDays(now, 7))) {
+        return postDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    }
 
-        // 1週間以内なら経過時間で表示
-        const diffInHours = Math.floor((now - postDate) / (1000 * 60 * 60));
-        if (diffInHours < 24) {
-            return `.${diffInHours}h`;
-        } else {
-            const diffInDays = Math.floor(diffInHours / 24);
-            return `.${diffInDays}d`;
-        }
-    };
+    // 1週間以内なら経過時間で表示
+    const diffInMinutes = Math.floor((now - postDate) / (1000 * 60));
+    if (diffInMinutes < 60) {
+        // 59分以内なら「m分」と表示
+        return `.${diffInMinutes}m`;
+    }
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) {
+        return `.${diffInHours}h`;
+    }
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `.${diffInDays}d`;
+};
+
 
     const handleKeepClick = async (post) => {
         // Firestoreに保存
@@ -181,7 +188,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                 {posts
                     .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
                     .map((post) => (
-                    <div key={post.id} className={`${s.all} ${s.forProfileFlame} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
+                    <div key={post.id} className={`${s.all} ${flameWidth} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
                         <div className={s.includeIconsContainer}>
                             <p className={s.icon}/>
                             <div className={s.topContainer}>
@@ -194,10 +201,9 @@ const Post = ({ userId, searchPost, pageType }) => {
                                         <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
                                         
                                     </div>
-                                    <div className={s.contentContainer}>
+                                    <div className={s.contentContainer} onClick={() => handleEachPostClick(post)}>
                                         {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
-                                        <p className={s.content}
-                                           onClick={() => handleEachPostClick(post)}>{post.tweet}</p>
+                                        <p className={s.content}>{post.tweet}</p>
                                         {/*もしimageUrlがあれば*/}
                                         {post.imageUrl && <img src={post.imageUrl} alt="投稿画像" className={s.image}/>}
                                     </div>
