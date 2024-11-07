@@ -145,8 +145,9 @@ const Search = () => {
 
                     {/* 検索結果を表示 */}
                     <div className={s.resultsContainer}>
-                        {filteredPosts.length > 0 ? (filteredPosts.map((post, index) => {
-                            console.log("ポスト：",post);   //この時点ではちゃんとsearchWordを含むポストのみ
+                        {filteredPosts.length > 0 ? (filteredPosts
+                                .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
+                                .map((post, index) => {
                             return(
                                 <>
                                     <Post searchPost={post} key={index}/>

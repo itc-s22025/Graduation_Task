@@ -1,150 +1,54 @@
-.allContainer{
-    /*border: 1px solid blue;*/
-    position: absolute;
+/* General container styling */
+.allContainer {
+    position: fixed;
     left: 30vw;
+    width: 40vw;
+    height: 100vh;
+    overflow-x: hidden;
+    /*スクロールバー削除*/
+    scrollbar-width: none;
 }
 
-.header{
+/*意味ない*/
+.headerToTabsContainer{
+    /*border: 1px solid grey;*/
+}
+
+/* Header Section */
+.header {
     background-color: #FF92AD;
     display: flex;
-    width: 40vw;
+    width: 100%;
     height: 180px;
     margin: 0;
 }
+
 .headerImage {
     width: 100%;
-    height: 180px;
+    height: 100%;
     object-fit: cover;
-    /*z-index: 1;*/
 }
 
-.edit {
-    outline: none;
-    width: 120px;
-    height: 30px;
-    background-color: #FFF;
-    color: #FF92AD;
-    border:2px solid #FF92AD;
-    border-radius: 50px;
-    margin-top: 10px;
-    margin-left: 530px;
-}
-
-.edit:hover {
-    transform: scale(1.05);
-}
-
+/* Profile Section */
 .container {
-    /*border: 1px solid red;*/
-    padding: 20px 20px 0 20px;
+    padding: 20px;
     height: 300px;
-    width: 99%;
-}
-
-.infoContainer{
-    /*border: 1px solid springgreen;*/
-    margin-top: 50px;
-    margin-bottom: 10px;
-}
-
-.personal {
-    display: inline-block;
-    position: absolute;
-    top: 13.2vh;
-    left: 2.9vw;
-    width: 50px;
-    height: 30px;
-    border-radius: 10px;
-    border: 1px solid #FF92AD;
-    background-color: #F8F4F0;
-    color: #423a3a;
-    padding-top: 4px;
-    font-size: 0.8rem;
-    text-align: center;
-}
-
-.springText {
-    color: #FFCC92; /* Spring color */
-}
-
-.summerText {
-    color: #66BAFF; /* Summer color */
-}
-
-.autumnText {
-    color: #FF989A; /* Autumn color */
-}
-
-.winterText {
-    color: #9293FF; /* Winter color */
-}
-
-.userName {
-    /*border: 1px solid blue;*/
-    margin: 10px 10px 0 30px;
-    padding: 0 5px 0 5px;
-    color: #423a3a;
-    font-size: 1.3rem;
-    width: 400px;
-    height: 30px;
-}
-
-.idAndFollow{
-    display: flex;
-}
-
-.userId {
-    width: 400px;
-    color: #5d5252;
-    font-size: 0.8rem;
-    margin:0 10px 10px 30px;
-    padding: 3px 5px 0 7px;
-}
-
-.followContainer{
-    font-size: 1rem;
-    color: #423a3a;
-    width: 250px;
-    height: 1.7rem;
-    margin-left: 30px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 0 5px 0 5px;
-}
-.add {
-    text-decoration: none;
-    color: black;
-}
-
-.follow{
-    margin-right: 10px;
-}
-
-.follower{
-    margin-left: 10px;
-}
-
-.bio {
-    /*border: 1px solid violet;*/
-    margin-left: 22px;
-    padding: 0 10px 0 10px;
-    width: 660px;
-    height: 100px;
-    color: #423a3a;
+    width: 100%;
+    position: relative;
 }
 
 .profileImage {
     width: 150px;
     height: 150px;
     position: absolute;
-    top: 12vh;
+    top: -8vh;
     left: 3vw;
-    line-height: 94px;
     background-color: #d0c0c0;
+    border-radius: 50%;
     border: 3px solid #F8F0F0;
-    border-radius: 150%;
     color: #fff;
     text-align: center;
+    line-height: 94px;
 }
 
 .profileImage img {
@@ -154,20 +58,122 @@
     border: 3px solid white;
 }
 
+/* Personal Color Text */
+.personal {
+    display: inline-block;
+    position: absolute;
+    top: -6vh;
+    left: 2.7vw;
+    width: 40px;
+    height: 30px;
+    border-radius: 50px;
+    border: 2px solid #F8F0F0;
+    background-color: #fff;
+    color: #423a3a;
+    padding-top: 3px;
+    font-size: 0.8rem;
+    text-align: center;
+}
 
+.springText { color: #FFCC92; }
+.summerText { color: #66BAFF; }
+.autumnText { color: #FF989A; }
+.winterText { color: #9293FF; }
 
-/*　タブ群　*/
-.tabsContainer{
-    border: 1px solid red;
-    margin-top: 5px;
-    margin-left: -21px;
+/* User Info Section */
+.infoContainer{
+    /*border: 1px solid blue;*/
+    margin-top: 30px;
+}
+
+.userName {
+    margin: 10px 10px 0 30px;
+    padding: 0 5px;
+    color: #423a3a;
+    font-size: 1.3rem;
+    width: 400px;
+    height: 30px;
+}
+
+.idAndFollow {
     display: flex;
 }
 
-.tabs{
-    list-style: none;
+.userId {
+    width: 400px;
+    color: #5d5252;
+    font-size: 0.8rem;
+    margin: 0 10px 10px 30px;
+    padding: 3px 5px 0 7px;
+}
+
+.followContainer {
+    font-size: 1rem;
+    color: #423a3a;
+    width: 250px;
+    height: 1.7rem;
+    margin-left: 30px;
+    margin-bottom: 10px;
+    padding: 0 5px;
+}
+
+.add {
+    text-decoration: none;
+    color: black;
+}
+
+.follow, .follower {
+    margin: 0 10px;
+}
+
+/* Bio Section */
+.bio {
+    margin-left: 22px;
+    padding: 0 10px;
+    width: 660px;
+    height: 100px;
+    color: #423a3a;
+}
+
+/* Edit Button */
+.edit {
+    width: 120px;
+    height: 30px;
+    background-color: #FFF;
+    color: #FF92AD;
+    border: 2px solid #FF92AD;
+    border-radius: 50px;
+    margin-top: 10px;
+    margin-left: 530px;
+    outline: none;
+    cursor: pointer;
+}
+
+.edit:hover {
+    transform: scale(1.05);
+}
+
+/* Tabs Section */
+.tabsContainer {
+    /*border: 1px solid red;*/
+    width: 40vw;
+    display: flex;
+    margin-top: 5px;
+    padding-bottom: 20px;
+    margin-left: -21px;
+}
+
+/* isFixedがtrueのときに固定する */
+/*.fixed {*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    width: 100%;*/
+/*    z-index: 10; !* 必要に応じてz-indexを設定 *!*/
+/*}*/
+
+.tabs {
     padding: 0;
-    margin-right: -74px; /* 前のliと重なる量 */
+    margin-right: -76px;
     cursor: pointer;
 }
 
@@ -243,49 +249,18 @@
     position: relative;
 }
 
-.zIndex1 {
-    z-index: 1;
-    border-bottom: #F8F0F0 1px solid;
+.zIndex1 { z-index: 1; border-bottom: #F8F0F0 1px solid; }
+.zIndex2 { z-index: 2; }
+.zIndex3 { z-index: 3; }
+
+
+/*article*/
+.articleContainer {
+    /*border: 1px solid springgreen;*/
+    padding-bottom: 50px;
 }
 
-.zIndex2 {
-    z-index: 2;
-}
-
-.zIndex3 {
-    z-index: 3;
-}
-
-.articleContainer{
-    border: 1px solid springgreen;
-    /*position: fixed;*/
-}
-
-
-/*responsive*/
-@media (max-width: 1200px) {
-    .all{
-        width: 70vw;
-    }
-
-    .tabFirst{
-        width: 240px;
-    }
-
-    .tabSecond{
-        width: 240px;
-    }
-
-    .tabThird{
-        width: 240px;
-    }
-
-    .add{
-        right: 0;
-    }
-}
-
-
+/* Modal Styling */
 .modalOverlay {
     position: fixed;
     top: 0;
@@ -296,22 +271,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999; /* Ensure modal is on top */
+    z-index: 999;
 }
 
 .modalContent {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    width: 400px; /* Set the width of the modal */
+    width: 400px;
     position: relative;
 }
 
-.closeButton{
-    border:2px solid #FF92AD;
+.closeButton {
+    border: 2px solid #FF92AD;
     color: #ff839f;
     background-color: #fff;
-    padding: 5px 15px 5px 15px;
+    padding: 5px 15px;
     border-radius: 50px;
     position: absolute;
     top: 10px;
@@ -322,9 +297,19 @@
     color: #FF989A;
 }
 
-.content {
-    position: absolute;
-    top: -115vh;
-    right: 20vw;
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .tabsContainer {
+        flex-direction: column;
+        width: 70vw;
+    }
 
+    .tabFirst, .tabSecond, .tabThird {
+        width: 240px;
+    }
+
+    .edit {
+        margin-left: 0;
+        margin-top: 10px;
+    }
 }
