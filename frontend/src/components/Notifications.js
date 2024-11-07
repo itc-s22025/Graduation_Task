@@ -17,7 +17,7 @@ const Tweet = () => {
 
     const handleTabClick = (tab) => {
         if (tab === 'tabFirst') {
-            router.push('/Notifications/ALL');
+            router.push('/Notifications');
         } else if (tab === 'tabSecond') {
             router.push('/Notifications/Following');
         }

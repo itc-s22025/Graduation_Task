@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.allContainer {
+    position: relative;
+    top: 25px;
+    right: 100px;
+    padding-right: 10px;
+    width: 500px;
+}
+
+.post {
+    border: 1px solid #FF92AD;
+    border-radius: 10px;
+    height: 250px;
+    width: 650px;
+    margin-bottom: 20px;
+}
+
+.title {
+    margin-left: 550px;
+    background-color: #FF92AD;
+    padding: 10px 640px 10px 40px;
+    color: white;
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-weight: 500;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.topContainer {
+    display: flex;
+    margin-top: 2px;
+}
+
+.infoContainer {
+    display: flex;
+    margin-top: 8px;
+    height: 50px;
+}
+
+.flex {
+    display: flex;
+}
+
+.icon {
+    background-color: #D2CCCC;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.name {
+    color: #4A4444;
+    font-size: 1.3rem;
+    margin-top: 6px;
+    margin-left: 20px;
+    font-family: "Zen Maru Gothic", sans-serif;
+}
+
+.userID {
+    color: #6E665C;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.time {
+    color: #4A4444;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.pc {
+    color: #6E665C;
+    font-size: 0.7rem;
+    border: #ff92AD 1px solid;
+    border-radius: 10px;
+    height: 21px;
+    width: 70px;
+    margin: 12px 10px 10px 20px;
+    padding: 2px 15px;
+}
+
+.editButton {
+    border: none;
+    outline: none;
+    background-color: #fff;
+    margin-top: 10px;
+    margin-left: 14vw;
+    height: 30px;
+    width: 30px;
+    padding-bottom: 10px;
+    font-size: 1.3rem;
+    color: #6E665C;
+    font-family: serif;
+    font-weight: 400;
+}
+.editButton:hover {
+    color: #ff92AD;
+}
+
+.content {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    width: 30vw;
+    min-height: 10vh;
+}
+
+.reactionContainer {
+    display: flex;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+.reply {
+    width: 25px;
+    height: 25px;
+    margin: 0 2px 0 10px;
+}
+
+.repost {
+    background-image: url('/repost_before.png');
+    width: 23px;
+    height: 23px;
+    margin: 2px 2px 0 5vw;
+    background-size: cover;
+}
+.repost:hover {
+    background-image: url('/repost_after.png');
+}
+
+.like {
+    background-image: url("/cutie_heart_before.png");
+    width: 20px;
+    height: 20px;
+    margin: 4px 2px 0 5vw;
+    background-size: cover;
+}
+.like:hover {
+    background-image: url("/cutie_heart_after.png");
+}
+
+.keep {
+    background-image: url("/keep_before.png");
+    width: 20px;
+    height: 20px;
+    margin: 4px 2px 10px 11vw;
+    background-size: cover;
+    cursor: pointer;
+}
+.keep:hover {
+    background-image: url("/keep_after.png");
+}
+.keep.active {
+    background-image: url("/keep_after.png"); /* 保存された状態を示すスタイル */
+    opacity: 0.8;
+}
+
+.reactionText {
+    color: #5d5757;
+    margin-left: 2px;
+}
+
+.eachPostContainer {
+    position: fixed;
+    top: 0;
+    left: 30vw;
+    height: 100vh;
+    z-index: 3;
+}
+
+.headerContainer {
+    position: fixed;
+    top: 0;
+    left: 30vw;
+    display: flex;
+    width: calc(100vw - 60vw);
+    height: 80px;
+    background-color: #FF92AD;
+    z-index: 10;
+}
+
+.backButton {
+    border: none;
+    outline: none;
+    background-color: #FF92AD;
+    height: 50px;
+    padding: 0 10px;
+    margin: 15px 0 15px 20px;
+    color: #fff;
+    font-size: 1.8rem;
+    font-family: "Zen Maru Gothic", serif;
+    cursor: pointer;
+}
+
+.headerTitle {
+    width: 400px;
+    margin: 18px 20px 0 20px;
+    color: #fff;
+    font-size: 1.8rem;
+}
+
+.closeEachPost {
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #ff839f;
+    border-radius: 3px;
+    width: 26px;
+    height: 25px;
+    margin: 30px 20px 0 160px;
+    background-color: #fff;
+}
+.closeEachPost::before, .closeEachPost::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 20px;
+    background: #ff839f;
+}
+.closeEachPost::before {
+    transform: translate(-50%,-50%) rotate(45deg);
+}
+.closeEachPost::after {
+    transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+/* モバイル対応 */
+@media screen and (max-width: 1024px) {
+    .all {
+        width: 60vw;
+    }
+
+    .headerContainer {
+        width: 70vw;
+    }
+}
+
+.post {
+    margin-left: 700px;
+    padding: 10px;
+}

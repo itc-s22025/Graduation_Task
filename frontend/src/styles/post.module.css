@@ -2,23 +2,45 @@
 
 .allContainer{
     position: relative;
-    top: 100px;
     /*border: 1px solid red;*/
-    padding: 0 37px 10px ;
+    padding: 0 38px 10px;
+    width: 40vw;
 }
 
 .all{
     margin: 40px auto 10px;
-    padding: 0px 10px 8px;
+    padding: 0 10px 8px;
     background-color: #fff;
-    width: 36vw;
     height: auto;
-    /*min-height: 200px;*/
+    /*min-height: 100px;*/
+
+    /*枠線*/
     border: #FF92AD 1px solid;
     border-radius: 30px;
 }
 
+.all:last-child{
+    margin-bottom: 100px;
+}
+
+.forProfilePadding{
+    padding-left: 0;
+}
+
+.forProfileFlame{
+    width: 36vw;
+}
+
+
+.includeIconsContainer{
+    /*border: 1px solid springgreen;*/
+    display: flex;
+    height: auto;
+}
+
 .topContainer{
+    /*border: 1px solid red;*/
+    width: 30vw;
     display: flex;
     margin-top: 2px;
 }
@@ -27,8 +49,17 @@
     /*border: 1px solid blue;*/
     display: flex;
     margin-top: 8px;
-    width: 520px;
-    height: 50px;
+    width: 28vw;
+    height: 40px;
+}
+
+.topMiddleContainer{
+    /*border: 1px solid #ec6102;*/
+    display: grid;
+    width: 28vw;
+    height: auto;
+    min-height: 120px;
+    margin-top: 5px;
 }
 
 .flex{
@@ -40,34 +71,23 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-
     margin: 20px 10px 10px 20px;
 }
 
 .name{
     /*border: 1px solid springgreen;*/
     color: #4A4444;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 
     max-width: 150px;
-    margin-top: 6px;
+    margin-top: 9px;
     margin-left: 10px;
 }
 
 .userID{
     /*border: 1px solid hotpink;*/
     color: #6E665C;
-
-    width: 200px;
-    margin-top: 10px;
-    margin-left: 10px;
-}
-
-.time{
-    /*border: 1px solid red;*/
-    width: 150px;
-    color: #4A4444;
-
+    max-width: 220px;
     margin-top: 10px;
     margin-left: 10px;
 }
@@ -77,12 +97,45 @@
     font-size: 0.7rem;
     border: #ff92AD 1px solid;
     border-radius: 10px;
-
     height: 21px;
     width: 70px;
-
-    margin: 12px 10px 10px 20px;
+    margin: 12px 0 10px 10px;
     padding: 2px 15px;
+}
+
+.time{
+     /*border: 1px solid plum;*/
+    width: 100px;
+    height: 25px;
+    color: #6E665C;
+    font-size: 0.9rem;
+
+    margin-top: 11px;
+    margin-left: 5px;
+ }
+
+.contentContainer{
+    /*border: 1px solid #2196f3;*/
+    width: 28vw;
+    min-height: 80px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.content{
+    /*border: 1px solid #ec6102;*/
+    margin: 0 5px 10px;
+    color: #423a3a;
+    width: 27vw;
+    height: auto;
+    font-size: 0.9rem;
+}
+
+.image{
+    height: 200px;
+    border: 1px solid #F8F0F0;
+    border-radius: 5px;
+    margin: 10px 10px 20px;
 }
 
 .editButton{
@@ -94,7 +147,6 @@
     height: 30px;
     width: 30px;
     padding-bottom: 10px;
-
     font-size: 1.3rem;
     color: #6E665C;
     font-family: serif;
@@ -104,26 +156,18 @@
     color: #ff92AD;
 }
 
-.content{
-    margin-left: 10px;
-    margin-bottom: 10px;
-
-    width: 30vw;
-    height: auto;
-    min-height: 10vh;
-}
-
 /*reaction*/
 .reactionContainer{
     display: flex;
     padding-top: 10px;
-    margin-bottom: 10px;
+    margin: 0 auto 10px;
+    /*border: #2196f3 1px solid;*/
+    width: 540px;
 }
 
 .reply{
     width: 25px;
     height: 25px;
-
     margin:0 2px 0 10px;
 }
 
@@ -162,15 +206,24 @@
 
 
 /*keep*/
-.keep{
+.keep {
     background-image: url("/keep_before.png");
     width: 20px;
     height: 20px;
     margin: 4px 2px 10px 11vw;
     background-size: cover;
+    cursor: pointer;
+    transition: background-image 0.3s;
 }
-.keep:hover{
+
+.keep.clicked {
     background-image: url("/keep_after.png");
+}
+.keep:hover, .keep:focus, .keep.saved {
+    background-image: url("/keep_after.png");
+}
+.keep.saved {
+    background-color: #FF92AD; /* 保存状態を示す色 */
 }
 
 .reactionText{
@@ -179,12 +232,13 @@
 }
 
 
+
+
 /*eachPost*/
 .eachPostContainer{
     position: fixed;
     top: 0;
     left: 30vw;
-    /*border: 1px solid  blue;*/
     height: 100vh;
     z-index: 3;
 }
@@ -207,20 +261,17 @@
     height: 50px;
     padding: 0 10px;
     margin: 15px 0 15px 20px;
-
     color: #fff;
     font-size: 1.8rem;
     font-family: "Zen Maru Gothic", serif;
     font-weight: 400;
     font-style: normal;
-
     cursor: pointer;
 }
 
 .headerTitle{
     width: 400px;
     margin: 18px 20px 0 20px;
-
     color: #fff;
     font-size: 1.8rem;
 }
@@ -239,20 +290,20 @@
 }
 
 .closeEachPost::before, .closeEachPost::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1px; /* 棒の幅（太さ） */
-  height: 20px; /* 棒の高さ */
-  background: #ff839f; /* バツ印の色 */
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 20px;
+    background: #ff839f;
 }
 
 .closeEachPost::before {
-  transform: translate(-50%,-50%) rotate(45deg);
+    transform: translate(-50%,-50%) rotate(45deg);
 }
 .closeEachPost::after {
-  transform: translate(-50%,-50%) rotate(-45deg);
+    transform: translate(-50%,-50%) rotate(-45deg);
 }
 
 /*報告*/
@@ -267,7 +318,6 @@
     display: grid;
     position: relative;
     top: -10px;
-    /*left: 28.5vw;*/
     background-color: #fff;
     border: 1px solid #ff92AD;
     border-radius: 10px;
@@ -292,9 +342,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 1px; /* 棒の幅（太さ） */
-    height: 20px; /* 棒の高さ */
-    background: #ff839f; /* バツ印の色 */
+    width: 1px;
+    height: 20px;
+    background: #ff839f;
 }
 .closeReportButton::before {
     transform: translate(-50%,-50%) rotate(45deg);
@@ -310,7 +360,6 @@
     height: 30px;
     font-size: 0.8rem;
     padding-bottom: 5px;
-
     font-family: "Zen Maru Gothic", serif;
     font-weight: 400;
     font-style: normal;
@@ -322,7 +371,6 @@
     background-color: #fff;
     height: 30px;
     font-size: 0.8rem;
-
     font-family: "Zen Maru Gothic", serif;
     font-weight: 400;
     font-style: normal;
