@@ -1,5 +1,6 @@
 .allContainer {
     position: absolute;
+    /*border: 1px solid #2196f3;*/
     left: 30vw;
     /* フレックスボックスを使って縦方向に配置 */
     display: flex;
@@ -8,6 +9,8 @@
     /* コンテンツが重ならないようにスクロールを許可 */
     overflow-y: auto;
     height: 100vh;
+    width: 40vw;
+    scrollbar-width: none;
 }
 
 /*Addタブ*/

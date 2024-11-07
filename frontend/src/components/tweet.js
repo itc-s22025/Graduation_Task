@@ -25,7 +25,7 @@ const Tweet = () => {
     return (
         <>
 
-            <Tabs>
+            <Tabs className={s.allContainer}>
                 <TabList className={s.all}>
                     <ul className={s.ul}>
                         <Tab

@@ -2,29 +2,63 @@
 
 .allContainer{
     position: relative;
-    top: 100px;
-    padding: 0 37px 10px;
+    /*border: 1px solid red;*/
+    padding: 0 38px 10px;
+    width: 40vw;
 }
 
 .all{
     margin: 40px auto 10px;
-    padding: 0px 10px 8px;
+    padding: 0 10px 8px;
     background-color: #fff;
-    width: 36vw;
     height: auto;
+
+    /*枠線*/
     border: #FF92AD 1px solid;
     border-radius: 30px;
 }
 
+.all:last-child{
+    margin-bottom: 100px;
+}
+
+.forProfilePadding{
+    padding-left: 0;
+}
+
+.forProfileFlame{
+    width: 36vw;
+}
+
+
+.includeIconsContainer{
+    /*border: 1px solid springgreen;*/
+    display: flex;
+    height: 130px;
+}
+
 .topContainer{
+    /*border: 1px solid red;*/
+    width: 30vw;
     display: flex;
     margin-top: 2px;
 }
 
 .infoContainer{
+    /*border: 1px solid blue;*/
     display: flex;
     margin-top: 8px;
-    height: 50px;
+    width: 28vw;
+    height: 40px;
+}
+
+.topMiddleContainer{
+    /*border: 1px solid #ec6102;*/
+    display: grid;
+    width: 28vw;
+    height: auto;
+    min-height: 120px;
+    margin-top: 5px;
 }
 
 .flex{
@@ -40,20 +74,19 @@
 }
 
 .name{
+    /*border: 1px solid springgreen;*/
     color: #4A4444;
-    font-size: 1.3rem;
-    margin-top: 6px;
+    font-size: 1.1rem;
+
+    max-width: 150px;
+    margin-top: 9px;
     margin-left: 10px;
 }
 
 .userID{
+    /*border: 1px solid hotpink;*/
     color: #6E665C;
-    margin-top: 10px;
-    margin-left: 10px;
-}
-
-.time{
-    color: #4A4444;
+    max-width: 220px;
     margin-top: 10px;
     margin-left: 10px;
 }
@@ -65,8 +98,35 @@
     border-radius: 10px;
     height: 21px;
     width: 70px;
-    margin: 12px 10px 10px 20px;
+    margin: 12px 0 10px 10px;
     padding: 2px 15px;
+}
+
+.time{
+     /*border: 1px solid plum;*/
+    width: 100px;
+    height: 25px;
+    color: #6E665C;
+    font-size: 0.9rem;
+
+    margin-top: 11px;
+    margin-left: 5px;
+ }
+
+.contentContainer{
+    /*border: 1px solid #2196f3;*/
+    width: 28vw;
+    height: auto;
+}
+
+.content{
+    /*border: 1px solid #ec6102;*/
+    margin: 0 5px 10px;
+    color: #423a3a;
+    width: 27vw;
+    height: auto;
+    min-height: 50px;
+    font-size: 0.9rem;
 }
 
 .editButton{
@@ -74,7 +134,7 @@
     outline: none;
     background-color: #fff;
     margin-top: 10px;
-    margin-left: 14vw;
+    /*margin-left: 10vw;*/
     height: 30px;
     width: 30px;
     padding-bottom: 10px;
@@ -87,19 +147,13 @@
     color: #ff92AD;
 }
 
-.content{
-    margin-left: 10px;
-    margin-bottom: 10px;
-    width: 30vw;
-    height: auto;
-    min-height: 10vh;
-}
-
 /*reaction*/
 .reactionContainer{
     display: flex;
     padding-top: 10px;
-    margin-bottom: 10px;
+    margin: 0 auto 10px;
+    /*border: #2196f3 1px solid;*/
+    width: 540px;
 }
 
 .reply{
@@ -121,16 +175,26 @@
 }
 
 /*like*/
-.like{
-    background-image: url("/cutie_heart_before.png");
+.like {
+    /*background-image: url("/cutie_heart_before.png");*/
     width: 20px;
     height: 20px;
     margin: 4px 2px 0 5vw;
     background-size: cover;
 }
-.like:hover, .like:focus{
-    background-image: url("/cutie_heart_after.png");
+
+.likeActive {
+    /*background-image: url("/cutie_heart_after.png");*/
+    width: 20px;
+    height: 20px;
+    margin: 4px 2px 0 5vw;
+    background-size: cover;
 }
+
+.like:hover{
+    /*background-image: url("/cutie_heart_after.png");*/
+}
+
 
 /*keep*/
 .keep {

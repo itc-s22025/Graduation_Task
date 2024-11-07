@@ -7,9 +7,12 @@
 }
 
 .colum2 {
+    grid-template-columns: 1fr 1fr;
     flex-grow: 3; /* 質問のスペースを広く */
     padding: 20px; /* 余白を追加 */
-}
+    position: absolute;
+    left: 30vw;
+    }
 
 .font {
     font-family: "Zen Maru Gothic", serif;
@@ -19,23 +22,23 @@
     text-align: center;
 }
 
-/*.parent {*/
-/*    display: flex;*/
-/*}*/
-/*.colum1 {*/
-/*    flex-grow: 1;*/
-/*}*/
-/*.colum2 {*/
-/*    position: relative;*/
-/*    flex-grow: 1;*/
-/*}*/
-/*.font {*/
-/*    font-family: "Zen Maru Gothic", serif;*/
-/*    color: #FF92AD;*/
-/*    position: relative;*/
-/*    top: 5vh;*/
-/*    right: 20vw;*/
-/*}*/
-/*.question {*/
+.buttonContainer {
+    display: flex;
+    gap: 200px;
+    justify-content: center;
+}
 
-/*}*/
+.backButton, .nextButton, .resultButton {
+    background-color: #ffc0cb;
+    color: black;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.backButton:hover, .nextButton:hover, .resultButton:hover {
+    background-color: #ff69ba;
+}

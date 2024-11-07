@@ -42,19 +42,19 @@ const HeaderTab = ({ firstTabText, secondTabText, thirdTabText, firstTabContent,
 
                 {/* Tab Panels */}
                 <TabPanel>
-                    <article>
+                    <article className={s.article}>
                         {firstTabContent}
                     </article>
                 </TabPanel>
 
                 <TabPanel>
-                    <article>
+                    <article className={s.article}>
                         {secondTabContent}
                     </article>
                 </TabPanel>
 
                 <TabPanel>
-                    <article>
+                    <article className={s.article}>
                         {thirdTabContent}
                     </article>
                 </TabPanel>

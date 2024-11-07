@@ -5,14 +5,16 @@ import { useRouter } from "next/navigation";
 import Tweet from "../../components/tweet";
 import MainLayout from "../../components/MainLayout";
 import s from "./Post.module.css";
-import { db, storage, auth } from "../../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+import { db, storage, auth } from "@/firebase";  // Firebase FirestoreとStorageをインポート
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 
 const Post = () => {
     const router = useRouter();
+
     const [tweet, setTweet] = useState('');
     const [name, setName] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
@@ -24,6 +26,7 @@ const Post = () => {
 
     // 投稿内容の変更
     const handleTweetChange = (event) => {
+        // content 文字数制限100文字
         const inputText = event.target.value;
         const maxLength = 100;
         if (inputText.length <= maxLength) {
@@ -47,47 +50,64 @@ const Post = () => {
     // 投稿送信
     const handleSubmit = async () => {
         // テキストが空でも画像が選択されていれば投稿できるように変更
-        if (!tweet.trim() && !selectedImage) return; // テキストも画像もなければ送信しない
+      if (!tweet.trim() && !selectedImage) return; // テキストも画像もなければ送信しない
+        
+      try {
+          const user = getAuth().currentUser;
+          if (!user) {
+              console.error("ユーザーがサインインしていません");
+              return;
+          }
+          
+          // usersコレクションから現在のユーザーのデータを取得
+          const usersCollection = collection(db, "users");
+          const q = query(usersCollection, where("uid", "==", user.uid));
+          const userSnapshot = await getDocs(q);
 
-        try {
-            const user = getAuth().currentUser;
-            if (!user) {
-                console.error("ユーザーがサインインしていません");
-                return;
-            }
+          let userName = "Anonymous"; // デフォルトの名前
+          if (!userSnapshot.empty) {
+            userSnapshot.forEach((doc) => {
+               userName = doc.data().name; // ユーザー名を取得
+              });
+          }
+                                 
+          let imageUrl = null;
 
-            let imageUrl = null;
+          if (selectedImage)
+            const imageRef = ref(storage, `images/${selectedImage.name}`);
+            await uploadBytes(imageRef, selectedImage);
 
-            if (selectedImage) {
-                const imageRef = ref(storage, `images/${selectedImage.name}`);
-                await uploadBytes(imageRef, selectedImage);
+            // アップロードした画像のURLを取得
+            imageUrl = await getDownloadURL(imageRef);
+          }
 
-                // アップロードした画像のURLを取得
-                imageUrl = await getDownloadURL(imageRef);
-            }
+               // Firestoreに投稿を保存し、生成されたIDを取得
+               const postDocRef = await addDoc(collection(db, "posts"), {
+                  tweet,
+                  name: userName, // 取得したユーザー名を使用
+                  imageUrl: imageUrl,
+                  pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
+                  timestamp: serverTimestamp(),
+                  uid: user.uid,
+                  replyTo: '',    //リプライのとき、リプライ先のポストIDを入れ
+                  likesCount: '',  //いいねの数
+                  likedUsers: ''  //いいねしたユーザ
+               });
 
-            // Firestoreに投稿を保存
-            await addDoc(collection(db, "posts"), {
-                tweet, // tweetが空でも問題なし
-                name: name,
-                imageUrl: imageUrl,
-                pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
-                timestamp: serverTimestamp(),
-                uid: user.uid,
-            });
+                // 投稿後のリセット
+                setTweet('');
+                setSelectedImage(null);
+                setPollVisible(false);
+                setPollOptions(["", ""]);
 
-            // 投稿後のリセット
-            setTweet('');
-            setSelectedImage(null);
-            setPollVisible(false);
-            setPollOptions(["", ""]);
-
-            // Home画面に遷移
-            await router.push('/Home');
+                alert('投稿しました')
+                // Home画面に遷移
+                await router.push('/Home');
         } catch (error) {
-            console.error("投稿の保存に失敗しました:", error);
-        }
-    };
+        console.error("投稿の保存に失敗しました:", error);
+    }
+};
+
 
     // 投票オプションの変更
     const handlePollOptionChange = (index, value) => {
