@@ -208,11 +208,12 @@ const Profile = () => {
                                 <TabPanel>
                                     <article className={s.articleContainer}>
                                         {likesPosts.length > 0 ? (
-                                            likesPosts.map(post => (
-                                                <div key={post.id} className={s.likeItem}>
+                                            likesPosts.map((post) => (
+                                                <div key={post.id} >
                                                     <h3>{post.name}</h3>
                                                     <p>{post.tweet}</p>
                                                 </div>
+                                                // <Post key={post.id} post={post}/>
                                             ))
                                         ) : (<p>いいねがありません</p>)}
                                     </article>

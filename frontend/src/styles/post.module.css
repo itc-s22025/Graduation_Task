@@ -174,19 +174,14 @@
 
 /*repost*/
 .repost{
-    background-image: url('/repost_before.png');
     width: 23px;
     height: 23px;
     margin: 2px 2px 0 5vw;
     background-size: cover;
 }
-.repost:hover, .repost:focus {
-    background-image: url('/repost_after.png');
-}
 
 /*like*/
 .like {
-    /*background-image: url("/cutie_heart_before.png");*/
     width: 20px;
     height: 20px;
     margin: 4px 2px 0 5vw;
@@ -194,17 +189,11 @@
 }
 
 .likeActive {
-    /*background-image: url("/cutie_heart_after.png");*/
     width: 20px;
     height: 20px;
     margin: 4px 2px 0 5vw;
     background-size: cover;
 }
-
-.like:hover{
-    /*background-image: url("/cutie_heart_after.png");*/
-}
-
 
 /*keep*/
 .keep {
