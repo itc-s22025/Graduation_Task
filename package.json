@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "date-fns": "^4.1.0",
     "http-proxy-middleware": "^3.0.3",
     "next": "^15.0.2",
     "path-browserify": "^1.0.1",

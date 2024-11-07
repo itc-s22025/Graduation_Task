@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import s from '@/styles/post.module.css';
 import EachPost from "@/components/eachPost";
+import { formatDistanceToNow, isBefore, subDays } from 'date-fns';
 //firebase
 import { auth, db } from "@/firebase";
 import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs, orderBy } from "firebase/firestore";
@@ -134,6 +135,25 @@ const Post = ({ userId, searchPost }) => {
     const handleReportButtonClick = () => { setShowReport(prev => !prev); };
     const handleCloseEachPost = () => { setShowEachPost(false); };
 
+    //投稿時刻のフォーマット
+    const formatTimestamp = (timestamp) => {
+        const postDate = timestamp.toDate();
+        const now = new Date();
+
+        // 1週間以上前なら "mm/dd" 形式で表示
+        if (isBefore(postDate, subDays(now, 7))) {
+            return postDate.toLocaleDateString('ja', { year:'numeric', month: '2-digit', day: '2-digit' });
+        }
+
+        // 1週間以内なら経過時間で表示
+        const diffInHours = Math.floor((now - postDate) / (1000 * 60 * 60));
+        if (diffInHours < 24) {
+            return `.${diffInHours}h`;
+        } else {
+            const diffInDays = Math.floor(diffInHours / 24);
+            return `.${diffInDays}d`;
+        }
+    };
 
     return (
         <>
@@ -143,58 +163,60 @@ const Post = ({ userId, searchPost }) => {
                     .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
                     .map((post) => (
                     <div key={post.id} className={s.all}>   {/*post.idで識別*/}
-                        <div className={s.flex}>
+                        <div className={s.includeIconsContainer}>
                             <p className={s.icon}/>
-                            <div>
-                                <div className={s.topContainer}>
+                            <div className={s.topContainer}>
+                                <div className={s.topMiddleContainer}>
                                     <div className={s.infoContainer}>
                                         <p className={s.name}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
-                                        <p className={s.userID}>@user1</p>
-                                        <p className={s.time}>{post.timestamp?.toDate().toLocaleString()}</p>
+                                        <p className={s.userID}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
+                                        <p className={s.pc}> {post.personalColor || "未設定"}</p>  {/*こっちまだ*/}
+                                        <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
                                     </div>
-                                    <button type="button" className={s.editButton} onClick={handleReportButtonClick}>…
-                                    </button>
+                                    <div className={s.contentContainer}>
+                                        {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
+                                        <p className={s.content}
+                                           onClick={() => handleEachPostClick(post)}>{post.tweet}</p>
+                                        {/*もしimageUrlがあれば*/}
+                                        {post.imageUrl && <img src={post.imageUrl} alt="投稿画像" className={s.image}/>}
+                                    </div>
                                 </div>
-                                {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
-                                <p className={s.content} onClick={() => handleEachPostClick(post)}>{post.tweet}</p>
-                                {/*もしimageUrlがあれば*/}
-                                {post.imageUrl && <img src={post.imageUrl} alt="投稿画像" className={s.image}/>}
+                                <button type="button" className={s.editButton} onClick={handleReportButtonClick}>…
+                                </button>
+                            </div>
+                        </div>
 
-                                {/*リプライとか*/}
-                                <div className={s.reactionContainer}>
-                                    <div className={s.flex}>    {/*reply*/}
-                                        <img alt="リプライアイコン" src="/comment.png" className={s.reply}
-                                             onClick={() => handleEachPostClick(post)}/>
-                                        <p className={s.reactionText}>0</p>
-                                    </div>
-                                    <div className={s.flex}>    {/*repost*/}
-                                        <div className={s.repost}/>
-                                        <p className={s.reactionText}>0</p>
-                                    </div>
-                                    <div className={s.flex}>    {/*like*/}
-                                        {/*post.likedByにcurrentUserIdがあればcutie_heart_after、なければbeforeを表示*/}
-                                       <img
-                                          alt="いいねアイコン"
-                                          src={
-                                              hoveredPostId === post.id
-                                                  ? "/cutie_heart_after.png" : post.likedBy.includes(currentUserUid)
-                                                      ? "/cutie_heart_after.png" : "/cutie_heart_before.png"
-                                          }
-                                          className={s.like}
-                                          onClick={() => handleLikeClick(post.id)}
-                                          onMouseEnter={() => setHoveredPostId(post.id)}
-                                          onMouseLeave={() => setHoveredPostId(null)}
-                                       />
-                                        <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
-                                    </div>
-                                    <div className={s.flex}>    {/*keep*/}
-                                        <div className={s.keep}/>
-                                    </div>
-                                </div>
+
+                        {/*リプライとか reaction*/}
+                        <div className={s.reactionContainer}>
+                            <div className={s.flex}>    {/*reply*/}
+                                <img alt="リプライアイコン" src="/comment.png" className={s.reply}
+                                     onClick={() => handleEachPostClick(post)}/>
+                                <p className={s.reactionText}>0</p>
+                            </div>
+                            <div className={s.flex}>    {/*repost*/}
+                                <div className={s.repost}/>
+                                <p className={s.reactionText}>0</p>
+                            </div>
+                            <div className={s.flex}>    {/*like*/}
+                                {/*post.likedByにcurrentUserIdがあればcutie_heart_after、なければbeforeを表示*/}
+                                <img alt="いいねアイコン"
+                                     src={
+                                     hoveredPostId === post.id ? "/cutie_heart_after.png" : post.likedBy.includes(currentUserUid)
+                                         ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
+                                     className={s.like}
+                                     onClick={() => handleLikeClick(post.id)}
+                                     onMouseEnter={() => setHoveredPostId(post.id)}
+                                     onMouseLeave={() => setHoveredPostId(null)}
+                                />
+                                <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
+                            </div>
+                            <div className={s.flex}>    {/*keep*/}
+                                <div className={s.keep}/>
                             </div>
                         </div>
                     </div>
-                ))}
+                    ))}
 
                 {/*ReportButton*/}
                 {showReport && (

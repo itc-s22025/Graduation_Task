@@ -1,11 +1,11 @@
 .all{
-    /*position: fixed;*/
+    position: fixed;
+    left: 30vw;
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
     height: 71px;
     margin: 0;
-    /*border: #000fff 1px solid;*/
 }
 
 .ul{
