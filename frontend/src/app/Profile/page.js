@@ -197,7 +197,7 @@ const Profile = () => {
 
                                 <TabPanel>
                                     <article className={s.articleContainer}>
-                                        {currentUserUid ? <Post userId={currentUserUid} /> : <p>ログインしてください</p>}
+                                        {currentUserUid ? <Post userId={currentUserUid} pageType="profile" /> : <p>ログインしてください</p>}
                                     </article>
                                 </TabPanel>
 

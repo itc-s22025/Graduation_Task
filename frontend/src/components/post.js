@@ -10,8 +10,7 @@ import { auth, db } from "@/firebase";
 import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs, orderBy } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
-const Post = ({ userId, searchPost }) => {
-
+const Post = ({ userId, searchPost, pageType }) => {
     const pathname = usePathname()
 
     const [posts, setPosts] = useState([]);
@@ -88,8 +87,7 @@ const Post = ({ userId, searchPost }) => {
                const likesQuery = query(collection(db, "likes"), where("postId", "==", postId), where("userId", "==", currentUserUid));
                const querySnapshot = await getDocs(likesQuery); //postId(DB) == postId, userId(DB) == currentUserUidのドキュメントを取得
                querySnapshot.forEach((doc) => {
-                   //ドキュメント自体を削除
-                   deleteDoc(doc.ref);
+                   deleteDoc(doc.ref);  //ドキュメント自体を削除
                })
 
                //likedBy配列からcurrentUserUidを除外した新しい配列をつくり、その結果をpostsに反映させる
@@ -134,6 +132,9 @@ const Post = ({ userId, searchPost }) => {
     const [hoveredPostId, setHoveredPostId] = useState(null);
     const handleReportButtonClick = () => { setShowReport(prev => !prev); };
     const handleCloseEachPost = () => { setShowEachPost(false); };
+    //postのレイアウト
+    const paddingLeft = pageType === 'profile' ? s.forProfilePadding : '';
+    const flameWidth = pageType === 'profile' ? s.forProfileFlame : '';
 
     //投稿時刻のフォーマット
     const formatTimestamp = (timestamp) => {
@@ -155,14 +156,15 @@ const Post = ({ userId, searchPost }) => {
         }
     };
 
+
     return (
         <>
-            <div className={s.allContainer}>
+            <div className={`${s.allContainer} ${paddingLeft}`}>
                 {/*setPostしたpostsをmap*/}
                 {posts
                     .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
                     .map((post) => (
-                    <div key={post.id} className={s.all}>   {/*post.idで識別*/}
+                    <div key={post.id} className={`${s.all} ${s.forProfileFlame}`}>   {/*post.idで識別*/}
                         <div className={s.includeIconsContainer}>
                             <p className={s.icon}/>
                             <div className={s.topContainer}>
