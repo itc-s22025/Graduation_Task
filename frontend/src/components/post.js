@@ -263,7 +263,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                             <h1 className={s.headerTitle}>Post</h1>
                             <button type="button" className={s.closeEachPost} onClick={handleCloseEachPost}/>
                         </div>
-                        <EachPost post={selectedPost}/> {/* 選択された投稿データを渡す */}
+                        <EachPost post={selectedPost} currentUserUid={currentUserUid}/> {/* 選択された投稿データを渡す */}
                     </div>
                 )}
 
