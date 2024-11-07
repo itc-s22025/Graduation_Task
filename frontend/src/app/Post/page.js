@@ -73,7 +73,7 @@ const Post = () => {
                                  
           let imageUrl = null;
 
-          if (selectedImage)
+          if (selectedImage){
             const imageRef = ref(storage, `images/${selectedImage.name}`);
             await uploadBytes(imageRef, selectedImage);
 
