@@ -9,6 +9,8 @@ import {EmailAuthProvider, getAuth, reauthenticateWithCredential} from "firebase
 import {router} from "next/client";
 import {useRouter} from "next/navigation";
 import {error} from "next/dist/build/output/log";
+import MainLayout from "@/components/MainLayout";
+import AccountHeader from "@/components/AccountHeader";
 
 const EditPage = () => {
     // const [password, setPassword] = useState('');
@@ -43,10 +45,10 @@ const EditPage = () => {
 
     return (
         <>
-            <Leftbar_before_home />
-            <h1 className={s.container}>
-                パスワードの確認
-            </h1>
+            <MainLayout>
+            <div className={s.container}>
+                <AccountHeader title="パスワードの確認" />
+            </div>
             <div className={s.content}>
                 {/*<div className={s.box}></div>*/}
                 <h3 className={s.font}>※アカウント情報を変更したい場合は、先にパスワードの入力をしてください</h3>
@@ -71,7 +73,7 @@ const EditPage = () => {
                 <button className={s.next} onClick={handleNextClick}>Next</button>
             </div>
 
-            <Rightbar_for_home/>
+            </MainLayout>
         </>
     )
 };

@@ -1,14 +1,14 @@
 .container {
     position: absolute;
     display: flex;
-    top: 12vh;
-    left: 35vw;
+    top: 0vh;
+    left: 30vw;
     color: #FF92AD;
 }
 .content {
     position: absolute;
-    top: 28.5vh;
-    left: 40vw;
+    top: 18vh;
+    left: 38vw;
     margin: 0 auto;
     border-radius: 4px;
     border: 1px solid #FF69A3;
