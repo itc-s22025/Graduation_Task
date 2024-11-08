@@ -183,7 +183,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                     .map((post) => (
                     <div key={post.id} className={`${s.all} ${s.forProfileFlame} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
                         <div className={s.includeIconsContainer}>
-                            <p className={s.icon} onClick={() => router.push('/AnotherScreen/[userId]')}/>
+                            <p className={s.icon} onClick={() => router.push(`/AnotherScreen/${post.uid}`)}/>
                             <div className={s.topContainer}>
                                 <div className={s.topMiddleContainer}>
                                     <div className={s.infoContainer}>
