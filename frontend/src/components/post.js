@@ -183,16 +183,16 @@ const Post = ({ userId, searchPost, pageType }) => {
                     .map((post) => (
                     <div key={post.id} className={`${s.all} ${s.forProfileFlame} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
                         <div className={s.includeIconsContainer}>
-                            <p className={s.icon}/>
+                            <p className={s.icon} onClick={() => router.push('/AnotherScreen/[userId]')}/>
                             <div className={s.topContainer}>
                                 <div className={s.topMiddleContainer}>
                                     <div className={s.infoContainer}>
-                     
+
                                         <p className={s.name}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
                                         <p className={s.userID}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
                                         <p className={s.pc}> {post.personalColor || "未設定"}</p>  {/*こっちまだ*/}
                                         <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
-                                        
+
                                     </div>
                                     <div className={s.contentContainer}>
                                         {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
