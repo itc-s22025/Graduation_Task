@@ -7,6 +7,9 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import Edit from '@/app/Profile/edit'
 import Link from "next/link";
 import Post from "@/components/post";
+import {doc, getDoc, getDocs, updateDoc, where, query, collection} from "firebase/firestore";
+import {db, auth} from "@/firebase"
+import { onAuthStateChanged } from "firebase/auth";
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
