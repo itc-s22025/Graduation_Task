@@ -28,7 +28,7 @@
 }
 .cancel {
     position: absolute;
-    top: 35vh;
+    top: 27vh;
     left: 8.5vw;
     display: block;
     height: 60px;
@@ -51,7 +51,7 @@
 
 .send {
     position: absolute;
-    top: 43vh;
+    top: 35vh;
     left: 8.5vw;
     display: block;
     height: 60px;
@@ -69,7 +69,7 @@
 
 .cancel {
     position: absolute;
-    top: 35vh;
+    top: 27vh;
     left: 8.5vw;
     display: block;
     height: 60px;

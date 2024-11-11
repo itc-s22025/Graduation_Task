@@ -27,8 +27,7 @@ const Profile = () => {
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
     // const [userId, setUserId] = useState('');
-    const [displayId, setDisplayId] = useState('');
-
+    const [uid, setUid] = useState('');
     const router = useRouter();
 
     const handleFocus = (tabName) => {
@@ -63,7 +62,7 @@ const Profile = () => {
                     name: newUserName,
                     bio: newBio,
                     // Id: user.id,
-                    displayId: displayId,
+                    uid: uid,
                 });
 
                 // ステートを更新して即座にUIに反映
@@ -95,7 +94,7 @@ const Profile = () => {
                     setIcon(data.icon || 'defaultIcon.png');
                     setUsername(data.name || 'user ユーザ');
                     // setUserId(data.id || 'user ID')
-                    setDisplayId(data.displayId || 'User ID not set');
+                    setUid(data.uid || 'User ID not set');
 
                     setBio(data.bio || 'ここにBioが表示されます');
 
@@ -128,10 +127,10 @@ const Profile = () => {
 
                         <div>
                             <a className={`${s.personal} 
-                                ${personalColor === '春' ? s.springText : 
-                                personalColor === '夏' ? s.summerText : 
-                                personalColor === '秋' ? s.autumnText :
-                                personalColor === '冬' ? s.winterText: ''}`}>
+                                ${personalColor === '春' ? s.springText :
+                                personalColor === '夏' ? s.summerText :
+                                    personalColor === '秋' ? s.autumnText :
+                                        personalColor === '冬' ? s.winterText: ''}`}>
 
                                 {personalColor ? `${personalColor}` : '未設定'}
                             </a>
@@ -143,7 +142,7 @@ const Profile = () => {
                                 <h2 className={s.userName}>{username}</h2>
 
                                 <div className={s.idAndFollow}>
-                                    <p className={s.userId}>{displayId}</p>
+                                    <p className={s.userId}>{uid}</p>
 
 
                                     <div className={s.followContainer}>
@@ -161,42 +160,42 @@ const Profile = () => {
                         </div>
 
                         <Tabs>
-                        <TabList className={s.tabsContainer}>
-                            <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
-                            <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
-                            <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
-                        </TabList>
+                            <TabList className={s.tabsContainer}>
+                                <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
+                                <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
+                                <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
+                            </TabList>
 
-                        <TabPanel>
-                            <article>
-                               <Post />
-                            </article>
-                        </TabPanel>
+                            <TabPanel>
+                                <article className={s.size}>
+                                    <Post />
+                                </article>
+                            </TabPanel>
 
-                        <TabPanel>
-                            <article>
-                                <p>media</p>
-                            </article>
-                        </TabPanel>
+                            <TabPanel>
+                                <article>
+                                    <p>media</p>
+                                </article>
+                            </TabPanel>
 
-                        <TabPanel>
-                            <article>
-                                <p>third</p>
-                            </article>
-                        </TabPanel>
-                    </Tabs>
+                            <TabPanel>
+                                <article>
+                                    <p>third</p>
+                                </article>
+                            </TabPanel>
+                        </Tabs>
 
 
-                    {/* Edit Profile Modal */}
-                    {showEditModal && (
-                        <div className={s.modalOverlay}>
-                            <div className={s.modalContent}>
-                                <Edit onSave={handleSave} />
-                                <button onClick={handleCloseEditModal} className={s.closeButton}>Close</button>
+                        {/* Edit Profile Modal */}
+                        {showEditModal && (
+                            <div className={s.modalOverlay}>
+                                <div className={s.modalContent}>
+                                    <Edit onSave={handleSave} />
+                                    <button onClick={handleCloseEditModal} className={s.closeButton}>Close</button>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
                 </div>
 
             </MainLayout>

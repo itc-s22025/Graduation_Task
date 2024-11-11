@@ -30,7 +30,7 @@ const LeftBar = () => {
                     <button className={`${s.button} ${ pathname === '/ColorDiagnosis' ? s.active : '' }`} onClick={() => router.push('/ColorDiagnosis')}>Color Diagnosis</button>
                     <button className={`${s.button} ${ pathname === '/MyCosmetics' ? s.active : '' }`} onClick={() => router.push('/MyCosmetics')}>My Cosmetics</button>
 
-                    <button onClick={handleLogout}>logout</button>
+                    <button className={`${s.logout}`} onClick={handleLogout}>logout</button>
                 </div>
             </div>
         </>

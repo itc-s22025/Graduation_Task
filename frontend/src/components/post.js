@@ -14,7 +14,7 @@ import { doc, setDoc } from "firebase/firestore"; // Firestoreの関数をイン
 
 const Post = ({ userId, searchPost, pageType }) => {
     const pathname = usePathname()
-  
+
     const [posts, setPosts] = useState([]); // 投稿リスト
     const [showEachPost, setShowEachPost] = useState(false);
     const [showReport, setShowReport] = useState(false);
@@ -64,7 +64,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                 filteredPosts = postsData.filter(post => post.uid === currentUserUid);  //filteredPostsにフィルタリングしたデータ(post.uidがcurrentUserUidと一致するポスト)を入れる
             }
 
-             // searchPostが渡されている場合はそれでさらにフィルタリング
+            // searchPostが渡されている場合はそれでさらにフィルタリング
             if (searchPost) {
                 filteredPosts = filteredPosts.filter(post =>
                     post.tweet.includes(searchPost.tweet)
@@ -83,49 +83,49 @@ const Post = ({ userId, searchPost, pageType }) => {
 
     //いいね機能
     const handleLikeClick = async (postId) => {
-       const postIndex = posts.findIndex(post => post.id === postId);   //post.id === postIDのインデックスを取得
-       const post = posts[postIndex];   //投稿群の[postIndex]番目の投稿
-       const alreadyLiked = post.likedBy.includes(currentUserUid);
+        const postIndex = posts.findIndex(post => post.id === postId);   //post.id === postIDのインデックスを取得
+        const post = posts[postIndex];   //投稿群の[postIndex]番目の投稿
+        const alreadyLiked = post.likedBy.includes(currentUserUid);
 
-       try {
-           if (alreadyLiked) {  //すでにいいねしているとき
-               const likesQuery = query(collection(db, "likes"), where("postId", "==", postId), where("userId", "==", currentUserUid));
-               const querySnapshot = await getDocs(likesQuery); //postId(DB) == postId, userId(DB) == currentUserUidのドキュメントを取得
-               querySnapshot.forEach((doc) => {
-                   deleteDoc(doc.ref);  //ドキュメント自体を削除
-               })
+        try {
+            if (alreadyLiked) {  //すでにいいねしているとき
+                const likesQuery = query(collection(db, "likes"), where("postId", "==", postId), where("userId", "==", currentUserUid));
+                const querySnapshot = await getDocs(likesQuery); //postId(DB) == postId, userId(DB) == currentUserUidのドキュメントを取得
+                querySnapshot.forEach((doc) => {
+                    deleteDoc(doc.ref);  //ドキュメント自体を削除
+                })
 
-               //likedBy配列からcurrentUserUidを除外した新しい配列をつくり、その結果をpostsに反映させる
-               setPosts(prevPosts => {
-                   const updatedPosts = [...prevPosts]; //prevPostsのシャローコピーをupdatePostsとして保存
-                   //[postIndex]番のlikedBy配列を更新...likedBy配列からcurrentUserIdと一致する要素を排除＝現在のユーザのUIDを削除
-                   updatedPosts[postIndex].likedBy = updatedPosts[postIndex].likedBy.filter(uid => uid !== currentUserUid);
-                   //更新されたupdatePostsを返し、それがsetPostsされてpostsステートになる
-                   return updatedPosts;
-               });
+                //likedBy配列からcurrentUserUidを除外した新しい配列をつくり、その結果をpostsに反映させる
+                setPosts(prevPosts => {
+                    const updatedPosts = [...prevPosts]; //prevPostsのシャローコピーをupdatePostsとして保存
+                    //[postIndex]番のlikedBy配列を更新...likedBy配列からcurrentUserIdと一致する要素を排除＝現在のユーザのUIDを削除
+                    updatedPosts[postIndex].likedBy = updatedPosts[postIndex].likedBy.filter(uid => uid !== currentUserUid);
+                    //更新されたupdatePostsを返し、それがsetPostsされてpostsステートになる
+                    return updatedPosts;
+                });
 
-           } else { //まだいいねしていないとき
-               if (!post.likedBy.includes(currentUserUid)) {   //もしcurrentUserがいいねしてなければ
-                   await addDoc(collection(db, "likes"), {  //ドキュメントにpostId, userId, timestampを登録
-                       postId: postId,
-                       userId: currentUserUid,
-                       timestamp: new Date(),
-                   });
+            } else { //まだいいねしていないとき
+                if (!post.likedBy.includes(currentUserUid)) {   //もしcurrentUserがいいねしてなければ
+                    await addDoc(collection(db, "likes"), {  //ドキュメントにpostId, userId, timestampを登録
+                        postId: postId,
+                        userId: currentUserUid,
+                        timestamp: new Date(),
+                    });
 
-                   setPosts(prevPosts => {  //更新前のpostsの値の配列に変更を加える
-                       const updatedPosts = [...prevPosts]; //prevPostsのシャローコピーをupdatePostsとして保存
-                       if (!updatedPosts[postIndex].likedBy.includes(currentUserUid)) { //もし[postIndex]番のupdatePostsのlikedBy配列にcurrentUserUidが存在しなければ
-                           updatedPosts[postIndex].likedBy.push(currentUserUid);    //currentUserUidを追加
-                       }
-                       //更新されたupdatePostsを返し、それがsetPostsされる
-                       return updatedPosts;
-                   });
-               }
-           }
-       } catch (error) {
-           console.error("いいね中のエラー: ", error);
-       }
-   };
+                    setPosts(prevPosts => {  //更新前のpostsの値の配列に変更を加える
+                        const updatedPosts = [...prevPosts]; //prevPostsのシャローコピーをupdatePostsとして保存
+                        if (!updatedPosts[postIndex].likedBy.includes(currentUserUid)) { //もし[postIndex]番のupdatePostsのlikedBy配列にcurrentUserUidが存在しなければ
+                            updatedPosts[postIndex].likedBy.push(currentUserUid);    //currentUserUidを追加
+                        }
+                        //更新されたupdatePostsを返し、それがsetPostsされる
+                        return updatedPosts;
+                    });
+                }
+            }
+        } catch (error) {
+            console.error("いいね中のエラー: ", error);
+        }
+    };
 
     // 表示関連
     // showEachPost
@@ -181,61 +181,61 @@ const Post = ({ userId, searchPost, pageType }) => {
                 {posts
                     .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
                     .map((post) => (
-                    <div key={post.id} className={`${s.all} ${s.forProfileFlame} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
-                        <div className={s.includeIconsContainer}>
-                            <p className={s.icon} onClick={() => router.push(`/AnotherScreen/${post.uid}`)}/>
-                            <div className={s.topContainer}>
-                                <div className={s.topMiddleContainer}>
-                                    <div className={s.infoContainer}>
+                        <div key={post.id} className={`${s.all} ${s.forProfileFlame} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
+                            <div className={s.includeIconsContainer}>
+                                <img className={s.icon} src="/peo.png" onClick={() => router.push(`/AnotherScreen/${post.uid}`)}/>
+                                <div className={s.topContainer}>
+                                    <div className={s.topMiddleContainer}>
+                                        <div className={s.infoContainer}>
 
-                                        <p className={s.name}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
-                                        <p className={s.userID}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
-                                        <p className={s.pc}> {post.personalColor || "未設定"}</p>  {/*こっちまだ*/}
-                                        <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
+                                            <p className={s.name}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
+                                            <p className={s.userID}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
+                                            <p className={s.pc}> {post.personalColor || "未設定"}</p>  {/*こっちまだ*/}
+                                            <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
 
+                                        </div>
+                                        <div className={s.contentContainer}>
+                                            {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
+                                            <p className={s.content}
+                                               onClick={() => handleEachPostClick(post)}>{post.tweet}</p>
+                                            {/*もしimageUrlがあれば*/}
+                                            {post.imageUrl && <img src={post.imageUrl} alt="投稿画像" className={s.image}/>}
+                                        </div>
                                     </div>
-                                    <div className={s.contentContainer}>
-                                        {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
-                                        <p className={s.content}
-                                           onClick={() => handleEachPostClick(post)}>{post.tweet}</p>
-                                        {/*もしimageUrlがあれば*/}
-                                        {post.imageUrl && <img src={post.imageUrl} alt="投稿画像" className={s.image}/>}
-                                    </div>
+                                    <button type="button" className={s.editButton} onClick={handleReportButtonClick}>…
+                                    </button>
                                 </div>
-                                <button type="button" className={s.editButton} onClick={handleReportButtonClick}>…
-                                </button>
                             </div>
-                        </div>
 
-                        {/*リプライとか reaction*/}
-                        <div className={s.reactionContainer}>
-                            <div className={s.flex}>    {/*reply*/}
-                                <img alt="リプライアイコン" src="/comment.png" className={s.reply}
-                                     onClick={() => handleEachPostClick(post)}/>
-                                <p className={s.reactionText}>0</p>
-                            </div>
-                            <div className={s.flex}>    {/*repost*/}
-                                <div className={s.repost}/>
-                                <p className={s.reactionText}>0</p>
-                            </div>
-                            <div className={s.flex}>    {/*like*/}
-                                {/*post.likedByにcurrentUserIdがあればcutie_heart_after、なければbeforeを表示*/}
-                                <img alt="いいねアイコン"
-                                     src={
-                                     hoveredPostId === post.id ? "/cutie_heart_after.png" : post.likedBy.includes(currentUserUid)
-                                         ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
-                                     className={s.like}
-                                     onClick={() => handleLikeClick(post.id)}
-                                     onMouseEnter={() => setHoveredPostId(post.id)}
-                                     onMouseLeave={() => setHoveredPostId(null)}
-                                />
-                                <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
-                            </div>
-                            <div className={s.flex} onClick={() => handleKeepClick(post)}>
-                                <div className={`${s.keep} ${savedPosts.includes(post.id) ? s.keepActive : ''}`} />
+                            {/*リプライとか reaction*/}
+                            <div className={s.reactionContainer}>
+                                <div className={s.flex}>    {/*reply*/}
+                                    <img alt="リプライアイコン" src="/comment.png" className={s.reply}
+                                         onClick={() => handleEachPostClick(post)}/>
+                                    <p className={s.reactionText}>0</p>
+                                </div>
+                                <div className={s.flex}>    {/*repost*/}
+                                    <div className={s.repost}/>
+                                    <p className={s.reactionText}>0</p>
+                                </div>
+                                <div className={s.flex}>    {/*like*/}
+                                    {/*post.likedByにcurrentUserIdがあればcutie_heart_after、なければbeforeを表示*/}
+                                    <img alt="いいねアイコン"
+                                         src={
+                                             hoveredPostId === post.id ? "/cutie_heart_after.png" : post.likedBy.includes(currentUserUid)
+                                                 ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
+                                         className={s.like}
+                                         onClick={() => handleLikeClick(post.id)}
+                                         onMouseEnter={() => setHoveredPostId(post.id)}
+                                         onMouseLeave={() => setHoveredPostId(null)}
+                                    />
+                                    <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
+                                </div>
+                                <div className={s.flex} onClick={() => handleKeepClick(post)}>
+                                    <div className={`${s.keep} ${savedPosts.includes(post.id) ? s.keepActive : ''}`} />
+                                </div>
                             </div>
                         </div>
-                    </div>
                     ))}
 
                 {/*ReportButton*/}
