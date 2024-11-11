@@ -8,6 +8,11 @@
     position: fixed;
 }
 
+.logosContainer{
+    margin-top: 7vh;
+    width: 30vw;
+}
+
 .logo{
     width: 50%;
     height: 80px;
@@ -15,7 +20,6 @@
     font-size: 50px;
 
     font-weight: 400;
-    /*border: 1px solid red;*/
 }
 
 .button_container{
@@ -44,12 +48,16 @@
 .button:hover{
     border: 2px solid #6E665C;
     margin: 9px;
-
 }
 
 .active {
     font-weight: bold;
 }
+
+.logout{
+    margin: 20vh 10px 10px;
+}
+
 
 /*.eachButtonContainer{*/
 /*    display: flex;*/
