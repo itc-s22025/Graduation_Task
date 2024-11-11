@@ -158,7 +158,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                     return updatedPosts;
                 });
 
-            } else { // まだ再投稿していないとき
+            } else { // まだリポストしていないとき
                 if (!post.repostedBy.includes(currentUserUid)) {
                     await addDoc(collection(db, "reposts"), {  // repostsコレクションにドキュメントを追加
                         postId: postId,
@@ -179,6 +179,43 @@ const Post = ({ userId, searchPost, pageType }) => {
             console.error("リポスト中のエラー: ", error);
         }
     }
+
+    //show reposted post
+    // 元のポストとリポストされたポストを統合して並べ替える関数
+    const getAllPostsIncludingReposts = () => {
+        const allPosts = posts.map(post => ({
+            ...post,
+            type: 'original',  // 元のポストのマーク
+        }));
+
+        const repostedPosts = posts.flatMap(post =>
+            post.repostedBy.map(userId => ({
+                ...post,
+                userId,  // リポストユーザーのID
+                type: 'repost',  // リポストのマーク
+                repostTimestamp: new Date(),  // リポストのタイムスタンプ
+            }))
+        );
+
+        // 元のポストとリポストを結合してtimestamp順に並べ替え
+        const combinedPosts = [...allPosts, ...repostedPosts].sort(
+            (a, b) => {
+                // a.timestamp と b.timestamp がすでに Date 型である場合
+                const aTimestamp = a.repostTimestamp || a.timestamp;
+                const bTimestamp = b.repostTimestamp || b.timestamp;
+
+                // もし Timestamp 型ならば toDate() で Date に変換
+                const aDate = aTimestamp instanceof Date ? aTimestamp : aTimestamp.toDate();
+                const bDate = bTimestamp instanceof Date ? bTimestamp : bTimestamp.toDate();
+
+                return bDate.getTime() - aDate.getTime();  // getTime() でミリ秒を比較
+            }
+        );
+
+        return combinedPosts;
+    };
+
+
 
 
     // 表示関連
@@ -239,11 +276,10 @@ const Post = ({ userId, searchPost, pageType }) => {
     return (
         <>
             <div className={`${s.allContainer} ${paddingLeft}`}>
-                {/*setPostしたpostsをmap*/}
-                {posts
-                    .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
-                    .map((post) => (
-                    <div key={post.id} className={`${s.all} ${flameWidth} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
+                {/* リポストされたポストを含めたすべてのポストを表示 */}
+                {getAllPostsIncludingReposts()
+                    .map((post, index) => (
+                    <div key={index} className={`${s.all} ${flameWidth} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
                         <div className={s.includeIconsContainer}>
                             <p className={s.icon} onClick={() => router.push(`/AnotherScreen/${post.uid}`)}/>
                             <div className={s.topContainer}>
@@ -306,6 +342,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                         </div>
                     </div>
                     ))}
+
 
                 {/*ReportButton*/}
                 {showReport && (
