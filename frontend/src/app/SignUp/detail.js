@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { auth, db } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {collection, setDoc, doc, getDoc} from 'firebase/firestore';
+import {collection, setDoc, doc} from 'firebase/firestore';
 
 const Detail = ({ myPC }) => {
   const router = useRouter();
@@ -16,51 +16,42 @@ const Detail = ({ myPC }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //追加でfirestoreに登録するやつ
-  const [uid, setUid] = useState('')
+  const [displayId, setDisplayId] = useState('')
   const [name, setName] = useState('');
   const [personalColor, setPersonalColor] = useState(myPC || ''); // myPCを初期値に設定
   const [bio, setBio] = useState('');
+
   const [error, setError] = useState(null);
 
-  const handleSignUp = async (event) => {
-  event.preventDefault();
-  try {
-    // 重複チェック: 同じ uid のドキュメントが存在するか確認
-    const docRef = doc(db, 'users', uid);
-    const docSnap = await getDoc(docRef);
+    const handleSignUp = async (event) => {
+      event.preventDefault();
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-    if (docSnap.exists()) {
-      setError('そのユーザーIDはすでに使われています。別のIDをお試しください。');
-      return;
+      // Firestoreにユーザー情報を保存
+      await setDoc(doc(db, 'users', user.uid),{
+        uid: user.uid,
+        name,
+        email,
+        personalColor,
+        bio,
+        displayId
+      });
+
+      alert('User created successfully');
+      await router.push('/');
+
+      setDisplayId('');
+      setEmail('');
+      setPassword('');
+      setName('');
+      setPersonalColor('');
+      setBio('');
+    } catch (error) {
+      setError(error.message);
     }
-
-    // Firebase Authにユーザーを作成
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    // Firestoreにユーザー情報を保存
-    await setDoc(docRef, {
-      uid,
-      name,
-      email,
-      personalColor,
-      bio,
-    });
-
-    alert('User created successfully');
-    router.push('/');
-
-    setUid('');
-    setEmail('');
-    setPassword('');
-    setName('');
-    setPersonalColor('');
-    setBio('');
-  } catch (error) {
-    setError(error.message);
-  }
-};
-
+  };
 
   return (
     <div className={s.bgContainer}>
@@ -81,13 +72,13 @@ const Detail = ({ myPC }) => {
           </div>
 
           <div className={s.inputContainer}>
-            <label htmlFor="uid" className={s.label}>ユーザーID</label>
+            <label htmlFor="displayId" className={s.label}>ユーザーID</label>
             @
             <input
                 type="text"
-                name="uid"
-                value={uid}
-                onChange={(e) => setUid(e.target.value)}
+                name="displayId"
+                value={displayId}
+                onChange={(e) => setDisplayId(e.target.value)}
                 className={s.uidInputBox}
                 placeholder="ID"
             />
