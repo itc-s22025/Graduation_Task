@@ -16,7 +16,7 @@ const Detail = ({ myPC }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //追加でfirestoreに登録するやつ
-  const [uid, setUid] = useState('')
+  const [displayId, setDisplayId] = useState('')
   const [name, setName] = useState('');
   const [personalColor, setPersonalColor] = useState(myPC || ''); // myPCを初期値に設定
   const [bio, setBio] = useState('');
@@ -30,19 +30,19 @@ const Detail = ({ myPC }) => {
         const user = userCredential.user;
 
       // Firestoreにユーザー情報を保存
-      await setDoc(doc(db, 'users', uid),{
-        // uid: user.uid,
-        uid,
+      await setDoc(doc(db, 'users', user.uid),{
+        uid: user.uid,
         name,
         email,
         personalColor,
         bio,
+        displayId
       });
 
       alert('User created successfully');
       await router.push('/');
 
-      setUid('');
+      setDisplayId('');
       setEmail('');
       setPassword('');
       setName('');
@@ -72,13 +72,13 @@ const Detail = ({ myPC }) => {
           </div>
 
           <div className={s.inputContainer}>
-            <label htmlFor="uid" className={s.label}>ユーザーID</label>
+            <label htmlFor="displayId" className={s.label}>ユーザーID</label>
             @
             <input
                 type="text"
-                name="uid"
-                value={uid}
-                onChange={(e) => setUid(e.target.value)}
+                name="displayId"
+                value={displayId}
+                onChange={(e) => setDisplayId(e.target.value)}
                 className={s.uidInputBox}
                 placeholder="ID"
             />
