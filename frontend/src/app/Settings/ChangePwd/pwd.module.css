@@ -49,19 +49,21 @@
 .save{
     position: relative;
     top: 7px;
-    right: 0.5vw;
+    right: 5.6vw;
     border: 1px solid #EE6E18;
     border-radius: 8px;
     outline: none;
     background-color: #FF92AD;
-    color: #F8F4F0;
     height: 50px;
-    width: 100px;
+    width: 200px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #F8F4F0;
     margin-top: 30px;
     margin-left:30vw;
     padding-top: 3px;
-    font-size: 1.5rem;
     text-align: center;
+
     /*font-weight: bold;*/
 }
 .save:hover {

@@ -27,6 +27,7 @@
 .box {
     height: 25px;
     width: 70%;
+    outline: none;
 }
 
 .link {
@@ -36,14 +37,14 @@
 .saveButton {
     display: block;
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
+    height: 40px;
     font-weight: bold;
-    background-color: #FFF;
-    color: #ff839f;
-    border: 1px solid #d0c0c0;
-    border-radius: 10px;
+    font-size: 1.3rem;
+    background-color: #ff92AD;
+    color: white;
+    border: 1px solid #ff839f;
+    border-radius: 8px;
 }
 .saveButton:hover {
-    background-color: #FFBFC0;
+    transform: scale(1.05,1.05);
 }
