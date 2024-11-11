@@ -158,6 +158,40 @@ const Profile = () => {
 
                                 <p className={s.bio}>{bio}</p>
                             </div>
+
+
+                            <Tabs>
+                                <TabList className={`${s.tabsContainer} ${isFixed ? s.fixed : ''}`}>
+                                    <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
+                                    <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
+                                    <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
+                                </TabList>
+
+                                <TabPanel>
+                                    <article className={s.articleContainer}>
+                                        {currentUserUid ? <Post userId={currentUserUid} pageType="profile" /> : <p>ログインしてください</p>}
+                                    </article>
+                                </TabPanel>
+
+                                <TabPanel>
+                                    <article><p>media</p></article>
+                                </TabPanel>
+
+                                <TabPanel>
+                                    <article className={s.articleContainer}>
+                                        {likesPosts.length > 0 ? (
+                                            likesPosts.map((post) => (
+                                                <div key={post.id} >
+                                                    <h3>{post.name}</h3>
+                                                    <p>{post.tweet}</p>
+                                                </div>
+                                                // <Post key={post.id} post={post}/>
+                                            ))
+                                        ) : (<p>いいねがありません</p>)}
+                                    </article>
+                                </TabPanel>
+                            </Tabs>
+
                         </div>
 
                         <Tabs>

@@ -34,7 +34,6 @@ const Post = ({ userId, searchPost, pageType }) => {
         return () => unsubscribe();
     }, []);
 
-
     //currentUserUidかpathnameが変わるたびに実行されるやつ
     useEffect(() => {
         //onSnapshot -> postsコレクションのデータをリアルタイムで監視、コレクションが更新されるたびに(snapshot)を受け取って最新のデータが反映される
@@ -43,6 +42,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                 id: doc.id,     //ドキュメントのid(doc.id)をidとする
                 ...doc.data(),  //ドキュメントのデータ(doc.id)のシャローコピーを作成
                 likedBy: [],    //likedByプロパティ(配列)を追加、いいねしたユーザの情報を保持するプロパティ
+                repostedBy: []
             }));
 
             // ここでpostsDataの内容を確認
@@ -50,12 +50,21 @@ const Post = ({ userId, searchPost, pageType }) => {
             // likes コレクションから各投稿に対するいいね情報を取得
             const likesSnapshot = await getDocs(collection(db, "likes"));
             const likesData = likesSnapshot.docs.map(doc => doc.data());
+            // repostsコレクションから各投稿に対するリポスト情報を取得
+            const repostSnapshot = await getDocs(collection(db, "reposts"));
+            const repostsData = repostSnapshot.docs.map(doc => doc.data());
 
-            // 各ポストに likedBy 情報を追加
+            // 各ポストに likedBy と repostedBy 情報を追加
             postsData.forEach(post => {
+                // likedBy を設定
                 post.likedBy = likesData
-                    .filter(like => like.postId === post.id)
-                    .map(like => like.userId);
+                    .filter(like => like.postId === post.id) // postId が一致する likes をフィルタリング
+                    .map(like => like.userId);  // userId のみを抽出して likedBy 配列に格納
+
+                // repostedBy を設定
+                post.repostedBy = repostsData
+                    .filter(repost => repost.postId === post.id) // postId が一致する reposts をフィルタリング
+                    .map(repost => repost.userId);  // userId のみを抽出して repostedBy 配列に格納
             });
 
             // 現在のパスが /Profile のときのみフィルタリング(currentUserのポストのみ表示する)
@@ -127,6 +136,50 @@ const Post = ({ userId, searchPost, pageType }) => {
        }
    };
 
+    //リポスト機能
+    const handleRepostClick = async (postId) => {
+        const postIndex = posts.findIndex(post => post.id === postId); // repostするpostのインデックスを取得
+        const post = posts[postIndex]; // 投稿群の[postIndex]番目の投稿
+        const alreadyReposted = post.repostedBy.includes(currentUserUid);
+
+        try {
+            if (alreadyReposted) {  // すでにリポストしているとき
+                const repostsQuery = query(collection(db, "reposts"), where("postId", "==", postId), where("userId", "==", currentUserUid));
+                const querySnapshot = await getDocs(repostsQuery);
+                querySnapshot.forEach((doc) => {
+                    deleteDoc(doc.ref);  // ドキュメント自体を削除
+                });
+
+                // repostedBy配列からcurrentUserUidを除外して、結果をpostsに反映させる
+                setPosts(prevPosts => {
+                    const updatedPosts = [...prevPosts]; // シャローコピーを作成
+                    updatedPosts[postIndex].repostedBy = updatedPosts[postIndex].repostedBy.filter(uid => uid !== currentUserUid);
+                    return updatedPosts;
+                });
+
+            } else { // まだ再投稿していないとき
+                if (!post.repostedBy.includes(currentUserUid)) {
+                    await addDoc(collection(db, "reposts"), {  // repostsコレクションにドキュメントを追加
+                        postId: postId,
+                        userId: currentUserUid,
+                        timestamp: new Date(),
+                    });
+
+                    setPosts(prevPosts => {  // 更新前のpostsの配列に変更を加える
+                        const updatedPosts = [...prevPosts]; // シャローコピーを作成
+                        if (!updatedPosts[postIndex].repostedBy.includes(currentUserUid)) { // repostedBy配列にcurrentUserUidが存在しない場合
+                            updatedPosts[postIndex].repostedBy.push(currentUserUid);    // currentUserUidを追加
+                        }
+                        return updatedPosts;
+                    });
+                }
+            }
+        } catch (error) {
+            console.error("リポスト中のエラー: ", error);
+        }
+    }
+
+
     // 表示関連
     // showEachPost
     const [selectedPost, setSelectedPost] = useState(null);
@@ -134,7 +187,9 @@ const Post = ({ userId, searchPost, pageType }) => {
         setSelectedPost(post);  // クリックした投稿のデータをセット
         setShowEachPost(true);  // <EachPost />を表示
     };
+
     const [hoveredPostId, setHoveredPostId] = useState(null);
+    const [hoveredRepostId, setHoveredRepostId] = useState(null)
     const handleReportButtonClick = () => { setShowReport(prev => !prev); };
     const handleCloseEachPost = () => { setShowEachPost(false); };
     //postのレイアウト
@@ -146,19 +201,25 @@ const Post = ({ userId, searchPost, pageType }) => {
         const postDate = timestamp.toDate();
         const now = new Date();
 
-        // 1週間以上前なら "mm/dd" 形式で表示
+        // 1週間以上前なら "yyyy/mm/dd" 形式で表示
         if (isBefore(postDate, subDays(now, 7))) {
-            return postDate.toLocaleDateString('ja', { year:'numeric', month: '2-digit', day: '2-digit' });
+            return postDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit' });
         }
 
         // 1週間以内なら経過時間で表示
-        const diffInHours = Math.floor((now - postDate) / (1000 * 60 * 60));
+        const diffInMinutes = Math.floor((now - postDate) / (1000 * 60));
+        if (diffInMinutes < 60) {
+            // 59分以内なら「m分」と表示
+            return `.${diffInMinutes}m`;
+        }
+
+        const diffInHours = Math.floor(diffInMinutes / 60);
         if (diffInHours < 24) {
             return `.${diffInHours}h`;
-        } else {
-            const diffInDays = Math.floor(diffInHours / 24);
-            return `.${diffInDays}d`;
         }
+
+        const diffInDays = Math.floor(diffInHours / 24);
+        return `.${diffInDays}d`;
     };
 
     const handleKeepClick = async (post) => {
@@ -181,7 +242,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                 {posts
                     .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
                     .map((post) => (
-                    <div key={post.id} className={`${s.all} ${s.forProfileFlame} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
+                    <div key={post.id} className={`${s.all} ${flameWidth} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
                         <div className={s.includeIconsContainer}>
                             <p className={s.icon} onClick={() => router.push(`/AnotherScreen/${post.uid}`)}/>
                             <div className={s.topContainer}>
@@ -194,10 +255,9 @@ const Post = ({ userId, searchPost, pageType }) => {
                                         <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
 
                                     </div>
-                                    <div className={s.contentContainer}>
+                                    <div className={s.contentContainer} onClick={() => handleEachPostClick(post)}>
                                         {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
-                                        <p className={s.content}
-                                           onClick={() => handleEachPostClick(post)}>{post.tweet}</p>
+                                        <p className={s.content}>{post.tweet}</p>
                                         {/*もしimageUrlがあれば*/}
                                         {post.imageUrl && <img src={post.imageUrl} alt="投稿画像" className={s.image}/>}
                                     </div>
@@ -215,8 +275,16 @@ const Post = ({ userId, searchPost, pageType }) => {
                                 <p className={s.reactionText}>0</p>
                             </div>
                             <div className={s.flex}>    {/*repost*/}
-                                <div className={s.repost}/>
-                                <p className={s.reactionText}>0</p>
+                                <img alt="リポストアイコン"
+                                     src={
+                                     hoveredRepostId === post.id ? "/repost_after.png" : post.repostedBy.includes(currentUserUid)
+                                        ? "/repost_after.png" : "/repost_before.png"}
+                                     className={s.repost}
+                                     onClick={() => handleRepostClick(post.id)}
+                                     onMouseEnter={() => setHoveredRepostId(post.id)}
+                                     onMouseLeave={() => setHoveredRepostId(null)}
+                                />
+                                <p className={s.reactionText}>{post.repostedBy.length}</p>
                             </div>
                             <div className={s.flex}>    {/*like*/}
                                 {/*post.likedByにcurrentUserIdがあればcutie_heart_after、なければbeforeを表示*/}
@@ -257,7 +325,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                             <h1 className={s.headerTitle}>Post</h1>
                             <button type="button" className={s.closeEachPost} onClick={handleCloseEachPost}/>
                         </div>
-                        <EachPost post={selectedPost}/> {/* 選択された投稿データを渡す */}
+                        <EachPost post={selectedPost} currentUserUid={currentUserUid}/> {/* 選択された投稿データを渡す */}
                     </div>
                 )}
 
