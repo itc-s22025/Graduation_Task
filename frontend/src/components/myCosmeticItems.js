@@ -17,7 +17,6 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
     // 編集ボタンの表示を切り替える
     const handleEditButtonClick = () => { setIsEdit(prev => !prev); }
 
-
     // アイテム編集画面の表示を切り替える
     const handleEditItemsClick = () => { setEditItems(prev => !prev); }
 
