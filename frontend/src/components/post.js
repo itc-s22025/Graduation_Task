@@ -29,6 +29,7 @@ const Post = ({ userId, searchPost, pageType }) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             // userが存在する(ログインしている)場合はuidを、存在しない(ログインしていない)場合はnullをcurrentUserUidにセットする
             setCurrentUserUid(user ? user.uid : null);
+            console.log("ゆーざID 確認：", user.uid)
         });
         //コンポーネントがアンマウントされるとき、unsubscribeを呼び出して監視を解除
         return () => unsubscribe();

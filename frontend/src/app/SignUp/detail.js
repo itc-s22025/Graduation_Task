@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { auth, db } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {collection, setDoc, doc} from 'firebase/firestore';
+import {collection, setDoc, doc, getDoc} from 'firebase/firestore';
 
 const Detail = ({ myPC }) => {
   const router = useRouter();
@@ -20,38 +20,47 @@ const Detail = ({ myPC }) => {
   const [name, setName] = useState('');
   const [personalColor, setPersonalColor] = useState(myPC || ''); // myPCを初期値に設定
   const [bio, setBio] = useState('');
-
   const [error, setError] = useState(null);
 
-    const handleSignUp = async (event) => {
-      event.preventDefault();
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+  const handleSignUp = async (event) => {
+  event.preventDefault();
+  try {
+    // 重複チェック: 同じ uid のドキュメントが存在するか確認
+    const docRef = doc(db, 'users', uid);
+    const docSnap = await getDoc(docRef);
 
-      // Firestoreにユーザー情報を保存
-      await setDoc(doc(db, 'users', uid),{
-        // uid: user.uid,
-        uid,
-        name,
-        email,
-        personalColor,
-        bio,
-      });
-
-      alert('User created successfully');
-      await router.push('/');
-
-      setUid('');
-      setEmail('');
-      setPassword('');
-      setName('');
-      setPersonalColor('');
-      setBio('');
-    } catch (error) {
-      setError(error.message);
+    if (docSnap.exists()) {
+      setError('そのユーザーIDはすでに使われています。別のIDをお試しください。');
+      return;
     }
-  };
+
+    // Firebase Authにユーザーを作成
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Firestoreにユーザー情報を保存
+    await setDoc(docRef, {
+      uid,
+      name,
+      email,
+      personalColor,
+      bio,
+    });
+
+    alert('User created successfully');
+    router.push('/');
+
+    setUid('');
+    setEmail('');
+    setPassword('');
+    setName('');
+    setPersonalColor('');
+    setBio('');
+  } catch (error) {
+    setError(error.message);
+  }
+};
+
 
   return (
     <div className={s.bgContainer}>
