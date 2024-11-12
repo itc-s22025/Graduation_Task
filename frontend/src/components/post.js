@@ -175,6 +175,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                     });
                 }
             }
+            console.log("ぽすつ:", post.userId)
         } catch (error) {
             console.error("リポスト中のエラー: ", error);
         }
