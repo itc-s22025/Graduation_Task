@@ -67,12 +67,23 @@
     display: flex;
 }
 
-.icon{
-    background-color: #D2CCCC;
+.iconContainer {
+    background-color: #fff;
+    border: 1px solid #f8e8e8;
     width: 50px;
     height: 50px;
-    border-radius: 50%;
+    border-radius: 50%; /* アイコンを円形に */
+    overflow: hidden; /* 子要素が枠からはみ出さないように */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 20px 10px 10px 20px;
+}
+
+.iconImage {
+    width: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .name{
@@ -99,9 +110,10 @@
     border: #ff92AD 1px solid;
     border-radius: 10px;
     height: 21px;
-    width: 70px;
+    width: 80px;
     margin: 12px 0 10px 10px;
-    padding: 2px 15px;
+    padding: 2px 0;
+    text-align: center;
 }
 
 .time{

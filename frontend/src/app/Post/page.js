@@ -64,15 +64,22 @@ const Post = () => {
             const q = query(usersCollection, where("uid", "==", user.uid));
             const userSnapshot = await getDocs(q);
 
+            //usersコレクションからユーザデータ取得するとこ
             let userName = "Anonymous"; // デフォルトの名前
+            let userIcon = "";
+            let personalColor = "未設定";  //デフォルトのPC
+            let displayId = "unknown";  //デフォルトのディスプレイID(@user)
             if (!userSnapshot.empty) {
                 userSnapshot.forEach((doc) => {
-                    userName = doc.data().name; // ユーザー名を取得
+                userName = doc.data().name; // ユーザー名を取得
+                userIcon = doc.data().icon; //アイコン取得
+                personalColor =  doc.data().personalColor;  //PC取得
+                displayId = doc.data().displayId;  //displayIDを取得
                 });
             }
 
+            //画像投稿関連
             let imageUrl = null;
-
             if (selectedImage){
                 const imageRef = ref(storage, `images/${selectedImage.name}`);
                 await uploadBytes(imageRef, selectedImage);
@@ -81,26 +88,33 @@ const Post = () => {
                 imageUrl = await getDownloadURL(imageRef);
             }
 
-            // Firestoreに投稿を保存し、生成されたIDを取得
-            const postDocRef = await addDoc(collection(db, "posts"), {
-                tweet,
-                name: userName, // 取得したユーザー名を使用
-                imageUrl: imageUrl,
-                pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
-                timestamp: serverTimestamp(),
-                uid: user.uid,
-                replyTo: '',    //リプライのとき、リプライ先のポストIDを入れ
-                likesCount: '',  //いいねの数
-                likedUsers: ''  //いいねしたユーザ
-            });
+               // Firestoreに投稿を保存し、生成されたIDを取得
+               const postDocRef = await addDoc(collection(db, "posts"), {
+                  tweet,
+                  name: userName, // 取得したユーザー名を使用
+                  icon: userIcon,   //取得したアイコン
+                  personalColor: personalColor, //取得したPC
+                  userId : displayId,  //取得したdisplayIDをuserIDとして表示
+                  imageUrl: imageUrl,
+                  pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
+                  timestamp: serverTimestamp(),
+                  uid: user.uid,    //自動生成されたuid格納
+                  replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
+                  repliedCount: '', //投稿自体が持つリプライの数
+                  likesCount: '',  //いいねの数
+                  likedUsers: '',  //いいねしたユーザ
+                  repostsCount: '',  //リポストの数
+                  repostedUsers: '',  //リポストしたユーザ
+                  keepsCount: '' //キープされた数
+               });
 
-            // 投稿後のリセット
-            setTweet('');
-            setSelectedImage(null);
-            setPollVisible(false);
-            setPollOptions(["", ""]);
+                // 投稿後のリセット
+                setTweet('');
+                setSelectedImage(null);
+                setPollVisible(false);
+                setPollOptions(["", ""]);
 
-            alert('投稿しました')
+                alert('投稿しました')
             // Home画面に遷移
             await router.push('/Home');
         } catch (error) {

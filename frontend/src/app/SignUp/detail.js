@@ -18,6 +18,7 @@ const Detail = ({ myPC }) => {
   //追加でfirestoreに登録するやつ
   const [displayId, setDisplayId] = useState('')
   const [name, setName] = useState('');
+  const [icon, setIcon] = useState('/user_default.png');
   const [personalColor, setPersonalColor] = useState(myPC || ''); // myPCを初期値に設定
   const [bio, setBio] = useState('');
 
@@ -34,6 +35,7 @@ const Detail = ({ myPC }) => {
         uid: user.uid,
         name,
         email,
+        icon,
         personalColor,
         bio,
         displayId
@@ -46,6 +48,7 @@ const Detail = ({ myPC }) => {
       setEmail('');
       setPassword('');
       setName('');
+      setIcon('')
       setPersonalColor('');
       setBio('');
     } catch (error) {
