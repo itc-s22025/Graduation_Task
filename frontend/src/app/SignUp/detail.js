@@ -16,10 +16,10 @@ const Detail = ({ myPC }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //追加でfirestoreに登録するやつ
+  const [displayId, setDisplayId] = useState('')
   const [name, setName] = useState('');
   const [personalColor, setPersonalColor] = useState(myPC || ''); // myPCを初期値に設定
   const [bio, setBio] = useState('');
-  const [displayId, setDisplayId] = useState('');
 
   const [error, setError] = useState(null);
 
@@ -42,12 +42,12 @@ const Detail = ({ myPC }) => {
       alert('User created successfully');
       await router.push('/');
 
+      setDisplayId('');
       setEmail('');
       setPassword('');
       setName('');
       setPersonalColor('');
       setBio('');
-      setDisplayId('');
     } catch (error) {
       setError(error.message);
     }
@@ -72,13 +72,14 @@ const Detail = ({ myPC }) => {
           </div>
 
           <div className={s.inputContainer}>
-            <label htmlFor="displayId" className={s.label}>UserID</label>
+            <label htmlFor="displayId" className={s.label}>ユーザーID</label>
+            @
             <input
                 type="text"
                 name="displayId"
                 value={displayId}
                 onChange={(e) => setDisplayId(e.target.value)}
-                className={s.inputBox}
+                className={s.uidInputBox}
                 placeholder="ID"
             />
           </div>
@@ -92,10 +93,10 @@ const Detail = ({ myPC }) => {
                 className={s.inputBox} required
             >
               <option value="" disabled>選択してください</option>
-              <option value="イエベ春">イエベ春</option>
-              <option value="ブルベ夏">ブルベ夏</option>
-              <option value="イエベ秋">イエベ秋</option>
-              <option value="ブルベ冬">ブルベ冬</option>
+              <option value="イエベ春" className={s.option}>イエベ春</option>
+              <option value="ブルベ夏" className={s.option}>ブルベ夏</option>
+              <option value="イエベ秋" className={s.option}>イエベ秋</option>
+              <option value="ブルベ冬" className={s.option}>ブルベ冬</option>
             </select>
           </div>
 

@@ -51,8 +51,8 @@
 }
 .edit {
     position: absolute;
-    top: 19.5vh;
-    left: 17vw;
+    top: 20.5vh;
+    left: 15.5vw;
     background-color: #ff92AD;
     height: 50px;
     width: 200px;
@@ -99,5 +99,5 @@
 }
 
 .closeButton:hover {
-    color: #FF989A;
+    color: #000;
 }

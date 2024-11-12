@@ -3,7 +3,8 @@
 import s from './forgot.module.css';
 import {useState} from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import MainLayout from "@/components/MainLayout";
+import AccountHeader from "@/components/AccountHeader";
 
 const ForgotPwdPage = () => {
     const [email, setEmail] = useState('');
@@ -21,23 +22,30 @@ const ForgotPwdPage = () => {
 
     return (
         <>
-            <div className={s.container}>
-                <Link href="/Settings" className={s.close}>
-                    ✕
-                </Link>
-                <h2 className={s.font}>- パスワードを忘れた方へ -</h2>
-                <div className={s.field}>
-                    <p>アカウントに関連付けられた電子メール、電話番号、またはユーザー名を入力してください</p>
+            <MainLayout>
+                <div className={s.allContainer}>
+                    <AccountHeader title="パスワードを忘れた方へ"/>
+
+                    <div className={s.content}>
+
+                        <div className={s.font}>
+                            <h3>※アカウントに
+                                関連付けられた電子メールを</h3>
+                        </div>
+                            <h3 className={s.font2}>入力してください</h3>
+                        <input
+                            type="email"
+                            id="email"
+                            className={s.input}
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                        />
+                        <button className={s.cancel} onClick={() => router.back()}>Cancel</button>
+                        <button className={s.next} onClick={handleNextClick}>Next</button>
+                    </div>
                 </div>
-                <input
-                    type="email"
-                    id="email"
-                    className={s.input}
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <button className={s.next} onClick={handleNextClick}>Next</button>
-            </div>
+
+            </MainLayout>
         </>
     );
 };

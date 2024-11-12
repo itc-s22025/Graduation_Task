@@ -1,60 +1,75 @@
-.col {
-        height: 100vh;
-        width: 100%;
+.allContainer {
+        position: absolute;
+        left: 30vw;
+}
+.content {
+        position: absolute;
+        top: 19vh;
+        left: 8vw;
+        margin: 0 auto;
+        border-radius: 4px;
+        border: 1px solid #FF69A3;
+        background-color: #FFF;
+
+        height: 500px;
+        width: 450px;
+}
+.font {
+        position: relative;
+        top: 3.5vh;
         text-align: center;
+        color: #FF69A3;
+}
+.font2 {
+        position: absolute;
+        top: 6.5vh;
+        left: 1.5vw;
+        /*padding: 15px 45px 20px 15px;*/
+        padding: 15px 45px 20px 15px;
+        color: #6E665C;
+}
+
+.input {
+        position: absolute;
+        top: 15vh;
+        left: 2vw;
+        width: 85%;
+        height: 60px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+        outline: none;
+}
+.col {
+        position: absolute;
+        top: 22vh;
+        left: 2vw;
         display: flex;
         align-items: flex-end;
         justify-content: center;
         flex-grow: 1;
-}
-.content {
-        position: absolute;
-        left: 30vw;
-}
-.font1 {
-        position: absolute;
-        top: 5vw;
-        left: 32vw;
-}
-.font2 {
-        position: absolute;
-        top: 7.5vw;
-        left: 31.8vw;
-        color: #d0c0c0;
-        font-weight: bold;
+        color: red;
+        /*text-decoration:none;*/
 }
 
-.box {
-        border: #968C7F 2px solid;
-        display: flex;
-        height: 50px;
-        width: 30vw;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
-        position: absolute;
-        top: 20vh;
-        right: 35vw;
-        outline: none;
-}
 .enable {
         position: absolute;
-        top: 30vh;
-        right: 34.9vw;
-        border: #968C7F 1px solid;
-        border-radius: 10px;
+        top: 34vh;
+        left: 7vw;
         outline: none;
         background-color: #FF92AD;
-        color: white;
         height: 50px;
-        width: 100px;
-        margin-top: 30px;
-        margin-left: 30px;
-        padding-top: 3px;
-        font-size: 1.5rem;
-        text-align: center;
+        width: 200px;
+        border: 1px solid #EE6E18;
+        align-items: center;
+        color: white;
+        display: block;
+        font-size: 1.3rem;
+        border-radius: 8px;
 }
 .enable:hover {
-        transform: scale(1.1,1.1);
+        transform: scale(1.1, 1.1);
 }
 .popup {
         position: fixed;
@@ -80,6 +95,7 @@
         padding: 10px 20px;
         border: none;
         cursor: pointer;
+        border-radius: 8px;
 }
 
 .deleteButton {

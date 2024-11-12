@@ -6,6 +6,8 @@ import { auth } from '@/firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import s from './Authen.module.css';
 import Link from "next/link";
+import MainLayout from "@/components/MainLayout";
+import AccountHeader from "@/components/AccountHeader";
 
 const AuthenticationCode = () => {
     const router = useRouter();
@@ -37,21 +39,25 @@ const AuthenticationCode = () => {
 
     return (
         <>
-            <div className={s.container}>
-                <Link href="/Settings" className={s.close}>
-                    ✕
-                </Link>
-                <h2 className={s.font}>確認コードの送信</h2>
-                <div className={s.p}>
-                    <p>次のメールアドレスに確認コードを送信します</p>
-                    <p className={s.font2}>{email}</p>
-                </div>
+            <MainLayout>
+                <div className={s.allContainer}>
+                    <AccountHeader title="パスワードを忘れた方へ" />
 
-                <button onClick={handleSendClick} className={s.send}>Send</button>
-                {status && <p>{status}</p>}
-                <button className={s.cancel} onClick={() => router.back()}>Cancel</button>
-            </div>
-        </>
+                    <div className={s.container}>
+
+                    <h3 className={s.font}>確認コードの送信</h3>
+                    <div className={s.p}>
+                        <p>次のメールアドレスに確認コードを送信します</p>
+                        <p className={s.font2}>{email}</p>
+                    </div>
+
+                    <button onClick={handleSendClick} className={s.send}>Send</button>
+                    {status && <p>{status}</p>}
+                    <button className={s.cancel} onClick={() => router.back()}>Cancel</button>
+                    </div>
+                </div>
+                </MainLayout>
+            </>
     );
 };
 

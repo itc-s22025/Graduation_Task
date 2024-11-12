@@ -1,23 +1,30 @@
+.allContainer {
+    position: absolute;
+    /*top: -25vh;*/
+    left: 30vw;
+}
 .container {
     position: absolute;
-    top: 20vh;
-    right: 36.5vw;
-    margin: 10px auto;
-    padding: 8px 10px;
-    background-color: #fff;
-    width: 32vw;
-    height: 500px; /* 高さを少し大きく */
+    top: 19vh;
+    left: 8vw;
+    margin: 0 auto;
+
+    border-radius: 4px;
     border: 1px solid #FF69A3;
-    border-radius: 30px;
+    background-color: #FFF;
+
+    height: 500px;
+    width: 450px;
 }
 
+
 .font {
-    color: #FF92AD;
+    position: relative;
+    top: 3.5vh;
+    left: 0.5vw;
     text-align: center;
-    font-weight: bold;
-    margin-top: 40px;
-    padding-bottom: 15px;
-    padding-top: 20px;
+    padding: 15px 25px 25px 15px;
+    color: #FF69A3;
 }
 .field {
     position: relative;
@@ -28,21 +35,28 @@
 }
 .cancel {
     position: absolute;
-    top: 27vh;
-    left: 8.5vw;
+    top: 29vh;
+    left: 7vw;
     display: block;
-    height: 60px;
-    width: 270px;
-    border-radius: 10px;
-    border-color: #EE6E18;
-    background-color: #FFF;
-    color: red;
+    height: 50px;
+    width: 200px;
+    border-radius: 8px;
+    font-size: 1.3rem;
+
+    border-color: #ff92AD;
+    background-color: white;
+    color: #ff92AD;
+    font-weight: bold;
+
 }
 .cancel:hover {
     transform: scale(1.1,1.1);
-    background-color: black;
+    /*background-color: black;*/
 }
 .p {
+    position: absolute;
+    top: 9vh;
+    left: 2.7vw;
     text-align: center;
 }
 .font2 {
@@ -51,38 +65,23 @@
 
 .send {
     position: absolute;
-    top: 35vh;
-    left: 8.5vw;
+    top: 36vh;
+    left: 7vw;
     display: block;
-    height: 60px;
-    width: 270px;
-    border-radius: 10px;
-    border-color: #EE6E18;
-    background-color: #FFF;
-    color: #FF69A3;
+    height: 50px;
+    width: 200px;
+    border-radius: 8px;
+    border: 1px solid #ff839f;
+    background-color: #ff92AD;
+    font-size: 1.3rem;
+    color: white;
+    font-weight: bold;
 }
 .send:hover {
-    transform: scale(1.1,1.1);
+    transform: scale(1.1, 1.1);
 
 }
 
-
-.cancel {
-    position: absolute;
-    top: 27vh;
-    left: 8.5vw;
-    display: block;
-    height: 60px;
-    width: 270px;
-    border-radius: 10px;
-    border-color: #EE6E18;
-    background-color: #FFF;
-    color: red;
-}
-.cancel:hover {
-    transform: scale(1.1,1.1);
-    background-color: black;
-}
 .close {
     position: absolute;
     top: 0px;

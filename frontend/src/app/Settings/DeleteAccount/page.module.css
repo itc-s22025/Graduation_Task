@@ -5,45 +5,37 @@
     left: 30vw;
 }
 
-.headerContainer {
-    display: flex;
-    width: 40vw;
-    height: 80px;
-    background-color: #FF92AD;
+.content {
+    position: absolute;
+    top: 19vh;
+    left: 8vw;
+    margin: 0 auto;
+    border-radius: 4px;
+    border: 1px solid #FF69A3;
+    background-color: #FFF;
+
+    height: 500px;
+    width: 450px;
 }
 
-.backButton{
-    border: none;
-    outline: none;
-    background-color: #FF92AD;
-    height: 50px;
-    padding: 0 10px;
-    margin: 15px 0 15px 20px;
-
-    color: #fff;
-    font-size: 1.8rem;
-    font-family: "Zen Maru Gothic", serif;
-    font-weight: 400;
-    font-style: normal;
-
-    cursor: pointer;
-}
-
-.title{
-    width: 400px;
-    margin: 15px 20px;
-
-    color: #fff;
-}
-
-.explanationContainer{
-    border: 1px solid #ec6102;
-}
-
-.box {
+.font {
     position: relative;
-    top: 5vh;
-    left: 28vw;
+    top: 3.5vh;
+    text-align: center;
+    color: #FF69A3;
+}
+.font2 {
+    position: absolute;
+    top: 7vh;
+    left: 1.5vw;
+    padding: 15px 45px 20px 15px;
+    color: #6E665C;
+}
+
+.button {
+    position: absolute;
+    top: 53vh;
+    left: 45vw;
     outline: none;
     background-color: #FF92AD;
     height: 50px;
@@ -54,16 +46,16 @@
     font-size: 1.3rem;
     border-radius: 8px;
 }
-.box:hover {
+.button:hover {
     transform: scale(1.1, 1.1);
 }
 .deleteButton{
         position: absolute;
-        top: 1vh;
-        left: 3.8vw;
+        top: 0.8vh;
+        left: 4vw;
         color: white;
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         text-align: center;
         text-decoration: none;
 }

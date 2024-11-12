@@ -2,11 +2,10 @@
 
 import s from "./AuthenCode.module.css";
 import AccountHeader from "@/components/AccountHeader";
-import Rightbar_for_home from "@/components/rightbar_for_home";
-import Leftbar_for_home from "@/components/leftbar_for_home";
 import Link from "next/link";
 import { getAuth, EmailAuthProvider, reauthenticateWithCredential, deleteUser} from "firebase/auth";
 import {useState} from "react";
+import MainLayout from "@/components/MainLayout";
 
 const AuthenticationCodePage = () => {
     const [password, setPassword] = useState('');
@@ -48,42 +47,42 @@ const AuthenticationCodePage = () => {
 
     return (
         <>
-            <Leftbar_for_home/>
-            <div className={s.content}>
-                <AccountHeader title="アカウントの無効化"/>
-            </div>
-            <h2 className={s.font1}>パスワードを確認してください</h2>
-            <p className={s.font2}>アカウントに関連付けられたパスワードを入力して、無効化をリクエストを完了します。</p>
+        <MainLayout>
+            <div className={s.allContainer}>
+                <AccountHeader title="Account delete"/>
+                <div className={s.content}>
+                    <h2 className={s.font}>パスワードを確認してください</h2>
+                    <p className={s.font2}>アカウントに関連付けられたパスワードを入力して、無効化をリクエストを完了します。</p>
 
-            <input
-                type="password"
-                className={s.box}
-                placeholder="パスワード"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+                    <input
+                        type="password"
+                        className={s.input}
+                        placeholder="パスワード"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
 
-            <Link
-                href="/Settings/DeleteAccount/AuthenticationCode">
-                パスワードをお忘れですか？
-                {/*className={s.}*/}
-            </Link>
+                    <Link className={s.col}
+                        href="/Settings/ChangePwd/ForgotPwd">
+                        パスワードをお忘れですか？
+                    </Link>
 
-            <button className={s.enable} onClick={handleEnableClick}>Enable</button>
+                    <button className={s.enable} onClick={handleEnableClick}>Enable</button>
 
-            {showPopup && (
-                <div className={s.popup}>
-                    <div className={s.popupContent}>
-                        <h3>アカウントを削除しますか？</h3>
-                        <Link href="/">
-                        <button onClick={handleDeleteAccount} className={s.deleteButton}>削除</button>
-                        </Link>
-                        <button onClick={handleCancel} className={s.cancelButton}>キャンセル</button>
-                    </div>
+                    {showPopup && (
+                        <div className={s.popup}>
+                            <div className={s.popupContent}>
+                                <h3>アカウントを削除しますか？</h3>
+                            <Link href="/">
+                                <button onClick={handleDeleteAccount} className={s.deleteButton}>削除</button>
+                            </Link>
+                                <button onClick={handleCancel} className={s.cancelButton}>キャンセル</button>
+                            </div>
+                        </div>
+                )}
                 </div>
-            )}
-
-            <Rightbar_for_home/>
+            </div>
+        </MainLayout >
         </>
     )
 }

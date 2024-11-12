@@ -44,7 +44,7 @@
 }
 .next {
     position: absolute;
-    top: 36vh;
+    top: 34vh;
     left: 7vw;
     display: block;
     height: 50px;
@@ -54,6 +54,7 @@
     background-color: #ff92AD;
     font-size: 1.3rem;
     color: white;
+    font-weight: bold;
 }
 .next:hover {
     transform: scale(1.1,1.1);

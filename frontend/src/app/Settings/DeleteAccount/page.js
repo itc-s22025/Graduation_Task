@@ -18,14 +18,20 @@ const DeleteAccount = () => {
             <MainLayout>
                 <div className={s.allContainer}>
                     <AccountHeader title="Delete Account" />
-                    <div className={s.explanationContainer}>
-                        <h2>アカウントの削除プロセスを開始します。</h2>
-                        <p >・ユーザ名、ユーザID、公開プロフィールは本サイトに表示されなくなります。</p>
-                        <p>・GoogleやBingなどの検索エンジンに一部のアカウント情報が残っている場合があります。</p>
+                    <div className={s.content}>
+
+                        <div className={s.font}>
+                            <h2>アカウントの削除プロセスを開始！</h2>
+                        </div>
+                            <div className={s.font2}>
+                                <p>・サイトから現在のアカウントが表示されなくなります。</p>
+                                <p>・検索エンジンに一部のアカウント情報が残っている場合があります。</p>
+                            </div>
                     </div>
-                    <div className={s.box}>
-                        <Link href='/Settings/DeleteAccount/AuthenticationCode' className={s.deleteButton}>Disable</Link>
+
                     </div>
+                    <div className={s.button}>
+                        <Link href='/Settings/DeleteAccount/AuthenticationCode' className={s.deleteButton}>Next</Link>
                 </div>
             </MainLayout>
 
