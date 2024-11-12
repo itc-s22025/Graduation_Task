@@ -129,6 +129,14 @@ const Post = ({ userId, searchPost, pageType }) => {
                        //更新されたupdatePostsを返し、それがsetPostsされる
                        return updatedPosts;
                    });
+                   // いいねされた後に通知を送る
+                   const notificationMessage = `${post.name || "Anonymous"}さんがあなたの投稿にいいねしました`;
+                   await addDoc(collection(db, "notifications"), {
+                       userId: post.uid, // 通知を受け取るユーザーのID（投稿者）
+                       type: "like", // 通知タイプ
+                       message: notificationMessage, // 通知メッセージ
+                       postId: postId, // 投稿ID
+                   });
                }
            }
        } catch (error) {

@@ -1,0 +1,32 @@
+.box {
+    position: relative;
+    margin: 10px auto;
+    padding: 8px 10px;
+    background-color: #fff;
+    width: 36vw;
+    left: 12.5vw;
+    border: 1px solid #FF92AD;
+    border-radius: 30px;
+    max-height: 1000px;
+    display: flex;
+    align-items: center;
+}
+
+.image {
+    height: 30px;
+    width: 30px;
+    margin-left: 7px;
+}
+
+.message {
+    margin-left: 600px;
+    padding-top: 50px;
+}
+
+.title{
+    margin-left: 600px;
+}
+
+.naiyou{
+    margin-left: 600px;
+}
