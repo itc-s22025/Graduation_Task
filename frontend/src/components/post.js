@@ -35,7 +35,6 @@ const Post = ({ userId, searchPost, pageType }) => {
         return () => unsubscribe();
     }, []);
 
-
     //currentUserUidかpathnameが変わるたびに実行されるやつ
     useEffect(() => {
         //onSnapshot -> postsコレクションのデータをリアルタイムで監視、コレクションが更新されるたびに(snapshot)を受け取って最新のデータが反映される
@@ -94,49 +93,57 @@ const Post = ({ userId, searchPost, pageType }) => {
 
     //いいね機能
     const handleLikeClick = async (postId) => {
-        const postIndex = posts.findIndex(post => post.id === postId);   //post.id === postIDのインデックスを取得
-        const post = posts[postIndex];   //投稿群の[postIndex]番目の投稿
-        const alreadyLiked = post.likedBy.includes(currentUserUid);
+       const postIndex = posts.findIndex(post => post.id === postId);   //post.id === postIDのインデックスを取得
+       const post = posts[postIndex];   //投稿群の[postIndex]番目の投稿
+       const alreadyLiked = post.likedBy.includes(currentUserUid);
 
-        try {
-            if (alreadyLiked) {  //すでにいいねしているとき
-                const likesQuery = query(collection(db, "likes"), where("postId", "==", postId), where("userId", "==", currentUserUid));
-                const querySnapshot = await getDocs(likesQuery); //postId(DB) == postId, userId(DB) == currentUserUidのドキュメントを取得
-                querySnapshot.forEach((doc) => {
-                    deleteDoc(doc.ref);  //ドキュメント自体を削除
-                })
+       try {
+           if (alreadyLiked) {  //すでにいいねしているとき
+               const likesQuery = query(collection(db, "likes"), where("postId", "==", postId), where("userId", "==", currentUserUid));
+               const querySnapshot = await getDocs(likesQuery); //postId(DB) == postId, userId(DB) == currentUserUidのドキュメントを取得
+               querySnapshot.forEach((doc) => {
+                   deleteDoc(doc.ref);  //ドキュメント自体を削除
+               })
 
-                //likedBy配列からcurrentUserUidを除外した新しい配列をつくり、その結果をpostsに反映させる
-                setPosts(prevPosts => {
-                    const updatedPosts = [...prevPosts]; //prevPostsのシャローコピーをupdatePostsとして保存
-                    //[postIndex]番のlikedBy配列を更新...likedBy配列からcurrentUserIdと一致する要素を排除＝現在のユーザのUIDを削除
-                    updatedPosts[postIndex].likedBy = updatedPosts[postIndex].likedBy.filter(uid => uid !== currentUserUid);
-                    //更新されたupdatePostsを返し、それがsetPostsされてpostsステートになる
-                    return updatedPosts;
-                });
+               //likedBy配列からcurrentUserUidを除外した新しい配列をつくり、その結果をpostsに反映させる
+               setPosts(prevPosts => {
+                   const updatedPosts = [...prevPosts]; //prevPostsのシャローコピーをupdatePostsとして保存
+                   //[postIndex]番のlikedBy配列を更新...likedBy配列からcurrentUserIdと一致する要素を排除＝現在のユーザのUIDを削除
+                   updatedPosts[postIndex].likedBy = updatedPosts[postIndex].likedBy.filter(uid => uid !== currentUserUid);
+                   //更新されたupdatePostsを返し、それがsetPostsされてpostsステートになる
+                   return updatedPosts;
+               });
 
-            } else { //まだいいねしていないとき
-                if (!post.likedBy.includes(currentUserUid)) {   //もしcurrentUserがいいねしてなければ
-                    await addDoc(collection(db, "likes"), {  //ドキュメントにpostId, userId, timestampを登録
-                        postId: postId,
-                        userId: currentUserUid,
-                        timestamp: new Date(),
-                    });
+           } else { //まだいいねしていないとき
+               if (!post.likedBy.includes(currentUserUid)) {   //もしcurrentUserがいいねしてなければ
+                   await addDoc(collection(db, "likes"), {  //ドキュメントにpostId, userId, timestampを登録
+                       postId: postId,
+                       userId: currentUserUid,
+                       timestamp: new Date(),
+                   });
 
-                    setPosts(prevPosts => {  //更新前のpostsの値の配列に変更を加える
-                        const updatedPosts = [...prevPosts]; //prevPostsのシャローコピーをupdatePostsとして保存
-                        if (!updatedPosts[postIndex].likedBy.includes(currentUserUid)) { //もし[postIndex]番のupdatePostsのlikedBy配列にcurrentUserUidが存在しなければ
-                            updatedPosts[postIndex].likedBy.push(currentUserUid);    //currentUserUidを追加
-                        }
-                        //更新されたupdatePostsを返し、それがsetPostsされる
-                        return updatedPosts;
-                    });
-                }
-            }
-        } catch (error) {
-            console.error("いいね中のエラー: ", error);
-        }
-    };
+                   setPosts(prevPosts => {  //更新前のpostsの値の配列に変更を加える
+                       const updatedPosts = [...prevPosts]; //prevPostsのシャローコピーをupdatePostsとして保存
+                       if (!updatedPosts[postIndex].likedBy.includes(currentUserUid)) { //もし[postIndex]番のupdatePostsのlikedBy配列にcurrentUserUidが存在しなければ
+                           updatedPosts[postIndex].likedBy.push(currentUserUid);    //currentUserUidを追加
+                       }
+                       //更新されたupdatePostsを返し、それがsetPostsされる
+                       return updatedPosts;
+                   });
+                   // いいねされた後に通知を送る
+                   const notificationMessage = `${post.name || "Anonymous"}さんがあなたの投稿にいいねしました`;
+                   await addDoc(collection(db, "notifications"), {
+                       userId: post.uid, // 通知を受け取るユーザーのID（投稿者）
+                       type: "like", // 通知タイプ
+                       message: notificationMessage, // 通知メッセージ
+                       postId: postId, // 投稿ID
+                   });
+               }
+           }
+       } catch (error) {
+           console.error("いいね中のエラー: ", error);
+       }
+   };
 
     //リポスト機能
     const handleRepostClick = async (postId) => {
@@ -338,6 +345,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                         </div>
                     </div>
                     ))}
+
 
                 {/*ReportButton*/}
                 {showReport && (
