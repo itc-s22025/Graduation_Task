@@ -29,7 +29,7 @@ const Post = ({ userId, searchPost, pageType }) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             // userが存在する(ログインしている)場合はuidを、存在しない(ログインしていない)場合はnullをcurrentUserUidにセットする
             setCurrentUserUid(user ? user.uid : null);
-            console.log("ゆーざID 確認：", user)
+            console.log("ゆーざ確認：", user)
         });
         //コンポーネントがアンマウントされるとき、unsubscribeを呼び出して監視を解除
         return () => unsubscribe();
@@ -47,7 +47,7 @@ const Post = ({ userId, searchPost, pageType }) => {
             }));
 
             // ここでpostsDataの内容を確認
-            console.log("Fetched posts data:", postsData);
+            console.log("Fetchedポストデータ:", postsData);
             // likes コレクションから各投稿に対するいいね情報を取得
             const likesSnapshot = await getDocs(collection(db, "likes"));
             const likesData = likesSnapshot.docs.map(doc => doc.data());

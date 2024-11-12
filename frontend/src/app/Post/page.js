@@ -50,46 +50,52 @@ const Post = () => {
     // 投稿送信
     const handleSubmit = async () => {
         // テキストが空でも画像が選択されていれば投稿できるように変更
-      if (!tweet.trim() && !selectedImage) return; // テキストも画像もなければ送信しない
-        
-      try {
-          const user = getAuth().currentUser;
-          if (!user) {
-              console.error("ユーザーがサインインしていません");
-              return;
-          }
+        if (!tweet.trim() && !selectedImage) return; // テキストも画像もなければ送信しない
+
+        try {
+            const user = getAuth().currentUser;
+            if (!user) {
+                console.error("ユーザーがサインインしていません");
+                return;
+            }
           
-          // usersコレクションから現在のユーザーのデータを取得
-          const usersCollection = collection(db, "users");
-          const q = query(usersCollection, where("uid", "==", user.uid));
-          const userSnapshot = await getDocs(q);
+            // usersコレクションから現在のユーザーのデータを取得
+            const usersCollection = collection(db, "users");
+            const q = query(usersCollection, where("uid", "==", user.uid));
+            const userSnapshot = await getDocs(q);
 
-          let userName = "Anonymous"; // デフォルトの名前
-          if (!userSnapshot.empty) {
-            userSnapshot.forEach((doc) => {
-               userName = doc.data().name; // ユーザー名を取得
-              });
-          }
-                                 
-          let imageUrl = null;
+            let userName = "Anonymous"; // デフォルトの名前
+            let personalColor = "未設定";  //デフォルトのPC
+            let userId = "unknown";  //デフォルトのディスプレイID(@user)
+            if (!userSnapshot.empty) {
+                userSnapshot.forEach((doc) => {
+                userName = doc.data().name; // ユーザー名を取得
+                personalColor =  doc.data().personalColor;  //PC取得
+                userId = doc.data().displayId;
+                });
+            }
 
-          if (selectedImage){
-            const imageRef = ref(storage, `images/${selectedImage.name}`);
-            await uploadBytes(imageRef, selectedImage);
+            //画像投稿関連
+            let imageUrl = null;
+            if (selectedImage){
+                const imageRef = ref(storage, `images/${selectedImage.name}`);
+                await uploadBytes(imageRef, selectedImage);
 
-            // アップロードした画像のURLを取得
-            imageUrl = await getDownloadURL(imageRef);
-          }
+                // アップロードした画像のURLを取得
+                imageUrl = await getDownloadURL(imageRef);
+            }
 
                // Firestoreに投稿を保存し、生成されたIDを取得
                const postDocRef = await addDoc(collection(db, "posts"), {
                   tweet,
                   name: userName, // 取得したユーザー名を使用
+                  personalColor: personalColor, //取得したPC
+                  userId : userId,  //取得したdisplayID
                   imageUrl: imageUrl,
                   pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
                   timestamp: serverTimestamp(),
                   uid: user.uid,
-                  replyTo: '',    //リプライのとき、リプライ先のポストIDを入れ
+                  replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
                   likesCount: '',  //いいねの数
                   likedUsers: ''  //いいねしたユーザ
                });
