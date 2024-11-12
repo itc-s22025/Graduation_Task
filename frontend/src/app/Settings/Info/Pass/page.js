@@ -1,14 +1,10 @@
 'use client';
 
 import s from './AcEdit.module.css';
-import Leftbar_before_home from "@/components/leftbar_before_home";
-import Rightbar_for_home from "@/components/rightbar_for_home";
 import Image from "next/image";
 import { useState } from "react";
 import {EmailAuthProvider, getAuth, reauthenticateWithCredential} from "firebase/auth";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
-import {error} from "next/dist/build/output/log";
 import MainLayout from "@/components/MainLayout";
 import AccountHeader from "@/components/AccountHeader";
 

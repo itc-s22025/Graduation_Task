@@ -52,17 +52,17 @@
 
 .edit {
     position: absolute;
-    top: 21vh;
-    left: 16.7vw;
-    background-color: #FF989A;
+    top: 20.5vh;
+    left: 15.5vw;
+    background-color: #FF92AD;
     height: 50px;
     width: 200px;
     font-weight: bold;
     font-size: 1.3rem;
     color: white;
+    border-radius: 8px;
     border: 1px solid #ff839f;
 }
 .edit:hover {
-    color: black;
     transform: scale(1.1,1.1);
 }

@@ -160,7 +160,7 @@
     display: flex;
     margin-top: 5px;
     padding-bottom: 20px;
-    margin-left: -21px;
+    margin-left: 2px;
 }
 
 /* isFixedがtrueのときに固定する */
@@ -286,7 +286,7 @@
     border: 2px solid #FF92AD;
     color: #ff839f;
     background-color: #fff;
-    padding: 5px 15px;
+    padding: 5px 15px 5px 15px;
     border-radius: 50px;
     position: absolute;
     top: 10px;
@@ -294,7 +294,7 @@
 }
 
 .closeButton:hover {
-    color: #FF989A;
+    color: #000;
 }
 
 /* Responsive Design */

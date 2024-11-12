@@ -161,8 +161,8 @@ const Profile = () => {
                             <img src={icon} className={s.profileImage} />
                             <div>
                                 <a className={`${s.personal} 
-                                ${personalColor === '春' ? s.springText : 
-                                    personalColor === '夏' ? s.summerText : 
+                                ${personalColor === '春' ? s.springText :
+                                    personalColor === '夏' ? s.summerText :
                                         personalColor === '秋' ? s.autumnText :
                                             personalColor === '冬' ? s.winterText: ''}`}>
                                     {personalColor ? `${personalColor}` : '未設定'}

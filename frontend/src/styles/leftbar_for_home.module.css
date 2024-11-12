@@ -14,6 +14,9 @@
 }
 
 .logo{
+    position: relative;
+    top: 15px;
+    left: 1.3vw;
     width: 50%;
     height: 80px;
     margin: 30px auto 20px;
@@ -53,10 +56,29 @@
 .active {
     font-weight: bold;
 }
-
 .logout{
-    margin: 20vh 10px 10px;
+    background: #ff92AD;
+    font-size: 32px;
+    color: white;
+    margin: 10px;
+
+    border: 1px solid #6E665C;
+    border-radius: 100px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
 }
+
+.logout:hover{
+    border: 2px solid #6E665C;
+    margin: 9px;
+
+}
+
+/*.logout{*/
+/*    margin: 20vh 10px 10px;*/
+/*}*/
 
 
 /*.eachButtonContainer{*/

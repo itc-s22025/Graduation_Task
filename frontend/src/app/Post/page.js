@@ -58,7 +58,7 @@ const Post = () => {
                 console.error("ユーザーがサインインしていません");
                 return;
             }
-          
+
             // usersコレクションから現在のユーザーのデータを取得
             const usersCollection = collection(db, "users");
             const q = query(usersCollection, where("uid", "==", user.uid));
