@@ -215,9 +215,6 @@ const Post = ({ userId, searchPost, pageType }) => {
         return combinedPosts;
     };
 
-
-
-
     // 表示関連
     // showEachPost
     const [selectedPost, setSelectedPost] = useState(null);
@@ -246,15 +243,10 @@ const Post = ({ userId, searchPost, pageType }) => {
 
         // 1週間以内なら経過時間で表示
         const diffInMinutes = Math.floor((now - postDate) / (1000 * 60));
-        if (diffInMinutes < 60) {
-            // 59分以内なら「m分」と表示
-            return `.${diffInMinutes}m`;
-        }
+        if (diffInMinutes < 60) { return `.${diffInMinutes}m`; }    // 59分以内なら.Om
 
         const diffInHours = Math.floor(diffInMinutes / 60);
-        if (diffInHours < 24) {
-            return `.${diffInHours}h`;
-        }
+        if (diffInHours < 24) { return `.${diffInHours}h`; }
 
         const diffInDays = Math.floor(diffInHours / 24);
         return `.${diffInDays}d`;
@@ -281,7 +273,10 @@ const Post = ({ userId, searchPost, pageType }) => {
                     .map((post, index) => (
                     <div key={index} className={`${s.all} ${flameWidth} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
                         <div className={s.includeIconsContainer}>
-                            <p className={s.icon} onClick={() => router.push(`/AnotherScreen/${post.uid}`)}/>
+                            <div className={s.iconContainer}>
+                                <img className={s.iconImage} alt="icon" src={post.icon || "/user_default.png"} onClick={() => router.push(`/AnotherScreen/${post.uid}`)} />
+                            </div>
+
                             <div className={s.topContainer}>
                                 <div className={s.topMiddleContainer}>
                                     <div className={s.infoContainer}>
