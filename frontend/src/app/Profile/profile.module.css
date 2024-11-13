@@ -160,7 +160,7 @@
     display: flex;
     margin-top: 5px;
     padding-bottom: 20px;
-    margin-left: 2px;
+    margin-left: -18px;
 }
 
 /* isFixedがtrueのときに固定する */
@@ -258,6 +258,7 @@
 .articleContainer {
     /*border: 1px solid springgreen;*/
     padding-bottom: 50px;
+    padding-left: 20px;
 }
 
 /* Modal Styling */
