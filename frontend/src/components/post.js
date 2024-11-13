@@ -10,7 +10,8 @@ import { auth, db } from "@/firebase";
 import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs, orderBy } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { doc, setDoc } from "firebase/firestore"; // Firestoreの関数をインポート
+import { doc, setDoc } from "firebase/firestore";
+import tweet from "@/components/tweet"; // Firestoreの関数をインポート
 
 const Post = ({ userId, searchPost, pageType }) => {
     const pathname = usePathname()
@@ -137,6 +138,8 @@ const Post = ({ userId, searchPost, pageType }) => {
                        type: "like", // 通知タイプ
                        message: notificationMessage, // 通知メッセージ
                        postId: postId, // 投稿ID
+                       tweet: post.tweet || "", // ツイート内容を追加
+                       timestamp: new Date(), // タイムスタンプ
                    });
                }
            }
