@@ -324,6 +324,7 @@
     right: 10px;
 }
 
+
 .closeButton:hover {
     color: #FF989A;
 }
@@ -333,4 +334,15 @@
     top: -115vh;
     right: 20vw;
 
+}
+.image{
+    height: 200px;
+    border: 1px solid #F8F0F0;
+    border-radius: 5px;
+    margin: 10px 10px 20px;
+}
+.articleContainer {
+    /*border: 1px solid springgreen;*/
+    padding-bottom: 50px;
+    padding-left: 20px;
 }
