@@ -10,6 +10,8 @@ import Post from "@/components/post";
 import {doc, getDoc, getDocs, updateDoc, where, query, collection} from "firebase/firestore";
 import {db, auth} from "@/firebase"
 import { onAuthStateChanged } from "firebase/auth";
+import {useRouter} from "next/navigation";
+
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
@@ -23,6 +25,7 @@ const Profile = () => {
     const [currentUserUid, setCurrentUserUid] = useState(null);
     const [isFixed, setIsFixed] = useState(false);
     const [likesPosts, setLikesPosts] = useState([]);
+    const router = useRouter();
 
     // ユーザーの認証状態を監視
     useEffect(() => {
@@ -34,19 +37,16 @@ const Profile = () => {
 
     const handleFocus = (tabName) => setFocusedTab(tabName);
 
-    const preventScroll = (e) => e.preventDefault();
+    // const preventScroll = (e) => e.preventDefault();
 
     const handleEditClick = () => {
         setShowEditModal(true);
-        window.addEventListener('wheel', preventScroll, { passive: false });
-        window.addEventListener('touchmove', preventScroll, { passive: false });
     };
 
     const handleCloseEditModal = () => {
         setShowEditModal(false);
-        window.removeEventListener('wheel', preventScroll);
-        window.removeEventListener('touchmove', preventScroll);
     };
+
 
     const handleSave = async ({ headerImage: newHeader, icon: newIcon, username: newUserName, bio: newBio }) => {
         if (currentUserUid) {
@@ -223,7 +223,13 @@ const Profile = () => {
                     {showEditModal && (
                         <div className={s.modalOverlay}>
                             <div className={s.modalContent}>
-                                <Edit onSave={handleSave} />
+                                <Edit userData={{
+                                    headerImage,
+                                    icon,
+                                    username,
+                                    bio
+                                }} onSave={handleSave}
+                                />
                                 <button onClick={handleCloseEditModal} className={s.closeButton}>Close</button>
                             </div>
                         </div>
