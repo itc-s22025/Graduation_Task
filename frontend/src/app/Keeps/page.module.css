@@ -11,9 +11,9 @@
 .post {
     border: 1px solid #FF92AD;
     border-radius: 10px;
-    height: 250px;
     width: 650px;
     margin-bottom: 20px;
+    max-height: 1000px;
 }
 
 .title {
@@ -29,13 +29,13 @@
 
 .topContainer {
     display: flex;
-    margin-top: 2px;
+    margin-top: 5px;
 }
 
 .infoContainer {
     display: flex;
     margin-top: 8px;
-    height: 50px;
+    height: 3px;
 }
 
 .flex {
@@ -48,7 +48,7 @@
     height: 50px;
     border-radius: 50%;
     margin-left: 10px;
-    margin-top: 5px;
+    margin-top: 12px;
 }
 
 .name {
@@ -102,9 +102,9 @@
 
 .content {
     margin-left: 10px;
-    margin-bottom: 10px;
+    margin-top: 50px;
     width: 30vw;
-    min-height: 10vh;
+    min-height: 5vh;
 }
 
 .reactionContainer {
@@ -240,5 +240,9 @@
 
 .post {
     margin-left: 700px;
-    padding: 10px;
+}
+
+.image{
+    height: 200px;
+    margin-bottom: 20px;
 }

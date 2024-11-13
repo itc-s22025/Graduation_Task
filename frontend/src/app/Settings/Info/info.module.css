@@ -16,53 +16,53 @@
 
 .font1 {
     position: relative;
-    top: 4.5vh;
-    left: 4vw;
+    top: 4vh;
+    left: 3.5vw;
 }
 
 
 .box {
     position: absolute;
-    top: 5vh;
-    left: 15vw;
+    top: 4.5vh;
+    left: 14.5vw;
 }
 
 .font2 {
     position: absolute;
-    top: 10vh;
-    left: 4vw;
+    top: 9.5vh;
+    left: 3.5vw;
 }
 
 .box2 {
     position: absolute;
-    top: 11vh;
-    left: 15vw;
+    top: 10.5vh;
+    left: 14.5vw;
 
 }
 .font3 {
     position: absolute;
-    top: 15.5vh;
-    left: 4vw;
+    top: 15vh;
+    left: 3.5vw;
 }
 .box3 {
     position: absolute;
-    top: 16vh;
-    left: 15vw;
+    top: 15.5vh;
+    left: 14.5vw;
 }
 
 .edit {
     position: absolute;
-    top: 22vh;
-    left: 16.7vw;
-    background-color: #FF989A;
+    top: 20.5vh;
+    left: 15.5vw;
+    background-color: #FF92AD;
     height: 50px;
     width: 200px;
     font-weight: bold;
     font-size: 1.3rem;
     color: white;
+    border-radius: 8px;
     border: 1px solid #ff839f;
 }
 .edit:hover {
-    color: black;
     transform: scale(1.1,1.1);
 }

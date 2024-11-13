@@ -50,48 +50,62 @@ const Post = () => {
     // 投稿送信
     const handleSubmit = async () => {
         // テキストが空でも画像が選択されていれば投稿できるように変更
-      if (!tweet.trim() && !selectedImage) return; // テキストも画像もなければ送信しない
-        
-      try {
-          const user = getAuth().currentUser;
-          if (!user) {
-              console.error("ユーザーがサインインしていません");
-              return;
-          }
-          
-          // usersコレクションから現在のユーザーのデータを取得
-          const usersCollection = collection(db, "users");
-          const q = query(usersCollection, where("uid", "==", user.uid));
-          const userSnapshot = await getDocs(q);
+        if (!tweet.trim() && !selectedImage) return; // テキストも画像もなければ送信しない
 
-          let userName = "Anonymous"; // デフォルトの名前
-          if (!userSnapshot.empty) {
-            userSnapshot.forEach((doc) => {
-               userName = doc.data().name; // ユーザー名を取得
-              });
-          }
-                                 
-          let imageUrl = null;
+        try {
+            const user = getAuth().currentUser;
+            if (!user) {
+                console.error("ユーザーがサインインしていません");
+                return;
+            }
 
-          if (selectedImage){
-            const imageRef = ref(storage, `images/${selectedImage.name}`);
-            await uploadBytes(imageRef, selectedImage);
+            // usersコレクションから現在のユーザーのデータを取得
+            const usersCollection = collection(db, "users");
+            const q = query(usersCollection, where("uid", "==", user.uid));
+            const userSnapshot = await getDocs(q);
 
-            // アップロードした画像のURLを取得
-            imageUrl = await getDownloadURL(imageRef);
-          }
+            //usersコレクションからユーザデータ取得するとこ
+            let userName = "Anonymous"; // デフォルトの名前
+            let userIcon = "";
+            let personalColor = "未設定";  //デフォルトのPC
+            let displayId = "unknown";  //デフォルトのディスプレイID(@user)
+            if (!userSnapshot.empty) {
+                userSnapshot.forEach((doc) => {
+                userName = doc.data().name; // ユーザー名を取得
+                userIcon = doc.data().icon; //アイコン取得
+                personalColor =  doc.data().personalColor;  //PC取得
+                displayId = doc.data().displayId;  //displayIDを取得
+                });
+            }
+
+            //画像投稿関連
+            let imageUrl = null;
+            if (selectedImage){
+                const imageRef = ref(storage, `images/${selectedImage.name}`);
+                await uploadBytes(imageRef, selectedImage);
+
+                // アップロードした画像のURLを取得
+                imageUrl = await getDownloadURL(imageRef);
+            }
 
                // Firestoreに投稿を保存し、生成されたIDを取得
                const postDocRef = await addDoc(collection(db, "posts"), {
                   tweet,
                   name: userName, // 取得したユーザー名を使用
+                  icon: userIcon,   //取得したアイコン
+                  personalColor: personalColor, //取得したPC
+                  userId : displayId,  //取得したdisplayIDをuserIDとして表示
                   imageUrl: imageUrl,
                   pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
                   timestamp: serverTimestamp(),
-                  uid: user.uid,
-                  replyTo: '',    //リプライのとき、リプライ先のポストIDを入れ
+                  uid: user.uid,    //自動生成されたuid格納
+                  replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
+                  repliedCount: '', //投稿自体が持つリプライの数
                   likesCount: '',  //いいねの数
-                  likedUsers: ''  //いいねしたユーザ
+                  likedUsers: '',  //いいねしたユーザ
+                  repostsCount: '',  //リポストの数
+                  repostedUsers: '',  //リポストしたユーザ
+                  keepsCount: '' //キープされた数
                });
 
                 // 投稿後のリセット
@@ -101,12 +115,12 @@ const Post = () => {
                 setPollOptions(["", ""]);
 
                 alert('投稿しました')
-                // Home画面に遷移
-                await router.push('/Home');
+            // Home画面に遷移
+            await router.push('/Home');
         } catch (error) {
-        console.error("投稿の保存に失敗しました:", error);
-    }
-};
+            console.error("投稿の保存に失敗しました:", error);
+        }
+    };
 
 
     // 投票オプションの変更

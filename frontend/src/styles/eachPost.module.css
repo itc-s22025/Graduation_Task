@@ -65,10 +65,18 @@
 .content{
     /*border: 1px solid red;*/
     padding: 10px;
-    margin: 0 0 10px 14px;
+    margin: 0 0 10px 30px;
     max-width: 710px;
     height: auto;
+    overflow-wrap: break-word;
     color: #423a3a;
+}
+
+.postImage{
+    height: 300px;
+    border: 1px solid #F8F0F0;
+    border-radius: 5px;
+    margin: 10px 40px;
 }
 
 .reactionContainer{
@@ -99,7 +107,6 @@
 }
 
 .repost {
-    background-image: url('/repost_before.png');
     width: 20px;
     height: 21px;
     margin-top: 3px;
@@ -111,7 +118,6 @@
 }
 
 .like{
-    background-image: url("/cutie_heart_before.png");
     width: 19px;
     height: 19px;
     margin-right: 2px;

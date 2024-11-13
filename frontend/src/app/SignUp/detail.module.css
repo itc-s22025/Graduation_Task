@@ -20,7 +20,7 @@
     border-radius: 10px;
 
     width: 470px;
-    height: 500px;
+    height: 550px;
 
     margin-top: 23vh;
     margin-left: 14vw;
@@ -51,17 +51,29 @@
     width: 140px;
 }
 
-.inputBox{
+.inputBox, .uidInputBox{
     outline: none;
     border: #FF92AD solid 1px;
     height: 40px;
-    width: 200px;
-    margin-left: 0;
     padding: 4px 10px 4px;
     background-color: #fff;
 
     font-family: "Zen Maru Gothic", serif;
     font-weight: 400;
+}
+
+.inputBox{
+    width: 200px;
+    margin-left: 0;
+}
+
+.uidInputBox{
+    width: 180px;
+    margin-left: 7px;
+}
+
+.option{
+    color: #423a3a;
 }
 
 .pcText{

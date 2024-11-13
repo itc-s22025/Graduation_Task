@@ -1,14 +1,14 @@
 .container {
     position: absolute;
     display: flex;
-    top: 12vh;
-    left: 35vw;
+    top: 0vh;
+    left: 30vw;
     color: #FF92AD;
 }
 .content {
     position: absolute;
-    top: 28.5vh;
-    left: 40vw;
+    top: 18vh;
+    left: 38vw;
     margin: 0 auto;
     border-radius: 4px;
     border: 1px solid #FF69A3;
@@ -44,15 +44,17 @@
 }
 .next {
     position: absolute;
-    top: 36vh;
+    top: 34vh;
     left: 7vw;
     display: block;
-    height: 60px;
+    height: 50px;
     width: 200px;
-    border-radius: 10px;
-    border-color: #EE6E18;
-    background-color: #FFF;
-    color: #FF989A;
+    border-radius: 8px;
+    border: 1px solid #ff839f;
+    background-color: #ff92AD;
+    font-size: 1.3rem;
+    color: white;
+    font-weight: bold;
 }
 .next:hover {
     transform: scale(1.1,1.1);

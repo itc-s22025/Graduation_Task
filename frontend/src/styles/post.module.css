@@ -3,6 +3,7 @@
 .allContainer{
     position: relative;
     /*border: 1px solid red;*/
+    left: -1vw;
     padding: 0 38px 10px;
     width: 40vw;
 }
@@ -66,12 +67,23 @@
     display: flex;
 }
 
-.icon{
-    background-color: #D2CCCC;
+.iconContainer {
+    background-color: #fff;
+    border: 1px solid #f8e8e8;
     width: 50px;
     height: 50px;
-    border-radius: 50%;
+    border-radius: 50%; /* アイコンを円形に */
+    overflow: hidden; /* 子要素が枠からはみ出さないように */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 20px 10px 10px 20px;
+}
+
+.iconImage {
+    width: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .name{
@@ -98,9 +110,10 @@
     border: #ff92AD 1px solid;
     border-radius: 10px;
     height: 21px;
-    width: 70px;
+    width: 80px;
     margin: 12px 0 10px 10px;
-    padding: 2px 15px;
+    padding: 2px 0;
+    text-align: center;
 }
 
 .time{
@@ -128,6 +141,7 @@
     color: #423a3a;
     width: 27vw;
     height: auto;
+    overflow-wrap: break-word;
     font-size: 0.9rem;
 }
 
@@ -173,19 +187,14 @@
 
 /*repost*/
 .repost{
-    background-image: url('/repost_before.png');
     width: 23px;
     height: 23px;
     margin: 2px 2px 0 5vw;
     background-size: cover;
 }
-.repost:hover, .repost:focus {
-    background-image: url('/repost_after.png');
-}
 
 /*like*/
 .like {
-    /*background-image: url("/cutie_heart_before.png");*/
     width: 20px;
     height: 20px;
     margin: 4px 2px 0 5vw;
@@ -193,17 +202,11 @@
 }
 
 .likeActive {
-    /*background-image: url("/cutie_heart_after.png");*/
     width: 20px;
     height: 20px;
     margin: 4px 2px 0 5vw;
     background-size: cover;
 }
-
-.like:hover{
-    /*background-image: url("/cutie_heart_after.png");*/
-}
-
 
 /*keep*/
 .keep {
@@ -285,7 +288,7 @@
     border-radius: 3px;
     width: 26px;
     height: 25px;
-    margin: 30px 20px 0 160px;
+    margin: 30px 20px 0 10vw;
     background-color: #fff;
 }
 
@@ -309,8 +312,7 @@
 /*報告*/
 .reportAllContainer{
     position: relative;
-    top: -222px;
-    left: 27.1vw;
+    left: 30vw;
     height: 0;
 }
 

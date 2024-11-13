@@ -21,15 +21,15 @@ const SettingPage = (props) => {
               {/*<div className="content">*/}
               <ul className={s.ul}>
                   <Link href="/Settings/Info" className={s.box}>
-                      <Image src="/human.png" alt="i" width={25} height={25} className={s.img}/>
+                      <Image src="/human.png" alt="i" width={40} height={40} className={s.img}/>
                       <h2 className={s.font}>Account Information</h2>
                   </Link>
                   <Link href="/Settings/ChangePwd/" className={s.box}>
-                      <Image src="/key.png" alt="i" width={25} height={25} className={s.img}/>
+                      <Image src="/key.png" alt="i" width={40} height={40} className={s.img}/>
                       <h2 className={s.font2}>Change Password</h2>
                   </Link>
                   <Link href="/Settings/DeleteAccount" className={s.box}>
-                      <Image src="/delete_icon.png" alt="i" width={25} height={25} className={s.img}/>
+                      <Image src="/delete_icon.png" alt="i" width={40} height={40} className={s.img}/>
                       <h2 className={s.font3}>Delete Account</h2>
                   </Link>
               </ul>
