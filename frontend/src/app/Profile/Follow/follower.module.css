@@ -86,17 +86,89 @@
     z-index: 2;
 }
 
-/*responsive*/
-@media (max-width: 1200px) {
-    .all{
-        width: 70vw;
-    }
+.userCard {
+    display: flex;
+    width: 650px;
+    align-items: center;
+    /*background-color: #FFF;*/
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 10px;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+}
+.userIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
 
-    .tabFirst{
-        width: 240px;
-    }
+.userInfo {
+    display: flex;
+    flex-direction: column;
+}
+.userName {
+    font-weight: bold;
+    color: #333;
+}
+.userId {
+    color: #666;
+}
+.bio {
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+.info {
+    position: absolute;
+    top: 10vh;
+    right: 2.5vw;
+}
+.box {
+    position: absolute;
+    left: 23vw;
+    display: block;
+    width: 200px;
+    height: 50px;
+    margin-top: 18px;
+    font-size: 1.3rem;
+    text-decoration: none;
+    border: 1px solid #FF92AD;
+    background-color: white;
+    color: #FF92AD;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 8px;
+}
 
-    .tabSecond{
-        width: 240px;
-    }
+/*.box:after {*/
+/*    display: flex;*/
+/*    content: 'Unfollow';*/
+/*    position: absolute;*/
+/*    top: -0.2vh;*/
+/*    right: -0.1vw;*/
+/*    height: 50px;*/
+/*    width: 200px;*/
+
+/*    font-size: 1.3rem;*/
+/*    border: 1px solid white;*/
+/*    background-color: #FF92AD;*/
+/*    color: white;*/
+
+/*    -webkit-transition: 0.4s ease all;*/
+/*    transition: 0.4s ease all;*/
+
+/*    align-items: center;*/
+/*    border-radius: 8px;*/
+/*    opacity: 0;*/
+/*}*/
+
+/*.box:hover:after {*/
+/*    opacity: 1;*/
+/*}*/
+
+.not {
+    position: absolute;
+    top: 10vh;
+    left: 1vw;
 }

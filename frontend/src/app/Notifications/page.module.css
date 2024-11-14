@@ -1,16 +1,4 @@
-.box {
-    position: relative;
-    margin: 10px auto;
-    padding: 8px 10px;
-    background-color: #fff;
-    width: 36vw;
-    left: 12.5vw;
-    border: 1px solid #FF92AD;
-    border-radius: 30px;
-    max-height: 1000px;
-    display: flex;
-    align-items: center;
-}
+
 
 .image {
     height: 30px;
@@ -23,10 +11,38 @@
     padding-top: 50px;
 }
 
-.title{
-    margin-left: 600px;
+.title {
+    margin-left: 550px;
+    background-color: #FF92AD;
+    padding: 10px 650px 10px 40px;
+    color: white;
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-weight: 500;
+    font-size: 1.8rem;
+    text-align: center;
 }
 
+
 .naiyou{
-    margin-left: 600px;
+    margin-left: 630px;
+    border: 1px solid #FF92AD;
+    border-radius: 10px;
+    width: 600px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    max-height: 1000px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+
+.iine{
+    width: 20px;
+    height: 20px;
+    margin-top: 16px;
+}
+
+.tweet{
+    margin-left: 20px;
+    color: #808080;
+    padding-top: 5px;
 }

@@ -52,7 +52,7 @@ const AuthenticationCodePage = () => {
                 <AccountHeader title="Account delete"/>
                 <div className={s.content}>
                     <h2 className={s.font}>パスワードを確認してください</h2>
-                    <p className={s.font2}>アカウントに関連付けられたパスワードを入力して、無効化をリクエストを完了します。</p>
+                    <p className={s.font2}>・アカウントに関連付けられたパスワードを入力して、無効化をリクエストを完了します。</p>
 
                     <input
                         type="password"
