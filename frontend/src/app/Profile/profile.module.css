@@ -128,8 +128,11 @@
 
 /* Bio Section */
 .bio {
-    margin-left: 22px;
-    padding: 0 10px;
+    position: absolute;
+    top: 15vh;
+    left: 3vw;
+    margin-top: 10px;
+    padding-bottom: 30px;
     width: 660px;
     height: 100px;
     color: #423a3a;

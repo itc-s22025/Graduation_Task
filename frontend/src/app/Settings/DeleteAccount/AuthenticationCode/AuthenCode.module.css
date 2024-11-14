@@ -104,5 +104,6 @@
 }
 
 .cancelButton {
-        background-color: #cccccc;
+        background-color: gray;
+        color: white;
 }

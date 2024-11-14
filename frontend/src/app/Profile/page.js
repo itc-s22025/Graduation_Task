@@ -18,12 +18,13 @@ const Profile = () => {
     const [focusedTab, setFocusedTab] = useState('');
     const [showEditModal, setShowEditModal] = useState(false); // Modal state
     const [personalColor, setPersonalColor] = useState('');
+    const [Following, setFollowing] = useState([]);
+    const [Followers, setFollowers] = useState([]);
 
     const [headerImage, setHeaderImage] = useState('defaultHeader.png');
     const [icon, setIcon] = useState('defaultIcon.png');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
-    // const [userId, setUserId] = useState('');
     const [displayId, setDisplayId] = useState('');
 
     const router = useRouter();
@@ -59,8 +60,7 @@ const Profile = () => {
                     icon: newIcon,
                     name: newUserName,
                     bio: newBio,
-                    // Id: user.id,
-                    displayId: displayId,
+                    displayId: displayId
                 });
 
                 // ステートを更新して即座にUIに反映
@@ -68,14 +68,19 @@ const Profile = () => {
                 setIcon(newIcon);
                 setUsername(newUserName);
                 setBio(newBio);
+                setDisplayId(displayId);
 
                 alert('Profile updated successfully');
+                handleCloseEditModal();
+
             } catch (error) {
                 console.error("Error updating document: ", error);
                 alert("Error updating profile");
             }
         }
     };
+
+
 
     // Firestoreからデータを取得
     useEffect(() => {
@@ -91,10 +96,12 @@ const Profile = () => {
                     setHeaderImage(data.headerImage || 'defaultHeader.png');
                     setIcon(data.icon || 'defaultIcon.png');
                     setUsername(data.name || 'user ユーザ');
-                    // setUserId(data.id || 'user ID')
                     setDisplayId(data.displayId || 'User ID not set');
 
                     setBio(data.bio || 'ここにBioが表示されます');
+
+                    setFollowing(data.following || []);
+                    setFollowers(data.followers || []);
 
                     // Set personal color (extract the fourth character)
                     const personalColor = data.personalColor || '';
@@ -105,6 +112,7 @@ const Profile = () => {
         };
         fetchUserData();
     }, [auth, db]);
+
 
 
 
@@ -145,21 +153,24 @@ const Profile = () => {
 
                                     <div className={s.followContainer}>
                                         <Link href="/Profile/Follow" className={s.add}>
-                                            <span className={s.follow}><strong>150</strong> Following</span>
+                                            <span
+                                                className={s.follow}><strong>{Following.length}</strong> Following</span>
                                         </Link>
                                         <Link href="/Profile/Follow" className={s.add}>
-                                            <span className={s.follower}><strong>200</strong> Follower</span>
+                                            <span
+                                                className={s.follower}><strong>{Followers.length}</strong> Follower</span>
                                         </Link>
                                     </div>
+
+                                    <p className={s.bio}>{bio}</p>
                                 </div>
-
-                                <p className={s.bio}>{bio}</p>
                             </div>
-                        </div>
 
-                        <Tabs>
-                        <TabList className={s.tabsContainer}>
-                            <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`} onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
+                            <Tabs>
+                                <TabList className={s.tabsContainer}>
+                                    <Tab
+                                        className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`}
+                                        onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
                             <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
                             <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
                         </TabList>
@@ -193,6 +204,7 @@ const Profile = () => {
                             </div>
                         </div>
                     )}
+                </div>
                 </div>
                 </div>
 
