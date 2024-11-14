@@ -7,16 +7,19 @@ import AccountHeader from "@/components/AccountHeader";
 import { useState, useEffect } from "react";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "@/app/context/AuthProvider";
+import {useRouter} from "next/navigation";
 
 const FollowPage = () => {
     const [focusedTab, setFocusedTab] = useState(0);
     const [followingUsers, setFollowingUsers] = useState([]);
+    const [followerUsers, setFollowerUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const db = getFirestore();
     const auth = useAuth();
+    const router = useRouter();
 
-    const handleFocus = (index) => setFocusedTab(index);
+    // const handleFocus = (index) => setFocusedTab(index);
 
     // Fetch following users
     useEffect(() => {
@@ -38,6 +41,27 @@ const FollowPage = () => {
         };
         fetchFollowingUsers();
     }, [auth.currentUser, db]);
+
+// Fetch follower users
+    useEffect(() => {
+        const fetchFollowerUsers = async () => {
+            if (auth.currentUser) {
+                const userRef = doc(db, "users", auth.currentUser.uid);
+                const userDoc = await getDoc(userRef);
+                const followerIds = userDoc.data()?.followers || []; // "followers" フィールドを使用
+
+                const userPromises = followerIds.map(async (userId) => {
+                    const userDocRef = doc(db, "users", userId);
+                    const userSnapshot = await getDoc(userDocRef);
+                    return userSnapshot.exists() ? { id: userId, ...userSnapshot.data() } : null;
+                });
+                const users = (await Promise.all(userPromises)).filter(Boolean);
+                setFollowerUsers(users);
+            }
+        };
+        fetchFollowerUsers();
+    }, [auth.currentUser, db]);
+
 
     // Open modal and set selected user ID
     const handleUnfollowClick = (userId) => {
@@ -67,11 +91,14 @@ const FollowPage = () => {
             closeModal();
         }
     };
+    const handleFocus = (tabName) => {
+        setFocusedTab(tabName);
+    };
 
     return (
         <MainLayout>
             <div className={s.allContainer}>
-                <AccountHeader title="Follow" />
+                <AccountHeader title="Follow"/>
                 <Tabs selectedIndex={focusedTab} onSelect={handleFocus} className={s.all}>
                     <TabList className={s.ul}>
                         <Tab
@@ -89,27 +116,40 @@ const FollowPage = () => {
                     </TabList>
 
                     <TabPanel>
-                        <article className={s.row}>
-                            <p>フォロワーは現在いません。</p>
-                        </article>
-                    </TabPanel>
+                            <article className={s.info}>
+                                {followerUsers.length > 0 ? (
+                                    followerUsers.map((user) => (
+                                        <div key={user.id} className={s.userCard}>
+                                            <img src={user.icon || 'defaultIcon.png'} alt="User Icon"
+                                                 className={s.userIcon} onClick={() => router.push(`AnotherScreen/${user.uid}`)} />
+                                            <div className={s.userInfo}>
+                                                <p className={s.userName}>{user.name || "No Name"}</p>
+                                                <p className={s.userId}>@{user.id}</p>
+                                                <p className={s.bio}>{user.bio || "No Bio"}</p>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>フォロワーはいません。</p>
+                                )}
+                            </article>
+                        </TabPanel>
 
                     <TabPanel>
                         <article className={s.info}>
                             {followingUsers.length > 0 ? (
                                 followingUsers.map((user) => (
                                     <div key={user.id} className={s.userCard}>
-                                        <img src={user.icon || 'defaultIcon.png'} alt="User Icon" className={s.userIcon} />
+                                        <img src={user.icon || 'defaultIcon.png'} alt="User Icon"
+                                             className={s.userIcon} onClick={() => router.push(`/AnotherScreen/${user.uid}`)} />
                                         <div className={s.userInfo}>
                                             <p className={s.userName}>{user.name || "No Name"}</p>
                                             <p className={s.userId}>@{user.id}</p>
                                             <p className={s.bio}>{user.bio || "No Bio"}</p>
-                                            {/*<div className={s.following}>*/}
-                                                <button
-                                                    onClick={() => handleUnfollowClick(user.id)}
-                                                    className={s.unfollowing}>Following
-                                                </button>
-                                            {/*</div>*/}
+                                            <button
+                                                onClick={() => handleUnfollowClick(user.id)}
+                                                className={s.box}>Following
+                                            </button>
                                         </div>
                                     </div>
                                 ))
