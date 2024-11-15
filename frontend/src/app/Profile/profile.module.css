@@ -87,6 +87,9 @@
 }
 
 .userName {
+    position: relative;
+    top: 3.5vh;
+    left: -0.8vw;
     margin: 10px 10px 0 30px;
     padding: 0 5px;
     color: #423a3a;
@@ -100,6 +103,9 @@
 }
 
 .userId {
+    position: relative;
+    top: 3.5vh;
+    left: -0.9vw;
     width: 400px;
     color: #5d5252;
     font-size: 0.8rem;
@@ -108,13 +114,17 @@
 }
 
 .followContainer {
+    position: absolute;
+    top: 15.5vh;
+    right: -1.2vw;
     font-size: 1rem;
     color: #423a3a;
     width: 250px;
     height: 1.7rem;
     margin-left: 30px;
+    margin-right: 10px;
     margin-bottom: 10px;
-    padding: 0 5px;
+    padding: 0 5px 0 5px;
 }
 
 .add {
@@ -130,7 +140,7 @@
 .bio {
     position: absolute;
     top: 15vh;
-    left: 3vw;
+    left: 2.5vw;
     margin-top: 10px;
     padding-bottom: 30px;
     width: 660px;
@@ -140,6 +150,9 @@
 
 /* Edit Button */
 .edit {
+    position: absolute;
+    top: 3vh;
+    right: 3vw;
     width: 120px;
     height: 30px;
     background-color: #FFF;
@@ -158,6 +171,8 @@
 
 /* Tabs Section */
 .tabsContainer {
+    position: relative;
+    top: 5vh;
     /*border: 1px solid red;*/
     width: 40vw;
     display: flex;
@@ -184,7 +199,7 @@
     outline: none;
     background: #fff;
     margin-top: 25px;
-    width: 16vw;
+    width: 16.3vw;
     height: 70%;
     border: 1px solid #ff95af;
     border-bottom: none;
@@ -207,7 +222,7 @@
     outline: none;
     background: #FFDCDD;
     margin-top: 25px;
-    width: 16vw;
+    width: 16.3vw;
     height: 65%;
     border: #fff 1px solid;
     border-bottom: none;
@@ -230,7 +245,7 @@
     outline: none;
     background: #FFBFC0;
     margin-top: 25px;
-    width: 16vw;
+    width: 16.3vw;
     height: 65%;
     border: #fff 1px solid;
     border-bottom: none;
@@ -262,6 +277,10 @@
     /*border: 1px solid springgreen;*/
     padding-bottom: 50px;
     padding-left: 20px;
+}
+.add2 {
+    position: absolute;
+    top: 27vh;
 }
 
 /* Modal Styling */

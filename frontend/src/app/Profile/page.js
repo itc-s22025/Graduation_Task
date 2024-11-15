@@ -176,7 +176,7 @@ const Profile = () => {
                         </TabList>
 
                         <TabPanel>
-                            <article>
+                            <article className={s.add2}>
                                <Post />
                             </article>
                         </TabPanel>
