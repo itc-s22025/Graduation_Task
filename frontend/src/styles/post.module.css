@@ -3,7 +3,7 @@
 .allContainer{
     position: relative;
     /*border: 1px solid red;*/
-    left: -1vw;
+    /*left: -1vw;*/
     padding: 0 38px 10px;
     width: 40vw;
 }
@@ -20,9 +20,9 @@
     border-radius: 30px;
 }
 
-.all:last-child{
-    margin-bottom: 100px;
-}
+/*.all:last-child{*/
+/*    margin-bottom: 100px;*/
+/*}*/
 
 .forProfilePadding{
     padding-left: 0;

@@ -9,6 +9,7 @@ import Link from "next/link";
 import {  query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, collection, getDocs} from "firebase/firestore";
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
+import Post from "@/components/post";
 
 const Profile = ({ imageUrl, params }) => {
     const [userData, setUserData] = useState(null);
@@ -17,6 +18,7 @@ const Profile = ({ imageUrl, params }) => {
     const [headerImage, setHeaderImage] = useState('defaultHeader.png');
     const [icon, setIcon] = useState('defaultIcon.png');
     const [username, setUsername] = useState('');
+    const [displayId, setDisplayId] = useState('');
     const [bio, setBio] = useState(null);
     const [isFixed, setIsFixed] = useState(false);
     const [likesPosts, setLikesPosts] = useState([]);
@@ -49,6 +51,7 @@ const Profile = ({ imageUrl, params }) => {
                         setHeaderImage(data.headerImage);
                         setIcon(data.icon || 'user_default.png');
                         setUsername(data.name || 'user');
+                        setDisplayId(data.displayId || 'unknown')
                         setBio(data.bio || 'ここにBioが表示されます');
                         setPersonalColor(data.personalColor?.[3] || '');
                     }
@@ -177,8 +180,10 @@ const Profile = ({ imageUrl, params }) => {
 
     return (
         <MainLayout>
+
             <div className={s.allContainer}>
                 <div className={s.headerToTabsContainer}>
+                    {/*header*/}
                     <div className={s.header}>
                         <img src={headerImage} className={s.headerImage}/>
                     </div>
@@ -195,7 +200,7 @@ const Profile = ({ imageUrl, params }) => {
                             <div className={s.infoContainer}>
                                 <h2 className={s.userName}>{username || 'ユーザ名未設定'}</h2>
                                 <div className={s.idAndFollow}>
-                                    <p className={s.userId}>@userID</p>
+                                    <p className={s.userId}>@{displayId || 'unknown'}</p>
                                     <div className={s.followContainer}>
                                         <Link href={`/Profile/${userId}/Follow`} className={s.add}>
                                             <span className={s.follow}><strong>{userData?.following?.length || 0}</strong> Following</span>
@@ -223,17 +228,18 @@ const Profile = ({ imageUrl, params }) => {
                             <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
                         </TabList>
 
-                        <TabPanel>
-                            <article>
-                                <div className={s.postsContainer}>
-                                    {userPosts.map((post) => (
-                                        <Link key={post.id} href={`/Profile/${post.uid}/Post/${post.id}`}>
-                                            <img src={post.imageUrl} alt="Post Image" className={s.postImage} />
-                                        </Link>
-                                    ))}
-                                </div>
-                            </article>
-                        </TabPanel>
+                       <TabPanel>
+                           <article className={s.articleContainer}>
+                               <div>
+                                   {userPosts.length > 0 ? (userPosts
+                                           // .filter(post => post.uid === userId) // uidがuserIdと一致するポストだけをフィルタリング
+                                           .map((post) => (
+                                               <Post key={post.id} ownPost={post} pageType="profile"/>
+                                           ))) : (<p>投稿がありません</p>)}
+                               </div>
+                           </article>
+                       </TabPanel>
+
 
                         <TabPanel>
                             <article>

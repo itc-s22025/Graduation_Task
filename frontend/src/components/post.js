@@ -1,19 +1,16 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import {useEffect, useState} from "react";
+import {usePathname, useRouter} from "next/navigation";
 import s from '@/styles/post.module.css';
 import EachPost from "@/components/eachPost";
-import { formatDistanceToNow, isBefore, subDays } from 'date-fns';
+import {isBefore, subDays} from 'date-fns';
 //firebase
-import { auth, db } from "@/firebase";
-import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs, orderBy } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { doc, setDoc } from "firebase/firestore";
-import tweet from "@/components/tweet"; // Firestoreの関数をインポート
+import {auth, db} from "@/firebase";
+import {addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc, where} from "firebase/firestore";
+import {onAuthStateChanged} from "firebase/auth";
 
-const Post = ({ userId, searchPost, pageType }) => {
+const Post = ({ userId, searchPost, ownPost, pageType }) => {
     const pathname = usePathname()
   
     const [posts, setPosts] = useState([]); // 投稿リスト
@@ -69,8 +66,9 @@ const Post = ({ userId, searchPost, pageType }) => {
                     .map(repost => repost.userId);  // userId のみを抽出して repostedBy 配列に格納
             });
 
-            // 現在のパスが /Profile のときのみフィルタリング(currentUserのポストのみ表示する)
             let filteredPosts = postsData;
+
+            // 現在のパスが /Profile のときのみフィルタリング(currentUserのポストのみ表示する)
             // if (pathname === '/Profile') {  //もしpathnameが/Profileだったら
             //     filteredPosts = postsData.filter(post => post.uid === currentUserUid);  //filteredPostsにフィルタリングしたデータ(post.uidがcurrentUserUidと一致するポスト)を入れる
             // }
@@ -83,13 +81,20 @@ const Post = ({ userId, searchPost, pageType }) => {
                 console.log("サーチしたポスト:", filteredPosts)
             }
 
+            //ownPostが渡されてたらそれでフィルタリング
+            if (ownPost){
+                filteredPosts = filteredPosts.filter(post =>
+                    post.tweet.includes(ownPost.tweet)
+                );
+            }
+
             // フィルタリングされたデータをセット(されてない場合はpostsDataのまま)
             setPosts(filteredPosts);
         });
 
         //リアルタイム更新の監視を解除　終わりだよ〜
         return () => unsubscribe();
-    }, [currentUserUid, pathname, searchPost]);
+    }, [currentUserUid, pathname, searchPost, ownPost]);
 
 
     //いいね機能
@@ -192,8 +197,7 @@ const Post = ({ userId, searchPost, pageType }) => {
         }
     }
 
-    //show reposted post
-    // 元のポストとリポストされたポストを統合して並べ替える関数
+    //show reposted post 元のポストとリポストされたポストを統合して並べ替える
     const getAllPostsIncludingReposts = () => {
         const allPosts = posts.map(post => ({
             ...post,
@@ -201,16 +205,16 @@ const Post = ({ userId, searchPost, pageType }) => {
         }));
 
         const repostedPosts = posts.flatMap(post =>
-            post.repostedBy.map(userId => ({
+            post.repostedBy.map(repostedUserId => ({
                 ...post,
-                userId,  // リポストユーザーのID
+                repostedUserId,  // リポストユーザーのID
                 type: 'repost',  // リポストのマーク
                 repostTimestamp: new Date(),  // リポストのタイムスタンプ
             }))
         );
 
         // 元のポストとリポストを結合してtimestamp順に並べ替え
-        const combinedPosts = [...allPosts, ...repostedPosts].sort(
+        return [...allPosts, ...repostedPosts].sort(
             (a, b) => {
                 // a.timestamp と b.timestamp がすでに Date 型である場合
                 const aTimestamp = a.repostTimestamp || a.timestamp;
@@ -223,8 +227,6 @@ const Post = ({ userId, searchPost, pageType }) => {
                 return bDate.getTime() - aDate.getTime();  // getTime() でミリ秒を比較
             }
         );
-
-        return combinedPosts;
     };
 
     // 表示関連
