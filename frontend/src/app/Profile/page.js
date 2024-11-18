@@ -182,13 +182,13 @@ const Profile = () => {
                         </TabPanel>
 
                         <TabPanel>
-                            <article>
+                            <article className={s.add2}>
                                 <p>media</p>
                             </article>
                         </TabPanel>
 
                         <TabPanel>
-                            <article>
+                            <article className={s.add2}>
                                 <p>third</p>
                             </article>
                         </TabPanel>

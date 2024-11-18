@@ -115,7 +115,7 @@
 
 .followContainer {
     position: absolute;
-    top: 15.5vh;
+    top: 13.5vh;
     right: -1.2vw;
     font-size: 1rem;
     color: #423a3a;
@@ -139,8 +139,8 @@
 /* Bio Section */
 .bio {
     position: absolute;
-    top: 15vh;
-    left: 2.5vw;
+    top: 13vh;
+    left: 2.1vw;
     margin-top: 10px;
     padding-bottom: 30px;
     width: 660px;
@@ -174,7 +174,7 @@
     position: relative;
     top: 5vh;
     /*border: 1px solid red;*/
-    width: 40vw;
+    width: 36vw;
     display: flex;
     margin-top: 5px;
     padding-bottom: 20px;
@@ -199,7 +199,7 @@
     outline: none;
     background: #fff;
     margin-top: 25px;
-    width: 16.3vw;
+    width: 16vw;
     height: 70%;
     border: 1px solid #ff95af;
     border-bottom: none;
@@ -335,4 +335,9 @@
         margin-left: 0;
         margin-top: 10px;
     }
+}
+.add2 {
+    position: relative;
+    top: 3.5vh;
+    left: 0vw;
 }
