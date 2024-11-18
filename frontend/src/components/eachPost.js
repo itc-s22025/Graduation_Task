@@ -1,6 +1,36 @@
-import s from '@/styles/eachPost.module.css';
+import { db } from '@/firebase';  // Firestoreのインポート
+import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import s from "@/styles/eachPost.module.css"
 
 const EachPost = ({ post, currentUserUid }) => {
+    console.log("カレントユーザ：", currentUserUid);
+
+    const [userIcon, setUserIcon] = useState(null);
+
+    // Firebaseからユーザーアイコンを取得
+    useEffect(() => {
+        const getUserIcon = async () => {
+            try {
+                const userRef = doc(db, "users", currentUserUid);  // ユーザーのドキュメントを参照
+                const userDoc = await getDoc(userRef);
+
+                if (userDoc.exists()) {
+                    setUserIcon(userDoc.data().icon);  // アイコンのURLをセット
+                } else {
+                    setUserIcon('/default-icon.png');  // ユーザーが存在しない場合、デフォルトアイコンを表示
+                }
+            } catch (error) {
+                console.error("ユーザーアイコンの取得に失敗しました:", error);
+                setUserIcon('/default-icon.png');  // エラー時もデフォルトアイコンを表示
+            }
+        };
+
+        if (currentUserUid) {
+            getUserIcon();
+        }
+    }, [currentUserUid]);  // currentUserUidが変わった時に再取得
+
     if (!post) return null;
 
     const isLiked = post.likedBy && post.likedBy.includes(currentUserUid);
@@ -10,10 +40,12 @@ const EachPost = ({ post, currentUserUid }) => {
         <div className={s.allContainer}>
             <div className={s.postContainer}>
                 <div className={s.iconAndInfoContainer}>
-                    <img className={s.icon} src={post.userIcon || '/default-icon.png'} alt="User Icon" />
+                    <div className={s.iconContainer}>
+                        <img className={s.icon} src={post.icon} alt="User Icon"/>
+                    </div>
                     <div className={s.infoContainer}>
                         <p className={s.userName}>{post.name || "Anonymous"}</p>
-                        <p className={s.userID}>@{post.userID || "user1"}</p>
+                        <p className={s.userID}>@{post.userId || "user1"}</p>
                     </div>
                     <p className={s.date}>{post.timestamp ? post.timestamp.toDate().toLocaleString() : "Date not available"}</p>
                 </div>
@@ -45,8 +77,10 @@ const EachPost = ({ post, currentUserUid }) => {
                 </div>
 
                 <div className={s.replyContentContainer}>
-                    <img src={post.userIcon || '/icon.jpeg'} alt="User Icon" className={s.replyIcon} />
-                    <textarea placeholder="Post your reply..." className={s.replyContent} />
+                    <div className={s.replyIconContainer}>
+                        <img src={userIcon || '/user_default.png'} alt="icon" className={s.replyIcon}/>
+                    </div>
+                    <textarea placeholder="Post your reply..." className={s.replyContent}/>
                     <button type="button" className={s.replyButton}>Reply</button>
                 </div>
             </div>
