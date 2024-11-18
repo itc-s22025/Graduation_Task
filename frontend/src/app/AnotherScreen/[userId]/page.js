@@ -167,12 +167,16 @@ const OtherUserProfile = ({ imageUrl, params }) => {
                     </TabPanel>
                     <TabPanel>
                         <article>
-                            <p>media</p>
+                            <div className={s.postsContainer}>
+                                <p>media</p>
+                            </div>
                         </article>
                     </TabPanel>
                     <TabPanel>
                         <article>
-                            <p>third</p>
+                            <div className={s.postsContainer}>
+                                <p>third</p>
+                            </div>
                         </article>
                     </TabPanel>
                 </Tabs>
