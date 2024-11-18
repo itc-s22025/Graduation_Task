@@ -13,19 +13,19 @@ import {onAuthStateChanged} from "firebase/auth";
 const Profile = ({ imageUrl, params }) => {
     const [userData, setUserData] = useState(null);
     const [focusedTab, setFocusedTab] = useState('');
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [userPosts, setUserPosts] = useState([]);
+    const [personalColor, setPersonalColor] = useState('');
     const [headerImage, setHeaderImage] = useState('defaultHeader.png');
     const [icon, setIcon] = useState('defaultIcon.png');
-    const [personalColor, setPersonalColor] = useState('');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState(null);
-    const userId = params.userId;
-
     const [isFixed, setIsFixed] = useState(false);
     const [likesPosts, setLikesPosts] = useState([]);
 
-    // ユーザーの認証状態を監視
+    const [isFollowing, setIsFollowing] = useState(false);
+    const [userPosts, setUserPosts] = useState([]);
+    const userId = params.userId;
+
+    // ユーザーの認証状態を監視,currentUserUidにログインユーザのuidを入れる
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUserUid(user ? user.uid : null);
@@ -33,9 +33,11 @@ const Profile = ({ imageUrl, params }) => {
         return () => unsubscribe();
     }, []);
 
-    // Set user data based on userId from params
+    const preventScroll = (e) => e.preventDefault();
+
+    //paramsのuserIdに基づくユーザデータをセット
     useEffect(() => {
-        if (userId) {
+        if (userId) {   //もしuserIdが空でなければ
             const fetchUserData = async () => {
                 try {
                     const userDocRef = doc(db, "users", userId);
@@ -44,9 +46,9 @@ const Profile = ({ imageUrl, params }) => {
                     if (userDoc.exists()) {
                         const data = userDoc.data();
                         setUserData(data);
-                        setHeaderImage(data.headerImage || 'defaultHeader.png');
-                        setIcon(data.icon || 'defaultIcon.png');
-                        setUsername(data.name || 'user ユーザ');
+                        setHeaderImage(data.headerImage);
+                        setIcon(data.icon || 'user_default.png');
+                        setUsername(data.name || 'user');
                         setBio(data.bio || 'ここにBioが表示されます');
                         setPersonalColor(data.personalColor || 'pc')
                     }
@@ -58,7 +60,7 @@ const Profile = ({ imageUrl, params }) => {
         }
     }, [userId, db]);
 
-    // Fetch user posts
+    // ユーザのポストをフェッチ
     useEffect(() => {
         const fetchUserPosts = async () => {
             if (userId) {
@@ -90,28 +92,12 @@ const Profile = ({ imageUrl, params }) => {
         checkFollowingStatus();
     }, [auth, userId, db]);
 
+    const [showEditModal, setShowEditModal] = useState(false);
+
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
 
-    const handleFollowToggle = async () => {
-        const user = auth.currentUser;
-        if (user) {
-            const currentUserRef = doc(db, "users", user.uid);
-            const otherUserRef = doc(db, "users", userId);
-            await updateDoc(currentUserRef, {
-                following: isFollowing ? arrayRemove(userId) : arrayUnion(userId)
-            });
-            await updateDoc(otherUserRef, {
-                followers: isFollowing ? arrayRemove(user.uid) : arrayUnion(user.uid)
-            });
-            setIsFollowing(!isFollowing);
-        }
-    };
-
-    const [showEditModal, setShowEditModal] = useState(false);
-
-    const preventScroll = (e) => e.preventDefault();
     const handleEditClick = () => {
         setShowEditModal(true);
         window.addEventListener('wheel', preventScroll, { passive: false });
@@ -149,39 +135,39 @@ const Profile = ({ imageUrl, params }) => {
     const [currentUserUid, setCurrentUserUid] = useState(null);
 
     // Firestoreからユーザーデータを取得
-    useEffect(() => {
-        const fetchUserData = async () => {
-            if (currentUserUid) {
-                try {
-                    // Firestoreのユーザーコレクションでuidが一致するものをクエリ
-                    const userQuery = query(
-                        collection(db, "users"),
-                        where("uid", "==", currentUserUid)
-                    );
-                    const querySnapshot = await getDocs(userQuery);
-
-                    if (!querySnapshot.empty) {
-                        // ユーザーが存在する場合
-                        querySnapshot.forEach((doc) => {
-                            const userData = doc.data();
-                            setUserData(userData);
-                            setHeaderImage(userData.headerImage || 'defaultHeader.png');
-                            setIcon(userData.icon || 'defaultIcon.png');
-                            setUsername(userData.name || 'user');
-                            setBio(userData.bio || 'ここにBioが表示されます');
-                            setPersonalColor(userData.personalColor?.[3] || '');
-                        });
-                    } else {
-                        console.log("ユーザードキュメントが存在しません");
-                        console.log("ユーザーUID:", currentUserUid);
-                    }
-                } catch (error) {
-                    console.error("ユーザーデータの取得中にエラーが発生しました: ", error);
-                }
-            }
-        };
-        fetchUserData();
-    }, [currentUserUid]);
+    // useEffect(() => {
+    //     const fetchUserData = async () => {
+    //         if (currentUserUid) {
+    //             try {
+    //                 // Firestoreのユーザーコレクションでuidが一致するものをクエリ
+    //                 const userQuery = query(
+    //                     collection(db, "users"),
+    //                     where("uid", "==", currentUserUid)
+    //                 );
+    //                 const querySnapshot = await getDocs(userQuery);
+    //
+    //                 if (!querySnapshot.empty) {
+    //                     // ユーザーが存在する場合
+    //                     querySnapshot.forEach((doc) => {
+    //                         const userData = doc.data();
+    //                         setUserData(userData);
+    //                         setHeaderImage(userData.headerImage || 'defaultHeader.png');
+    //                         setIcon(userData.icon || 'defaultIcon.png');
+    //                         setUsername(userData.name || 'user');
+    //                         setBio(userData.bio || 'ここにBioが表示されます');
+    //                         setPersonalColor(userData.personalColor?.[3] || '');
+    //                     });
+    //                 } else {
+    //                     console.log("ユーザードキュメントが存在しません");
+    //                     console.log("ユーザーUID:", currentUserUid);
+    //                 }
+    //             } catch (error) {
+    //                 console.error("ユーザーデータの取得中にエラーが発生しました: ", error);
+    //             }
+    //         }
+    //     };
+    //     fetchUserData();
+    // }, [currentUserUid]);
 
     // FirestoreからLikesデータと対応するPostデータを取得
     useEffect(() => {
