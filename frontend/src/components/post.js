@@ -71,11 +71,11 @@ const Post = ({ userId, searchPost, pageType }) => {
 
             // 現在のパスが /Profile のときのみフィルタリング(currentUserのポストのみ表示する)
             let filteredPosts = postsData;
-            if (pathname === '/Profile') {  //もしpathnameが/Profileだったら
-                filteredPosts = postsData.filter(post => post.uid === currentUserUid);  //filteredPostsにフィルタリングしたデータ(post.uidがcurrentUserUidと一致するポスト)を入れる
-            }
+            // if (pathname === '/Profile') {  //もしpathnameが/Profileだったら
+            //     filteredPosts = postsData.filter(post => post.uid === currentUserUid);  //filteredPostsにフィルタリングしたデータ(post.uidがcurrentUserUidと一致するポスト)を入れる
+            // }
 
-             // searchPostが渡されている場合はそれでさらにフィルタリング
+             // searchPostが渡されている場合はそれでさらにフィルタリング...検索機能と関連
             if (searchPost) {
                 filteredPosts = filteredPosts.filter(post =>
                     post.tweet.includes(searchPost.tweet)
@@ -186,6 +186,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                     });
                 }
             }
+            console.log("ぽすつ:", post.userId)
         } catch (error) {
             console.error("リポスト中のエラー: ", error);
         }
