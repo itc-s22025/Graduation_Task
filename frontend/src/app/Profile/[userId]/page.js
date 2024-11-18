@@ -50,7 +50,7 @@ const Profile = ({ imageUrl, params }) => {
                         setIcon(data.icon || 'user_default.png');
                         setUsername(data.name || 'user');
                         setBio(data.bio || 'ここにBioが表示されます');
-                        setPersonalColor(data.personalColor || 'pc')
+                        setPersonalColor(data.personalColor?.[3] || '');
                     }
                 } catch (error) {
                     console.error("ユーザーデータの取得に失敗しました", error);
@@ -134,41 +134,6 @@ const Profile = ({ imageUrl, params }) => {
 
     const [currentUserUid, setCurrentUserUid] = useState(null);
 
-    // Firestoreからユーザーデータを取得
-    // useEffect(() => {
-    //     const fetchUserData = async () => {
-    //         if (currentUserUid) {
-    //             try {
-    //                 // Firestoreのユーザーコレクションでuidが一致するものをクエリ
-    //                 const userQuery = query(
-    //                     collection(db, "users"),
-    //                     where("uid", "==", currentUserUid)
-    //                 );
-    //                 const querySnapshot = await getDocs(userQuery);
-    //
-    //                 if (!querySnapshot.empty) {
-    //                     // ユーザーが存在する場合
-    //                     querySnapshot.forEach((doc) => {
-    //                         const userData = doc.data();
-    //                         setUserData(userData);
-    //                         setHeaderImage(userData.headerImage || 'defaultHeader.png');
-    //                         setIcon(userData.icon || 'defaultIcon.png');
-    //                         setUsername(userData.name || 'user');
-    //                         setBio(userData.bio || 'ここにBioが表示されます');
-    //                         setPersonalColor(userData.personalColor?.[3] || '');
-    //                     });
-    //                 } else {
-    //                     console.log("ユーザードキュメントが存在しません");
-    //                     console.log("ユーザーUID:", currentUserUid);
-    //                 }
-    //             } catch (error) {
-    //                 console.error("ユーザーデータの取得中にエラーが発生しました: ", error);
-    //             }
-    //         }
-    //     };
-    //     fetchUserData();
-    // }, [currentUserUid]);
-
     // FirestoreからLikesデータと対応するPostデータを取得
     useEffect(() => {
         const fetchLikesAndPosts = async () => {
@@ -222,10 +187,7 @@ const Profile = ({ imageUrl, params }) => {
                         <img src={icon} className={s.profileImage} />
                         <div>
                             <a className={`${s.personal} 
-                                ${personalColor === '春' ? s.springText :
-                                personalColor === '夏' ? s.summerText :
-                                    personalColor === '秋' ? s.autumnText :
-                                        personalColor === '冬' ? s.winterText : ''}`}>
+                                ${personalColor === '春' ? s.springText : personalColor === '夏' ? s.summerText : personalColor === '秋' ? s.autumnText : personalColor === '冬' ? s.winterText : ''}`}>
                                 {personalColor ? `${personalColor}` : '未設定'}
                             </a>
                             <button className={s.edit} onClick={handleEditClick}>Edit Profile</button>
