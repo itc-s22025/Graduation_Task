@@ -7,7 +7,7 @@ import { doc, getDoc, getFirestore, updateDoc, setDoc } from "firebase/firestore
 
 const UpdatePage = ({ onSave }) => {
     const [newName, setNewName] = useState('');
-    const [newId, setNewId] = useState('');
+    const [newDisplayId, setNewDisplayId] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const auth = useAuth();
     const db = getFirestore();
@@ -26,7 +26,7 @@ const UpdatePage = ({ onSave }) => {
             // Save data to Firebase
             await updateDoc(userDocRef, {
                 name: newName,
-                id: newId,
+                displayId: newDisplayId,
                 email: newEmail
             });
 
@@ -34,7 +34,7 @@ const UpdatePage = ({ onSave }) => {
 
             // Call the onSave callback with updated data
             if (typeof onSave === 'function') {
-                onSave({ name: newName, id: newId, email: newEmail });
+                onSave({ name: newName, displayId: newDisplayId, email: newEmail });
             }
         } catch (error) {
             console.error("Error updating information:", error);
@@ -56,12 +56,12 @@ const UpdatePage = ({ onSave }) => {
             </div>
 
             <div className={s.field}>
-                <label htmlFor="Id" className={s.label}>UserId</label>
+                <label htmlFor="displayId" className={s.label}>UserId</label>
                 <input
                     type="text"
-                    value={newId}
+                    value={newDisplayId}
                     className={s.box}
-                    onChange={(e) => setNewId(e.target.value)}
+                    onChange={(e) => setNewDisplayId(e.target.value)}
                 />
             </div>
 
