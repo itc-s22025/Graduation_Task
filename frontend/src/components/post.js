@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useState} from "react";
-import {usePathname, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
 import s from '@/styles/post.module.css';
 import EachPost from "@/components/eachPost";
 import {isBefore, subDays} from 'date-fns';
@@ -11,8 +11,7 @@ import {addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query,
 import {onAuthStateChanged} from "firebase/auth";
 
 const Post = ({ userId, searchPost, ownPost, pageType }) => {
-    const pathname = usePathname()
-  
+
     const [posts, setPosts] = useState([]); // 投稿リスト
     const [showEachPost, setShowEachPost] = useState(false);
     const [showReport, setShowReport] = useState(false);
@@ -68,11 +67,6 @@ const Post = ({ userId, searchPost, ownPost, pageType }) => {
 
             let filteredPosts = postsData;
 
-            // 現在のパスが /Profile のときのみフィルタリング(currentUserのポストのみ表示する)
-            // if (pathname === '/Profile') {  //もしpathnameが/Profileだったら
-            //     filteredPosts = postsData.filter(post => post.uid === currentUserUid);  //filteredPostsにフィルタリングしたデータ(post.uidがcurrentUserUidと一致するポスト)を入れる
-            // }
-
              // searchPostが渡されている場合はそれでさらにフィルタリング...検索機能と関連
             if (searchPost) {
                 filteredPosts = filteredPosts.filter(post =>
@@ -94,7 +88,7 @@ const Post = ({ userId, searchPost, ownPost, pageType }) => {
 
         //リアルタイム更新の監視を解除　終わりだよ〜
         return () => unsubscribe();
-    }, [currentUserUid, pathname, searchPost, ownPost]);
+    }, [currentUserUid, searchPost, ownPost]);
 
 
     //いいね機能
@@ -286,6 +280,9 @@ const Post = ({ userId, searchPost, ownPost, pageType }) => {
                 {getAllPostsIncludingReposts()
                     .map((post, index) => (
                     <div key={index} className={`${s.all} ${flameWidth} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
+                        {post.replyTo && (
+                            <div className={s.replyNotify}>← 返信</div>
+                        )}
                         <div className={s.includeIconsContainer}>
                             <div className={s.iconContainer}>
                                 <img className={s.iconImage} alt="icon" src={post.icon || "/user_default.png"} onClick={() => router.push(`/AnotherScreen/${post.uid}`)} />

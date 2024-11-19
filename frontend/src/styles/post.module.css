@@ -20,6 +20,12 @@
     border-radius: 30px;
 }
 
+.replyNotify{
+    font-size: 0.9rem;
+    color: #6E665C;
+    margin: 10px 20px 0;
+}
+
 /*.all:last-child{*/
 /*    margin-bottom: 100px;*/
 /*}*/
@@ -236,8 +242,6 @@
 }
 
 
-
-
 /*eachPost*/
 .eachPostContainer{
     position: fixed;
@@ -309,6 +313,7 @@
 .closeEachPost::after {
     transform: translate(-50%,-50%) rotate(-45deg);
 }
+
 
 /*報告*/
 .reportAllContainer{

@@ -5,29 +5,34 @@ import s from "@/styles/eachPost.module.css";
 
 const EachPost = ({ post, currentUserUid }) => {
     const [userIcon, setUserIcon] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [personalColor, setPersonalColor] = useState(null);
     const [replyContent, setReplyContent] = useState("");  // リプライ内容を保持するステート
     const [replies, setReplies] = useState([]);
 
-    // Firebaseからユーザーアイコンを取得
+    // Firebaseからユーザー情報を取得
     useEffect(() => {
-        const getUserIcon = async () => {
+        const getUserInfo = async () => {
             try {
                 const userRef = doc(db, "users", currentUserUid);  // ユーザーのドキュメントを参照
                 const userDoc = await getDoc(userRef);
 
                 if (userDoc.exists()) {
                     setUserIcon(userDoc.data().icon);  // アイコンのURLをセット
+                    setUserId(userDoc.data().displayId);
+                    setPersonalColor(userDoc.data().personalColor);
                 } else {
                     setUserIcon('/default-icon.png');  // ユーザーが存在しない場合、デフォルトアイコンを表示
+                    setUserId('unknown');
+                    setPersonalColor('未設定');
                 }
             } catch (error) {
                 console.error("ユーザーアイコンの取得に失敗しました:", error);
-                setUserIcon('/default-icon.png');  // エラー時もデフォルトアイコンを表示
             }
         };
 
         if (currentUserUid) {
-            getUserIcon();
+            getUserInfo();
         }
     }, [currentUserUid]);  // currentUserUidが変わった時に再取得
 
@@ -43,9 +48,8 @@ const EachPost = ({ post, currentUserUid }) => {
                 setReplies(repliesData); // リプライをステートにセット
             }
         };
-
         getReplies();
-    }, [post.id]);  // post.idが変更される度にリプライを取得
+    }, [post.id, post]);  // post.idが変更される度にリプライを取得
 
     if (!post) return null;
 
@@ -62,6 +66,8 @@ const EachPost = ({ post, currentUserUid }) => {
                 tweet: replyContent,
                 uid: currentUserUid,
                 name: post.name || "Anonymous",
+                userId: userId,
+                personalColor: personalColor,
                 icon: userIcon || '/default-icon.png',
                 timestamp: new Date(),
                 replyTo: post.id,  // リプライ先のポストID
@@ -80,10 +86,12 @@ const EachPost = ({ post, currentUserUid }) => {
 
             // リプライ送信後に内容をリセット
             setReplyContent("");
+            alert("返信しました")
         } catch (error) {
             console.error("リプライの送信に失敗しました:", error);
         }
     };
+
 
     return (
         <div className={s.allContainer}>
@@ -108,7 +116,7 @@ const EachPost = ({ post, currentUserUid }) => {
                 <div className={s.reactionContainer}>
                     <div className={s.eachReactionContainer}>
                         <img alt="reply" src="/comment.png" className={s.reply}/>
-                        <p className={s.reactionText}>0</p>
+                        <p className={s.reactionText}>{post.repliedCount ? post.repliedCount.length : 0}</p>
                     </div>
                     <div className={s.eachReactionContainer}>
                         <img alt="repost" src={isReposted ? "/repost_after.png" : "/repost_before.png"} className={s.repost}/>
