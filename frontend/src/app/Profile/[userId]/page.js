@@ -10,6 +10,7 @@ import {  query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc,
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import Post from "@/components/post";
+import PostButton from "@/components/post_button";
 
 const Profile = ({ imageUrl, params }) => {
     const [userData, setUserData] = useState(null);
@@ -271,7 +272,10 @@ const Profile = ({ imageUrl, params }) => {
                     </div>
                 </div>
             )}
+
+                <PostButton/>
         </div>
+
         </MainLayout>
     );
 };
