@@ -5,6 +5,7 @@ import PostButton from "@/components/post_button";
 import {useRouter} from "next/navigation";
 import HeaderTab from "@/components/headerTab";
 import Post from "@/components/post";
+import ReviewPosts  from "@/components/ReviewPost";
 import s from "@/app/Home/page.module.css"
 import AddTab from "@/components/addTab";
 import {useState} from "react";
@@ -29,7 +30,7 @@ const Home = ({pageType}) => {
         <>
             <MainLayout>
                 <div className={s.allContainer}>
-                    <HeaderTab firstTabText="Now" secondTabText="Following" thirdTabText="tab3" firstTabContent={<Post/>}
+                    <HeaderTab firstTabText="Now" secondTabText="Following" thirdTabText="tab3" firstTabContent={<div><Post/> <ReviewPosts/></div>}
                                pageType="home"/>
                     <button className={`${s.addButton} ${addTab}`} onClick={handleAddClick}>+</button>
                 </div>

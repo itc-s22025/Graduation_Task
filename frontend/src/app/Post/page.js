@@ -11,7 +11,6 @@ import { collection, addDoc, serverTimestamp, query, where, getDocs } from "fire
 import { getAuth } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-
 const Post = () => {
     const router = useRouter();
 
@@ -26,7 +25,6 @@ const Post = () => {
 
     // 投稿内容の変更
     const handleTweetChange = (event) => {
-        // content 文字数制限100文字
         const inputText = event.target.value;
         const maxLength = 100;
         if (inputText.length <= maxLength) {
@@ -64,64 +62,63 @@ const Post = () => {
             const q = query(usersCollection, where("uid", "==", user.uid));
             const userSnapshot = await getDocs(q);
 
-            //usersコレクションからユーザデータ取得するとこ
+            // ユーザーデータの取得
             let userName = "Anonymous"; // デフォルトの名前
             let userIcon = "";
             let personalColor = "未設定";  //デフォルトのPC
-            let displayId = "unknown";  //デフォルトのディスプレイID(@user)
+            let displayId = "unknown";  // デフォルトのディスプレイID
             if (!userSnapshot.empty) {
                 userSnapshot.forEach((doc) => {
-                userName = doc.data().name; // ユーザー名を取得
-                userIcon = doc.data().icon; //アイコン取得
-                personalColor =  doc.data().personalColor;  //PC取得
-                displayId = doc.data().displayId;  //displayIDを取得
+                    userName = doc.data().name; // ユーザー名を取得
+                    userIcon = doc.data().icon; // アイコン取得
+                    personalColor = doc.data().personalColor;  // PCカラー
+                    displayId = doc.data().displayId;  // displayIdを取得
                 });
             }
 
-            //画像投稿関連
+            // 画像投稿関連
             let imageUrl = null;
-            if (selectedImage){
+            if (selectedImage) {
                 const imageRef = ref(storage, `images/${selectedImage.name}`);
                 await uploadBytes(imageRef, selectedImage);
-
                 // アップロードした画像のURLを取得
                 imageUrl = await getDownloadURL(imageRef);
             }
 
-               // Firestoreに投稿を保存し、生成されたIDを取得
-               const postDocRef = await addDoc(collection(db, "posts"), {
-                  tweet,
-                  name: userName, // 取得したユーザー名を使用
-                  icon: userIcon,   //取得したアイコン
-                  personalColor: personalColor, //取得したPC
-                  userId : displayId,  //取得したdisplayIDをuserIDとして表示
-                  imageUrl: imageUrl,
-                  pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
-                  timestamp: serverTimestamp(),
-                  uid: user.uid,    //自動生成されたuid格納
-                  replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
-                  repliedCount: '', //投稿自体が持つリプライの数
-                  likesCount: '',  //いいねの数
-                  likedUsers: '',  //いいねしたユーザ
-                  repostsCount: '',  //リポストの数
-                  repostedUsers: '',  //リポストしたユーザ
-                  keepsCount: '' //キープされた数
-               });
+            // Firestoreに投稿を保存し、生成されたIDを取得
+            const postDocRef = await addDoc(collection(db, "posts"), {
+                tweet,
+                name: userName,  // ユーザー名を使用
+                icon: user.icon,   // アイコン
+                personalColor: personalColor,  // PCカラー
+                userId: displayId,  // ユーザーID
+                imageUrl: imageUrl,
+                pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
+                timestamp: serverTimestamp(),
+                uid: user.uid,    // ユーザーID
+                replyTo: '',    // リプライ先の投稿ID
+                repliedCount: '', // リプライ数
+                likesCount: '',  // いいね数
+                likedUsers: '',  // いいねしたユーザー
+                repostsCount: '',  // リポスト数
+                repostedUsers: '',  // リポストしたユーザー
+                keepsCount: '' // キープされた数
+            });
 
-                // 投稿後のリセット
-                setTweet('');
-                setSelectedImage(null);
-                setPollVisible(false);
-                setPollOptions(["", ""]);
+            // 投稿後のリセット
+            setTweet('');
+            setSelectedImage(null);
+            setPollVisible(false);
+            setPollOptions(["", ""]);
 
-                alert('投稿しました')
+            alert('投稿しました');
+
             // Home画面に遷移
             await router.push('/Home');
         } catch (error) {
             console.error("投稿の保存に失敗しました:", error);
         }
     };
-
 
     // 投票オプションの変更
     const handlePollOptionChange = (index, value) => {
@@ -164,7 +161,9 @@ const Post = () => {
             <div className={s.box}>
                 <div className={s.flex}>
                     <div className={s.iconContainer}>
-                        <img src="icon.jpeg" className={s.icon} alt="User icon" />
+                        {selectedImage && (
+                            <img src={URL.createObjectURL(selectedImage)} className={s.selectedImage} alt="Selected" />
+                        )}
                     </div>
                     <p className={s.name}>{name || "name"}</p>
                 </div>
