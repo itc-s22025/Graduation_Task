@@ -138,6 +138,7 @@
 
 /* Bio Section */
 .bio {
+    /*border: 1px solid red;*/
     position: absolute;
     top: 13vh;
     left: 2.1vw;
@@ -160,7 +161,7 @@
     border: 2px solid #FF92AD;
     border-radius: 50px;
     margin-top: 10px;
-    margin-left: 530px;
+    margin-left: 550px;
     outline: none;
     cursor: pointer;
 }
@@ -169,16 +170,34 @@
     transform: scale(1.05);
 }
 
+.followButton{
+    width: 120px;
+    height: 30px;
+    background-color: #ff92AD;
+    color: #fff;
+    border: 2px solid #ff839f;
+    border-radius: 50px;
+    margin-top: 10px;
+    margin-left: 550px;
+    outline: none;
+    cursor: pointer;
+}
+
+.followButton:hover{
+    transform: scale(1.02);
+}
+
 /* Tabs Section */
 .tabsContainer {
     position: relative;
-    top: 5vh;
+    top: 10vh;
+
     /*border: 1px solid red;*/
     width: 36vw;
     display: flex;
     margin-top: 5px;
-    padding-bottom: 20px;
-    margin-left: -18px;
+    padding-bottom: 120px;
+    margin-left: -20px;
 }
 
 /* isFixedがtrueのときに固定する */
@@ -191,7 +210,7 @@
 
 .tabs {
     padding: 0;
-    margin-right: -76px;
+    margin-right: -77px;
     cursor: pointer;
 }
 
@@ -275,8 +294,7 @@
 /*article*/
 .articleContainer {
     /*border: 1px solid springgreen;*/
-    padding-bottom: 50px;
-    padding-left: 20px;
+    padding-bottom: 100px;
 }
 .add2 {
     position: absolute;

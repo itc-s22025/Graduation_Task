@@ -9,6 +9,9 @@ const LeftBar = () => {
     const router = useRouter();
     const pathname = usePathname()
 
+     // 現在ログインしているユーザーの userId を取得
+    const userId = auth.currentUser?.uid;
+
     //ログアウト
     const handleLogout = async () => {
     await signOut(auth);
@@ -23,7 +26,8 @@ const LeftBar = () => {
                     <div className={s.button_container}>
                         <button className={`${s.button} ${pathname === '/Home' ? s.active : ''}`} onClick={() => router.push('/Home')}>Home</button>
                         <button className={`${s.button} ${pathname === '/Search' ? s.active : ''}`} onClick={() => router.push('/Search')}>Search</button>
-                        <button className={`${s.button} ${pathname === '/Profile' ? s.active : ''}`} onClick={() => router.push('/Profile')}>Profile</button>
+                        {/*<button className={`${s.button} ${pathname === '/Profile' ? s.active : ''}`} onClick={() => router.push('/Profile')}>Profile</button>*/}
+                        <button className={`${s.button} ${pathname === `/Profile/${userId}` ? s.active : ''}`} onClick={() => router.push(`/Profile/${userId}`)}>Profile</button>
                         <button className={`${s.button} ${pathname === '/Notifications' ? s.active : ''}`} onClick={() => router.push('/Notifications')}>Notifications</button>
                         <button className={`${s.button} ${pathname === '/Settings' ? s.active : ''}`} onClick={() => router.push('/Settings')}>Settings</button>
                         <button className={`${s.button} ${pathname === '/Keeps' ? s.active : ''}`} onClick={() => router.push('/Keeps')}>Keeps</button>

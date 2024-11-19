@@ -20,6 +20,10 @@
     width: 40vw;
     height: auto;
     background-color: #fff;
+
+    max-height: 90vh;  /* 最大高さを設定 */
+    overflow-y: auto;   /* 縦方向にスクロール可能にする */
+    scrollbar-width: none;
 }
 
 .iconAndInfoContainer{
@@ -117,9 +121,6 @@
     margin-right: 2px;
     background-size: cover;
 }
-.repost:hover {
-    background-image: url('/repost_after.png');
-}
 
 .like{
     width: 19px;
@@ -213,6 +214,74 @@
     color: #fff;
 }
 
+.repliesContainer {
+    border-top: 1px solid #ff92AD;
+    margin: 30px auto 10px;
+    padding: 10px;
+    width: 37vw;
+
+}
+
+.replyPost{
+    border-bottom: 1px solid #e7e1e1;
+    /*border-radius: 10px;*/
+    margin: 20px auto;
+    padding: 10px;
+    width: 34vw;
+}
+
+.replyPost:last-child{
+    margin-bottom: 100px;
+}
+
+.replyTopContainer{
+    display: flex;
+    /*border: 1px solid orange;*/
+    height: 60px;
+}
+
+.replyUserInfoContainer{
+    /*border: 1px solid springgreen;*/
+    height: 42px;
+    width: 400px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.replyName{
+    color: #423a3a;
+    font-size: 0.9rem;
+}
+
+.replyUserId{
+    color: #6E665C;
+    font-size: 0.8rem;
+}
+
+.replyDate{
+    /*border: 1px solid pink;*/
+    font-size: 0.8rem;
+    height: 40px;
+    width: 100px;
+    margin-top: 10px;
+    color: #5d5757;
+}
+
+.repliedContent{
+    font-size: 0.8rem;
+    color: #423a3a;
+    /*border: 1px solid yellowgreen;*/
+    height: auto;
+    width: 30vw;
+    overflow-wrap: break-word;
+    margin: 5px auto 15px;
+}
+
+.replyReactionContainer{
+    display: flex;
+    width: 32vw;
+    margin: 0 auto 10px;
+}
 
 @media screen and (max-width: 1024px){
     .allContainer, .postContainer{

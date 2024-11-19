@@ -91,14 +91,14 @@ const Post = () => {
                // Firestoreに投稿を保存し、生成されたIDを取得
                const postDocRef = await addDoc(collection(db, "posts"), {
                   tweet,
+                  uid: user.uid,    //自動生成されたuid格納
                   name: userName, // 取得したユーザー名を使用
                   icon: userIcon,   //取得したアイコン
                   personalColor: personalColor, //取得したPC
                   userId : displayId,  //取得したdisplayIDをuserIDとして表示
-                  imageUrl: imageUrl,
+                  imageUrl: imageUrl || null,
                   pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
                   timestamp: serverTimestamp(),
-                  uid: user.uid,    //自動生成されたuid格納
                   replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
                   repliedCount: '', //投稿自体が持つリプライの数
                   likesCount: '',  //いいねの数
@@ -221,7 +221,7 @@ const Post = () => {
                 )}
 
                 <div className={s.iconWrapper}>
-                    <label htmlFor="imageInput" className={s.iconLabel} onClick={handleLabelClick}>
+                    <label className={s.iconLabel} onClick={handleLabelClick}>
                         <img src="/pic.jpeg" className={s.iconImg} alt="Select image" />
                     </label>
 
