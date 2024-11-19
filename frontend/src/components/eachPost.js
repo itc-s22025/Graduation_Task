@@ -1,5 +1,5 @@
 import { db } from '@/firebase';  // Firestoreのインポート
-import { doc, getDoc, collection, query, where, getDocs, addDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, orderBy, getDocs, addDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import s from "@/styles/eachPost.module.css";
 
@@ -21,6 +21,7 @@ const EachPost = ({ post, currentUserUid }) => {
                     setUserIcon(userDoc.data().icon);  // アイコンのURLをセット
                     setUserId(userDoc.data().displayId);
                     setPersonalColor(userDoc.data().personalColor);
+
                 } else {
                     setUserIcon('/default-icon.png');  // ユーザーが存在しない場合、デフォルトアイコンを表示
                     setUserId('unknown');
@@ -36,20 +37,26 @@ const EachPost = ({ post, currentUserUid }) => {
         }
     }, [currentUserUid]);  // currentUserUidが変わった時に再取得
 
+    const getReplies = async () => {
+        if (post.repliedCount) {
+            // リプライ元のポストIDを基にリプライを検索
+            const q = query(collection(db, "posts"), where("replyTo", "==", post.id), orderBy("timestamp", "desc"));
+            const querySnapshot = await getDocs(q);
+            const repliesData = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    ...data,
+                    timestamp: data.timestamp ? data.timestamp.toDate() : null
+                };
+            });
+            setReplies(repliesData); // リプライをステートにセット
+        }
+    };
+
     // リプライをFirestoreから取得
     useEffect(() => {
-        const getReplies = async () => {
-            if (post.repliedCount) {
-                // リプライ元のポストIDを基にリプライを検索
-                const q = query(collection(db, "posts"), where("replyTo", "==", post.id));
-                const querySnapshot = await getDocs(q);
-                const repliesData = querySnapshot.docs.map(doc => doc.data());
-
-                setReplies(repliesData); // リプライをステートにセット
-            }
-        };
         getReplies();
-    }, [post.id, post]);  // post.idが変更される度にリプライを取得
+    }, [post.id]);  // post.idが変更される度にリプライを取得
 
     if (!post) return null;
 
@@ -80,13 +87,14 @@ const EachPost = ({ post, currentUserUid }) => {
 
             // 返信されたポストの`repliedCount`を更新
             const postRef = doc(db, "posts", post.id);
-            await updateDoc(postRef, {
-                repliedCount: arrayUnion(replyDocRef.id),  // リプライされたポストの`repliedCount`にリプライIDを追加
-            });
+            // Firestoreで repliedCount をインクリメントする
+            await updateDoc(postRef, {repliedCount: (post.repliedCount || 0) + 1});
+
 
             // リプライ送信後に内容をリセット
             setReplyContent("");
             alert("返信しました")
+            await getReplies();
         } catch (error) {
             console.error("リプライの送信に失敗しました:", error);
         }
@@ -160,7 +168,10 @@ const EachPost = ({ post, currentUserUid }) => {
                                         <p className={s.replyName}>{reply.name || "Anonymous"}</p>
                                         <p className={s.replyUserId}>@{reply.userId || "user1"}</p>
                                     </div>
-                                    <p className={s.replyDate}>{reply.timestamp ? reply.timestamp.toDate().toLocaleString() : "Date not available"}</p>
+                                    <p className={s.replyDate}> {reply.timestamp ? reply.timestamp.toDate // Firebase Timestamp 型の場合
+                                        ? reply.timestamp.toDate().toLocaleString() : new Date(reply.timestamp).toLocaleString() // Date 型または文字列の場合
+                                        : "Date not available"}</p>
+
                                 </div>
 
                                 <div>
