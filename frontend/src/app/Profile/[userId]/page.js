@@ -6,11 +6,10 @@ import MainLayout from "@/components/MainLayout";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import Edit from "@/app/Profile/edit";
 import Link from "next/link";
-import {  query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, collection, getDocs} from "firebase/firestore";
+import { query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, collection, getDocs, orderBy} from "firebase/firestore";
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import Post from "@/components/post";
-import PostButton from "@/components/post_button";
 
 const Profile = ({ imageUrl, params }) => {
     const [userData, setUserData] = useState(null);
@@ -68,7 +67,7 @@ const Profile = ({ imageUrl, params }) => {
     useEffect(() => {
         const fetchUserPosts = async () => {
             if (userId) {
-                const q = query(collection(db, "posts"), where("uid", "==", userId));
+                const q = query(collection(db, "posts"), where("uid", "==", userId), orderBy("timestamp", "desc"));
                 const querySnapshot = await getDocs(q);
                 const postsData = querySnapshot.docs.map(doc => ({
                     id: doc.id,
