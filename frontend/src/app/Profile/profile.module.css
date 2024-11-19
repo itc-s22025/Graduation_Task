@@ -157,6 +157,23 @@
     transform: scale(1.05);
 }
 
+.followButton{
+    width: 120px;
+    height: 30px;
+    background-color: #ff92AD;
+    color: #fff;
+    border: 2px solid #ff839f;
+    border-radius: 50px;
+    margin-top: 10px;
+    margin-left: 550px;
+    outline: none;
+    cursor: pointer;
+}
+
+.followButton:hover{
+    transform: scale(1.02);
+}
+
 /* Tabs Section */
 .tabsContainer {
     position: relative;

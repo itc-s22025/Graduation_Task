@@ -95,12 +95,32 @@ const Profile = ({ imageUrl, params }) => {
         checkFollowingStatus();
     }, [auth, userId, db]);
 
-    const [showEditModal, setShowEditModal] = useState(false);
+    const handleFollowToggle = async () => {
+        const user = auth.currentUser;
+        if (user) {
+            const currentUserRef = doc(db, "users", user.uid);
+            const otherUserRef = doc(db, "users", userId);
+
+            // Toggle following status for the current user
+            await updateDoc(currentUserRef, {
+                following: isFollowing ? arrayRemove(userId) : arrayUnion(userId)
+            });
+
+            // Toggle followers count for the other user
+            await updateDoc(otherUserRef, {
+                followers: isFollowing ? arrayRemove(user.uid) : arrayUnion(user.uid)
+            });
+
+            // Update the local state to reflect the new following status
+            setIsFollowing(!isFollowing);
+        }
+    };
 
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
 
+    const [showEditModal, setShowEditModal] = useState(false);
     const handleEditClick = () => {
         setShowEditModal(true);
         window.addEventListener('wheel', preventScroll, { passive: false });
@@ -195,7 +215,14 @@ const Profile = ({ imageUrl, params }) => {
                                 ${personalColor === '春' ? s.springText : personalColor === '夏' ? s.summerText : personalColor === '秋' ? s.autumnText : personalColor === '冬' ? s.winterText : ''}`}>
                                 {personalColor ? `${personalColor}` : '未設定'}
                             </a>
-                            <button className={s.edit} onClick={handleEditClick}>Edit Profile</button>
+                            {/* Profile Edit/Follow Button Toggle */}
+                            {currentUserUid === userId ? (
+                                <button className={s.edit} onClick={handleEditClick}>Edit Profile</button>
+                            ) : (
+                                <button className={s.followButton} onClick={handleFollowToggle}>
+                                    {isFollowing ? 'Unfollow' : 'Follow'}
+                                </button>
+                            )}
 
                             <div className={s.infoContainer}>
                                 <h2 className={s.userName}>{username || 'ユーザ名未設定'}</h2>
@@ -211,10 +238,6 @@ const Profile = ({ imageUrl, params }) => {
                                     </div>
                                 </div>
                             </div>
-
-                            {/*<button className={s.followButton} onClick={handleFollowToggle}>*/}
-                            {/*    {isFollowing ? 'Unfollow' : 'Follow'}*/}
-                            {/*</button>*/}
                             <p className={s.bio}>{bio || '自己紹介未設定'}</p>
                         </div>
 
@@ -253,14 +276,15 @@ const Profile = ({ imageUrl, params }) => {
 
                         <TabPanel>
                             <article>
-                                {likesPosts.length > 0 ? (
-                                    likesPosts.map(post => (
-                                        <div key={post.id} className={s.likeItem}>
-                                            <h3>{post.name}</h3>
-                                            <p>{post.tweet}</p>
-                                        </div>
-                                    ))
-                                ) : (<p>いいねがありません</p>)}
+                                {/*{likesPosts.length > 0 ? (*/}
+                                {/*    likesPosts.map(post => (*/}
+                                {/*        <div key={post.id} className={s.likeItem}>*/}
+                                {/*            <h3>{post.name}</h3>*/}
+                                {/*            <p>{post.tweet}</p>*/}
+                                {/*        </div>*/}
+                                {/*    ))*/}
+                                {/*) : (<p>いいねがありません</p>)}*/}
+                                まだーーー
                             </article>
                         </TabPanel>
                     </Tabs>

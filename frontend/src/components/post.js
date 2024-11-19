@@ -285,7 +285,7 @@ const Post = ({ userId, searchPost, ownPost, pageType }) => {
                         )}
                         <div className={s.includeIconsContainer}>
                             <div className={s.iconContainer}>
-                                <img className={s.iconImage} alt="icon" src={post.icon || "/user_default.png"} onClick={() => router.push(`/AnotherScreen/${post.uid}`)} />
+                                <img className={s.iconImage} alt="icon" src={post.icon || "/user_default.png"} onClick={() => router.push(`/Profile/${post.uid}`)} />
                             </div>
 
                             <div className={s.topContainer}>
