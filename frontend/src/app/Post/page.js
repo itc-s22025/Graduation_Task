@@ -221,7 +221,7 @@ const Post = () => {
                 )}
 
                 <div className={s.iconWrapper}>
-                    <label htmlFor="imageInput" className={s.iconLabel} onClick={handleLabelClick}>
+                    <label className={s.iconLabel} onClick={handleLabelClick}>
                         <img src="/pic.jpeg" className={s.iconImg} alt="Select image" />
                     </label>
 
