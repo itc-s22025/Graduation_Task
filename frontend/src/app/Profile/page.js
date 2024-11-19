@@ -168,6 +168,7 @@ const Profile = () => {
                                     <Tab
                                         className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`}
                                         onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
+
                                     <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
                                     <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
                                 </TabList>
@@ -189,8 +190,8 @@ const Profile = () => {
                                         <p>third</p>
                                     </article>
                                 </TabPanel>
-                            </Tabs>
-
+                           </Tabs>
+                           
 
                     {/* Edit Profile Modal */}
                     {showEditModal && (
