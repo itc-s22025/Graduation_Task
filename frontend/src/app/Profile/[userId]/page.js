@@ -263,6 +263,7 @@ const Profile = ({ imageUrl, params }) => {
                     </Tabs>
                 </div>
             </div>
+        </div>
 
             {showEditModal && (
                 <div className={s.modalOverlay}>
@@ -272,9 +273,6 @@ const Profile = ({ imageUrl, params }) => {
                     </div>
                 </div>
             )}
-
-                <PostButton/>
-        </div>
 
         </MainLayout>
     );
