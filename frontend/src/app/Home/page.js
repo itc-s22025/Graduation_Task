@@ -4,6 +4,7 @@ import MainLayout from "@/components/MainLayout";
 import PostButton from "@/components/post_button";
 import HeaderTab from "@/components/headerTab";
 import Post from "@/components/post";
+import ReviewPosts  from "@/components/ReviewPost";
 import s from "@/app/Home/page.module.css"
 import AddTab from "@/components/addTab";
 import {useEffect, useState} from "react";
@@ -67,6 +68,7 @@ const Home = ({ pageType }) => {
         <>
             <MainLayout>
                 <div className={s.allContainer}>
+
                     <HeaderTab
                         firstTabText="Now"
                         secondTabText="Following"
@@ -75,6 +77,7 @@ const Home = ({ pageType }) => {
                         secondTabContent={<Post tabType={following} />}
                         pageType="home"
                     />
+
                     <button className={`${s.addButton} ${addTab}`} onClick={handleAddClick}>+</button>
                 </div>
 

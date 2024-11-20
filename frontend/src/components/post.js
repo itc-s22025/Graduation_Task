@@ -176,6 +176,7 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
                        type: "like", // 通知タイプ
                        message: notificationMessage, // 通知メッセージ
                        postId: postId, // 投稿ID
+                       icon: post.icon,
                        tweet: post.tweet || "", // ツイート内容を追加
                        timestamp: new Date(), // タイムスタンプ
                    });
@@ -222,6 +223,7 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
                         }
                         return updatedPosts;
                     });
+
                 }
             }
             console.log("ぽすつ:", post.userId)

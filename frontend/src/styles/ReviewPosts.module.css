@@ -1,0 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.allContainer{
+    position: relative;
+    /*border: 1px solid red;*/
+    left: -1vw;
+    padding: 5px 38px 10px;
+    width: 40vw;
+}
+
+.all{
+    margin: 10px auto 10px;
+    padding: 0 10px 8px;
+    background-color: #fff;
+    height: auto;
+
+    /*min-height: 100px;*/
+
+    /*枠線*/
+    border: #FF92AD 1px solid;
+    border-radius: 30px;
+}
+
+.all:last-child{
+    margin-bottom: 100px;
+}
+
+.forProfilePadding{
+    padding-left: 0;
+}
+
+.forProfileFlame{
+    width: 36vw;
+}
+
+
+.includeIconsContainer{
+    /*border: 1px solid springgreen;*/
+    display: flex;
+    height: auto;
+}
+
+.topContainer{
+    /*border: 1px solid red;*/
+    width: 30vw;
+    display: flex;
+    margin-top: 2px;
+}
+
+.infoContainer{
+    /*border: 1px solid blue;*/
+    display: flex;
+    margin-top: 8px;
+    width: 28vw;
+    height: 40px;
+}
+
+.topMiddleContainer{
+    /*border: 1px solid #ec6102;*/
+    display: grid;
+    width: 28vw;
+    height: auto;
+    min-height: 120px;
+    margin-top: 5px;
+}
+
+.flex{
+    display: flex;
+}
+
+.iconContainer {
+    background-color: #fff;
+    border: 1px solid #f8e8e8;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* アイコンを円形に */
+    overflow: hidden; /* 子要素が枠からはみ出さないように */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 10px 10px 20px;
+}
+
+.iconImage {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.name{
+    /*border: 1px solid springgreen;*/
+    color: #4A4444;
+    font-size: 1.1rem;
+
+    max-width: 150px;
+    margin-top: 9px;
+    margin-left: 10px;
+}
+
+.userID{
+    /*border: 1px solid hotpink;*/
+    color: #6E665C;
+    max-width: 220px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.pc{
+    color: #6E665C;
+    font-size: 0.7rem;
+    border: #ff92AD 1px solid;
+    border-radius: 10px;
+    height: 21px;
+    width: 80px;
+    margin: 12px 0 10px 10px;
+    padding: 2px 0;
+    text-align: center;
+}
+
+.time{
+    /*border: 1px solid plum;*/
+    width: 100px;
+    height: 25px;
+    color: #6E665C;
+    font-size: 0.9rem;
+
+    margin-top: 11px;
+    margin-left: 5px;
+}
+
+.contentContainer{
+    width: 28vw;
+    min-height: 80px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.content{
+    /*border: 1px solid #ec6102;*/
+    margin: 0 5px 10px;
+    color: #423a3a;
+    width: 27vw;
+    height: auto;
+    overflow-wrap: break-word;
+    font-size: 0.9rem;
+}
+
+.brand{
+    font-size: 0.9rem;
+    padding-bottom: 5px;
+}
+
+.product{
+    font-size: 0.9rem;
+    padding-bottom: 5px;
+}
+
+.star{
+    font-size: 0.9rem;
+    padding-bottom: 5px;
+}
+
+.review{
+    font-size: 0.9rem;
+    padding-bottom: 10px;
+}
+
+
+.image{
+    height: 200px;
+    border: 1px solid #F8F0F0;
+    border-radius: 5px;
+    margin: 10px 10px 20px;
+}
+
+.editButton{
+    border: none;
+    outline: none;
+    background-color: #fff;
+    margin-top: 10px;
+    /*margin-left: 10vw;*/
+    height: 30px;
+    width: 30px;
+    padding-bottom: 10px;
+    font-size: 1.3rem;
+    color: #6E665C;
+    font-family: serif;
+    font-weight: 400;
+}
+.editButton:hover{
+    color: #ff92AD;
+}
+
+/*reaction*/
+.reactionContainer{
+    display: flex;
+    padding-top: 10px;
+    margin: 0 auto 10px;
+    /*border: #2196f3 1px solid;*/
+    width: 540px;
+}
+
+.reply{
+    width: 25px;
+    height: 25px;
+    margin:0 2px 0 10px;
+}
+
+/*repost*/
+.repost{
+    width: 23px;
+    height: 23px;
+    margin: 2px 2px 0 5vw;
+    background-size: cover;
+}
+
+/*like*/
+.like {
+    width: 20px;
+    height: 20px;
+    margin: 4px 2px 0 5vw;
+    background-size: cover;
+}
+
+.likeActive {
+    width: 20px;
+    height: 20px;
+    margin: 4px 2px 0 5vw;
+    background-size: cover;
+}
+
+/*keep*/
+.keep {
+    background-image: url("/keep_after.png");
+    width: 20px;
+    height: 20px;
+    margin: 4px 2px 10px 11vw;
+    background-size: cover;
+    cursor: pointer;
+    transition: background-image 0.3s;
+}
+
+.keep.clicked {
+    background-image: url("/keep_after.png");
+}
+.keep:hover, .keep:focus, .keep.saved {
+    background-image: url("/keep_after.png");
+}
+.keep.saved {
+    background-color: #FF92AD; /* 保存状態を示す色 */
+}
+
+.reactionText{
+    color: #5d5757;
+    margin-left: 2px;
+}
+
+
+
+
+/*eachPost*/
+.eachPostContainer{
+    position: fixed;
+    top: 0;
+    left: 30vw;
+    height: 100vh;
+    z-index: 3;
+}
+
+.headerContainer{
+    position: fixed;
+    top: 0;
+    left: 30vw;
+    display: flex;
+    width: calc(100vw - 60vw);
+    height: 80px;
+    background-color: #FF92AD;
+    z-index: 10;
+}
+
+.backButton{
+    border: none;
+    outline: none;
+    background-color: #FF92AD;
+    height: 50px;
+    padding: 0 10px;
+    margin: 15px 0 15px 20px;
+    color: #fff;
+    font-size: 1.8rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    cursor: pointer;
+}
+
+.headerTitle{
+    width: 400px;
+    margin: 18px 20px 0 20px;
+    color: #fff;
+    font-size: 1.8rem;
+}
+
+/*☓ボタン*/
+.closeEachPost{
+    cursor: pointer;
+    display: block;
+    position: relative;
+    border: 1px solid #ff839f;
+    border-radius: 3px;
+    width: 26px;
+    height: 25px;
+    margin: 30px 20px 0 10vw;
+    background-color: #fff;
+}
+
+.closeEachPost::before, .closeEachPost::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 20px;
+    background: #ff839f;
+}
+
+.closeEachPost::before {
+    transform: translate(-50%,-50%) rotate(45deg);
+}
+.closeEachPost::after {
+    transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+/*報告*/
+.reportAllContainer{
+    position: relative;
+    left: 30vw;
+    height: 0;
+}
+
+.reportContainer{
+    display: grid;
+    position: relative;
+    top: -10px;
+    background-color: #fff;
+    border: 1px solid #ff92AD;
+    border-radius: 10px;
+    padding: 10px;
+    width: 120px;
+}
+
+.closeReportButton{
+    cursor: pointer;
+    display: block;
+    position: relative;
+    left: 5.3vw;
+    border: 1px solid #ff839f;
+    border-radius: 3px;
+    width: 24px;
+    height: 23px;
+    background-color: #fff;
+    z-index: 10;
+}
+.closeReportButton::before, .closeReportButton::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 20px;
+    background: #ff839f;
+}
+.closeReportButton::before {
+    transform: translate(-50%,-50%) rotate(45deg);
+}
+.closeReportButton::after {
+    transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+.reportPostButton{
+    border: none;
+    border-bottom: 1px solid #ff92AD;
+    background-color: #fff;
+    height: 30px;
+    font-size: 0.8rem;
+    padding-bottom: 5px;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #5d5757;
+}
+
+.reportUserButton{
+    border: none;
+    background-color: #fff;
+    height: 30px;
+    font-size: 0.8rem;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #5d5757;
+}
+
+@media screen and (max-width: 1024px){
+    .all{
+        width: 60vw;
+    }
+
+    .headerContainer{
+        width: 70vw;
+    }
+}

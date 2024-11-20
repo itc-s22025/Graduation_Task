@@ -98,23 +98,23 @@ const Post = () => {
             const q = query(usersCollection, where("uid", "==", user.uid));
             const userSnapshot = await getDocs(q);
 
-            //usersコレクションからユーザデータ取得するとこ
+            // ユーザーデータの取得
             let userName = "Anonymous"; // デフォルトの名前
-            let userIcon = "";
+            let userIcon = "/user_default.png";
             let personalColor = "未設定";  //デフォルトのPC
-            let displayId = "unknown";  //デフォルトのディスプレイID(@user)
+            let displayId = "unknown";  // デフォルトのディスプレイID
             if (!userSnapshot.empty) {
                 userSnapshot.forEach((doc) => {
-                userName = doc.data().name; // ユーザー名を取得
-                userIcon = doc.data().icon; //アイコン取得
-                personalColor =  doc.data().personalColor;  //PC取得
-                displayId = doc.data().displayId;  //displayIDを取得
+                    userName = doc.data().name; // ユーザー名を取得
+                    userIcon = doc.data().icon; // アイコン取得
+                    personalColor = doc.data().personalColor;  // PCカラー
+                    displayId = doc.data().displayId;  // displayIdを取得
                 });
             }
 
-            //画像投稿関連
+            // 画像投稿関連
             let imageUrl = null;
-            if (selectedImage){
+            if (selectedImage) {
                 const imageRef = ref(storage, `images/${selectedImage.name}`);
                 await uploadBytes(imageRef, selectedImage);
 
@@ -142,13 +142,14 @@ const Post = () => {
                   keepsCount: '' //キープされた数
                });
 
-                // 投稿後のリセット
-                setTweet('');
-                setSelectedImage(null);
-                setPollVisible(false);
-                setPollOptions(["", ""]);
+            // 投稿後のリセット
+            setTweet('');
+            setSelectedImage(null);
+            setPollVisible(false);
+            setPollOptions(["", ""]);
 
-                alert('投稿しました')
+            alert('投稿しました');
+
             // Home画面に遷移
             await router.push('/Home');
         } catch (error) {
@@ -198,7 +199,9 @@ const Post = () => {
             <div className={s.box}>
                 <div className={s.flex}>
                     <div className={s.iconContainer}>
-                        <img src={icon} className={s.icon} alt="icon" />
+                        {selectedImage && (
+                            <img src={URL.createObjectURL(selectedImage)} className={s.selectedImage} alt="Selected" />
+                        )}
                     </div>
                     <p className={s.name}>{name || "name"}</p>
                     <p className={s.userId}> @{displayId || "unknown"}</p>
