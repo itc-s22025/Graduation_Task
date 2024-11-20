@@ -6,9 +6,10 @@ import MainLayout from "@/components/MainLayout";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import Edit from "@/app/Profile/edit";
 import Link from "next/link";
-import {  query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, collection, getDocs} from "firebase/firestore";
+import { query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, collection, getDocs, orderBy} from "firebase/firestore";
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
+import Post from "@/components/post";
 
 const Profile = ({ imageUrl, params }) => {
     const [userData, setUserData] = useState(null);
@@ -17,6 +18,7 @@ const Profile = ({ imageUrl, params }) => {
     const [headerImage, setHeaderImage] = useState('defaultHeader.png');
     const [icon, setIcon] = useState('defaultIcon.png');
     const [username, setUsername] = useState('');
+    const [displayId, setDisplayId] = useState('');
     const [bio, setBio] = useState(null);
     const [isFixed, setIsFixed] = useState(false);
     const [likesPosts, setLikesPosts] = useState([]);
@@ -49,6 +51,7 @@ const Profile = ({ imageUrl, params }) => {
                         setHeaderImage(data.headerImage);
                         setIcon(data.icon || 'user_default.png');
                         setUsername(data.name || 'user');
+                        setDisplayId(data.displayId || 'unknown')
                         setBio(data.bio || 'ここにBioが表示されます');
                         setPersonalColor(data.personalColor?.[3] || '');
                     }
@@ -64,7 +67,7 @@ const Profile = ({ imageUrl, params }) => {
     useEffect(() => {
         const fetchUserPosts = async () => {
             if (userId) {
-                const q = query(collection(db, "posts"), where("uid", "==", userId));
+                const q = query(collection(db, "posts"), where("uid", "==", userId), orderBy("timestamp", "desc"));
                 const querySnapshot = await getDocs(q);
                 const postsData = querySnapshot.docs.map(doc => ({
                     id: doc.id,
@@ -92,12 +95,43 @@ const Profile = ({ imageUrl, params }) => {
         checkFollowingStatus();
     }, [auth, userId, db]);
 
-    const [showEditModal, setShowEditModal] = useState(false);
+    const handleFollowToggle = async () => {
+        const user = auth.currentUser;
+        if (user) {
+            try {
+                const currentUserRef = doc(db, "users", user.uid);
+                const otherUserRef = doc(db, "users", userId);
+
+                // Firestoreデータの更新
+                await Promise.all([
+                    updateDoc(currentUserRef, {
+                        following: isFollowing ? arrayRemove(userId) : arrayUnion(userId),
+                    }),
+                    updateDoc(otherUserRef, {
+                        followers: isFollowing ? arrayRemove(user.uid) : arrayUnion(user.uid),
+                    }),
+                ]);
+
+                // ローカル状態の即時反映
+                setIsFollowing(!isFollowing);
+                setUserData((prevUserData) => ({
+                    ...prevUserData,
+                    followers: isFollowing
+                        ? prevUserData.followers.filter((follower) => follower !== user.uid)
+                        : [...prevUserData.followers, user.uid],
+                }));
+            } catch (error) {
+                console.error("フォロー/アンフォローに失敗しました", error);
+            }
+        }
+    };
+
 
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
 
+    const [showEditModal, setShowEditModal] = useState(false);
     const handleEditClick = () => {
         setShowEditModal(true);
         window.addEventListener('wheel', preventScroll, { passive: false });
@@ -177,8 +211,10 @@ const Profile = ({ imageUrl, params }) => {
 
     return (
         <MainLayout>
+
             <div className={s.allContainer}>
                 <div className={s.headerToTabsContainer}>
+                    {/*header*/}
                     <div className={s.header}>
                         <img src={headerImage} className={s.headerImage}/>
                     </div>
@@ -190,12 +226,19 @@ const Profile = ({ imageUrl, params }) => {
                                 ${personalColor === '春' ? s.springText : personalColor === '夏' ? s.summerText : personalColor === '秋' ? s.autumnText : personalColor === '冬' ? s.winterText : ''}`}>
                                 {personalColor ? `${personalColor}` : '未設定'}
                             </a>
-                            <button className={s.edit} onClick={handleEditClick}>Edit Profile</button>
+                            {/* Profile Edit/Follow Button Toggle */}
+                            {currentUserUid === userId ? (
+                                <button className={s.edit} onClick={handleEditClick}>Edit Profile</button>
+                            ) : (
+                                <button className={s.followButton} onClick={handleFollowToggle}>
+                                    {isFollowing ? 'Unfollow' : 'Follow'}
+                                </button>
+                            )}
 
                             <div className={s.infoContainer}>
                                 <h2 className={s.userName}>{username || 'ユーザ名未設定'}</h2>
                                 <div className={s.idAndFollow}>
-                                    <p className={s.userId}>@userID</p>
+                                    <p className={s.userId}>@{displayId || 'unknown'}</p>
                                     <div className={s.followContainer}>
                                         <Link href={`/Profile/${userId}/Follow`} className={s.add}>
                                             <span className={s.follow}><strong>{userData?.following?.length || 0}</strong> Following</span>
@@ -206,10 +249,6 @@ const Profile = ({ imageUrl, params }) => {
                                     </div>
                                 </div>
                             </div>
-
-                            {/*<button className={s.followButton} onClick={handleFollowToggle}>*/}
-                            {/*    {isFollowing ? 'Unfollow' : 'Follow'}*/}
-                            {/*</button>*/}
                             <p className={s.bio}>{bio || '自己紹介未設定'}</p>
                         </div>
 
@@ -223,39 +262,46 @@ const Profile = ({ imageUrl, params }) => {
                             <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
                         </TabList>
 
+                       <TabPanel>
+                           <article className={s.articleContainer}>
+                               <div>
+                                   {userPosts.length > 0 ? (userPosts
+                                           // .filter(post => post.uid === userId) // uidがuserIdと一致するポストだけをフィルタリング
+                                           .map((post) => (
+                                               <Post key={post.id} ownPost={post} pageType="profile"/>
+                                           ))) : (<p>投稿がありません</p>)}
+                               </div>
+                           </article>
+                       </TabPanel>
+
+
                         <TabPanel>
-                            <article>
-                                <div className={s.postsContainer}>
-                                    {userPosts.map((post) => (
-                                        <Link key={post.id} href={`/Profile/${post.uid}/Post/${post.id}`}>
-                                            <img src={post.imageUrl} alt="Post Image" className={s.postImage} />
-                                        </Link>
-                                    ))}
-                                </div>
+                            <article className={s.articleContainer}>
+                                {userPosts.length > 0 ? (userPosts.filter(post => post.imageUrl) // imageUrl が null または undefined でない投稿をフィルタリング
+                                    .map((post) => (
+                                        <Post key={post.id} ownPost={post} pageType="profile" />
+                                    ))) : (<p>投稿がありません</p>)}
                             </article>
                         </TabPanel>
 
-                        <TabPanel>
-                            <article>
-                                <p>media</p>
-                            </article>
-                        </TabPanel>
 
                         <TabPanel>
                             <article>
-                                {likesPosts.length > 0 ? (
-                                    likesPosts.map(post => (
-                                        <div key={post.id} className={s.likeItem}>
-                                            <h3>{post.name}</h3>
-                                            <p>{post.tweet}</p>
-                                        </div>
-                                    ))
-                                ) : (<p>いいねがありません</p>)}
+                                {/*{likesPosts.length > 0 ? (*/}
+                                {/*    likesPosts.map(post => (*/}
+                                {/*        <div key={post.id} className={s.likeItem}>*/}
+                                {/*            <h3>{post.name}</h3>*/}
+                                {/*            <p>{post.tweet}</p>*/}
+                                {/*        </div>*/}
+                                {/*    ))*/}
+                                {/*) : (<p>いいねがありません</p>)}*/}
+                                まだーーー
                             </article>
                         </TabPanel>
                     </Tabs>
                 </div>
             </div>
+        </div>
 
             {showEditModal && (
                 <div className={s.modalOverlay}>
@@ -265,7 +311,7 @@ const Profile = ({ imageUrl, params }) => {
                     </div>
                 </div>
             )}
-        </div>
+
         </MainLayout>
     );
 };

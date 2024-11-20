@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Tweet from "../../components/tweet";
 import MainLayout from "../../components/MainLayout";
@@ -16,13 +16,47 @@ const Post = () => {
     const router = useRouter();
 
     const [tweet, setTweet] = useState('');
-    const [name, setName] = useState('');
+    const [name, setName] = useState(""); // ユーザー名
+    const [icon, setIcon] = useState(""); // ユーザーアイコン
+    const [displayId, setDisplayId] = useState(""); // ディスプレイID
     const [selectedImage, setSelectedImage] = useState(null);
     const [pollVisible, setPollVisible] = useState(false);
     const [pollOptions, setPollOptions] = useState(["", ""]);
     const [inMenuVisible, setInMenuVisible] = useState(false);
     const [menu, setMenu] = useState('');
     const inputRef = useRef(null);
+
+
+    // **ユーザー情報取得**
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const user = getAuth().currentUser;
+            if (!user) {
+                console.error("ユーザーがサインインしていません");
+                return;
+            }
+
+            try {
+                const usersCollection = collection(db, "users");
+                const q = query(usersCollection, where("uid", "==", user.uid));
+                const userSnapshot = await getDocs(q);
+
+                if (!userSnapshot.empty) {
+                    userSnapshot.forEach((doc) => {
+                        setName(doc.data().name || "Anonymous"); // ユーザー名
+                        setIcon(doc.data().icon || "/default_icon.png"); // アイコンURL
+                        setDisplayId(doc.data().displayId || "unknown"); // ディスプレイID
+                    });
+                } else {
+                    console.warn("ユーザードキュメントが存在しません");
+                }
+            } catch (error) {
+                console.error("ユーザー情報の取得に失敗しました:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     // 投稿内容の変更
     const handleTweetChange = (event) => {
@@ -64,23 +98,23 @@ const Post = () => {
             const q = query(usersCollection, where("uid", "==", user.uid));
             const userSnapshot = await getDocs(q);
 
-            //usersコレクションからユーザデータ取得するとこ
+            // ユーザーデータの取得
             let userName = "Anonymous"; // デフォルトの名前
-            let userIcon = "";
+            let userIcon = "/user_default.png";
             let personalColor = "未設定";  //デフォルトのPC
-            let displayId = "unknown";  //デフォルトのディスプレイID(@user)
+            let displayId = "unknown";  // デフォルトのディスプレイID
             if (!userSnapshot.empty) {
                 userSnapshot.forEach((doc) => {
-                userName = doc.data().name; // ユーザー名を取得
-                userIcon = doc.data().icon; //アイコン取得
-                personalColor =  doc.data().personalColor;  //PC取得
-                displayId = doc.data().displayId;  //displayIDを取得
+                    userName = doc.data().name; // ユーザー名を取得
+                    userIcon = doc.data().icon; // アイコン取得
+                    personalColor = doc.data().personalColor;  // PCカラー
+                    displayId = doc.data().displayId;  // displayIdを取得
                 });
             }
 
-            //画像投稿関連
+            // 画像投稿関連
             let imageUrl = null;
-            if (selectedImage){
+            if (selectedImage) {
                 const imageRef = ref(storage, `images/${selectedImage.name}`);
                 await uploadBytes(imageRef, selectedImage);
 
@@ -91,14 +125,14 @@ const Post = () => {
                // Firestoreに投稿を保存し、生成されたIDを取得
                const postDocRef = await addDoc(collection(db, "posts"), {
                   tweet,
+                  uid: user.uid,    //自動生成されたuid格納
                   name: userName, // 取得したユーザー名を使用
                   icon: userIcon,   //取得したアイコン
                   personalColor: personalColor, //取得したPC
                   userId : displayId,  //取得したdisplayIDをuserIDとして表示
-                  imageUrl: imageUrl,
+                  imageUrl: imageUrl || null,
                   pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
                   timestamp: serverTimestamp(),
-                  uid: user.uid,    //自動生成されたuid格納
                   replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
                   repliedCount: '', //投稿自体が持つリプライの数
                   likesCount: '',  //いいねの数
@@ -108,13 +142,14 @@ const Post = () => {
                   keepsCount: '' //キープされた数
                });
 
-                // 投稿後のリセット
-                setTweet('');
-                setSelectedImage(null);
-                setPollVisible(false);
-                setPollOptions(["", ""]);
+            // 投稿後のリセット
+            setTweet('');
+            setSelectedImage(null);
+            setPollVisible(false);
+            setPollOptions(["", ""]);
 
-                alert('投稿しました')
+            alert('投稿しました');
+
             // Home画面に遷移
             await router.push('/Home');
         } catch (error) {
@@ -164,9 +199,12 @@ const Post = () => {
             <div className={s.box}>
                 <div className={s.flex}>
                     <div className={s.iconContainer}>
-                        <img src="icon.jpeg" className={s.icon} alt="User icon" />
+                        {selectedImage && (
+                            <img src={URL.createObjectURL(selectedImage)} className={s.selectedImage} alt="Selected" />
+                        )}
                     </div>
                     <p className={s.name}>{name || "name"}</p>
+                    <p className={s.userId}> @{displayId || "unknown"}</p>
                 </div>
 
                 {inMenuVisible && (
@@ -221,7 +259,7 @@ const Post = () => {
                 )}
 
                 <div className={s.iconWrapper}>
-                    <label htmlFor="imageInput" className={s.iconLabel} onClick={handleLabelClick}>
+                    <label className={s.iconLabel} onClick={handleLabelClick}>
                         <img src="/pic.jpeg" className={s.iconImg} alt="Select image" />
                     </label>
 
