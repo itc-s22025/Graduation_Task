@@ -48,38 +48,38 @@ const Search = () => {
         fetchPosts();
     }, []);
 
-    // 投稿をフィルタリングするロジックを修正
-    const getUniqueRepostedPosts = (posts) => {
-        // repostedBy からResponse情報を展開
-        const repostedPosts = posts.flatMap(post =>
-            post.repostedBy?.map(userId => ({
-                ...post,
-                userId, // ResponseしたユーザIDを含める
-                type: 'repost',
-            })) || []
-        );
+    // // 投稿をフィルタリングするロジックを修正
+    // const getUniqueRepostedPosts = (posts) => {
+    //     // repostedBy からResponse情報を展開
+    //     const repostedPosts = posts.flatMap(post =>
+    //         post.repostedBy?.map(userId => ({
+    //             ...post,
+    //             userId, // ResponseしたユーザIDを含める
+    //             type: 'repost',
+    //         })) || []
+    //     );
+    //
+    //     // 投稿者とResponseしたユーザが一致する投稿を除外しつつ、ユニークな投稿を取得
+    //     return repostedPosts.reduce((acc, curr) => {
+    //         if (
+    //             curr.userId !== curr.originalUserId && // 投稿者とResponseユーザが異なる
+    //             !acc.some(post => post.id === curr.id) // 重複を防ぐ
+    //         ) {
+    //             acc.push(curr);
+    //         }
+    //         return acc;
+    //     }, []);
+    // };
 
-        // 投稿者とResponseしたユーザが一致する投稿を除外しつつ、ユニークな投稿を取得
-        return repostedPosts.reduce((acc, curr) => {
-            if (
-                curr.userId !== curr.originalUserId && // 投稿者とResponseユーザが異なる
-                !acc.some(post => post.id === curr.id) // 重複を防ぐ
-            ) {
-                acc.push(curr);
-            }
-            return acc;
-        }, []);
-    };
 
 
-
-    useEffect(() => {
-        if (allPosts.length > 0) {
-        // 投稿データを取得した後にフィルタリング処理を実行
-        const filteredReposts = getUniqueRepostedPosts(allPosts);
-        setFilteredPosts(filteredPosts);
-            }
-    }, [allPosts]);
+    // useEffect(() => {
+    //     if (allPosts.length > 0) {
+    //     // 投稿データを取得した後にフィルタリング処理を実行
+    //     const filteredReposts = getUniqueRepostedPosts(allPosts);
+    //     setFilteredPosts(filteredPosts);
+    //         }
+    // }, [allPosts]);
 
     // 検索履歴を保存
     const saveSearchHistory = (keyword) => {
@@ -216,9 +216,9 @@ const Search = () => {
                         )}
                     </div>
 
-                    <div className={s.resultsContainer}>
-                        {renderUniqueReposts()}
-                    </div>
+                    {/*<div className={s.resultsContainer}>*/}
+                    {/*    {renderUniqueReposts()}*/}
+                    {/*</div>*/}
 
                 </div>
             </MainLayout>

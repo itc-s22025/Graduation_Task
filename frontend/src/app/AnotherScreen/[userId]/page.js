@@ -19,6 +19,7 @@ import s from './Aot.module.css';
 import MainLayout from "@/components/MainLayout";
 import Link from "next/link";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { useParams } from "next/navigation";
 
 const OtherUserProfile = ({ imageUrl, params }) => {
     const [focusedTab, setFocusedTab] = useState('');
@@ -33,7 +34,15 @@ const OtherUserProfile = ({ imageUrl, params }) => {
 
     const db = getFirestore();
     const auth = useAuth();
-    const userId = params.userId;
+    // const userId = params.userId;
+    const paraams = useParams();
+
+    useEffect(() => {
+        const resolveParams = async () => {
+            setUserId(resolveParams.userId);
+        };
+        resolveParams();
+    }, [paraams]);
 
     // Set user data based on userId from params
     useEffect(() => {

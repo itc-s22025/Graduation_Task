@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { getFirestore, doc, getDoc, updateDoc} from "firebase/firestore";
-import { useRouter } from 'next/navigation';
+import { getFirestore } from "firebase/firestore";
+// import { useRouter } from 'next/navigation';
 import s from './profile.module.css';
 import MainLayout from "@/components/MainLayout";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
