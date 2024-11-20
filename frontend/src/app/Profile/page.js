@@ -10,13 +10,19 @@ import {useAuth} from "@/app/context/AuthProvider";
 import Edit from '@/app/Profile/edit'
 import Link from "next/link";
 import Post from "@/components/post";
+import ReviewPosts from "@/components/ReviewPost";
+import {doc, getDoc, getDocs, updateDoc, where, query, collection} from "firebase/firestore";
+import {db, auth} from "@/firebase"
+import { onAuthStateChanged } from "firebase/auth";
+import {useRouter} from "next/navigation";
+
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
     const db = getFirestore();
     const auth = useAuth();
     const [focusedTab, setFocusedTab] = useState('');
-    const [showEditModal, setShowEditModal] = useState(false); // Modal state
+    const [showEditModal, setShowEditModal] = useState(false);
     const [personalColor, setPersonalColor] = useState('');
     const [Following, setFollowing] = useState([]);
     const [Followers, setFollowers] = useState([]);
@@ -80,7 +86,8 @@ const Profile = () => {
         }
     };
 
-    // Firestoreからデータを取得
+
+    // Firestoreからユーザーデータを取得
     useEffect(() => {
         const fetchUserData = async () => {
             const user = auth.currentUser;
@@ -111,8 +118,46 @@ const Profile = () => {
         fetchUserData();
     }, [auth, db]);
 
+    // FirestoreからLikesデータと対応するPostデータを取得
+    useEffect(() => {
+        const fetchLikesAndPosts = async () => {
+            if (currentUserUid) {
+                try {
+                    const likesQuery = query(
+                        collection(db, "likes"),
+                        where("userId", "==", currentUserUid)
+                    );
+                    const likesSnapshot = await getDocs(likesQuery);
+                    const likesData = likesSnapshot.docs.map(doc => doc.data());
 
+                    const postsData = await Promise.all(
+                        likesData.map(async (like) => {
+                            const postRef = doc(db, "posts", like.postId);
+                            const postSnap = await getDoc(postRef);
+                            return postSnap.exists() ? { id: postSnap.id, ...postSnap.data() } : null;
+                        })
+                    );
+                    setLikesPosts(postsData.filter(post => post !== null));
+                } catch (error) {
+                    console.error("Likesデータの取得中にエラーが発生しました: ", error);
+                }
+            }
+        };
+        fetchLikesAndPosts();
+    }, [currentUserUid]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const tabsContainer = document.querySelector(`.${s.tabsContainer}`);
+            if (tabsContainer) {
+                const rect = tabsContainer.getBoundingClientRect();
+                setIsFixed(rect.top <= 0);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
         <>
@@ -174,8 +219,13 @@ const Profile = () => {
                                 </TabList>
 
                                 <TabPanel>
-                                    <article>
-                                       <Post />
+                                    <article className={s.articleContainer}>
+                                        {currentUserUid ? <Post userId={currentUserUid} pageType="profile"/> :
+                                            <p>ログインしてください</p>}
+                                    </article>
+                                    <article className={s.articleContainer}>
+                                        {currentUserUid ? <ReviewPosts userId={currentUserUid} pageType="profile"/> :
+                                            <p>ログインしてください</p>}
                                     </article>
                                 </TabPanel>
 
@@ -191,7 +241,7 @@ const Profile = () => {
                                     </article>
                                 </TabPanel>
                            </Tabs>
-                           
+
 
                     {/* Edit Profile Modal */}
                     {showEditModal && (
