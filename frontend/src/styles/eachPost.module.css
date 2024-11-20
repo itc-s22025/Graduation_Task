@@ -23,6 +23,7 @@
 
     max-height: 90vh;  /* 最大高さを設定 */
     overflow-y: auto;   /* 縦方向にスクロール可能にする */
+    overflow-x: hidden;
     scrollbar-width: none;
 }
 
