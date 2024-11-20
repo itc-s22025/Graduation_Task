@@ -10,7 +10,7 @@ import {auth, db} from "@/firebase";
 import {addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc, where} from "firebase/firestore";
 import {onAuthStateChanged} from "firebase/auth";
 
-const Post = ({ userId, searchPost, ownPost, pageType }) => {
+const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
 
     const [posts, setPosts] = useState([]); // 投稿リスト
     const [showEachPost, setShowEachPost] = useState(false);
@@ -27,6 +27,7 @@ const Post = ({ userId, searchPost, ownPost, pageType }) => {
             // userが存在する(ログインしている)場合はuidを、存在しない(ログインしていない)場合はnullをcurrentUserUidにセットする
             setCurrentUserUid(user ? user.uid : null);
         });
+
         //コンポーネントがアンマウントされるとき、unsubscribeを呼び出して監視を解除
         return () => unsubscribe();
     }, []);
@@ -88,6 +89,44 @@ const Post = ({ userId, searchPost, ownPost, pageType }) => {
         //リアルタイム更新の監視を解除　終わりだよ〜
         return () => unsubscribe();
     }, [currentUserUid, searchPost, ownPost]);
+
+
+    //tabType
+    useEffect(() => {
+        if (!tabType || tabType.length === 0) return; // tabTypeが空なら処理をしない
+
+        const fetchPosts = async () => {
+            console.log("tabType:", tabType);
+            try {
+                const postsQuery = query(
+                    collection(db, "posts"),
+                    where("userId", "in", tabType)
+                );
+                const querySnapshot = await getDocs(postsQuery);
+
+                console.log("querySnapshot:", querySnapshot);
+                console.log("querySnapshot.docs:", querySnapshot.docs);
+
+                if (querySnapshot.empty) {
+                    console.log("一致する投稿がありません");
+                }
+
+                const postsData = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                console.log("取得した投稿データ:", postsData);
+                setPosts(postsData);
+
+            } catch (error) {
+                console.error("投稿の取得に失敗しました: ", error);
+            }
+        };
+
+        fetchPosts();
+    }, [tabType]);
+
 
 
     //いいね機能
