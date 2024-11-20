@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
 .title {
     position: absolute;
     left: 30vw;
@@ -12,8 +14,8 @@
     position: absolute;
     top: 20vh;
     right: 32vw;
-    margin: 0 auto;
-    padding: 8px 10px;
+    margin: 10px auto;
+    padding: 18px 20px;
     background-color: #fff;
     width: 36vw;
     height: auto;
@@ -37,15 +39,24 @@
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    border: 1px solid #F8F4F0;
 }
 
 .name {
     font-size: 20px;
     margin-top: -10px;
-    margin-left: -85px;
+    margin-left: -95px;
     padding: 10px;
     left: 100px;
     position: relative;
+    color: #423a3a;
+}
+
+.userId{
+    font-size: 0.9rem;
+    margin-top: 27px;
+    margin-left: 18px;
+    color: #6E665C;
 }
 
 .textarea {
@@ -53,7 +64,6 @@
     width: 80%;
     margin-left: 10px;
     padding: 10px;
-    font-size: 18px;
     resize: none;
     box-sizing: border-box;
     outline: none;
@@ -61,6 +71,17 @@
     line-height: 1.5;
     display: inline-block;
     visibility: visible;
+    color: #423a3a;
+    font-size: 1rem;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.textarea::placeholder{
+    color: #a49889;
+
 }
 
 .iconWrapper {
@@ -88,11 +109,15 @@
     color: white;
     border: none;
     border-radius: 20px;
-    padding: 10px 20px;
+    padding: 7px 20px 5px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-left: 160px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .selectedImage {

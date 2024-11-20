@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Tweet from "../../components/tweet";
 import MainLayout from "../../components/MainLayout";
@@ -16,13 +16,47 @@ const Post = () => {
     const router = useRouter();
 
     const [tweet, setTweet] = useState('');
-    const [name, setName] = useState('');
+    const [name, setName] = useState(""); // ユーザー名
+    const [icon, setIcon] = useState(""); // ユーザーアイコン
+    const [displayId, setDisplayId] = useState(""); // ディスプレイID
     const [selectedImage, setSelectedImage] = useState(null);
     const [pollVisible, setPollVisible] = useState(false);
     const [pollOptions, setPollOptions] = useState(["", ""]);
     const [inMenuVisible, setInMenuVisible] = useState(false);
     const [menu, setMenu] = useState('');
     const inputRef = useRef(null);
+
+
+    // **ユーザー情報取得**
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const user = getAuth().currentUser;
+            if (!user) {
+                console.error("ユーザーがサインインしていません");
+                return;
+            }
+
+            try {
+                const usersCollection = collection(db, "users");
+                const q = query(usersCollection, where("uid", "==", user.uid));
+                const userSnapshot = await getDocs(q);
+
+                if (!userSnapshot.empty) {
+                    userSnapshot.forEach((doc) => {
+                        setName(doc.data().name || "Anonymous"); // ユーザー名
+                        setIcon(doc.data().icon || "/default_icon.png"); // アイコンURL
+                        setDisplayId(doc.data().displayId || "unknown"); // ディスプレイID
+                    });
+                } else {
+                    console.warn("ユーザードキュメントが存在しません");
+                }
+            } catch (error) {
+                console.error("ユーザー情報の取得に失敗しました:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     // 投稿内容の変更
     const handleTweetChange = (event) => {
@@ -164,9 +198,10 @@ const Post = () => {
             <div className={s.box}>
                 <div className={s.flex}>
                     <div className={s.iconContainer}>
-                        <img src="icon.jpeg" className={s.icon} alt="User icon" />
+                        <img src={icon} className={s.icon} alt="icon" />
                     </div>
                     <p className={s.name}>{name || "name"}</p>
+                    <p className={s.userId}> @{displayId || "unknown"}</p>
                 </div>
 
                 {inMenuVisible && (

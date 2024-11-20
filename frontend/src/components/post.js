@@ -26,7 +26,6 @@ const Post = ({ userId, searchPost, ownPost, pageType }) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             // userが存在する(ログインしている)場合はuidを、存在しない(ログインしていない)場合はnullをcurrentUserUidにセットする
             setCurrentUserUid(user ? user.uid : null);
-            console.log("ゆーざ確認：", user)
         });
         //コンポーネントがアンマウントされるとき、unsubscribeを呼び出して監視を解除
         return () => unsubscribe();
@@ -292,8 +291,8 @@ const Post = ({ userId, searchPost, ownPost, pageType }) => {
                                 <div className={s.topMiddleContainer}>
                                     <div className={s.infoContainer}>
 
-                                        <p className={s.name}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
-                                        <p className={s.userID}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
+                                        <p className={s.name} onClick={() => router.push(`/Profile/${post.uid}`)}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
+                                        <p className={s.userID} onClick={() => router.push(`/Profile/${post.uid}`)}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
                                         <p className={s.pc}> {post.personalColor || "未設定"}</p>  {/*こっちまだ*/}
                                         <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
 
