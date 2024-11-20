@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Tweet from "../../components/tweet";
 import MainLayout from "../../components/MainLayout";
@@ -11,11 +11,14 @@ import { collection, addDoc, serverTimestamp, query, where, getDocs } from "fire
 import { getAuth } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
+
 const Post = () => {
     const router = useRouter();
 
     const [tweet, setTweet] = useState('');
-    const [name, setName] = useState('');
+    const [name, setName] = useState(""); // ユーザー名
+    const [icon, setIcon] = useState(""); // ユーザーアイコン
+    const [displayId, setDisplayId] = useState(""); // ディスプレイID
     const [selectedImage, setSelectedImage] = useState(null);
     const [pollVisible, setPollVisible] = useState(false);
     const [pollOptions, setPollOptions] = useState(["", ""]);
@@ -23,8 +26,41 @@ const Post = () => {
     const [menu, setMenu] = useState('');
     const inputRef = useRef(null);
 
+
+    // **ユーザー情報取得**
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const user = getAuth().currentUser;
+            if (!user) {
+                console.error("ユーザーがサインインしていません");
+                return;
+            }
+
+            try {
+                const usersCollection = collection(db, "users");
+                const q = query(usersCollection, where("uid", "==", user.uid));
+                const userSnapshot = await getDocs(q);
+
+                if (!userSnapshot.empty) {
+                    userSnapshot.forEach((doc) => {
+                        setName(doc.data().name || "Anonymous"); // ユーザー名
+                        setIcon(doc.data().icon || "/default_icon.png"); // アイコンURL
+                        setDisplayId(doc.data().displayId || "unknown"); // ディスプレイID
+                    });
+                } else {
+                    console.warn("ユーザードキュメントが存在しません");
+                }
+            } catch (error) {
+                console.error("ユーザー情報の取得に失敗しました:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
     // 投稿内容の変更
     const handleTweetChange = (event) => {
+        // content 文字数制限100文字
         const inputText = event.target.value;
         const maxLength = 100;
         if (inputText.length <= maxLength) {
@@ -81,29 +117,30 @@ const Post = () => {
             if (selectedImage) {
                 const imageRef = ref(storage, `images/${selectedImage.name}`);
                 await uploadBytes(imageRef, selectedImage);
+
                 // アップロードした画像のURLを取得
                 imageUrl = await getDownloadURL(imageRef);
             }
 
-            // Firestoreに投稿を保存し、生成されたIDを取得
-            const postDocRef = await addDoc(collection(db, "posts"), {
-                tweet,
-                name: userName,  // ユーザー名を使用
-                icon: userIcon,   // アイコン
-                personalColor: personalColor,  // PCカラー
-                userId: displayId,  // ユーザーID
-                imageUrl: imageUrl,
-                pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
-                timestamp: serverTimestamp(),
-                uid: user.uid,    // ユーザーID
-                replyTo: '',    // リプライ先の投稿ID
-                repliedCount: '', // リプライ数
-                likesCount: '',  // いいね数
-                likedUsers: '',  // いいねしたユーザー
-                repostsCount: '',  // リポスト数
-                repostedUsers: '',  // リポストしたユーザー
-                keepsCount: '' // キープされた数
-            });
+               // Firestoreに投稿を保存し、生成されたIDを取得
+               const postDocRef = await addDoc(collection(db, "posts"), {
+                  tweet,
+                  uid: user.uid,    //自動生成されたuid格納
+                  name: userName, // 取得したユーザー名を使用
+                  icon: userIcon,   //取得したアイコン
+                  personalColor: personalColor, //取得したPC
+                  userId : displayId,  //取得したdisplayIDをuserIDとして表示
+                  imageUrl: imageUrl || null,
+                  pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
+                  timestamp: serverTimestamp(),
+                  replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
+                  repliedCount: '', //投稿自体が持つリプライの数
+                  likesCount: '',  //いいねの数
+                  likedUsers: '',  //いいねしたユーザ
+                  repostsCount: '',  //リポストの数
+                  repostedUsers: '',  //リポストしたユーザ
+                  keepsCount: '' //キープされた数
+               });
 
             // 投稿後のリセット
             setTweet('');
@@ -119,6 +156,7 @@ const Post = () => {
             console.error("投稿の保存に失敗しました:", error);
         }
     };
+
 
     // 投票オプションの変更
     const handlePollOptionChange = (index, value) => {
@@ -166,6 +204,7 @@ const Post = () => {
                         )}
                     </div>
                     <p className={s.name}>{name || "name"}</p>
+                    <p className={s.userId}> @{displayId || "unknown"}</p>
                 </div>
 
                 {inMenuVisible && (
@@ -220,7 +259,7 @@ const Post = () => {
                 )}
 
                 <div className={s.iconWrapper}>
-                    <label htmlFor="imageInput" className={s.iconLabel} onClick={handleLabelClick}>
+                    <label className={s.iconLabel} onClick={handleLabelClick}>
                         <img src="/pic.jpeg" className={s.iconImg} alt="Select image" />
                     </label>
 

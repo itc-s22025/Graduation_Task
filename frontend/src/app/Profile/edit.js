@@ -62,7 +62,7 @@ const Edit = ({ userData, onSave }) => {
                         }
                     }}
                 />
-                {typeof newHeaderImage === 'string' && <img src={newHeaderImage} alt="Header" className={s.newHeaderImage} />}
+                {typeof newHeaderImage === 'string' && <img src={newHeaderImage} className={s.newHeaderImage} />}
             </div>
             <div className={s.field}>
                 <label htmlFor="avatar" className={s.label}>Icon</label>
@@ -76,7 +76,7 @@ const Edit = ({ userData, onSave }) => {
                         }
                     }}
                 />
-                {typeof newIcon === 'string' && <img src={newIcon} alt="Icon" className={s.newAvatar} />}
+                {typeof newIcon === 'string' && <img src={newIcon}  className={s.newAvatar} />}
             </div>
             <div className={s.field}>
                 <label htmlFor="username" className={s.label}>Username</label>

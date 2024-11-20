@@ -87,6 +87,9 @@
 }
 
 .userName {
+    position: relative;
+    top: 3.5vh;
+    left: -0.8vw;
     margin: 10px 10px 0 30px;
     padding: 0 5px;
     color: #423a3a;
@@ -100,6 +103,9 @@
 }
 
 .userId {
+    position: relative;
+    top: 3.5vh;
+    left: -0.9vw;
     width: 400px;
     color: #5d5252;
     font-size: 0.8rem;
@@ -108,13 +114,17 @@
 }
 
 .followContainer {
+    position: absolute;
+    top: 13.5vh;
+    right: -1.2vw;
     font-size: 1rem;
     color: #423a3a;
     width: 250px;
     height: 1.7rem;
     margin-left: 30px;
+    margin-right: 10px;
     margin-bottom: 10px;
-    padding: 0 5px;
+    padding: 0 5px 0 5px;
 }
 
 .add {
@@ -128,39 +138,64 @@
 
 /* Bio Section */
 .bio {
-    margin-left: 22px;
-    padding: 0 10px;
+    /*border: 1px solid red;*/
+    position: absolute;
+    top: 13vh;
+    left: 2.1vw;
+    margin-top: 10px;
+    padding-bottom: 30px;
     width: 660px;
     height: 100px;
     color: #423a3a;
 }
 
 /* Edit Button */
-.edit {
+.edit, .followButton {
+    position: absolute;
+    top: 3vh;
+    right: 3vw;
     width: 120px;
     height: 30px;
+    margin-top: 10px;
+    margin-left: 550px;
+    outline: none;
+    cursor: pointer;
+}
+
+.edit{
     background-color: #FFF;
     color: #FF92AD;
     border: 2px solid #FF92AD;
     border-radius: 50px;
-    margin-top: 10px;
-    margin-left: 530px;
-    outline: none;
-    cursor: pointer;
 }
 
 .edit:hover {
     transform: scale(1.05);
 }
 
+.followButton{
+    background-color: #ff92AD;
+    color: #fff;
+    border: 2px solid #ff839f;
+    border-radius: 50px;
+
+}
+
+.followButton:hover{
+    transform: scale(1.02);
+}
+
 /* Tabs Section */
 .tabsContainer {
+    position: relative;
+    top: 10vh;
+
     /*border: 1px solid red;*/
-    width: 40vw;
+    width: 36vw;
     display: flex;
     margin-top: 5px;
-    padding-bottom: 20px;
-    margin-left: -18px;
+    padding-bottom: 120px;
+    margin-left: -20px;
 }
 
 /* isFixedがtrueのときに固定する */
@@ -173,7 +208,7 @@
 
 .tabs {
     padding: 0;
-    margin-right: -76px;
+    margin-right: -77px;
     cursor: pointer;
 }
 
@@ -204,7 +239,7 @@
     outline: none;
     background: #FFDCDD;
     margin-top: 25px;
-    width: 16vw;
+    width: 16.3vw;
     height: 65%;
     border: #fff 1px solid;
     border-bottom: none;
@@ -227,7 +262,7 @@
     outline: none;
     background: #FFBFC0;
     margin-top: 25px;
-    width: 16vw;
+    width: 16.3vw;
     height: 65%;
     border: #fff 1px solid;
     border-bottom: none;
@@ -257,8 +292,11 @@
 /*article*/
 .articleContainer {
     /*border: 1px solid springgreen;*/
-    padding-bottom: 50px;
-    padding-left: 20px;
+    padding-bottom: 100px;
+}
+.add2 {
+    position: absolute;
+    top: 27vh;
 }
 
 /* Modal Styling */
@@ -313,4 +351,9 @@
         margin-left: 0;
         margin-top: 10px;
     }
+}
+.add2 {
+    position: relative;
+    top: 3.5vh;
+    left: 0vw;
 }
