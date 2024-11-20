@@ -293,13 +293,9 @@ const Profile = ({ imageUrl, params }) => {
 
 
                         <TabPanel>
-                            <article>
+                            <article className={s.likesArticleContainer}>
                                 {likesPosts.length > 0 ? (
                                     likesPosts.map(post => (
-                                        // <div key={post.id} className={s.likeItem}>
-                                        //     <h3>{post.name}</h3>
-                                        //     <p>{post.tweet}</p>
-                                        // </div>
                                         <div key={post.id}>
                                             <Post key={post.id} ownPost={post} pageType="profile"/>
                                         </div>

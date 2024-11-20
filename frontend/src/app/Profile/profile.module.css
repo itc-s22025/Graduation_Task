@@ -354,6 +354,10 @@
     border: 1px solid #F8F0F0;
 }
 
+.likesArticleContainer{
+    padding-bottom: 100px;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .tabsContainer {
