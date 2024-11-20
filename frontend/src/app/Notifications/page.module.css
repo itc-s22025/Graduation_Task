@@ -1,4 +1,6 @@
-
+.box{
+    overflow-x: hidden;
+}
 
 .image {
     height: 30px;
