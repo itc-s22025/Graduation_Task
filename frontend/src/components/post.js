@@ -76,11 +76,12 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
             }
 
             //ownPostが渡されてたらそれでフィルタリング
-            if (ownPost){
+            if (ownPost && ownPost.tweet) {
                 filteredPosts = filteredPosts.filter(post =>
-                    post.tweet.includes(ownPost.tweet)
+                    post.tweet && post.tweet.includes(ownPost.tweet)
                 );
             }
+
 
             // フィルタリングされたデータをセット(されてない場合はpostsDataのまま)
             setPosts(filteredPosts);
