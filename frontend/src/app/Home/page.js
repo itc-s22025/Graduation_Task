@@ -11,10 +11,9 @@ import {useEffect, useState} from "react";
 import {doc, getDoc} from "firebase/firestore";
 import {auth, db} from "@/firebase";
 
-
 const Home = ({ pageType }) => {
     const [showAddTab, setShowAddTab] = useState(false);
-    const [following, setFollowing] = useState([]);
+    // const [following, setFollowing] = useState([]);
     const [user, setUser] = useState(null); // ユーザーの状態を保持
 
     useEffect(() => {
@@ -30,28 +29,28 @@ const Home = ({ pageType }) => {
         return () => unsubscribe();
     }, []);
 
-    useEffect(() => {
-        const fetchFollowing = async () => {
-            if (user) {
-                try {
-                    const userDocRef = doc(db, "users", user.uid);
-                    const userDoc = await getDoc(userDocRef);
-
-                    if (userDoc.exists()) {
-                        const userData = userDoc.data();
-                        setFollowing(userData.following || []);
-                        console.log("userData.Following:::::", userData.following);
-                    } else {
-                        console.log("ユーザードキュメントが存在しません");
-                    }
-                } catch (error) {
-                    console.error("users.followingの取得中にエラーが発生しました: ", error);
-                }
-            }
-        };
-
-        fetchFollowing();
-    }, [user]); // userが変更されたときに実行
+    // useEffect(() => {
+    //     const fetchFollowing = async () => {
+    //         if (user) {
+    //             try {
+    //                 const userDocRef = doc(db, "users", user.uid);
+    //                 const userDoc = await getDoc(userDocRef);
+    //
+    //                 if (userDoc.exists()) {
+    //                     const userData = userDoc.data();
+    //                     setFollowing(userData.following || []);
+    //                     console.log("userData.Following:::::", userData.following);
+    //                 } else {
+    //                     console.log("ユーザードキュメントが存在しません");
+    //                 }
+    //             } catch (error) {
+    //                 console.error("users.followingの取得中にエラーが発生しました: ", error);
+    //             }
+    //         }
+    //     };
+    //
+    //     fetchFollowing();
+    // }, [user]); // userが変更されたときに実行
 
     const handleAddClick = () => {
         console.log("handleAddClick");
@@ -74,7 +73,7 @@ const Home = ({ pageType }) => {
                         secondTabText="Following"
                         thirdTabText="tab3"
                         firstTabContent={<Post />}
-                        secondTabContent={<Post tabType={following} />}
+                        secondTabContent={<Post tabType="following" />}
                         pageType="home"
                     />
 

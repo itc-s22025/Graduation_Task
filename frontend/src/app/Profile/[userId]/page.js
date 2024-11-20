@@ -279,10 +279,13 @@ const Profile = ({ imageUrl, params }) => {
 
 
                         <TabPanel>
-                            <article className={s.articleContainer}>
+                            <article className={s.imageArticleContainer}>
                                 {userPosts.length > 0 ? (userPosts.filter(post => post.imageUrl) // imageUrl が null または undefined でない投稿をフィルタリング
                                     .map((post) => (
-                                        <Post key={post.id} ownPost={post} pageType="profile" />
+                                        // <Post key={post.id} ownPost={post} pageType="profile" />
+                                        <div key={post.id}>
+                                            {post.imageUrl && <img src={post.imageUrl} alt="Post image" className={s.postImage} />}
+                                        </div>
                                     ))) : (<p>投稿がありません</p>)}
                             </article>
                         </TabPanel>
