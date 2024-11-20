@@ -6,6 +6,7 @@ import s from "@/styles/eachPost.module.css";
 const EachPost = ({ post, currentUserUid }) => {
     const [userIcon, setUserIcon] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [userName, setUserName] = useState(null);
     const [personalColor, setPersonalColor] = useState(null);
     const [replyContent, setReplyContent] = useState("");  // リプライ内容を保持するステート
     const [replies, setReplies] = useState([]);
@@ -20,11 +21,13 @@ const EachPost = ({ post, currentUserUid }) => {
                 if (userDoc.exists()) {
                     setUserIcon(userDoc.data().icon);  // アイコンのURLをセット
                     setUserId(userDoc.data().displayId);
+                    setUserName(userDoc.data().name);
                     setPersonalColor(userDoc.data().personalColor);
 
                 } else {
                     setUserIcon('/default-icon.png');  // ユーザーが存在しない場合、デフォルトアイコンを表示
                     setUserId('unknown');
+                    setUserName('user')
                     setPersonalColor('未設定');
                 }
             } catch (error) {
@@ -72,7 +75,7 @@ const EachPost = ({ post, currentUserUid }) => {
             const newReply = {
                 tweet: replyContent,
                 uid: currentUserUid,
-                name: post.name || "Anonymous",
+                name: userName || "Anonymous",
                 userId: userId,
                 personalColor: personalColor,
                 icon: userIcon || '/default-icon.png',
@@ -124,7 +127,7 @@ const EachPost = ({ post, currentUserUid }) => {
                 <div className={s.reactionContainer}>
                     <div className={s.eachReactionContainer}>
                         <img alt="reply" src="/comment.png" className={s.reply}/>
-                        <p className={s.reactionText}>{post.repliedCount ? post.repliedCount.length : 0}</p>
+                        <p className={s.reactionText}>{post.repliedCount ? post.repliedCount : 0}</p>
                     </div>
                     <div className={s.eachReactionContainer}>
                         <img alt="repost" src={isReposted ? "/repost_after.png" : "/repost_before.png"} className={s.repost}/>
@@ -180,7 +183,7 @@ const EachPost = ({ post, currentUserUid }) => {
                                     <div className={s.replyReactionContainer}>
                                         <div className={s.eachReactionContainer}>
                                             <img alt="reply" src="/comment.png" className={s.reply}/>
-                                            <p className={s.reactionText}>0</p>
+                                            <p className={s.reactionText}>{reply.repliedCount ? reply.repliedCount : 0}</p>
                                         </div>
                                         <div className={s.eachReactionContainer}>
                                             <img alt="repost"
