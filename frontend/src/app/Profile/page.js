@@ -1,8 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { getFirestore, doc, getDoc, updateDoc} from "firebase/firestore";
-import { useRouter } from 'next/navigation';
+import { getFirestore } from "firebase/firestore";
 import s from './profile.module.css';
 import MainLayout from "@/components/MainLayout";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
@@ -12,8 +11,6 @@ import Link from "next/link";
 import Post from "@/components/post";
 import ReviewPosts from "@/components/ReviewPost";
 import {doc, getDoc, getDocs, updateDoc, where, query, collection} from "firebase/firestore";
-import {db, auth} from "@/firebase"
-import { onAuthStateChanged } from "firebase/auth";
 import {useRouter} from "next/navigation";
 
 
