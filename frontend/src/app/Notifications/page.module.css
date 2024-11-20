@@ -1,4 +1,6 @@
-
+.box{
+    overflow-x: hidden;
+}
 
 .image {
     height: 30px;
@@ -12,7 +14,7 @@
 }
 
 .title {
-    margin-left: 550px;
+    margin-left: 556px;
     background-color: #FF92AD;
     padding: 10px 650px 10px 40px;
     color: white;
@@ -20,6 +22,8 @@
     font-weight: 500;
     font-size: 1.8rem;
     text-align: center;
+    top: 0;
+    position: fixed;
 }
 
 
@@ -28,21 +32,48 @@
     border: 1px solid #FF92AD;
     border-radius: 10px;
     width: 600px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-bottom: 0px;
     max-height: 1000px;
     padding-left: 20px;
     padding-bottom: 20px;
 }
 
 .iine{
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+    margin-top: 16px;
+}
+
+.retweet{
+    width: 30px;
+    height: 30px;
     margin-top: 16px;
 }
 
 .tweet{
     margin-left: 20px;
     color: #808080;
-    padding-top: 5px;
+    padding-top: 10px;
+}
+
+.icon{
+    background-color: #fff;
+    border: 1px solid #f8e8e8;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* アイコンを円形に */
+    overflow: hidden; /* 子要素が枠からはみ出さないように */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 40px;
+    margin-top: -40px;
+    margin-bottom: 10px;
+}
+
+.iconImage {
+    width: 100%;
+    object-fit: cover;
+    display: block;
 }

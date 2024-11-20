@@ -19,7 +19,7 @@
 
 .followButton {
     position: absolute;
-    top: 23vh;
+    top: 20vh;
     right: 3vw;
     width: 120px;
     height: 35px;
@@ -109,8 +109,8 @@
 
 .followContainer{
     position: absolute;
-    top: 44vh;
-    left: 1vw;
+    top: 36.5vh;
+    right: -1.3vw;
     font-size: 1rem;
     color: #423a3a;
     width: 250px;
@@ -137,7 +137,7 @@
     /*border: 1px solid violet;*/
     position: absolute;
     top: 37vh;
-    left: 1vw;
+    left: 1.2vw;
     margin-left: 22px;
     padding: 0 10px 0 10px;
     width: 660px;
@@ -170,7 +170,10 @@
 
 /*　タブ群　*/
 .tabsContainer{
-    margin-top: 5px;
+    position: absolute;
+    top: 40vh;
+    left: 0vw;
+    /*margin-top: 5px;*/
     margin-left: -1px;
     display: flex;
 }
@@ -186,7 +189,7 @@
     outline: none;
     background: #fff;
     margin-top: 25px;
-    width: 16vw;
+    width: 15.8vw;
     height: 70%;
     border: 1px solid #ff95af;
     border-bottom: none;
@@ -333,4 +336,9 @@
     top: -115vh;
     right: 20vw;
 
+}
+.postsContainer {
+    position: relative;
+    top: 3.5vh;
+    left: 0vw;
 }

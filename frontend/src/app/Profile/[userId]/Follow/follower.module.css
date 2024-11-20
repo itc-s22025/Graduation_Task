@@ -10,7 +10,7 @@
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
-    height: 9vh;
+    height: 6.6vh;
     margin: 0;
     /*border: #000fff 1px solid;*/
 }
@@ -171,4 +171,9 @@
     position: absolute;
     top: 10vh;
     left: 1vw;
+}
+
+.followText{
+    color: #6E665C;
+    margin-right: 13vw;
 }

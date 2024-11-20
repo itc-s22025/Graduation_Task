@@ -1,5 +1,5 @@
 'use client';
-import MainLayout from "../../../components/MainLayout";
+import MainLayout from "../../../../components/MainLayout";
 import UnfollowModal from "@/components/UnfollowModel";
 import s from './follower.module.css';
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
@@ -105,35 +105,15 @@ const FollowPage = () => {
                             className={`${s.tabs} ${s.tabFirst} ${focusedTab === 0 ? s.tabSelected : ''}`}
                             onClick={() => handleFocus(0)}
                         >
-                            Followers
+                            Following
                         </Tab>
                         <Tab
                             className={`${s.tabs} ${s.tabSecond} ${focusedTab === 1 ? s.tabSelected : ''}`}
                             onClick={() => handleFocus(1)}
                         >
-                            Following
+                            Followers
                         </Tab>
                     </TabList>
-
-                    <TabPanel>
-                            <article className={s.info}>
-                                {followerUsers.length > 0 ? (
-                                    followerUsers.map((user) => (
-                                        <div key={user.id} className={s.userCard}>
-                                            <img src={user.icon || 'defaultIcon.png'} alt="User Icon"
-                                                 className={s.userIcon} onClick={() => router.push(`AnotherScreen/${user.uid}`)} />
-                                            <div className={s.userInfo}>
-                                                <p className={s.userName}>{user.name || "No Name"}</p>
-                                                <p className={s.userId}>@{user.id}</p>
-                                                <p className={s.bio}>{user.bio || "No Bio"}</p>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p>フォロワーはいません。</p>
-                                )}
-                            </article>
-                        </TabPanel>
 
                     <TabPanel>
                         <article className={s.info}>
@@ -141,10 +121,10 @@ const FollowPage = () => {
                                 followingUsers.map((user) => (
                                     <div key={user.id} className={s.userCard}>
                                         <img src={user.icon || 'defaultIcon.png'} alt="User Icon"
-                                             className={s.userIcon} onClick={() => router.push(`/AnotherScreen/${user.uid}`)} />
+                                             className={s.userIcon} onClick={() => router.push(`/Profile/${user.uid}`)} />
                                         <div className={s.userInfo}>
                                             <p className={s.userName}>{user.name || "No Name"}</p>
-                                            <p className={s.userId}>@{user.id}</p>
+                                            <p className={s.userId}>@{user.displayId}</p>
                                             <p className={s.bio}>{user.bio || "No Bio"}</p>
                                             <button
                                                 onClick={() => handleUnfollowClick(user.id)}
@@ -154,7 +134,27 @@ const FollowPage = () => {
                                     </div>
                                 ))
                             ) : (
-                                <p>フォローしているユーザーはいません。</p>
+                                <p className={s.followText}>フォローしているユーザーはいません。</p>
+                            )}
+                        </article>
+                    </TabPanel>
+
+                    <TabPanel>
+                        <article className={s.info}>
+                            {followerUsers.length > 0 ? (
+                                followerUsers.map((user) => (
+                                    <div key={user.id} className={s.userCard}>
+                                        <img src={user.icon || 'defaultIcon.png'} alt="User Icon"
+                                             className={s.userIcon} onClick={() => router.push(`Profile/${user.uid}`)} />
+                                        <div className={s.userInfo}>
+                                            <p className={s.userName}>{user.name || "No Name"}</p>
+                                            <p className={s.userId}>@{user.displayId}</p>
+                                            <p className={s.bio}>{user.bio || "No Bio"}</p>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className={s.followText}>フォロワーはいません。</p>
                             )}
                         </article>
                     </TabPanel>

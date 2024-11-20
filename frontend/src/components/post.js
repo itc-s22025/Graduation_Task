@@ -1,21 +1,17 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
 import s from '@/styles/post.module.css';
 import EachPost from "@/components/eachPost";
-import { formatDistanceToNow, isBefore, subDays } from 'date-fns';
+import {isBefore, subDays} from 'date-fns';
 //firebase
-import { auth, db } from "@/firebase";
-import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs, orderBy } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { doc, setDoc } from "firebase/firestore";
-import tweet from "@/components/tweet"; // Firestoreの関数をインポート
+import {auth, db} from "@/firebase";
+import {addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc, where} from "firebase/firestore";
+import {onAuthStateChanged} from "firebase/auth";
 
-const Post = ({ userId, searchPost, pageType }) => {
-    const pathname = usePathname()
-  
+const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
+
     const [posts, setPosts] = useState([]); // 投稿リスト
     const [showEachPost, setShowEachPost] = useState(false);
     const [showReport, setShowReport] = useState(false);
@@ -30,8 +26,8 @@ const Post = ({ userId, searchPost, pageType }) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             // userが存在する(ログインしている)場合はuidを、存在しない(ログインしていない)場合はnullをcurrentUserUidにセットする
             setCurrentUserUid(user ? user.uid : null);
-            console.log("ゆーざ確認：", user)
         });
+
         //コンポーネントがアンマウントされるとき、unsubscribeを呼び出して監視を解除
         return () => unsubscribe();
     }, []);
@@ -69,18 +65,21 @@ const Post = ({ userId, searchPost, pageType }) => {
                     .map(repost => repost.userId);  // userId のみを抽出して repostedBy 配列に格納
             });
 
-            // 現在のパスが /Profile のときのみフィルタリング(currentUserのポストのみ表示する)
             let filteredPosts = postsData;
-            if (pathname === '/Profile') {  //もしpathnameが/Profileだったら
-                filteredPosts = postsData.filter(post => post.uid === currentUserUid);  //filteredPostsにフィルタリングしたデータ(post.uidがcurrentUserUidと一致するポスト)を入れる
-            }
 
-             // searchPostが渡されている場合はそれでさらにフィルタリング
+             // searchPostが渡されている場合はそれでさらにフィルタリング...検索機能と関連
             if (searchPost) {
                 filteredPosts = filteredPosts.filter(post =>
                     post.tweet.includes(searchPost.tweet)
                 );
                 console.log("サーチしたポスト:", filteredPosts)
+            }
+
+            //ownPostが渡されてたらそれでフィルタリング
+            if (ownPost){
+                filteredPosts = filteredPosts.filter(post =>
+                    post.tweet.includes(ownPost.tweet)
+                );
             }
 
             // フィルタリングされたデータをセット(されてない場合はpostsDataのまま)
@@ -89,7 +88,45 @@ const Post = ({ userId, searchPost, pageType }) => {
 
         //リアルタイム更新の監視を解除　終わりだよ〜
         return () => unsubscribe();
-    }, [currentUserUid, pathname, searchPost]);
+    }, [currentUserUid, searchPost, ownPost]);
+
+
+    //tabType
+    useEffect(() => {
+        if (!tabType || tabType.length === 0) return; // tabTypeが空なら処理をしない
+
+        const fetchPosts = async () => {
+            console.log("tabType:", tabType);
+            try {
+                const postsQuery = query(
+                    collection(db, "posts"),
+                    where("userId", "in", tabType)
+                );
+                const querySnapshot = await getDocs(postsQuery);
+
+                console.log("querySnapshot:", querySnapshot);
+                console.log("querySnapshot.docs:", querySnapshot.docs);
+
+                if (querySnapshot.empty) {
+                    console.log("一致する投稿がありません");
+                }
+
+                const postsData = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                console.log("取得した投稿データ:", postsData);
+                setPosts(postsData);
+
+            } catch (error) {
+                console.error("投稿の取得に失敗しました: ", error);
+            }
+        };
+
+        fetchPosts();
+    }, [tabType]);
+
 
 
     //いいね機能
@@ -138,6 +175,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                        type: "like", // 通知タイプ
                        message: notificationMessage, // 通知メッセージ
                        postId: postId, // 投稿ID
+                       icon: post.icon,
                        tweet: post.tweet || "", // ツイート内容を追加
                        timestamp: new Date(), // タイムスタンプ
                    });
@@ -184,15 +222,16 @@ const Post = ({ userId, searchPost, pageType }) => {
                         }
                         return updatedPosts;
                     });
+
                 }
             }
+            console.log("ぽすつ:", post.userId)
         } catch (error) {
             console.error("リポスト中のエラー: ", error);
         }
     }
 
-    //show reposted post
-    // 元のポストとリポストされたポストを統合して並べ替える関数
+    //show reposted post 元のポストとリポストされたポストを統合して並べ替える
     const getAllPostsIncludingReposts = () => {
         const allPosts = posts.map(post => ({
             ...post,
@@ -200,16 +239,16 @@ const Post = ({ userId, searchPost, pageType }) => {
         }));
 
         const repostedPosts = posts.flatMap(post =>
-            post.repostedBy.map(userId => ({
+            post.repostedBy.map(repostedUserId => ({
                 ...post,
-                userId,  // リポストユーザーのID
+                repostedUserId,  // リポストユーザーのID
                 type: 'repost',  // リポストのマーク
                 repostTimestamp: new Date(),  // リポストのタイムスタンプ
             }))
         );
 
         // 元のポストとリポストを結合してtimestamp順に並べ替え
-        const combinedPosts = [...allPosts, ...repostedPosts].sort(
+        return [...allPosts, ...repostedPosts].sort(
             (a, b) => {
                 // a.timestamp と b.timestamp がすでに Date 型である場合
                 const aTimestamp = a.repostTimestamp || a.timestamp;
@@ -222,8 +261,6 @@ const Post = ({ userId, searchPost, pageType }) => {
                 return bDate.getTime() - aDate.getTime();  // getTime() でミリ秒を比較
             }
         );
-
-        return combinedPosts;
     };
 
     // 表示関連
@@ -283,17 +320,20 @@ const Post = ({ userId, searchPost, pageType }) => {
                 {getAllPostsIncludingReposts()
                     .map((post, index) => (
                     <div key={index} className={`${s.all} ${flameWidth} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
+                        {post.replyTo && (
+                            <div className={s.replyNotify}>← 返信</div>
+                        )}
                         <div className={s.includeIconsContainer}>
                             <div className={s.iconContainer}>
-                                <img className={s.iconImage} alt="icon" src={post.icon || "/user_default.png"} onClick={() => router.push(`/AnotherScreen/${post.uid}`)} />
+                                <img className={s.iconImage} alt="icon" src={post.icon || "/user_default.png"} onClick={() => router.push(`/Profile/${post.uid}`)} />
                             </div>
 
                             <div className={s.topContainer}>
                                 <div className={s.topMiddleContainer}>
                                     <div className={s.infoContainer}>
 
-                                        <p className={s.name}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
-                                        <p className={s.userID}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
+                                        <p className={s.name} onClick={() => router.push(`/Profile/${post.uid}`)}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
+                                        <p className={s.userID} onClick={() => router.push(`/Profile/${post.uid}`)}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
                                         <p className={s.pc}> {post.personalColor || "未設定"}</p>  {/*こっちまだ*/}
                                         <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
 
