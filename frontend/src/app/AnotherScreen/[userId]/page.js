@@ -20,6 +20,7 @@ import MainLayout from "@/components/MainLayout";
 import Link from "next/link";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 
+
 const OtherUserProfile = ({ imageUrl, params }) => {
     const [focusedTab, setFocusedTab] = useState('');
     const [userData, setUserData] = useState(null);
