@@ -15,7 +15,7 @@ import tweet from "@/components/tweet"; // Firestoreの関数をインポート
 
 const Post = ({ userId, searchPost, pageType }) => {
     const pathname = usePathname()
-  
+
     const [posts, setPosts] = useState([]); // 投稿リスト
     const [showEachPost, setShowEachPost] = useState(false);
     const [showReport, setShowReport] = useState(false);
@@ -186,7 +186,6 @@ const Post = ({ userId, searchPost, pageType }) => {
                     });
                 }
             }
-            console.log("ぽすつ:", post.userId)
         } catch (error) {
             console.error("リポスト中のエラー: ", error);
         }

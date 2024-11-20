@@ -7,6 +7,7 @@ import AccountHeader from "@/components/AccountHeader";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 import Post from "@/components/post";
+import EachPost from "@/components/eachPost";
 
 const Search = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -30,14 +31,55 @@ const Search = () => {
         loadSearchHistory();
     }, []);
 
-    // 検索結果をフィルタリング
     useEffect(() => {
-        const results = allPosts.filter(post =>
-            (post.content && post.content.includes(searchKeyword)) ||
-            (post.user && post.user.includes(searchKeyword))
+        const fetchPosts = async () => {
+            try {
+                const postsRef = collection(db, "posts");
+                const querySnapshot = await getDocs(postsRef);
+                const postsData = querySnapshot.docs.map(doc => ({
+                    ...doc.data(),
+                    id: doc.id, // IDも含める
+                }));
+                setAllPosts(postsData);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        };
+        fetchPosts();
+    }, []);
+
+    // 投稿をフィルタリングするロジックを修正
+    const getUniqueRepostedPosts = (posts) => {
+        // repostedBy からResponse情報を展開
+        const repostedPosts = posts.flatMap(post =>
+            post.repostedBy?.map(userId => ({
+                ...post,
+                userId, // ResponseしたユーザIDを含める
+                type: 'repost',
+            })) || []
         );
-        setFilteredPosts(results);
-    }, [searchKeyword, allPosts]);
+
+        // 投稿者とResponseしたユーザが一致する投稿を除外しつつ、ユニークな投稿を取得
+        return repostedPosts.reduce((acc, curr) => {
+            if (
+                curr.userId !== curr.originalUserId && // 投稿者とResponseユーザが異なる
+                !acc.some(post => post.id === curr.id) // 重複を防ぐ
+            ) {
+                acc.push(curr);
+            }
+            return acc;
+        }, []);
+    };
+
+
+
+    useEffect(() => {
+        if (allPosts.length > 0) {
+        // 投稿データを取得した後にフィルタリング処理を実行
+        const filteredReposts = getUniqueRepostedPosts(allPosts);
+        setFilteredPosts(filteredPosts);
+            }
+    }, [allPosts]);
 
     // 検索履歴を保存
     const saveSearchHistory = (keyword) => {
@@ -75,6 +117,25 @@ const Search = () => {
         }
     };
 
+
+    const highlightText = (text, keyword) => {
+        if (!keyword.trim()) return <span>{text}</span>; // 検索ワードが空の場合、そのまま表示
+
+        const regex = new RegExp(`(${keyword})`, 'gi'); // 検索ワードを正規表現に変換（大文字小文字を区別しない）
+        const parts = text.split(regex);  // 検索ワードでテキストを分割
+
+        return parts.map((part, index) =>
+            regex.test(part) ? (
+                <mark key={index} style={{ backgroundColor: 'yellow', fontWeight: 'bold' }}>
+                    {part}
+                </mark>
+            ) : (
+                <span key={index}>{part}</span>
+            )
+        );
+    };
+
+
     // 検索を実行する関数
     const handleSearch = async () => {
         if (searchKeyword.trim() !== '') {
@@ -103,7 +164,6 @@ const Search = () => {
             }
         }
     };
-
 
 
     return (
@@ -145,18 +205,19 @@ const Search = () => {
 
                     {/* 検索結果を表示 */}
                     <div className={s.resultsContainer}>
-                        {filteredPosts.length > 0 ? (filteredPosts
-                                .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
-                                .map((post, index) => {
-                            return(
-                                <>
-                                    <Post searchPost={post} key={index}/>
-                                </>
-                                )
-                            })
+                        {filteredPosts.length > 0 ? (
+                            filteredPosts
+                                .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())
+                                .map((post, index) => (
+                                    <Post key={index} searchPost={post} highlightText={highlightText} />
+                                ))
                         ) : (
                             <p className={s.noResults}>結果が見つかりませんでした。</p>
                         )}
+                    </div>
+
+                    <div className={s.resultsContainer}>
+                        {renderUniqueReposts()}
                     </div>
 
                 </div>
