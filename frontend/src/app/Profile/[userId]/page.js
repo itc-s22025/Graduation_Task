@@ -98,23 +98,34 @@ const Profile = ({ imageUrl, params }) => {
     const handleFollowToggle = async () => {
         const user = auth.currentUser;
         if (user) {
-            const currentUserRef = doc(db, "users", user.uid);
-            const otherUserRef = doc(db, "users", userId);
+            try {
+                const currentUserRef = doc(db, "users", user.uid);
+                const otherUserRef = doc(db, "users", userId);
 
-            // Toggle following status for the current user
-            await updateDoc(currentUserRef, {
-                following: isFollowing ? arrayRemove(userId) : arrayUnion(userId)
-            });
+                // Firestoreデータの更新
+                await Promise.all([
+                    updateDoc(currentUserRef, {
+                        following: isFollowing ? arrayRemove(userId) : arrayUnion(userId),
+                    }),
+                    updateDoc(otherUserRef, {
+                        followers: isFollowing ? arrayRemove(user.uid) : arrayUnion(user.uid),
+                    }),
+                ]);
 
-            // Toggle followers count for the other user
-            await updateDoc(otherUserRef, {
-                followers: isFollowing ? arrayRemove(user.uid) : arrayUnion(user.uid)
-            });
-
-            // Update the local state to reflect the new following status
-            setIsFollowing(!isFollowing);
+                // ローカル状態の即時反映
+                setIsFollowing(!isFollowing);
+                setUserData((prevUserData) => ({
+                    ...prevUserData,
+                    followers: isFollowing
+                        ? prevUserData.followers.filter((follower) => follower !== user.uid)
+                        : [...prevUserData.followers, user.uid],
+                }));
+            } catch (error) {
+                console.error("フォロー/アンフォローに失敗しました", error);
+            }
         }
     };
+
 
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
