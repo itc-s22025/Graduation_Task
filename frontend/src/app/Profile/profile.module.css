@@ -150,20 +150,23 @@
 }
 
 /* Edit Button */
-.edit {
+.edit, .followButton {
     position: absolute;
     top: 3vh;
     right: 3vw;
     width: 120px;
     height: 30px;
-    background-color: #FFF;
-    color: #FF92AD;
-    border: 2px solid #FF92AD;
-    border-radius: 50px;
     margin-top: 10px;
     margin-left: 550px;
     outline: none;
     cursor: pointer;
+}
+
+.edit{
+    background-color: #FFF;
+    color: #FF92AD;
+    border: 2px solid #FF92AD;
+    border-radius: 50px;
 }
 
 .edit:hover {
@@ -171,16 +174,11 @@
 }
 
 .followButton{
-    width: 120px;
-    height: 30px;
     background-color: #ff92AD;
     color: #fff;
     border: 2px solid #ff839f;
     border-radius: 50px;
-    margin-top: 10px;
-    margin-left: 550px;
-    outline: none;
-    cursor: pointer;
+
 }
 
 .followButton:hover{
