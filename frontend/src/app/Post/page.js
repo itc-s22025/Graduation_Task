@@ -64,7 +64,7 @@ const Post = () => {
 
             // ユーザーデータの取得
             let userName = "Anonymous"; // デフォルトの名前
-            let userIcon = "";
+            let userIcon = "/user_default.png";
             let personalColor = "未設定";  //デフォルトのPC
             let displayId = "unknown";  // デフォルトのディスプレイID
             if (!userSnapshot.empty) {
@@ -89,7 +89,7 @@ const Post = () => {
             const postDocRef = await addDoc(collection(db, "posts"), {
                 tweet,
                 name: userName,  // ユーザー名を使用
-                icon: user.icon,   // アイコン
+                icon: userIcon,   // アイコン
                 personalColor: personalColor,  // PCカラー
                 userId: displayId,  // ユーザーID
                 imageUrl: imageUrl,
