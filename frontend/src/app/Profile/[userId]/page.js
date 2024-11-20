@@ -10,8 +10,11 @@ import { query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, 
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import Post from "@/components/post";
+import {useRouter} from "next/navigation";
 
 const Profile = ({ imageUrl, params }) => {
+    const router = useRouter()
+
     const [userData, setUserData] = useState(null);
     const [focusedTab, setFocusedTab] = useState('');
     const [personalColor, setPersonalColor] = useState('');
