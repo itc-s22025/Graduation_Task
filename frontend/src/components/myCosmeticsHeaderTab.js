@@ -11,7 +11,7 @@ import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "@/firebase";
 
 
-const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, secondTabContent }) => {
+const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, tabs, handleAddTab, firstTabContent, secondTabContent }) => {
     const [cosmeticsData, setCosmeticsData] = useState([]);
     //ログインしているユーザ
     const [currentUserUid, setCurrentUserUid] = useState(null);
@@ -30,7 +30,7 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
     });
 
     // タブ部分　UI
-    const [focusedTab, setFocusedTab] = useState(''); // state
+    const [focusedTab, setFocusedTab] = useState('all'); // state
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
@@ -182,14 +182,22 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
             <Tabs>
                 <TabList className={s.all}>
                     <ul className={s.ul}>
-                        <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''}`}
-                             onFocus={() => handleFocus('tabFirst')} tabIndex={0}>
-                            {firstTabText}
-                        </Tab>
-                        <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
-                             onFocus={() => handleFocus('tabSecond')} tabIndex={0}>
-                            {secondTabText}
-                        </Tab>
+                        {tabs.map((tab, index) => (
+                            <Tab
+                                key={index}
+                                className={`${s.tabs} ${focusedTab === tab.name ? s.zIndex4 : ''}`}
+                                tabIndex={focusedTab === 'all' ? 0 : index + 1}  // "All" タブを一番最初に表示
+                                onFocus={() => handleFocus(tab.name)}
+                                style={{
+                                    zIndex: focusedTab === tab.name
+                                        ? 4  // フォーカスしているタブが最前面
+                                        : (tab.name === 'favorites' ? 2 : 1)  // favタブは2、他は1
+                                }}
+                            >
+                                {tab.title}
+                            </Tab>
+                        ))}
+                        <Tab className={s.addTabButton} onClick={handleAddTab}>+</Tab>
                     </ul>
                 </TabList>
 
@@ -206,18 +214,11 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
 
 
                 {/* Tab Panels */}
-                <TabPanel>
-                    <article>
-                        {firstTabContent}
-                    </article>
-                </TabPanel>
-
-                <TabPanel>
-                    <article>
-                        {secondTabContent}
-                    </article>
-                </TabPanel>
-
+                {tabs.map((tab, index) => (
+                    <TabPanel key={index}>
+                        <article className={s.tabContent}>{tab.content}</article>
+                    </TabPanel>
+                ))}
             </Tabs>
 
 
