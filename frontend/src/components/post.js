@@ -66,12 +66,10 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
             let filteredPosts = postsData;
 
              // searchPostが渡されている場合はそれでさらにフィルタリング...検索機能と関連
-            if (searchPost) {
-                filteredPosts = filteredPosts.filter(post =>
-                    post.tweet.includes(searchPost.tweet)
-                );
-                console.log("サーチしたポスト:", filteredPosts)
+            if (searchPost && searchPost.tweet) {
+                filteredPosts = filteredPosts.filter(post => post?.tweet?.includes(searchPost.tweet));
             }
+
 
             //ownPostが渡されてたらそれでフィルタリング
             if (ownPost && ownPost.tweet) {
