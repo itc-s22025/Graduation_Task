@@ -73,7 +73,11 @@ const Home = ({ pageType }) => {
                         firstTabText="Now"
                         secondTabText="Following"
                         thirdTabText="tab3"
-                        firstTabContent={<Post />}
+                        firstTabContent={
+                        <>
+                            <Post />
+                            <ReviewPosts />
+                        </>}
                         secondTabContent={<Post tabType={following} />}
                         pageType="home"
                     />
