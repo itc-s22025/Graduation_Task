@@ -57,7 +57,6 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
             await updateDoc(cosmeticDoc, {
                 isFavorite: newFavoriteState, // 新しい状態を渡す
             });
-            fetchCosmeticsData();  // お気に入り状態を更新後にデータを再取得
         } catch (error) {
             console.error("お気に入りの更新中にエラーが発生しました: ", error);
         }
@@ -69,7 +68,6 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
             const cosmeticDocRef = doc(db, "MyCosmetics", id);
             await deleteDoc(cosmeticDocRef);
             alert("コスメデータが削除されました");
-            fetchCosmeticsData();
         } catch (error) {
             console.error("Error deleting document: ", error);
             alert("削除中にエラーが発生しました");

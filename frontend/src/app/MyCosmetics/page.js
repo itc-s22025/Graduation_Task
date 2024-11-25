@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/firebase";
-import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
+import { collection, query, where, getDocs, Timestamp, onSnapshot } from "firebase/firestore";
 import MainLayout from "@/components/MainLayout";
 import s from "./page.module.css";
 import home from "@/app/Home/page.module.css";
@@ -22,17 +22,18 @@ const MyCosmetics = () => {
         return () => unsubscribe();
     }, []);
 
-    const fetchCosmeticsData = async () => {
+    // Firebaseからリアルタイムにデータを取得
+    useEffect(() => {
         if (!currentUserUid) return;
 
-        try {
-            const cosmeticsCollection = collection(db, "MyCosmetics");
-            const cosmeticsQuery = query(
-                cosmeticsCollection,
-                where("user_id", "==", currentUserUid)
-            );
-            const cosmeticsSnapshot = await getDocs(cosmeticsQuery);
-            const cosmeticsList = cosmeticsSnapshot.docs.map((doc) => {
+        const cosmeticsCollection = collection(db, "MyCosmetics");
+        const cosmeticsQuery = query(
+            cosmeticsCollection,
+            where("user_id", "==", currentUserUid)
+        );
+
+        const unsubscribe = onSnapshot(cosmeticsQuery, (snapshot) => {
+            const cosmeticsList = snapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {
                     id: doc.id,
@@ -42,14 +43,12 @@ const MyCosmetics = () => {
                 };
             });
             setCosmeticsData(cosmeticsList);
-        } catch (err) {
+        }, (err) => {
             setError("コスメデータの取得に失敗しました。");
             console.error(err);
-        }
-    };
+        });
 
-    useEffect(() => {
-        fetchCosmeticsData();
+        return () => unsubscribe(); // コンポーネントのアンマウント時にリスナーを解除
     }, [currentUserUid]);
 
 
@@ -88,7 +87,6 @@ const MyCosmetics = () => {
                                    <MyCosmeticItems
                                        key={cosmetic.id}
                                        {...cosmetic}
-                                       fetchCosmeticsData={fetchCosmeticsData}
                                    />
                                ))}
                            </div>
@@ -100,7 +98,6 @@ const MyCosmetics = () => {
                                        <MyCosmeticItems
                                            key={favoriteItem.id}
                                            {...favoriteItem}
-                                           fetchCosmeticsData={fetchCosmeticsData}
                                        />
                                    ))
                                ) : (
