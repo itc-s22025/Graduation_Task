@@ -29,9 +29,9 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
                 updatedDate: serverTimestamp()
             });
             alert('マイコスメの情報を更新しました');
-            fetchCosmeticsData();
             setEditItems(false);
             setIsEdit(false);
+            fetchCosmeticsData();
         } catch (error) {
             console.error("Error updating document: ", error);
         }
@@ -153,12 +153,42 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
                         <h2 className={s.editTitle}>マイコスメを編集する</h2>
 
                         <div className={s.inputContainer}>
+
+                            <label className={s.labelContainer}>コスメの種類：
+                                <select
+                                    name="cosmeticsType"
+                                    className={s.selectBox}
+                                    onChange={(e) => setUpdatedData({...updatedData, cosmeticsType: e.target.value})}
+                                    value={updatedData.cosmeticsType}
+                                >
+                                    <option value="" disabled>コスメの種類を選択してください</option>
+                                    <option value="アイシャドウ">アイシャドウ</option>
+                                    <option value="アイブロウ用品">アイブロウ用品</option>
+                                    <option value="アイライナー">アイライナー</option>
+                                    <option value="香水・フレグランス">香水・フレグランス</option>
+                                    <option value="基礎化粧品">基礎化粧品</option>
+                                    <option value="化粧下地">化粧下地</option>
+                                    <option value="コンシーラー">コンシーラー</option>
+                                    <option value="チーク">チーク</option>
+                                    <option value="ハイライター">ハイライター</option>
+                                    <option value="日焼け止め">日焼け止め</option>
+                                    <option value="ファンデーション">ファンデーション</option>
+                                    <option value="フェイスパウダー">フェイスパウダー</option>
+                                    <option value="ヘアケア用品">ヘアケア用品</option>
+                                    <option value="ボディケア用品">ボディケア用品</option>
+                                    <option value="マスカラ">マスカラ</option>
+                                    <option value="メイクアップグッズ">メイクアップグッズ</option>
+                                    <option value="リップ">リップ</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </label>
+
                             <label className={s.labelContainer}>開封日：
                                 <input
                                     type="date"
                                     value={updatedData.openDate}
                                     className={s.inputBox}
-                                    onChange={(e) => setUpdatedData({ ...updatedData, openDate: e.target.value })}
+                                    onChange={(e) => setUpdatedData({...updatedData, openDate: e.target.value})}
                                 />
                             </label>
                             <label className={s.labelContainer}>ブランド：
@@ -166,7 +196,7 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
                                     type="text"
                                     value={updatedData.brand}
                                     className={s.inputBox}
-                                    onChange={(e) => setUpdatedData({ ...updatedData, brand: e.target.value })}
+                                    onChange={(e) => setUpdatedData({...updatedData, brand: e.target.value})}
                                 />
                             </label>
 

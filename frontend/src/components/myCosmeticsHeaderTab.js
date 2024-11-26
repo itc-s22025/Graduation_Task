@@ -18,6 +18,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
     //新規コスメ登録
     const [isAdding, setIsAdding] = useState(false);
     const [formData, setFormData] = useState({
+        selectedTab: '',
         cosmeticsType: '',
         openDate: '',
         brand: '',
