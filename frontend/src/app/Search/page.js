@@ -32,10 +32,8 @@ const Search = () => {
 
     // 検索結果をフィルタリング
     useEffect(() => {
-        const results = allPosts.filter(post =>
-            (post.content && post.content.includes(searchKeyword)) ||
-            (post.user && post.user.includes(searchKeyword))
-        );
+        const results = allPosts.filter(post => (post?.content?.includes(searchKeyword)) || (post?.user?.includes(searchKeyword)));
+
         setFilteredPosts(results);
     }, [searchKeyword, allPosts]);
 
@@ -84,10 +82,7 @@ const Search = () => {
                 const postsData = querySnapshot.docs.map(doc => doc.data());
 
                 // 検索結果をフィルタリング
-                const results = postsData.filter(post =>
-                    (post.name && post.name.includes(searchKeyword)) ||
-                    (post.tweet && post.tweet.includes(searchKeyword))
-                );
+                const results = postsData.filter(post => (post.name?.includes(searchKeyword)) || (post.tweet?.includes(searchKeyword)));
 
                 // 検索結果を表示
                 if (results.length > 0) {
@@ -146,11 +141,12 @@ const Search = () => {
                     {/* 検索結果を表示 */}
                     <div className={s.resultsContainer}>
                         {filteredPosts.length > 0 ? (filteredPosts
-                                .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
+                                // .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate())  // timestampで降順に並べ替え
+                                .sort((a, b) => { const timeA = a.timestamp?.toDate?.() || 0;const timeB = b.timestamp?.toDate?.() || 0;return timeB - timeA;})
                                 .map((post, index) => {
                             return(
                                 <>
-                                    <Post searchPost={post} key={index}/>
+                                    {post && <Post searchPost={post} key={index} />}
                                 </>
                                 )
                             })

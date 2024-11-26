@@ -37,6 +37,7 @@
     overflow-y: auto; /* スクロールを有効化 */
     max-height: 68vh; /* 必要に応じて設定 */
     scrollbar-width: none; /* Firefox */
+    padding-bottom: 200px;
 }
 
 .itemsContainer::-webkit-scrollbar {

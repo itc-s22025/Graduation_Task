@@ -4,11 +4,16 @@
     background-color: #FF92AD;
     display: flex;
     width: 40vw;
-    height: 55px;
+    height: 54px;
     margin: 0;
+    /*border: 1px solid blue;*/
 }
+
 .ul{
     display: flex;
+    /*border: 1px solid red;*/
+    width: 80%;
+    margin-top: 9px;
 }
 
 
@@ -16,9 +21,50 @@
 .tabs{
     list-style: none;
     padding: 0;
+    background-color: #fff;
+    outline: none;
 
     margin-right: -85px; /* 前のliと重なる量 */
+    border: 1px solid #fff;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom: #F8F0F0 2px solid;
+    width: 20vw;
+
+    text-align: center;
+    line-height: 46px;
+    color: #ff839f;
+
+    z-index: 1;
 }
+
+.addTabButton{
+    position: absolute;
+    left: 36.7vw;
+    height: 45px;
+    width: 60px;
+    background-color: #FF989A;
+    border: 1px solid #fff;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    /*font*/
+    padding-top: 3px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    line-height: 38px;
+}
+
+/* CSS */
+/*.tabContent {*/
+/*    position: relative;*/
+/*    z-index: 10; !* 確実に他の要素より前に表示されるように *!*/
+/*    border: 1px solid red;*/
+/*}*/
+
+
 
 .tabFirst{
     outline: none;
@@ -66,18 +112,42 @@
     position: relative;
 }
 
-.zIndex1 {
-    z-index: 1;
-    border-bottom: #F8F0F0 2px solid;
+.zIndex4 {
+    z-index: 4;
+    border-bottom: none;
+}
+
+.zIndex3 {
+    z-index: 3;
 }
 
 .zIndex2 {
     z-index: 2;
 }
 
-.zIndex3 {
-    z-index: 3;
+.deleteTabButton {
+    /*background: transparent;*/
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 50px;
+    width: 20px;
+    height: 20px;
+    color: #FF989A;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+
+    line-height: 20px;
 }
+
+.deleteTabButton:hover {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    line-height: 18px;
+}
+
+
 
 
 /*search*/
@@ -206,6 +276,27 @@
     color: #FF92AD;
     border-left: 3px solid #FF92AD;
     padding-left: 10px;
+}
+
+.inputTabLabel{
+    color: #4A4444;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.selectTabBox{
+    outline: none;
+    border: none;
+    width: 134px;
+    height: 35px;
+    background-color: #F8F0F0;
+    color: #5d5757;
+    padding: 0 5px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .selectBox{

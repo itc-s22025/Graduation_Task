@@ -43,8 +43,6 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
                 repostedBy: []
             }));
 
-            // ここでpostsDataの内容を確認
-            console.log("Fetchedポストデータ:", postsData);
             // likes コレクションから各投稿に対するいいね情報を取得
             const likesSnapshot = await getDocs(collection(db, "likes"));
             const likesData = likesSnapshot.docs.map(doc => doc.data());
@@ -68,12 +66,10 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
             let filteredPosts = postsData;
 
              // searchPostが渡されている場合はそれでさらにフィルタリング...検索機能と関連
-            if (searchPost) {
-                filteredPosts = filteredPosts.filter(post =>
-                    post.tweet.includes(searchPost.tweet)
-                );
-                console.log("サーチしたポスト:", filteredPosts)
+            if (searchPost && searchPost.tweet) {
+                filteredPosts = filteredPosts.filter(post => post?.tweet?.includes(searchPost.tweet));
             }
+
 
             //ownPostが渡されてたらそれでフィルタリング
             if (ownPost && ownPost.tweet) {
@@ -93,41 +89,39 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
 
 
     //tabType
-    useEffect(() => {
-        if (!tabType || tabType.length === 0) return; // tabTypeが空なら処理をしない
-
-        const fetchPosts = async () => {
-            console.log("tabType:", tabType);
-            try {
-                const postsQuery = query(
-                    collection(db, "posts"),
-                    where("userId", "in", tabType)
-                );
-                const querySnapshot = await getDocs(postsQuery);
-
-                console.log("querySnapshot:", querySnapshot);
-                console.log("querySnapshot.docs:", querySnapshot.docs);
-
-                if (querySnapshot.empty) {
-                    console.log("一致する投稿がありません");
-                }
-
-                const postsData = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-
-                console.log("取得した投稿データ:", postsData);
-                setPosts(postsData);
-
-            } catch (error) {
-                console.error("投稿の取得に失敗しました: ", error);
-            }
-        };
-
-        fetchPosts();
-    }, [tabType]);
-
+   // useEffect(() => {
+   //     if (!tabType || tabType.length === 0) return; // tabTypeが空なら処理をしない
+   //
+   //     const fetchPosts = async () => {
+   //         console.log("tabType:", tabType);
+   //         // まず投稿を空にする
+   //         setPosts([]);
+   //
+   //         try {
+   //             const postsQuery = query( collection(db, "posts"), where("uid", "in", tabType));
+   //             const querySnapshot = await getDocs(postsQuery);
+   //
+   //             console.log("querySnapshot.docs:", querySnapshot.docs);
+   //
+   //             if (querySnapshot.empty) {
+   //                 console.log("一致する投稿がありません");
+   //             }
+   //
+   //             const postsData = querySnapshot.docs.map((doc) => ({
+   //                 id: doc.id,
+   //                 ...doc.data(),
+   //             }));
+   //
+   //             console.log("取得した投稿データ:", postsData);
+   //             setPosts(postsData);  // 絞り込んだ投稿をセット
+   //
+   //         } catch (error) {
+   //             console.error("投稿の取得に失敗しました: ", error);
+   //         }
+   //     };
+   //
+   //     fetchPosts();
+   //     }, [tabType]);  // tabTypeが変更される度に再実行
 
 
     //いいね機能
@@ -240,11 +234,11 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
         }));
 
         const repostedPosts = posts.flatMap(post =>
-            post.repostedBy.map(repostedUserId => ({
+            (post.repostedBy || []).map(repostedUserId => ({
                 ...post,
-                repostedUserId,  // リポストユーザーのID
-                type: 'repost',  // リポストのマーク
-                repostTimestamp: new Date(),  // リポストのタイムスタンプ
+                repostedUserId,
+                type: 'repost',
+                repostTimestamp: new Date(),
             }))
         );
 
@@ -359,29 +353,40 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
                                 <p className={s.reactionText}>0</p>
                             </div>
                             <div className={s.flex}>    {/*repost*/}
-                                <img alt="リポストアイコン"
-                                     src={
-                                     hoveredRepostId === post.id ? "/repost_after.png" : post.repostedBy.includes(currentUserUid)
-                                        ? "/repost_after.png" : "/repost_before.png"}
-                                     className={s.repost}
-                                     onClick={() => handleRepostClick(post.id)}
+                                <img
+                                    alt="リポストアイコン"
+                                    src={
+                                        hoveredRepostId === post.id
+                                            ? "/repost_after.png"
+                                            : (Array.isArray(post.repostedBy) && post.repostedBy.includes(currentUserUid))
+                                                ? "/repost_after.png"
+                                                : "/repost_before.png"
+                                    }
+                                    className={s.repost}
+                                    onClick={() => handleRepostClick(post.id)}
                                      onMouseEnter={() => setHoveredRepostId(post.id)}
                                      onMouseLeave={() => setHoveredRepostId(null)}
                                 />
-                                <p className={s.reactionText}>{post.repostedBy.length}</p>
+                               <p className={s.reactionText}>{Array.isArray(post.repostedBy) ? post.repostedBy.length : 0}</p>
                             </div>
                             <div className={s.flex}>    {/*like*/}
                                 {/*post.likedByにcurrentUserIdがあればcutie_heart_after、なければbeforeを表示*/}
-                                <img alt="いいねアイコン"
-                                     src={
-                                     hoveredPostId === post.id ? "/cutie_heart_after.png" : post.likedBy.includes(currentUserUid)
-                                         ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
-                                     className={s.like}
-                                     onClick={() => handleLikeClick(post.id)}
+                                <img
+                                    alt="いいねアイコン"
+                                    src={
+                                        hoveredPostId === post.id
+                                            ? "/cutie_heart_after.png"
+                                            : Array.isArray(post.likedBy) && post.likedBy.includes(currentUserUid)
+                                                ? "/cutie_heart_after.png"
+                                                : "/cutie_heart_before.png"
+                                    }
+                                    className={s.like}
+                                    onClick={() => handleLikeClick(post.id)}
                                      onMouseEnter={() => setHoveredPostId(post.id)}
                                      onMouseLeave={() => setHoveredPostId(null)}
                                 />
-                                <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
+                                <p className={s.reactionText}>{Array.isArray(post.likedBy) ? post.likedBy.length : 0}</p>
+
                             </div>
                             <div className={s.flex} onClick={() => handleKeepClick(post)}>
                                 <div className={`${s.keep} ${savedPosts.includes(post.id) ? s.keepActive : ''}`} />
