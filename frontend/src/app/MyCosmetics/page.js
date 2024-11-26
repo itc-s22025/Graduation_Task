@@ -46,8 +46,24 @@ const MyCosmetics = () => {
                 ),
             },
         ];
-        return [...initialTabs, ...fetchedTabs];
+
+        // 動的に生成されたタブのコンテンツを設定
+        const dynamicTabs = fetchedTabs.map((tab) => ({
+            ...tab,
+            content: (
+                <div className={s.itemsContainer}>
+                    {cosmeticsData
+                        .filter((item) => item.selectedTab === tab.name) // タブ名でフィルタリング
+                        .map((cosmetic) => (
+                            <MyCosmeticItems key={cosmetic.id} {...cosmetic} />
+                        ))}
+                </div>
+            ),
+        }));
+
+        return [...initialTabs, ...dynamicTabs];
     };
+
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -184,6 +200,7 @@ const MyCosmetics = () => {
 
             // ローカル状態からタブを削除
             setTabs(tabs.filter((tab) => tab.id !== tabId));
+            alert("タブを削除しました")
         } catch (error) {
             console.error("タブの削除に失敗しました:", error);
             alert("タブの削除に失敗しました。再試行してください。");

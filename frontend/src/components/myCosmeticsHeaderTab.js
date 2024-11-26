@@ -108,7 +108,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
     const handleCancelAdd = () => setIsAdding(false);
     //  新規コスメ追加機能
     const handleAddNewCosmeClick = async () => {
-        const { cosmeticsType, openDate, brand, productName, quantity, price } = formData;
+        const { selectedTab, cosmeticsType, openDate, brand, productName, quantity, price } = formData;
         // バリデーション
         if (!cosmeticsType || !openDate || !brand || !productName || !quantity || !price) {
             alert("必須項目をすべて入力してください");
@@ -117,12 +117,14 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
         try {
             await addDoc(collection(db, "MyCosmetics"), {
                 ...formData,
+                selectedTab: selectedTab || "all", // 選択されたタブ、未選択なら "all"
                 openDate: formData.openDate ? Timestamp.fromDate(new Date(formData.openDate)) : null,
                 updatedDate: Timestamp.now(),
                 user_id: currentUserUid,
             });
             alert("新しいコスメが登録されました");
             setFormData({
+                selectedTab: "all", // 初期化
                 cosmeticsType: '',
                 openDate: '',
                 brand: '',
@@ -237,8 +239,22 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                         <h2 className={s.newCosmeticTitle}>新しいコスメを追加</h2>
                         <form>
                             <div className={s.inputContainer}>
-                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange} value={formData.cosmeticsType}>
-                                    <option value="">コスメの種類を選択してください</option>
+                                <label className={s.inputLabel}>タブを選択:
+                                    <select
+                                        name="selectedTab"
+                                        value={formData.selectedTab || "all"}
+                                        onChange={(e) => setFormData({...formData, selectedTab: e.target.value})}
+                                    >
+                                        {tabs.map((tab) => (
+                                            <option key={tab.name} value={tab.name}>
+                                                {tab.title}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
+                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange}
+                                        value={formData.cosmeticsType}>
+                                    <option value="" disabled>コスメの種類を選択してください</option>
                                     <option value="アイシャドウ">アイシャドウ</option>
                                     <option value="アイブロウ用品">アイブロウ用品</option>
                                     <option value="アイライナー">アイライナー</option>
