@@ -239,13 +239,14 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                         <h2 className={s.newCosmeticTitle}>新しいコスメを追加</h2>
                         <form>
                             <div className={s.inputContainer}>
-                                <label className={s.inputLabel}>タブを選択:
+                                <label className={s.inputTabLabel}>追加するタブ：
                                     <select
                                         name="selectedTab"
                                         value={formData.selectedTab || "all"}
+                                        className={s.selectTabBox}
                                         onChange={(e) => setFormData({...formData, selectedTab: e.target.value})}
                                     >
-                                        {tabs.map((tab) => (
+                                        {tabs.filter((tab) => tab.name !== "favorites").map((tab) => (
                                             <option key={tab.name} value={tab.name}>
                                                 {tab.title}
                                             </option>

@@ -29,6 +29,7 @@ const MyCosmetics = () => {
                         ))}
                     </div>
                 ),
+                isUserAdded: false
             },
             {
                 name: 'favorites',
@@ -44,6 +45,7 @@ const MyCosmetics = () => {
                         )}
                     </div>
                 ),
+                isUserAdded: false
             },
         ];
 
@@ -164,6 +166,7 @@ const MyCosmetics = () => {
                 userId: currentUserUid, // 現在のユーザーIDを保存
                 tabName: newTabName,
                 tabTitle: tabTitle,
+                isUserAdded: true,
                 createdAt: new Date(), // 作成日時を保存
             });
 
