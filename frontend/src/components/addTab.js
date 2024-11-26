@@ -32,10 +32,10 @@ const AddTab = ({ pageType }) => {
 
     return (
         <div className={`${s.container}`}>
-            <h1 className={s.h1}>Add a new tab</h1>
+            <h1 className={s.h1}>タブを追加する</h1>
             <form onSubmit={handleSubmit}>
                 <div className={s.tabName}>
-                    <label className={s.title} htmlFor="newTabName">New tab name: </label>
+                    <label className={s.title} htmlFor="newTabName">タブの名前: </label>
                     <input
                         type="text"
                         id="newTabName"
@@ -47,7 +47,7 @@ const AddTab = ({ pageType }) => {
                     />
                 </div>
                 <div className={s.showPostsFromContainer}>
-                    <p className={s.title}>Show posts from: </p>
+                    <p className={s.title}>表示するポストの内容: </p>
 
                     <div className={s.checkboxes}>
                         <div>
@@ -59,7 +59,7 @@ const AddTab = ({ pageType }) => {
                                 checked={showUsers.all}
                                 onChange={handleInputChange}
                             />
-                            <label htmlFor="all" className={s.checkboxLabel}>all users</label>
+                            <label htmlFor="all" className={s.checkboxLabel}>すべてのユーザのポスト</label>
                         </div>
 
                         <div>
@@ -71,7 +71,7 @@ const AddTab = ({ pageType }) => {
                                 checked={showUsers.following}
                                 onChange={handleInputChange}
                             />
-                            <label htmlFor="following" className={s.checkboxLabel}>following users</label>
+                            <label htmlFor="following" className={s.checkboxLabel}>フォローしているユーザのポスト</label>
                         </div>
 
                         <div>
@@ -83,7 +83,7 @@ const AddTab = ({ pageType }) => {
                                 checked={showUsers.bluebase}
                                 onChange={handleInputChange}
                             />
-                            <label htmlFor="bluebase" className={s.checkboxLabel}>blue-base users</label>
+                            <label htmlFor="bluebase" className={s.checkboxLabel}>ブルベのユーザのポスト</label>
                         </div>
 
                         <div>
@@ -95,7 +95,7 @@ const AddTab = ({ pageType }) => {
                                 checked={showUsers.yellowbase}
                                 onChange={handleInputChange}
                             />
-                            <label htmlFor="yellowbase" className={s.checkboxLabel}>yellow-base users</label>
+                            <label htmlFor="yellowbase" className={s.checkboxLabel}>イエベのユーザのポスト</label>
                         </div>
 
                         <div>
