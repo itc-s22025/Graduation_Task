@@ -16,8 +16,8 @@ const MyCosmetics = () => {
     const [error, setError] = useState(null);
     //tabs
     const [tabs, setTabs] = useState([
-        { name: 'all', title: 'ALL', content: <div className={s.itemsContainer}>tab1</div> },
-        { name: 'favorites', title: '♥', content: <div className={s.itemsContainer}></div> }
+        { name: 'all', title: 'ALL', content: <div className={s.itemsContainer}></div> },
+        { name: 'favorites', title: '♥', content: <div className={s.itemsContainer}></div> },
     ]);
 
     useEffect(() => {
@@ -101,7 +101,13 @@ const MyCosmetics = () => {
     const [tabTitle, setTabTitle] = useState(""); // tabTitle 状態を追加
     const handleAddTabSubmit = (tabTitle) => {
         if (!tabTitle) return; // タイトルが空の場合は処理しない
-        const newTabName = `tab${tabs.length + 1}`;
+
+        if (tabs.length >= 3) {
+            alert("タブは最大3つまでです");
+            return;
+        }
+
+        const newTabName = `tab${tabs.length + 1}`;   // 新しいタブ名を自動生成
         const newTab = {
             name: newTabName,
             title: tabTitle,

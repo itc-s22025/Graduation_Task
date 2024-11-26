@@ -191,7 +191,10 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, tabs, handleAddTab,
                                 style={{
                                     zIndex: focusedTab === tab.name
                                         ? 4  // フォーカスしているタブが最前面
-                                        : (tab.name === 'favorites' ? 2 : 1)  // favタブは2、他は1
+                                        : (tab.name === 'favorites' ? 2 : 1),  // favタブは2、他は1
+                                    backgroundColor: tab.name === "all" ? "#fff"
+                                        : tab.name === "favorites" ? "#FFDCDD" : "#FFBFC0", //背景色
+                                    color: tab.name === "all" ? "#FF989A" : tab.name === "favorites" ? "#FF989A" : "#fff",  //文字色
                                 }}
                             >
                                 {tab.title}
