@@ -11,7 +11,7 @@ import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "@/firebase";
 
 
-const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, tabs, handleAddTab, firstTabContent, secondTabContent }) => {
+const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
     const [cosmeticsData, setCosmeticsData] = useState([]);
     //ログインしているユーザ
     const [currentUserUid, setCurrentUserUid] = useState(null);
@@ -195,9 +195,14 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, tabs, handleAddTab,
                                     backgroundColor: tab.name === "all" ? "#fff"
                                         : tab.name === "favorites" ? "#FFDCDD" : "#FFBFC0", //背景色
                                     color: tab.name === "all" ? "#FF989A" : tab.name === "favorites" ? "#FF989A" : "#fff",  //文字色
+                                    borderBottom: tab.name === "favorites" ? "none" : tab.name === "tab3" ? "none" : ""
                                 }}
                             >
                                 {tab.title}
+                                {/* 必須タブ以外の場合に削除ボタンを表示 */}
+                                {!["all", "favorites"].includes(tab.name) && (
+                            <button className={s.deleteTabButton} onClick={() => handleDeleteTab(tab.id)}>×</button>
+                    )}
                             </Tab>
                         ))}
                         <Tab className={s.addTabButton} onClick={handleAddTab}>+</Tab>
