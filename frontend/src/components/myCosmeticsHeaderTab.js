@@ -9,6 +9,8 @@ import home from "@/app/Home/page.module.css";
 import {addDoc, collection, getDocs, query, Timestamp, where} from "firebase/firestore";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "@/firebase";
+//json
+import brandData from "@/app/data/brand.json";
 
 
 const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
@@ -144,6 +146,28 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
         }
     }
 
+    // brand名サジェスト
+    const [brandSuggestions, setBrandSuggestions] = useState([]); // 候補リスト
+    const handleBrandChange = (e) => {
+        const inputValue = e.target.value;
+        setFormData({ ...formData, brand: inputValue });
+
+        // 入力値に応じたブランド候補をフィルタリング
+        if (inputValue.trim() !== "") {
+            // 全てのカテゴリ内のブランド名を取得
+            const allBrands = Object.values(brandData.brands).flat();
+
+            // 入力値に応じたブランド候補をフィルタリング
+            const suggestions = allBrands.filter((brand) =>
+                brand.toLowerCase().includes(inputValue.toLowerCase())
+            );
+            setBrandSuggestions(suggestions);
+        } else {
+            setBrandSuggestions([]);
+        }
+
+    };
+
     // myCosmeticItems.jsで編集したとき、その値を反映させるやつ
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -277,8 +301,34 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                     <option value="その他">その他</option>
                                 </select>
                                 <DateInput/>
-                                <input type="text" name="brand" className={s.inputBox} placeholder="ブランド"
-                                       value={formData.brand} onChange={handleInputChange}/>
+
+                                <input
+                                    type="text"
+                                    name="brand"
+                                    className={s.inputBox}
+                                    placeholder="ブランド"
+                                    value={formData.brand}
+                                    onChange={handleBrandChange}
+                                />
+                                {brandSuggestions.length > 0 && (
+                                    <ul className={s.suggestionsList}>
+                                        {brandSuggestions.map((suggestion, index) => (
+                                            <li
+                                                key={index}
+                                                className={s.suggestionItem}
+                                                onClick={() => {
+                                                    setFormData({ ...formData, brand: suggestion });
+                                                    setBrandSuggestions([]); // 選択後は候補をクリア
+                                                }}
+                                            >
+                                                {suggestion}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+
+
+
                                 <input type="text" name="productName" className={s.inputBox} placeholder="商品名"
                                        value={formData.productName} onChange={handleInputChange}/>
                                 <label className={s.inputLabel}>

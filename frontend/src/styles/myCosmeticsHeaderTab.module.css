@@ -417,3 +417,30 @@
     scale: calc(1.03);
     font-weight: 500;
 }
+
+
+/*brand auto correct*/
+.suggestionsList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    scrollbar-width: thin;
+    max-height: 120px;
+    overflow-y: auto;
+    position: absolute;
+    left: 43.5vw;
+    background: #fff;
+    z-index: 10;
+    width: 240px;
+}
+
+.suggestionItem {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestionItem:hover {
+    background: #f0f0f0;
+}
