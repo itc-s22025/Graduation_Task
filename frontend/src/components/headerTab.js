@@ -8,7 +8,6 @@ import {collection, query, where, getDocs, doc, getDoc, orderBy, addDoc, deleteD
 import AddTab from "@/components/addTab";
 
 const HeaderTab = ({ user }) => {
-    //state
     const [showAddTab, setShowAddTab] = useState(false);
     const [tabs, setTabs] = useState([
         { id: "now", title: "Now", content: <div><Post /></div> },
@@ -20,47 +19,47 @@ const HeaderTab = ({ user }) => {
 
     // Firestoreからタブデータを取得
     const fetchTabs = async () => {
-    if (!user) return;
+        if (!user) return;
 
-    try {
-        const tabsQuery = query(
-            collection(db, "homesTab"),
-            where("uid", "==", user.uid),
-            orderBy("id")
-        );
+        try {
+            const tabsQuery = query(
+                collection(db, "homesTab"),
+                where("uid", "==", user.uid),
+                orderBy("id")
+            );
 
-        const querySnapshot = await getDocs(tabsQuery);
+            const querySnapshot = await getDocs(tabsQuery);
 
-        const fetchedTabs = querySnapshot.docs.map((doc) => {
-            const data = doc.data();
+            const fetchedTabs = querySnapshot.docs.map((doc) => {
+                const data = doc.data();
 
-            // optionsに応じてcontentを動的に設定
-            let content;
-            if (data.options?.all) {
-                content = <Post />; // 全ポスト
-            } else if (data.options?.following) {
-                content = <div>posts of following users</div>; // フォローユーザーの投稿
-            } else {
-                content = <div>New Content for Tab {data.title}</div>; // デフォルトコンテンツ
-            }
+                // optionsに応じてcontentを動的に設定
+                let content;
+                if (data.options?.all) {
+                    content = <Post />; // 全ポスト
+                } else if (data.options?.following) {
+                    content = <div>posts of following users</div>; // フォローユーザーの投稿
+                } else {
+                    content = <div>New Content for Tab {data.title}</div>; // デフォルトコンテンツ
+                }
 
-            return {
-                id: data.id,
-                title: data.title,
-                content,
-            };
-        });
+                return {
+                    id: data.id,
+                    docId: doc.id, // FirestoreのドキュメントID
+                    title: data.title,
+                    content,
+                };
+            });
 
-        // `Now` と `Following` タブを維持しつつ、Firestoreのタブを追加
-        setTabs((prevTabs) => [
-            ...prevTabs.filter((tab) => tab.id === "now" || tab.id === "following"),
-            ...fetchedTabs,
-        ]);
-    } catch (error) {
-        console.error("タブデータの取得に失敗しました:", error);
-    }
-};
-
+            // `Now` と `Following` タブを維持しつつ、Firestoreのタブを追加
+            setTabs((prevTabs) => [
+                ...prevTabs.filter((tab) => tab.id === "now" || tab.id === "following"),
+                ...fetchedTabs,
+            ]);
+        } catch (error) {
+            console.error("タブデータの取得に失敗しました:", error);
+        }
+    };
 
     //following postsのフェッチ
     const fetchFollowingPosts = async () => {
@@ -95,12 +94,6 @@ const HeaderTab = ({ user }) => {
             );
             const postsSnap = await getDocs(postsQuery);
 
-            if (postsSnap.empty) {
-                console.log("No posts found for following users.");
-            } else {
-                console.log("Fetched posts:", postsSnap.docs.map(doc => doc.data()));
-            }
-
             const posts = postsSnap.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
@@ -116,6 +109,7 @@ const HeaderTab = ({ user }) => {
         }
     };
 
+
     useEffect(() => {
         const fetchData = async () => {
             await fetchTabs();
@@ -129,9 +123,21 @@ const HeaderTab = ({ user }) => {
         setTabs((prevTabs) =>
             prevTabs.map((tab) =>
                 tab.id === "following"
-                    ? { ...tab, content: loading ? <div>Loading...</div> : (
-                            <div>{followingPosts.length > 0 ? followingPosts.map((post) => <Post key={post.id} searchPost={post} />) : <div>No posts found.</div>}</div>
-                        )
+                    ? {
+                        ...tab,
+                        content: loading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            <div>
+                                {followingPosts.length > 0 ? (
+                                    followingPosts.map((post) => (
+                                        <Post key={post.id} searchPost={post} />
+                                    ))
+                                ) : (
+                                    <div>No posts found.</div>
+                                )}
+                            </div>
+                        ),
                     }
                     : tab
             )
@@ -141,7 +147,6 @@ const HeaderTab = ({ user }) => {
     //tab関連
     const handleFocus = (tabId) => { setFocusedTab(tabId); };
     const handleAddClick = () => { setShowAddTab(prev => !prev); }  // AddTabを表示
-
     //タブ追加
     const handleAddTab = async (tabName, options) => {
         // タブ名の文字数をチェック
@@ -150,52 +155,82 @@ const HeaderTab = ({ user }) => {
             return; // 処理を中断
         }
 
-        console.log("options::", options.all)
         const newTabId = `tab${tabs.length + 1}`;
+
+        // optionsに応じたコンテンツを設定
+        let newContent;
+        if (options.all) {
+            newContent = <Post />;
+        } else if (options.following) {
+            newContent = (
+                <div>
+                    {followingPosts.length > 0 ? (
+                        followingPosts.map((post) => (
+                            <Post key={post.id} searchPost={post} />
+                        ))
+                    ) : (
+                        <div>No posts found.</div>
+                    )}
+                </div>
+            );
+        } else {
+            newContent = <div>New Content for Tab {tabName}</div>;
+        }
 
         const newTab = {
             id: newTabId,
             title: tabName,
-            content: <div>New Content for Tab {tabName}</div>,
+            content: newContent,
         };
 
-        try {   // Firestoreに新しいタブを追加
+        try {
             const docRef = await addDoc(collection(db, "homesTab"), {
                 id: newTabId,
                 title: newTab.title,
-                content: `New Content for Tab ${tabName}`,
                 uid: user.uid,
                 options,
             });
 
-            // Firestoreに保存したタブを状態に追加
-            setTabs((prevTabs) => [...prevTabs, newTab]);
+            const newTabWithDocId = {
+                ...newTab,
+                docId: docRef.id, // FirestoreのドキュメントID
+            };
+
+            setTabs((prevTabs) => [...prevTabs, newTabWithDocId]);
             console.log("新しいタブがFirestoreに追加されました:", docRef.id);
         } catch (error) {
             console.error("タブの追加に失敗しました:", error);
         }
     };
 
-
     //タブ削除
     const handleDeleteTab = async (tabId) => {
         if (!user) return;
 
-        // 確認ダイアログを表示
         const isConfirmed = window.confirm(`タブを削除しますか？`);
         if (!isConfirmed) return;
 
         try {
+            // 対応するタブを取得
+            const tabToDelete = tabs.find((tab) => tab.id === tabId);
+
+            if (!tabToDelete || !tabToDelete.docId) {
+                console.error("削除対象のタブが見つかりません");
+                return;
+            }
+
             // Firestoreから削除
-            const tabDocRef = doc(db, "homesTab", tabId); // tabIdがFirestoreのドキュメントIDと一致することを確認
-            await deleteDoc(tabDocRef);  // 削除処理
+            const tabDocRef = doc(db, "homesTab", tabToDelete.docId);
+            await deleteDoc(tabDocRef);
 
             // 状態から削除
             setTabs((prevTabs) => prevTabs.filter((tab) => tab.id !== tabId));
+            console.log(`タブ(${tabToDelete.title})を削除しました`);
         } catch (error) {
             console.error("タブ削除エラー:", error);
         }
     };
+
 
 
     return (
@@ -208,7 +243,6 @@ const HeaderTab = ({ user }) => {
                                 key={tab.id}
                                 className={`${s.tabs} ${focusedTab === tab.id ? s.zIndex4 : ''}`}
                                 tabIndex={0}
-                                // tabIndex={focusedTab === 'now' ? 0 : index + 1}  // "All" タブを一番最初に表示
                                 onFocus={() => handleFocus(tab.id)}
                                 style={{
                                     zIndex: focusedTab === tab.id
@@ -220,8 +254,6 @@ const HeaderTab = ({ user }) => {
                                     borderBottom: tab.id !== "now" ? "none" : ""
                                 }}
                             >
-                                {/*{tab.title}*/}
-
                                 <div style={{ display: "flex", alignItems: "center" }}>
                                     <p className={s.tabTitle}>{tab.title}</p>
                                     {tab.id !== "now" && tab.id !== "following" && (
@@ -238,8 +270,8 @@ const HeaderTab = ({ user }) => {
                     </ul>
                 </TabList>
 
-                {tabs.map((tab) => (
-                    <TabPanel key={tab.id}>
+                {tabs.map((tab, index) => (
+                    <TabPanel key={`${tab.id}-${index}`}>
                         <article className={s.article}>
                             {tab.content}
                         </article>
