@@ -29,11 +29,35 @@
     width: 80%;
     margin-right: -80px; /* 前のliと重なる量 */
 
-    text-align: center;
     line-height: 46px;
     color: #ff839f;
 
     z-index: 1;
+}
+
+.tabTitle{
+    /*border: 1px solid red;*/
+    margin: 0 auto;
+}
+
+.deleteButton{
+    position: relative;
+    left: -40px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #fff;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #ff839f;
+    padding-right: 1px;
+    margin-top: 2px;
+}
+
+.deleteButton:hover{
+    background-color: #FFBFC0;
+    border: 2px solid #fff;
+    color: #fff;
+    font-weight: bold;
 }
 
 

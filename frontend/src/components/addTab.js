@@ -3,7 +3,7 @@
 import s from '@/styles/addTab.module.css';
 import { useState } from 'react';
 
-const AddTab = ({ pageType }) => {
+const AddTab = ({ onSubmit }) => {
 
     const [newTabName, setNewTabName] = useState('');
     const [showUsers, setShowUsers] = useState({
@@ -25,9 +25,7 @@ const AddTab = ({ pageType }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // フォーム送信時の処理をここに追加
-        alert(`New Tab Name: ${newTabName}`);
-        console.log('Show posts from:', showUsers);
+        onSubmit(newTabName, showUsers); // データを親コンポーネントに渡す
     };
 
     return (
@@ -38,7 +36,7 @@ const AddTab = ({ pageType }) => {
                     <label className={s.title} htmlFor="newTabName">タブの名前: </label>
                     <input
                         type="text"
-                        id="newTabName"
+                        name="newTabName"
                         onChange={(e) => setNewTabName(e.target.value)}
                         value={newTabName}
                         placeholder="enter tab name"

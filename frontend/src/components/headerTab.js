@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useEffect, useState } from "react";
 import Post from "@/components/post";
 import { db } from "@/firebase";
-import {collection, query, where, getDocs, doc, getDoc, orderBy, addDoc} from "firebase/firestore";
+import {collection, query, where, getDocs, doc, getDoc, orderBy, addDoc, deleteDoc} from "firebase/firestore";
 import AddTab from "@/components/addTab";
 
 const HeaderTab = ({ user }) => {
@@ -18,62 +18,98 @@ const HeaderTab = ({ user }) => {
     const [followingPosts, setFollowingPosts] = useState([]); // フォロー中ユーザーの投稿
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchFollowingPosts = async () => {
-            if (!user) return;
+    // Firestoreからタブデータを取得
+    const fetchTabs = async () => {
+        if (!user) return;
 
-            try {
-                // ログインユーザーのfollowingを取得
-                const userDocRef = doc(db, "users", user.uid);
-                const userDocSnap = await getDoc(userDocRef);
+        try {
+            const tabsQuery = query(
+                collection(db, "homesTab"),
+                where("uid", "==", user.uid), // ログインユーザーのタブだけを取得
+                orderBy("id") // タブIDでソート
+            );
 
-                if (!userDocSnap.exists()) {
-                    console.error("ユーザードキュメントが存在しません");
-                    return;
-                }
+            const querySnapshot = await getDocs(tabsQuery);
+            const fetchedTabs = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                title: doc.data().title,
+                content: <div>{doc.data().content}</div>, // 既存のコンテンツを使用
+            }));
 
-                //following
-                let following = userDocSnap.data().following || [];
-                // 自分自身を追加
-                following = [...following, user.uid];
+            // `Now` と `Following` タブを維持しつつ、Firestoreのタブを追加
+            setTabs((prevTabs) => [
+                ...prevTabs.filter((tab) => tab.id === "now" || tab.id === "following"),
+                ...fetchedTabs,
+            ]);
+        } catch (error) {
+            console.error("タブデータの取得に失敗しました:", error);
+        }
+    };
 
-                if (following.length === 0) {   //followユーザがいなければ
-                    setFollowingPosts([]);
-                    setLoading(false);
-                    return;
-                }
+    //following postsのフェッチ
+    const fetchFollowingPosts = async () => {
+        if (!user) return;
 
-                // フォロー中のユーザーの投稿を取得
-                const postsQuery = query(
-                    collection(db, "posts"),
-                    where("uid", "in", following),
-                    orderBy("timestamp", "desc")
-                );
-                const postsSnap = await getDocs(postsQuery);
-                // console.log("following::", following);
+        try {
+            // ログインユーザーのfollowingを取得
+            const userDocRef = doc(db, "users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
 
-                if (postsSnap.empty) {
-                    console.log("No posts found for following users.");
-                } else {
-                    console.log("Fetched posts:", postsSnap.docs.map(doc => doc.data()));
-                }
-
-                const posts = postsSnap.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-
-                setFollowingPosts(posts);
-                console.log("Updated followingPosts:", posts); // state update後の値
-
-            } catch (error) {
-                console.error("フォロー中の投稿取得エラー:", error);
-            } finally {
-                setLoading(false);
+            if (!userDocSnap.exists()) {
+                console.error("ユーザードキュメントが存在しません");
+                return;
             }
+
+            //following
+            let following = userDocSnap.data().following || [];
+            // 自分自身を追加
+            following = [...following, user.uid];
+
+            if (following.length === 0) {   //followユーザがいなければ
+                setFollowingPosts([]);
+                setLoading(false);
+                return;
+            }
+
+            // フォロー中のユーザーの投稿を取得
+            const postsQuery = query(
+                collection(db, "posts"),
+                where("uid", "in", following),
+                orderBy("timestamp", "desc")
+            );
+            const postsSnap = await getDocs(postsQuery);
+            // console.log("following::", following);
+
+            if (postsSnap.empty) {
+                console.log("No posts found for following users.");
+            } else {
+                console.log("Fetched posts:", postsSnap.docs.map(doc => doc.data()));
+            }
+
+            const posts = postsSnap.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            setFollowingPosts(posts);
+            console.log("Updated followingPosts:", posts); // state update後の値
+
+        } catch (error) {
+            console.error("フォロー中の投稿取得エラー:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchTabs();
+            await fetchFollowingPosts();
         };
-        fetchFollowingPosts();
+        fetchData();
     }, [user]);
+
 
     // `following` タブを更新
     useEffect(() => {
@@ -93,27 +129,58 @@ const HeaderTab = ({ user }) => {
     const handleFocus = (tabId) => { setFocusedTab(tabId); };
     const handleAddClick = () => { setShowAddTab(prev => !prev); }  // AddTabを表示
 
-    const handleAddTab = async () => {
+    //タブ追加
+    const handleAddTab = async (tabName, options) => {
+        // タブ名の文字数をチェック
+        if (tabName.length > 10) {
+            // 10文字を超えていた場合、アラートを表示
+            alert("タブ名は10文字以内で入力してください");
+            return; // 処理を中断
+        }
+
         const newTabId = `tab${tabs.length + 1}`;
         const newTab = {
             id: newTabId,
-            title: `New Tab ${tabs.length + 1}`,
-            content: <div>New Content for Tab {tabs.length + 1}</div>,
+            title: tabName,
+            content: <div>New Content for Tab {tabName}</div>,
         };
 
-        // Firestoreに新しいタブを追加
-        try {
+        try {   // Firestoreに新しいタブを追加
             const docRef = await addDoc(collection(db, "homesTab"), {
                 id: newTabId,
                 title: newTab.title,
-                content: `New Content for Tab ${tabs.length + 1}`,
+                content: `New Content for Tab ${tabName}`,
+                uid: user.uid,
+                options,
             });
 
             // Firestoreに保存したタブを状態に追加
-            setTabs([...tabs, newTab]);
+            setTabs((prevTabs) => [...prevTabs, newTab]);
             console.log("新しいタブがFirestoreに追加されました:", docRef.id);
         } catch (error) {
             console.error("タブの追加に失敗しました:", error);
+        }
+    };
+
+    //タブ削除
+    const handleDeleteTab = async (tabId) => {
+        if (!user) return;
+
+        // 確認ダイアログを表示
+        const isConfirmed = window.confirm(`「${tabId}」タブを削除しますか？`);
+        if (!isConfirmed) return;
+
+        try {
+            // Firestoreから削除
+            const tabDocRef = doc(db, "homesTab", tabId); // tabIdがFirestoreのドキュメントIDと一致することを確認
+            await deleteDoc(tabDocRef);  // 削除処理
+
+            console.log(`タブ ${tabId} がFirestoreから削除されました`);
+
+            // 状態から削除
+            setTabs((prevTabs) => prevTabs.filter((tab) => tab.id !== tabId));
+        } catch (error) {
+            console.error("タブ削除エラー:", error);
         }
     };
 
@@ -140,7 +207,18 @@ const HeaderTab = ({ user }) => {
                                     borderBottom: tab.id === "following" ? "none" : tab.id === "tab3" ? "none" : ""
                                 }}
                             >
-                                {tab.title}
+                                {/*{tab.title}*/}
+
+                                <div style={{ display: "flex", alignItems: "center" }}>
+                                    <p className={s.tabTitle}>{tab.title}</p>
+                                    {tab.id !== "now" && tab.id !== "following" && (
+                                        <button
+                                            onClick={(e) => {   e.stopPropagation(); // タブフォーカスイベントを防止
+                                                        handleDeleteTab(tab.id);}}
+                                            className={s.deleteButton}
+                                        >×</button>
+                                    )}
+                                </div>
                             </Tab>
                         ))}
                         <button onClick={handleAddClick} className={s.addButton}>+</button>
@@ -161,8 +239,11 @@ const HeaderTab = ({ user }) => {
                 {showAddTab && (
                     <div className={home.addTabOverlay}>
                         <div className={home.addTabContent}>
-                            <AddTab />
-                            <button onClick={handleAddClick} className={s.buttonCancel}>Cancel</button>
+                            <AddTab onSubmit={(tabName, options) => {
+                                handleAddTab(tabName, options);
+                                setShowAddTab(false); // ダイアログを閉じる
+                            }}/>
+                            <button onClick={handleAddClick} className={home.buttonCancel}>Cancel</button>
                         </div>
                     </div>
                 )}
