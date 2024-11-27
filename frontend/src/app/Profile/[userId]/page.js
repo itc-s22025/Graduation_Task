@@ -10,11 +10,14 @@ import { query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, 
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import Post from "@/components/post";
-import {useRouter} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
+import {use} from 'react';
 
 const Profile = ({ imageUrl, params }) => {
     const router = useRouter()
 
+    const resolvedParams = use(params);
+    const userId = resolvedParams.userId;
     const [userData, setUserData] = useState(null);
     const [focusedTab, setFocusedTab] = useState('');
     const [personalColor, setPersonalColor] = useState('');
@@ -28,7 +31,6 @@ const Profile = ({ imageUrl, params }) => {
 
     const [isFollowing, setIsFollowing] = useState(false);
     const [userPosts, setUserPosts] = useState([]);
-    const userId = params.userId;
 
     // ユーザーの認証状態を監視,currentUserUidにログインユーザのuidを入れる
     useEffect(() => {
@@ -228,7 +230,7 @@ const Profile = ({ imageUrl, params }) => {
                     <div className={s.container}>
                         <img src={icon} className={s.profileImage} />
                         <div>
-                            <a className={`${s.personal} 
+                            <a className={`${s.personal}
                                 ${personalColor === '春' ? s.springText : personalColor === '夏' ? s.summerText : personalColor === '秋' ? s.autumnText : personalColor === '冬' ? s.winterText : ''}`}>
                                 {personalColor ? `${personalColor}` : '未設定'}
                             </a>

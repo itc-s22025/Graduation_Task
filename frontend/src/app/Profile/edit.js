@@ -5,7 +5,7 @@ import s from './edit.module.css';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 import { useAuth } from '@/app/context/AuthProvider';
-import { useRouter } from "next/navigation";
+import CropModal from "./components/CropModal";
 
 const Edit = ({ onSave }) => {
     const [newHeaderImage, setNewHeaderImage] = useState(null);
@@ -14,10 +14,12 @@ const Edit = ({ onSave }) => {
     const [newBio, setNewBio] = useState('');
     const [previewHeaderImage, setPreviewHeaderImage] = useState(null);
     const [previewIcon, setPreviewIcon] = useState(null);
+    const [imageToCrop, setImageToCrop] = useState(null);
+    const [isForHeader, setIsForHeader] = useState(false);
+    const [isCropModalOpen, setIsCropModalOpen] = useState(false);
 
     const { currentUser } = useAuth();
     const db = getFirestore();
-    const router = useRouter();
     const storage = getStorage();
 
     useEffect(() => {
@@ -30,9 +32,7 @@ const Edit = ({ onSave }) => {
 
                 if (userSnapshot.exists()) {
                     const data = userSnapshot.data();
-                    setNewHeaderImage(data.headerImage || 'defaultHeader.png');
                     setPreviewHeaderImage(data.headerImage || 'defaultHeader.png');
-                    setNewIcon(data.icon || 'defaultIcon.png');
                     setPreviewIcon(data.icon || 'defaultIcon.png');
                     setNewName(data.username || 'ユーザー名');
                     setNewBio(data.bio || 'ここにBioが表示されます');
@@ -45,6 +45,23 @@ const Edit = ({ onSave }) => {
         fetchUserData();
     }, [currentUser, db]);
 
+    const openCropModal = (fileUrl, isHeader) => {
+        setImageToCrop(fileUrl);
+        setIsForHeader(isHeader);
+        setIsCropModalOpen(true);
+    };
+
+    const handleCropComplete = (croppedImage) => {
+        if (isForHeader) {
+            setNewHeaderImage(croppedImage);
+            setPreviewHeaderImage(croppedImage);
+        } else {
+            setNewIcon(croppedImage);
+            setPreviewIcon(croppedImage);
+        }
+        setIsCropModalOpen(false);
+    };
+
     const uploadImage = async (file, path) => {
         const storageRef = ref(storage, `images/${path}`);
         await uploadBytes(storageRef, file);
@@ -53,38 +70,31 @@ const Edit = ({ onSave }) => {
 
     const handleSave = async () => {
         if (!currentUser?.uid) {
-            console.error("User is not authenticated.");
             alert("You must be signed in to edit your profile.");
             return;
         }
 
         try {
             const userRef = doc(db, "users", currentUser.uid);
-            const userSnapshot = await getDoc(userRef);
-            const currentData = userSnapshot.exists() ? userSnapshot.data() : {};
+            const currentData = (await getDoc(userRef)).data();
 
             const updatedData = {
                 ...currentData,
                 headerImage: newHeaderImage instanceof File
                     ? await uploadImage(newHeaderImage, `headers/${currentUser.uid}_header.png`)
-                    : currentData.headerImage,
+                    : previewHeaderImage,
                 icon: newIcon instanceof File
                     ? await uploadImage(newIcon, `icons/${currentUser.uid}_icon.png`)
-                    : currentData.icon,
-                username: newName || currentData.username,
-                bio: newBio || currentData.bio,
+                    : previewIcon,
+                username: newName,
+                bio: newBio,
             };
 
             await updateDoc(userRef, updatedData);
-
-            if (typeof onSave === 'function') {
-                onSave(updatedData);
-            } else {
-                console.log("Updated data:", updatedData);
-            }
+            onSave?.(updatedData);
         } catch (error) {
             console.error("Error updating profile:", error);
-            alert("プロフィールの更新中にエラーが発生しました。もう一度お試しください。");
+            alert("プロフィールの更新中にエラーが発生しました。");
         }
     };
 
@@ -100,8 +110,8 @@ const Edit = ({ onSave }) => {
                     onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
                             const file = e.target.files[0];
-                            setNewHeaderImage(file);
-                            setPreviewHeaderImage(URL.createObjectURL(file));
+                            const fileUrl = URL.createObjectURL(file);
+                            openCropModal(fileUrl, true);
                         }
                     }}
                 />
@@ -116,8 +126,8 @@ const Edit = ({ onSave }) => {
                     onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
                             const file = e.target.files[0];
-                            setNewIcon(file);
-                            setPreviewIcon(URL.createObjectURL(file));
+                            const fileUrl = URL.createObjectURL(file);
+                            openCropModal(fileUrl, false);
                         }
                     }}
                 />
@@ -141,6 +151,14 @@ const Edit = ({ onSave }) => {
                 />
             </div>
             <button className={s.edit} onClick={handleSave}>Save</button>
+            {isCropModalOpen && (
+                <CropModal
+                    isOpen={isCropModalOpen}
+                    image={imageToCrop}
+                    onCropComplete={handleCropComplete}
+                    onClose={() => setIsCropModalOpen(false)}
+                />
+            )}
         </div>
     );
 };
@@ -148,23 +166,76 @@ const Edit = ({ onSave }) => {
 export default Edit;
 
 
+// 'use client';
+//
 // import React, { useState, useEffect } from 'react';
 // import s from './edit.module.css';
 // import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 // import { useAuth } from '@/app/context/AuthProvider';
 // import { useRouter } from "next/navigation";
+// import CropModal from "./components/CropModal";
 //
-// const Edit = ({ userData, onSave }) => {
-//     const [newHeaderImage, setNewHeaderImage] = useState(userData?.headerImage || 'defaultHeader.png');
-//     const [newIcon, setNewIcon] = useState(userData?.icon || 'defaultIcon.png');
-//     const [newName, setNewName] = useState(userData?.username || 'ユーザー名');
-//     const [newBio, setNewBio] = useState(userData?.bio || 'ここにBioが表示されます');
+// const Edit = ({ onSave }) => {
+//     const [newHeaderImage, setNewHeaderImage] = useState(null);
+//     const [newIcon, setNewIcon] = useState(null);
+//     const [newName, setNewName] = useState('');
+//     const [newBio, setNewBio] = useState('');
+//     const [previewHeaderImage, setPreviewHeaderImage] = useState(null);
+//     const [previewIcon, setPreviewIcon] = useState(null);
+//     const [imageToCrop, setImageToCrop] = useState(null);
+//     const [isForHeader, setIsForHeader] = useState(false);
+//     const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+//     const [showCropModal, setShowCropModal] = useState(false);
+//     const handleCloseCropModal = () => {
+//         setShowCropModal(false);
+//     }
 //
 //     const { currentUser } = useAuth();
 //     const db = getFirestore();
 //     const router = useRouter();
 //     const storage = getStorage();
+//
+//     const openCropModal = (imageSrc, isHeader) => {
+//         setImageToCrop(imageSrc);
+//         setIsForHeader(isHeader);
+//         setIsCropModalOpen(true);
+//     }
+//
+//     const handleCropComplete = (croppedImage) => {
+//         if (isForHeader) {
+//             setNewHeaderImage(croppedImage);
+//             setPreviewHeaderImage(croppedImage);
+//         } else {
+//             setNewIcon(croppedImage);
+//             setPreviewIcon(croppedImage);
+//         }
+//     }
+//
+//     useEffect(() => {
+//         const fetchUserData = async () => {
+//             if (!currentUser?.uid) return;
+//
+//             try {
+//                 const userRef = doc(db, "users", currentUser.uid);
+//                 const userSnapshot = await getDoc(userRef);
+//
+//                 if (userSnapshot.exists()) {
+//                     const data = userSnapshot.data();
+//                     setNewHeaderImage(data.headerImage || 'defaultHeader.png');
+//                     setPreviewHeaderImage(data.headerImage || 'defaultHeader.png');
+//                     setNewIcon(data.icon || 'defaultIcon.png');
+//                     setPreviewIcon(data.icon || 'defaultIcon.png');
+//                     setNewName(data.username || 'ユーザー名');
+//                     setNewBio(data.bio || 'ここにBioが表示されます');
+//                 }
+//             } catch (error) {
+//                 console.error("Error fetching user data:", error);
+//             }
+//         };
+//
+//         fetchUserData();
+//     }, [currentUser, db]);
 //
 //     const uploadImage = async (file, path) => {
 //         const storageRef = ref(storage, `images/${path}`);
@@ -180,61 +251,34 @@ export default Edit;
 //         }
 //
 //         try {
-//             // Firestoreから現在のデータを取得
 //             const userRef = doc(db, "users", currentUser.uid);
-//             const userSnapshot = await getDoc(userRef); // 修正: getDoc を使用
-//
+//             const userSnapshot = await getDoc(userRef);
 //             const currentData = userSnapshot.exists() ? userSnapshot.data() : {};
 //
-//             // 新しいデータを準備
 //             const updatedData = {
-//                 ...currentData, // 現在のデータを展開
+//                 ...currentData,
 //                 headerImage: newHeaderImage instanceof File
 //                     ? await uploadImage(newHeaderImage, `headers/${currentUser.uid}_header.png`)
-//                     : newHeaderImage || currentData.headerImage, // ヘッダー画像
+//                     : currentData.headerImage,
 //                 icon: newIcon instanceof File
 //                     ? await uploadImage(newIcon, `icons/${currentUser.uid}_icon.png`)
-//                     : newIcon || currentData.icon, // アイコン
-//                 username: newName || currentData.username, // ユーザー名
-//                 bio: newBio || currentData.bio, // Bio
+//                     : currentData.icon,
+//                 username: newName || currentData.username,
+//                 bio: newBio || currentData.bio,
 //             };
 //
-//             // データをFirestoreに保存
 //             await updateDoc(userRef, updatedData);
 //
-//             if (typeof onSave === 'function') onSave(updatedData);
+//             if (typeof onSave === 'function') {
+//                 onSave(updatedData);
+//             } else {
+//                 console.log("Updated data:", updatedData);
+//             }
 //         } catch (error) {
 //             console.error("Error updating profile:", error);
-//             alert("Error updating profile");
+//             alert("プロフィールの更新中にエラーが発生しました。もう一度お試しください。");
 //         }
 //     };
-//
-//
-//
-//     // const handleSave = async () => {
-//     //     if (!currentUser?.uid) {
-//     //         console.error("User is not authenticated.");
-//     //         alert("You must be signed in to edit your profile.");
-//     //         return;
-//     //     }
-//     //
-//     //     try {
-//     //         const updatedData = {
-//     //             headerImage: newHeaderImage instanceof File ? await uploadImage(newHeaderImage, `headers/${currentUser.uid}_header.png`) : newHeaderImage,
-//     //             icon: newIcon instanceof File ? await uploadImage(newIcon, `icons/${currentUser.uid}_icon.png`) : newIcon,
-//     //             username: newName,
-//     //             bio: newBio
-//     //         };
-//     //
-//     //         const userRef = doc(db, "users", currentUser.uid);
-//     //         await updateDoc(userRef, updatedData);
-//     //
-//     //         if (typeof onSave === 'function') onSave(updatedData);
-//     //     } catch (error) {
-//     //         console.error("Error updating profile:", error);
-//     //         alert("Error updating profile");
-//     //     }
-//     // };
 //
 //     return (
 //         <div className={s.container}>
@@ -247,25 +291,33 @@ export default Edit;
 //                     id="headerImage"
 //                     onChange={(e) => {
 //                         if (e.target.files && e.target.files[0]) {
-//                             setNewHeaderImage(e.target.files[0]);
+//                             const file = e.target.files[0];
+//                             const fileUrl = URL.createObjectURL(file)
+//                             openCropModal(fileUrl, true);
+//                             // setNewHeaderImage(file);
+//                             // setPreviewHeaderImage(URL.createObjectURL(file));
 //                         }
 //                     }}
 //                 />
-//                 {typeof newHeaderImage === 'string' && <img src={newHeaderImage} className={s.newHeaderImage} />}
+//                 {previewHeaderImage && <img src={previewHeaderImage} className={s.newHeaderImage} />}
 //             </div>
 //             <div className={s.field}>
-//                 <label htmlFor="avatar" className={s.label}>Icon</label>
+//                 <label htmlFor="icon" className={s.label}>Profile Icon</label>
 //                 <input
 //                     type="file"
 //                     accept="image/*"
 //                     id="icon"
 //                     onChange={(e) => {
 //                         if (e.target.files && e.target.files[0]) {
-//                             setNewIcon(e.target.files[0]);
+//                             const file = e.target.files[0];
+//                             const fileUrl = URL.createObjectURL(file);
+//                             openCropModal(fileUrl, true);
+//                             // setNewIcon(file);
+//                             // setPreviewIcon(URL.createObjectURL(file));
 //                         }
 //                     }}
 //                 />
-//                 {typeof newIcon === 'string' && <img src={newIcon}  className={s.newAvatar} />}
+//                 {previewIcon && <img src={previewIcon} className={s.newAvatar} />}
 //             </div>
 //             <div className={s.field}>
 //                 <label htmlFor="username" className={s.label}>Username</label>
@@ -285,6 +337,15 @@ export default Edit;
 //                 />
 //             </div>
 //             <button className={s.edit} onClick={handleSave}>Save</button>
+//             {isCropModalOpen && (
+//                 <CropModal
+//                     isOpen={isCropModalOpen}
+//                     image={previewHeaderImage} // プレビュー画像が渡されているか確認
+//                     onCropComplete={handleCropComplete}
+//                     onClose={handleCloseCropModal}
+//                 />
+//
+//             )}
 //         </div>
 //     );
 // };
