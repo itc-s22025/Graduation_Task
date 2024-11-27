@@ -10,11 +10,14 @@ import { query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, 
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import Post from "@/components/post";
-import {useRouter} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
+import {use} from 'react';
 
 const Profile = ({ imageUrl, params }) => {
     const router = useRouter()
 
+    const resolvedParams = use(params);
+    const userId = resolvedParams.userId;
     const [userData, setUserData] = useState(null);
     const [focusedTab, setFocusedTab] = useState('');
     const [personalColor, setPersonalColor] = useState('');
@@ -28,7 +31,6 @@ const Profile = ({ imageUrl, params }) => {
 
     const [isFollowing, setIsFollowing] = useState(false);
     const [userPosts, setUserPosts] = useState([]);
-    const userId = params.userId;
 
     // ユーザーの認証状態を監視,currentUserUidにログインユーザのuidを入れる
     useEffect(() => {
@@ -174,15 +176,17 @@ const Profile = ({ imageUrl, params }) => {
     // FirestoreからLikesデータと対応するPostデータを取得
     useEffect(() => {
         const fetchLikesAndPosts = async () => {
-            if (currentUserUid) {
+            if (userId) { // userIdが利用可能であれば、userIdに関連するlikesを取得
                 try {
+                    // `userId`に基づくlikesを取得
                     const likesQuery = query(
                         collection(db, "likes"),
-                        where("userId", "==", currentUserUid)
+                        where("userId", "==", userId)  // 現在のユーザーではなく、[userId]を使用
                     );
                     const likesSnapshot = await getDocs(likesQuery);
                     const likesData = likesSnapshot.docs.map(doc => doc.data());
 
+                    // likesデータに基づいて対応するポストデータを取得
                     const postsData = await Promise.all(
                         likesData.map(async (like) => {
                             const postRef = doc(db, "posts", like.postId);
@@ -197,7 +201,8 @@ const Profile = ({ imageUrl, params }) => {
             }
         };
         fetchLikesAndPosts();
-    }, [currentUserUid]);
+    }, [userId]);  // `userId`が変更されたときに実行
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -225,7 +230,7 @@ const Profile = ({ imageUrl, params }) => {
                     <div className={s.container}>
                         <img src={icon} className={s.profileImage} />
                         <div>
-                            <a className={`${s.personal} 
+                            <a className={`${s.personal}
                                 ${personalColor === '春' ? s.springText : personalColor === '夏' ? s.summerText : personalColor === '秋' ? s.autumnText : personalColor === '冬' ? s.winterText : ''}`}>
                                 {personalColor ? `${personalColor}` : '未設定'}
                             </a>
@@ -269,7 +274,6 @@ const Profile = ({ imageUrl, params }) => {
                            <article className={s.articleContainer}>
                                <div>
                                    {userPosts.length > 0 ? (userPosts
-                                           // .filter(post => post.uid === userId) // uidがuserIdと一致するポストだけをフィルタリング
                                            .map((post) => (
                                                <Post key={post.id} ownPost={post} pageType="profile"/>
                                            ))) : (<p>投稿がありません</p>)}
@@ -279,26 +283,26 @@ const Profile = ({ imageUrl, params }) => {
 
 
                         <TabPanel>
-                            <article className={s.articleContainer}>
+                            <article className={s.imageArticleContainer}>
                                 {userPosts.length > 0 ? (userPosts.filter(post => post.imageUrl) // imageUrl が null または undefined でない投稿をフィルタリング
                                     .map((post) => (
-                                        <Post key={post.id} ownPost={post} pageType="profile" />
+                                        <div key={post.id}>
+                                            {post.imageUrl && <img src={post.imageUrl} alt="Post image" className={s.postImage} />}
+                                        </div>
                                     ))) : (<p>投稿がありません</p>)}
                             </article>
                         </TabPanel>
 
 
                         <TabPanel>
-                            <article>
-                                {/*{likesPosts.length > 0 ? (*/}
-                                {/*    likesPosts.map(post => (*/}
-                                {/*        <div key={post.id} className={s.likeItem}>*/}
-                                {/*            <h3>{post.name}</h3>*/}
-                                {/*            <p>{post.tweet}</p>*/}
-                                {/*        </div>*/}
-                                {/*    ))*/}
-                                {/*) : (<p>いいねがありません</p>)}*/}
-                                まだーーー
+                            <article className={s.likesArticleContainer}>
+                                {likesPosts.length > 0 ? (
+                                    likesPosts.map(post => (
+                                        <div key={post.id}>
+                                            <Post key={post.id} ownPost={post} pageType="profile"/>
+                                        </div>
+                                    ))
+                                ) : (<p>いいねがありません</p>)}
                             </article>
                         </TabPanel>
                     </Tabs>

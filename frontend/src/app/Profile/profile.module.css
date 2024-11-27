@@ -38,6 +38,7 @@
 }
 
 .profileImage {
+    object-fit: cover;
     width: 150px;
     height: 150px;
     position: absolute;
@@ -335,6 +336,26 @@
 
 .closeButton:hover {
     color: #000;
+}
+
+.imageArticleContainer {
+    display: flex;
+    flex-wrap: wrap; /* 横に並べたアイテムを折り返し */
+    justify-content: flex-start; /* left寄せで配置 */
+    margin-top: 15px;
+    margin-left: 16px;
+}
+
+.postImage{
+    object-fit: cover;
+    width: 12vw;
+    height: 23vh;
+    margin-right: 3px;
+    border: 1px solid #F8F0F0;
+}
+
+.likesArticleContainer{
+    padding-bottom: 100px;
 }
 
 /* Responsive Design */

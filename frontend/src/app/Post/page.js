@@ -199,9 +199,7 @@ const Post = () => {
             <div className={s.box}>
                 <div className={s.flex}>
                     <div className={s.iconContainer}>
-                        {selectedImage && (
-                            <img src={URL.createObjectURL(selectedImage)} className={s.selectedImage} alt="Selected" />
-                        )}
+                        <img src={icon} className={s.icon} alt="icon"/>
                     </div>
                     <p className={s.name}>{name || "name"}</p>
                     <p className={s.userId}> @{displayId || "unknown"}</p>
