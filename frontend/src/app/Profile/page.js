@@ -23,8 +23,8 @@ const Profile = () => {
     const [Following, setFollowing] = useState([]);
     const [Followers, setFollowers] = useState([]);
 
-    const [headerImage, setHeaderImage] = useState('defaultHeader.png');
-    const [icon, setIcon] = useState('defaultIcon.png');
+    const [headerImage, setHeaderImage] = useState('');
+    const [icon, setIcon] = useState('');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
     const [displayId, setDisplayId] = useState('');
