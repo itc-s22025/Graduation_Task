@@ -1,11 +1,15 @@
 "use client";
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
+import { useRouter } from "next/router";
 
 const ResultPage = () => {
-    const location = useLocation();
-    const userAnswers = location.state?.userAnswers || [];
+    const router = useRouter();
+    const { userAnswers } = router.query;
+    const answers = JSON.parse(userAnswers || "[]");
+    // const location = useLocation();
+    // const userAnswers = location.state?.userAnswers || [];
 
     const calculateResult = () => {
         let result = "";

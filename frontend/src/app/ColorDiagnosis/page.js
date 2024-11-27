@@ -49,18 +49,16 @@ const ColorDiagnosisPage = (props) => {
                     ];
 
                 const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-                const [useAnswers, setUseAnswers] = useState([]);
+                const [userAnswers, setUserAnswers] = useState([]);
 
                 const handleNextQuestion = () => {
-                    // if (currentQuestionIndex < questions.length - 1) {
-                        setCurrentQuestionIndex(currentQuestionIndex + 1);
-                    //     }
+                    setCurrentQuestionIndex(currentQuestionIndex + 1);
                     };
+
                 const handlePreviousQuestion = () => {
-                    // if (currentQuestionIndex > 0) {
-                        setCurrentQuestionIndex(currentQuestionIndex - 1);
-                        // }
+                    setCurrentQuestionIndex(currentQuestionIndex - 1);
                     };
+
                 const handleSelectOption = (option) => {
                     setUserAnswers((prevAnswers) => {
                         const updatedAnswers = [...prevAnswers];
@@ -74,7 +72,7 @@ const ColorDiagnosisPage = (props) => {
                         pathname: '/result',
                         query: { userAnswers: JSON.stringify(userAnswers) }
                     });
-                    };
+                };
 
                 return (
                     <>
