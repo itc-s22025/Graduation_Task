@@ -32,7 +32,9 @@ const Edit = ({ onSave }) => {
 
                 if (userSnapshot.exists()) {
                     const data = userSnapshot.data();
+                    setNewHeaderImage(data.headerImage || 'defaultHeader.png');
                     setPreviewHeaderImage(data.headerImage || 'defaultHeader.png');
+                    setNewIcon(data.icon || 'defaultIcon.png');
                     setPreviewIcon(data.icon || 'defaultIcon.png');
                     setNewName(data.username || 'ユーザー名');
                     setNewBio(data.bio || 'ここにBioが表示されます');
@@ -51,16 +53,43 @@ const Edit = ({ onSave }) => {
         setIsCropModalOpen(true);
     };
 
-    const handleCropComplete = (croppedImage) => {
-        if (isForHeader) {
-            setNewHeaderImage(croppedImage);
-            setPreviewHeaderImage(croppedImage);
-        } else {
-            setNewIcon(croppedImage);
-            setPreviewIcon(croppedImage);
+    const handleCropComplete = async (croppedImage) => {
+        if (!currentUser?.uid) return;
+
+        try {
+            // トリミングした画像データを File オブジェクトとして取得
+            const response = await fetch(croppedImage);
+            const blob = await response.blob();
+
+            // ファイル名を設定 (例: headerImage, icon)
+            const fileName = isForHeader
+                ? `headers/${currentUser.uid}_header.jpg`
+                : `icons/${currentUser.uid}_icon.jpg`;
+
+            // Firebase Storage にアップロード
+            const storageRef = ref(storage, fileName);
+            await uploadBytes(storageRef, blob);
+
+            // アップロード後の URL を取得
+            const downloadURL = await getDownloadURL(storageRef);
+
+            // Firestore に保存
+            const userRef = doc(db, "users", currentUser.uid);
+            if (isForHeader) {
+                await updateDoc(userRef, { headerImage: downloadURL });
+                setNewHeaderImage(downloadURL);
+                setPreviewHeaderImage(downloadURL);
+            } else {
+                await updateDoc(userRef, { icon: downloadURL });
+                setNewIcon(downloadURL);
+                setPreviewIcon(downloadURL);
+            }
+        } catch (error) {
+            console.error("Error saving cropped image:", error);
+            alert("トリミング画像の保存中にエラーが発生しました。");
         }
-        setIsCropModalOpen(false);
     };
+
 
     const uploadImage = async (file, path) => {
         const storageRef = ref(storage, `images/${path}`);
