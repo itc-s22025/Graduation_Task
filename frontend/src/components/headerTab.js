@@ -32,14 +32,16 @@ const HeaderTab = ({ user }) => {
                     return;
                 }
 
-                const following = userDocSnap.data().following || [];
-                if (following.length === 0) {
+                //following
+                let following = userDocSnap.data().following || [];
+                // 自分自身を追加
+                following = [...following, user.uid];
+
+                if (following.length === 0) {   //followユーザがいなければ
                     setFollowingPosts([]);
                     setLoading(false);
                     return;
                 }
-
-                console.log("flw.len;", following.length);
 
                 // フォロー中のユーザーの投稿を取得
                 const postsQuery = query(
@@ -48,7 +50,7 @@ const HeaderTab = ({ user }) => {
                     orderBy("timestamp", "desc")
                 );
                 const postsSnap = await getDocs(postsQuery);
-                console.log("following::", following);
+                // console.log("following::", following);
 
                 if (postsSnap.empty) {
                     console.log("No posts found for following users.");
@@ -87,34 +89,34 @@ const HeaderTab = ({ user }) => {
         );
     }, [followingPosts, loading]);
 
-    const handleFocus = (tabId) => {
-        setFocusedTab(tabId);
-    };
+    //tab関連
+    const handleFocus = (tabId) => { setFocusedTab(tabId); };
+    const handleAddClick = () => { setShowAddTab(prev => !prev); }  // AddTabを表示
 
     const handleAddTab = async () => {
-        setShowAddTab(true); // AddTabを表示
-        // const newTabId = `tab${tabs.length + 1}`;
-        // const newTab = {
-        //     id: newTabId,
-        //     title: `New Tab ${tabs.length + 1}`,
-        //     content: <div>New Content for Tab {tabs.length + 1}</div>,
-        // };
+        const newTabId = `tab${tabs.length + 1}`;
+        const newTab = {
+            id: newTabId,
+            title: `New Tab ${tabs.length + 1}`,
+            content: <div>New Content for Tab {tabs.length + 1}</div>,
+        };
 
         // Firestoreに新しいタブを追加
-        // try {
-        //     const docRef = await addDoc(collection(db, "homesTab"), {
-        //         id: newTabId,
-        //         title: newTab.title,
-        //         content: `New Content for Tab ${tabs.length + 1}`,
-        //     });
-        //
-        //     // Firestoreに保存したタブを状態に追加
-        //     setTabs([...tabs, newTab]);
-        //     console.log("新しいタブがFirestoreに追加されました:", docRef.id);
-        // } catch (error) {
-        //     console.error("タブの追加に失敗しました:", error);
-        // }
+        try {
+            const docRef = await addDoc(collection(db, "homesTab"), {
+                id: newTabId,
+                title: newTab.title,
+                content: `New Content for Tab ${tabs.length + 1}`,
+            });
+
+            // Firestoreに保存したタブを状態に追加
+            setTabs([...tabs, newTab]);
+            console.log("新しいタブがFirestoreに追加されました:", docRef.id);
+        } catch (error) {
+            console.error("タブの追加に失敗しました:", error);
+        }
     };
+
 
     return (
         <>
@@ -126,12 +128,12 @@ const HeaderTab = ({ user }) => {
                                 key={tab.id}
                                 className={`${s.tabs} ${focusedTab === tab.id ? s.zIndex4 : ''}`}
                                 tabIndex={0}
-                                // tabIndex={focusedTab === 'all' ? 0 : index + 1}  // "All" タブを一番最初に表示
+                                // tabIndex={focusedTab === 'now' ? 0 : index + 1}  // "All" タブを一番最初に表示
                                 onFocus={() => handleFocus(tab.id)}
                                 style={{
                                     zIndex: focusedTab === tab.id
                                         ? 4  // フォーカスしているタブが最前面
-                                        : (tab.id === 'following' ? 2 : 1),  // favタブは2、他は1
+                                        : (tab.id === 'following' ? 2 : 1),
                                     backgroundColor: tab.id === "now" ? "#fff"
                                         : tab.id === "following" ? "#FFDCDD" : "#FFBFC0", //背景色
                                     color: tab.id === "now" ? "#FF989A" : tab.id === "following" ? "#FF989A" : "#fff",  //文字色
@@ -141,7 +143,7 @@ const HeaderTab = ({ user }) => {
                                 {tab.title}
                             </Tab>
                         ))}
-                        <button onClick={handleAddTab} className={s.addButton}>+</button>
+                        <button onClick={handleAddClick} className={s.addButton}>+</button>
                     </ul>
                 </TabList>
 
@@ -160,7 +162,7 @@ const HeaderTab = ({ user }) => {
                     <div className={home.addTabOverlay}>
                         <div className={home.addTabContent}>
                             <AddTab />
-                            {/*<button onClick={handleCloseAddTab} className={s.buttonCancel}>Cancel</button>*/}
+                            <button onClick={handleAddClick} className={s.buttonCancel}>Cancel</button>
                         </div>
                     </div>
                 )}
