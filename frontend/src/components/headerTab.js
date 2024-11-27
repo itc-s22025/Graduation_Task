@@ -110,7 +110,6 @@ const HeaderTab = ({ user }) => {
         fetchData();
     }, [user]);
 
-
     // `following` タブを更新
     useEffect(() => {
         setTabs((prevTabs) =>
@@ -137,7 +136,7 @@ const HeaderTab = ({ user }) => {
             alert("タブ名は10文字以内で入力してください");
             return; // 処理を中断
         }
-
+        
         const newTabId = `tab${tabs.length + 1}`;
         const newTab = {
             id: newTabId,
@@ -167,15 +166,13 @@ const HeaderTab = ({ user }) => {
         if (!user) return;
 
         // 確認ダイアログを表示
-        const isConfirmed = window.confirm(`「${tabId}」タブを削除しますか？`);
+        const isConfirmed = window.confirm(`タブを削除しますか？`);
         if (!isConfirmed) return;
 
         try {
             // Firestoreから削除
             const tabDocRef = doc(db, "homesTab", tabId); // tabIdがFirestoreのドキュメントIDと一致することを確認
             await deleteDoc(tabDocRef);  // 削除処理
-
-            console.log(`タブ ${tabId} がFirestoreから削除されました`);
 
             // 状態から削除
             setTabs((prevTabs) => prevTabs.filter((tab) => tab.id !== tabId));
@@ -204,7 +201,7 @@ const HeaderTab = ({ user }) => {
                                     backgroundColor: tab.id === "now" ? "#fff"
                                         : tab.id === "following" ? "#FFDCDD" : "#FFBFC0", //背景色
                                     color: tab.id === "now" ? "#FF989A" : tab.id === "following" ? "#FF989A" : "#fff",  //文字色
-                                    borderBottom: tab.id === "following" ? "none" : tab.id === "tab3" ? "none" : ""
+                                    borderBottom: tab.id !== "now" ? "none" : ""
                                 }}
                             >
                                 {/*{tab.title}*/}
