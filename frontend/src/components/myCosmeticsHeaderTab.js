@@ -146,6 +146,28 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
         }
     }
 
+    // // brand名サジェスト
+    // const [brandSuggestions, setBrandSuggestions] = useState([]); // 候補リスト
+    // const handleBrandChange = (e) => {
+    //     const inputValue = e.target.value;
+    //     setFormData({ ...formData, brand: inputValue });
+    //
+    //     // 入力値に応じたブランド候補をフィルタリング
+    //     if (inputValue.trim() !== "") {
+    //         // 全てのカテゴリ内のブランド名を取得
+    //         const allBrands = Object.values(brandData.brands).flat();
+    //
+    //         // 入力値に応じたブランド候補をフィルタリング
+    //         const suggestions = allBrands.filter((brand) =>
+    //             brand.toLowerCase().includes(inputValue.toLowerCase())
+    //         );
+    //         setBrandSuggestions(suggestions);
+    //
+    //     } else {
+    //         setBrandSuggestions([]);
+    //     }
+    // };
+
     // brand名サジェスト
     const [brandSuggestions, setBrandSuggestions] = useState([]); // 候補リスト
     const handleBrandChange = (e) => {
@@ -154,20 +176,61 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
 
         // 入力値に応じたブランド候補をフィルタリング
         if (inputValue.trim() !== "") {
-            // 全てのカテゴリ内のブランド名を取得
-            const allBrands = Object.values(brandData.brands).flat();
+            // JSONの階層構造を解析し、全てのブランド名を収集
+            const allBrands = Object.entries(brandData.brands).flatMap(([category, brands]) =>
+                Object.keys(brands)
+            );
 
             // 入力値に応じたブランド候補をフィルタリング
             const suggestions = allBrands.filter((brand) =>
                 brand.toLowerCase().includes(inputValue.toLowerCase())
             );
-            setBrandSuggestions(suggestions);
 
+            setBrandSuggestions(suggestions);
         } else {
             setBrandSuggestions([]);
         }
-
     };
+
+    //商品名サジェスト
+    const [productNameSuggestions, setProductNameSuggestions] = useState([]);
+    const handleProductNameChange = (e) => {
+        const inputValue = e.target.value;
+        setFormData({ ...formData, productName: inputValue });
+
+        if (formData.brand && inputValue.trim() !== "") {
+            let brandProducts = [];
+            for (const category in brandData.brands) {
+                if (brandData.brands[category][formData.brand]) {
+                    brandProducts = brandData.brands[category][formData.brand];
+                    break;
+                }
+            }
+
+            if (brandProducts.length > 0) {
+                // 入力値を平仮名とカタカナ両方で検索
+                const normalizedInput = inputValue.normalize("NFKC");
+
+                const suggestions = brandProducts.filter((product) => {
+                    // 商品名を平仮名とカタカナ両方で正規化して照合
+                    const normalizedProduct = product.normalize("NFKC");
+
+                    // 平仮名・カタカナ両方で一致するかチェック
+                    return normalizedProduct.includes(normalizedInput);
+                });
+
+                setProductNameSuggestions(suggestions);
+            } else {
+                console.warn("ブランドが見つかりません:", formData.brand);
+                setProductNameSuggestions([]);
+            }
+        } else {
+            setProductNameSuggestions([]);
+        }
+    };
+
+
+
 
     // myCosmeticItems.jsで編集したとき、その値を反映させるやつ
     const handleInputChange = (e) => {
@@ -279,7 +342,8 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                         ))}
                                     </select>
                                 </label>
-                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange} value={formData.cosmeticsType}>
+                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange}
+                                        value={formData.cosmeticsType}>
                                     <option value="" disabled>コスメの種類を選択してください</option>
                                     <option value="アイシャドウ">アイシャドウ</option>
                                     <option value="アイブロウ用品">アイブロウ用品</option>
@@ -312,7 +376,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                                     key={index}
                                                     className={s.suggestionItem}
                                                     onClick={() => {
-                                                        setFormData({ ...formData, brand: suggestion });
+                                                        setFormData({...formData, brand: suggestion});
                                                         setBrandSuggestions([]); // 選択後は候補をクリア
                                                     }}
                                                 >
@@ -322,8 +386,35 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                         </ul>
                                     )}
                                 </div>
-                                <input type="text" name="productName" className={s.inputBox} placeholder="商品名"
-                                       value={formData.productName} onChange={handleInputChange}/>
+
+                                {/* 商品名入力 */}
+                                <div>
+                                    <input
+                                        type="text"
+                                        name="productName"
+                                        className={s.inputBox}
+                                        placeholder="商品名"
+                                        value={formData.productName}
+                                        onChange={handleProductNameChange}
+                                    />
+                                    {productNameSuggestions.length > 0 && (
+                                        <ul className={s.suggestionsList}>
+                                            {productNameSuggestions.map((suggestion, index) => (
+                                                <li
+                                                    key={index}
+                                                    className={s.suggestionItem}
+                                                    onClick={() => {
+                                                        setFormData({...formData, productName: suggestion});
+                                                        setProductNameSuggestions([]);
+                                                    }}
+                                                >
+                                                    {suggestion}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+
                                 <label className={s.inputLabel}>
                                     <input type="number" name="quantity" className={s.inputBoxMini}
                                            placeholder="個数" value={formData.quantity}
