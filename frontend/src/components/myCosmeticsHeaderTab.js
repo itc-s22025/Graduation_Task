@@ -183,21 +183,29 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
             let brandProducts = [];
             for (const category in brandData.brands) {
                 if (brandData.brands[category][formData.brand]) {
-                    brandProducts = Object.keys(brandData.brands[category][formData.brand]);
+                    brandProducts = Object.entries(brandData.brands[category][formData.brand]); // 商品名と価格を取得
                     break;
                 }
             }
 
             // 入力された商品名に基づいてフィルタリング
-            const suggestions = brandProducts.filter((product) =>
-                product.toLowerCase().includes(inputValue.toLowerCase())
-            );
+            const suggestions = brandProducts
+                .filter(([productName]) => productName.toLowerCase().includes(inputValue.toLowerCase()))
+                .map(([productName, price]) => ({ productName, price }));
 
             setProductNameSuggestions(suggestions);
+
+            // 一致する商品が1つなら自動的に価格をセット
+            if (suggestions.length === 1) {
+                const { price } = suggestions[0];
+                setFormData((prev) => ({ ...prev, price: price[0] })); // 価格は配列形式なので先頭を取る
+            }
         } else {
             setProductNameSuggestions([]);
+            setFormData((prev) => ({ ...prev, price: "" })); // ブランドまたは商品名が不明な場合価格をクリア
         }
     };
+
 
 
     // myCosmeticItems.jsで編集したとき、その値を反映させるやつ
@@ -379,15 +387,21 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                                     key={index}
                                                     className={s.suggestionItem}
                                                     onClick={() => {
-                                                        setFormData({ ...formData, productName: suggestion });
-                                                        setProductNameSuggestions([]);
+                                                        setFormData({
+                                                            ...formData,
+                                                            productName: suggestion.productName, // 商品名をセット
+                                                            price: suggestion.price[0], // 価格をセット
+                                                        });
+                                                        setProductNameSuggestions([]); // 選択後は候補をクリア
                                                     }}
                                                 >
-                                                    {suggestion}
+                                                    {suggestion.productName}
                                                 </li>
                                             ))}
                                         </ul>
                                     )}
+
+
                                 </div>
 
                                 <label className={s.inputLabel}>
