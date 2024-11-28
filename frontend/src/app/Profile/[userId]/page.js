@@ -236,6 +236,7 @@ const Profile = ({ imageUrl, params }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+
     return (
         <MainLayout>
 

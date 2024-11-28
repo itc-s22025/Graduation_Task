@@ -142,13 +142,19 @@
 .bio {
     /*border: 1px solid red;*/
     position: absolute;
-    top: 12.5vh;
+    top: 13.5vh;
     left: 2.1vw;
     margin-top: 10px;
     padding-bottom: 30px;
-    width: 660px;
-    height: 100px;
+    width: 400px;
+    height: 70px;
     color: #423a3a;
+    border: none;
+}
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 8px;
 }
 
 /* Edit Button */
