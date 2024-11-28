@@ -179,32 +179,33 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
         setFormData({ ...formData, productName: inputValue });
 
         if (formData.brand && inputValue.trim() !== "") {
-            // 選択されたブランドの商品リストを取得
             let brandProducts = [];
             for (const category in brandData.brands) {
                 if (brandData.brands[category][formData.brand]) {
-                    brandProducts = Object.entries(brandData.brands[category][formData.brand]); // 商品名と価格を取得
+                    brandProducts = Object.entries(brandData.brands[category][formData.brand]);
                     break;
                 }
             }
 
-            // 入力された商品名に基づいてフィルタリング
             const suggestions = brandProducts
                 .filter(([productName]) => productName.toLowerCase().includes(inputValue.toLowerCase()))
-                .map(([productName, price]) => ({ productName, price }));
+                .map(([productName, details]) => ({
+                    productName,
+                    price: details.price || details[0], // JSON構造に応じて価格取得
+                }));
 
             setProductNameSuggestions(suggestions);
 
-            // 一致する商品が1つなら自動的に価格をセット
             if (suggestions.length === 1) {
                 const { price } = suggestions[0];
-                setFormData((prev) => ({ ...prev, price: price[0] })); // 価格は配列形式なので先頭を取る
+                setFormData((prev) => ({ ...prev, price }));
             }
         } else {
             setProductNameSuggestions([]);
-            setFormData((prev) => ({ ...prev, price: "" })); // ブランドまたは商品名が不明な場合価格をクリア
+            setFormData((prev) => ({ ...prev, price: "" }));
         }
     };
+
 
 
 
@@ -382,26 +383,23 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                     />
                                     {productNameSuggestions.length > 0 && (
                                         <ul className={s.suggestionsList}>
-                                            {productNameSuggestions.map((suggestion, index) => (
+                                            {productNameSuggestions.map(({ productName, price }) => (
                                                 <li
-                                                    key={index}
-                                                    className={s.suggestionItem}
+                                                    key={productName}
                                                     onClick={() => {
-                                                        setFormData({
-                                                            ...formData,
-                                                            productName: suggestion.productName, // 商品名をセット
-                                                            price: suggestion.price[0], // 価格をセット
-                                                        });
-                                                        setProductNameSuggestions([]); // 選択後は候補をクリア
+                                                        setFormData((prev) => ({
+                                                            ...prev,
+                                                            productName,
+                                                            price,
+                                                        }));
+                                                        setProductNameSuggestions([]); // サジェスト候補をクリア
                                                     }}
                                                 >
-                                                    {suggestion.productName}
+                                                    {productName}
                                                 </li>
                                             ))}
                                         </ul>
                                     )}
-
-
                                 </div>
 
                                 <label className={s.inputLabel}>
