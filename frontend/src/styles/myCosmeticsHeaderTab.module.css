@@ -425,7 +425,6 @@
     padding: 0;
     list-style: none;
     border: 1px solid #ccc;
-    border-radius: 10px;
     scrollbar-width: thin;
     max-height: 120px;
     overflow-y: auto;
@@ -433,7 +432,8 @@
     left: 43.5vw;
     background: #fff;
     z-index: 10;
-    width: 240px;
+    width: 220px;
+    color: #4A4444;
 }
 
 .suggestionItem {
@@ -442,5 +442,6 @@
 }
 
 .suggestionItem:hover {
-    background: #f0f0f0;
+    background: #ff92AD;
+    color: #fff;
 }

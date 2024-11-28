@@ -162,6 +162,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                 brand.toLowerCase().includes(inputValue.toLowerCase())
             );
             setBrandSuggestions(suggestions);
+
         } else {
             setBrandSuggestions([]);
         }
@@ -278,8 +279,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                         ))}
                                     </select>
                                 </label>
-                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange}
-                                        value={formData.cosmeticsType}>
+                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange} value={formData.cosmeticsType}>
                                     <option value="" disabled>コスメの種類を選択してください</option>
                                     <option value="アイシャドウ">アイシャドウ</option>
                                     <option value="アイブロウ用品">アイブロウ用品</option>
@@ -301,34 +301,27 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                     <option value="その他">その他</option>
                                 </select>
                                 <DateInput/>
-
-                                <input
-                                    type="text"
-                                    name="brand"
-                                    className={s.inputBox}
-                                    placeholder="ブランド"
-                                    value={formData.brand}
-                                    onChange={handleBrandChange}
-                                />
-                                {brandSuggestions.length > 0 && (
-                                    <ul className={s.suggestionsList}>
-                                        {brandSuggestions.map((suggestion, index) => (
-                                            <li
-                                                key={index}
-                                                className={s.suggestionItem}
-                                                onClick={() => {
-                                                    setFormData({ ...formData, brand: suggestion });
-                                                    setBrandSuggestions([]); // 選択後は候補をクリア
-                                                }}
-                                            >
-                                                {suggestion}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-
-
-
+                                {/*brand*/}
+                                <div>
+                                    <input type="text" name="brand" className={s.inputBox}
+                                           placeholder="ブランド" value={formData.brand} onChange={handleBrandChange}/>
+                                    {brandSuggestions.length > 0 && (
+                                        <ul className={s.suggestionsList}>
+                                            {brandSuggestions.map((suggestion, index) => (
+                                                <li
+                                                    key={index}
+                                                    className={s.suggestionItem}
+                                                    onClick={() => {
+                                                        setFormData({ ...formData, brand: suggestion });
+                                                        setBrandSuggestions([]); // 選択後は候補をクリア
+                                                    }}
+                                                >
+                                                    {suggestion}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
                                 <input type="text" name="productName" className={s.inputBox} placeholder="商品名"
                                        value={formData.productName} onChange={handleInputChange}/>
                                 <label className={s.inputLabel}>
