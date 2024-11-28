@@ -7,7 +7,19 @@ import EachPost from "@/components/eachPost";
 import {isBefore, subDays} from 'date-fns';
 //firebase
 import {auth, db} from "@/firebase";
-import {addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc, where} from "firebase/firestore";
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    onSnapshot,
+    orderBy,
+    query,
+    setDoc,
+    where
+} from "firebase/firestore";
 import {onAuthStateChanged} from "firebase/auth";
 
 const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
@@ -87,41 +99,75 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
         return () => unsubscribe();
     }, [currentUserUid, searchPost, ownPost]);
 
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "posts"), orderBy("timestamp", "desc"), async (snapshot) => {
+            const postsData = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
 
-    //tabType
-   // useEffect(() => {
-   //     if (!tabType || tabType.length === 0) return; // tabTypeが空なら処理をしない
-   //
-   //     const fetchPosts = async () => {
-   //         console.log("tabType:", tabType);
-   //         // まず投稿を空にする
-   //         setPosts([]);
-   //
-   //         try {
-   //             const postsQuery = query( collection(db, "posts"), where("uid", "in", tabType));
-   //             const querySnapshot = await getDocs(postsQuery);
-   //
-   //             console.log("querySnapshot.docs:", querySnapshot.docs);
-   //
-   //             if (querySnapshot.empty) {
-   //                 console.log("一致する投稿がありません");
-   //             }
-   //
-   //             const postsData = querySnapshot.docs.map((doc) => ({
-   //                 id: doc.id,
-   //                 ...doc.data(),
-   //             }));
-   //
-   //             console.log("取得した投稿データ:", postsData);
-   //             setPosts(postsData);  // 絞り込んだ投稿をセット
-   //
-   //         } catch (error) {
-   //             console.error("投稿の取得に失敗しました: ", error);
-   //         }
-   //     };
-   //
-   //     fetchPosts();
-   //     }, [tabType]);  // tabTypeが変更される度に再実行
+            // Check if the current user is logged in and get the icon
+            let currentUserIcon = null;
+            if (currentUserUid) {
+                const userDoc = await getDoc(doc(db, "users", currentUserUid));
+                currentUserIcon = userDoc.exists() ? userDoc.data().icon : null;
+            }
+
+            // Update the posts icons if the post belongs to the current user
+            const updatedPosts = postsData.map(post => ({
+                ...post,
+                icon: post.uid === currentUserUid && currentUserIcon ? currentUserIcon : post.icon,
+            }));
+
+            setPosts(updatedPosts); // Update the posts with the new icons
+        });
+
+        return () => unsubscribe(); // Cleanup the listener
+    }, [currentUserUid]); // Rerun this effect when currentUserUid changes
+
+    useEffect(() => {
+        if (!currentUserUid) return;
+
+        const unsubscribe = onSnapshot(
+            doc(db, "users", currentUserUid),
+            (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const updatedUser = docSnapshot.data();
+                    setPosts((prevPosts) =>
+                        prevPosts.map((post) => ({
+                            ...post,
+                            icon: post.uid === currentUserUid ? updatedUser.icon : post.icon,
+                        }))
+                    );
+                }
+            },
+            (error) => {
+                console.error("Error updating user posts:", error);
+            }
+        );
+
+        return () => unsubscribe();
+    }, [currentUserUid]);
+
+
+    const handleNewPost = async (newPostData) => {
+        try {
+            // Fetch current user's icon
+            const userDoc = await getDoc(doc(db, "users", currentUserUid));
+            const currentUserIcon = userDoc.exists() ? userDoc.data().icon : "";
+
+            // Add a new post with the current user's icon
+            await addDoc(collection(db, "posts"), {
+                ...newPostData,
+                uid: currentUserUid,
+                icon: currentUserIcon, // Attach the user's icon to the post
+                timestamp: new Date(),
+            });
+        } catch (error) {
+            console.error("Error creating new post: ", error);
+        }
+    };
+
 
 
     //いいね機能

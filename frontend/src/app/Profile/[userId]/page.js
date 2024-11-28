@@ -44,7 +44,7 @@ const Profile = ({ imageUrl, params }) => {
 
     //paramsのuserIdに基づくユーザデータをセット
     useEffect(() => {
-        if (userId) {   //もしuserIdが空でなければ
+        if (userId) {
             const fetchUserData = async () => {
                 try {
                     const userDocRef = doc(db, "users", userId);
@@ -56,7 +56,7 @@ const Profile = ({ imageUrl, params }) => {
                         setHeaderImage(data.headerImage);
                         setIcon(data.icon || 'user_default.png');
                         setUsername(data.name || 'user');
-                        setDisplayId(data.displayId || 'unknown')
+                        setDisplayId(data.displayId || 'unknown');
                         setBio(data.bio || 'ここにBioが表示されます');
                         setPersonalColor(data.personalColor?.[3] || '');
                     }
@@ -66,7 +66,8 @@ const Profile = ({ imageUrl, params }) => {
             };
             fetchUserData();
         }
-    }, [userId, db]);
+    }, [userId]);
+
 
     // ユーザのポストをフェッチ
     useEffect(() => {
@@ -153,16 +154,31 @@ const Profile = ({ imageUrl, params }) => {
         if (currentUserUid) {
             try {
                 const userDocRef = doc(db, "users", currentUserUid);
+
+                // Firebase にプロフィールを更新
                 await updateDoc(userDocRef, {
                     headerImage: newHeader,
                     icon: newIcon,
                     name: newUserName,
                     bio: newBio
                 });
+
+                // 更新後、ユーザーのローカル状態を即座に更新
                 setHeaderImage(newHeader);
                 setIcon(newIcon);
                 setUsername(newUserName);
                 setBio(newBio);
+
+                // アイコンを全てのポストにも適用
+                const userPostsRef = query(collection(db, "posts"), where("uid", "==", currentUserUid));
+                const postsSnapshot = await getDocs(userPostsRef);
+                const postUpdates = postsSnapshot.docs.map(postDoc =>
+                    updateDoc(postDoc.ref, {
+                        icon: newIcon
+                    })
+                );
+                await Promise.all(postUpdates);
+
                 alert('Profile updated successfully');
             } catch (error) {
                 console.error("Error updating document: ", error);
@@ -170,6 +186,9 @@ const Profile = ({ imageUrl, params }) => {
             }
         }
     };
+
+
+
 
     const [currentUserUid, setCurrentUserUid] = useState(null);
 
