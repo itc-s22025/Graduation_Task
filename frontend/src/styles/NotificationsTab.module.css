@@ -1,7 +1,9 @@
 .allContainer{
     position: absolute;
     left: 30vw;
-    top: 76px;
+    top: 50px;
+    background-color: #FF92AD;
+
 }
 
 .all{

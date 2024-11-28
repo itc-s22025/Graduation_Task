@@ -1,21 +1,29 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
 import s from '@/styles/post.module.css';
 import EachPost from "@/components/eachPost";
-import { formatDistanceToNow, isBefore, subDays } from 'date-fns';
+import {isBefore, subDays} from 'date-fns';
 //firebase
-import { auth, db } from "@/firebase";
-import { collection, onSnapshot, addDoc, deleteDoc, query, where, getDocs, orderBy } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { doc, setDoc } from "firebase/firestore";
-import tweet from "@/components/tweet"; // Firestoreの関数をインポート
+import {auth, db} from "@/firebase";
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    onSnapshot,
+    orderBy,
+    query,
+    setDoc,
+    where
+} from "firebase/firestore";
+import {onAuthStateChanged} from "firebase/auth";
 
-const Post = ({ userId, searchPost, pageType }) => {
-    const pathname = usePathname()
-  
+const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
+
     const [posts, setPosts] = useState([]); // 投稿リスト
     const [showEachPost, setShowEachPost] = useState(false);
     const [showReport, setShowReport] = useState(false);
@@ -30,8 +38,8 @@ const Post = ({ userId, searchPost, pageType }) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             // userが存在する(ログインしている)場合はuidを、存在しない(ログインしていない)場合はnullをcurrentUserUidにセットする
             setCurrentUserUid(user ? user.uid : null);
-            console.log("ゆーざ確認：", user)
         });
+
         //コンポーネントがアンマウントされるとき、unsubscribeを呼び出して監視を解除
         return () => unsubscribe();
     }, []);
@@ -47,8 +55,6 @@ const Post = ({ userId, searchPost, pageType }) => {
                 repostedBy: []
             }));
 
-            // ここでpostsDataの内容を確認
-            console.log("Fetchedポストデータ:", postsData);
             // likes コレクションから各投稿に対するいいね情報を取得
             const likesSnapshot = await getDocs(collection(db, "likes"));
             const likesData = likesSnapshot.docs.map(doc => doc.data());
@@ -69,19 +75,21 @@ const Post = ({ userId, searchPost, pageType }) => {
                     .map(repost => repost.userId);  // userId のみを抽出して repostedBy 配列に格納
             });
 
-            // 現在のパスが /Profile のときのみフィルタリング(currentUserのポストのみ表示する)
             let filteredPosts = postsData;
-            // if (pathname === '/Profile') {  //もしpathnameが/Profileだったら
-            //     filteredPosts = postsData.filter(post => post.uid === currentUserUid);  //filteredPostsにフィルタリングしたデータ(post.uidがcurrentUserUidと一致するポスト)を入れる
-            // }
 
              // searchPostが渡されている場合はそれでさらにフィルタリング...検索機能と関連
-            if (searchPost) {
-                filteredPosts = filteredPosts.filter(post =>
-                    post.tweet.includes(searchPost.tweet)
-                );
-                console.log("サーチしたポスト:", filteredPosts)
+            if (searchPost && searchPost.tweet) {
+                filteredPosts = filteredPosts.filter(post => post?.tweet?.includes(searchPost.tweet));
             }
+
+
+            //ownPostが渡されてたらそれでフィルタリング
+            if (ownPost && ownPost.tweet) {
+                filteredPosts = filteredPosts.filter(post =>
+                    post.tweet && post.tweet.includes(ownPost.tweet)
+                );
+            }
+
 
             // フィルタリングされたデータをセット(されてない場合はpostsDataのまま)
             setPosts(filteredPosts);
@@ -89,7 +97,77 @@ const Post = ({ userId, searchPost, pageType }) => {
 
         //リアルタイム更新の監視を解除　終わりだよ〜
         return () => unsubscribe();
-    }, [currentUserUid, pathname, searchPost]);
+    }, [currentUserUid, searchPost, ownPost]);
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "posts"), orderBy("timestamp", "desc"), async (snapshot) => {
+            const postsData = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            // Check if the current user is logged in and get the icon
+            let currentUserIcon = null;
+            if (currentUserUid) {
+                const userDoc = await getDoc(doc(db, "users", currentUserUid));
+                currentUserIcon = userDoc.exists() ? userDoc.data().icon : null;
+            }
+
+            // Update the posts icons if the post belongs to the current user
+            const updatedPosts = postsData.map(post => ({
+                ...post,
+                icon: post.uid === currentUserUid && currentUserIcon ? currentUserIcon : post.icon,
+            }));
+
+            setPosts(updatedPosts); // Update the posts with the new icons
+        });
+
+        return () => unsubscribe(); // Cleanup the listener
+    }, [currentUserUid]); // Rerun this effect when currentUserUid changes
+
+    useEffect(() => {
+        if (!currentUserUid) return;
+
+        const unsubscribe = onSnapshot(
+            doc(db, "users", currentUserUid),
+            (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const updatedUser = docSnapshot.data();
+                    setPosts((prevPosts) =>
+                        prevPosts.map((post) => ({
+                            ...post,
+                            icon: post.uid === currentUserUid ? updatedUser.icon : post.icon,
+                        }))
+                    );
+                }
+            },
+            (error) => {
+                console.error("Error updating user posts:", error);
+            }
+        );
+
+        return () => unsubscribe();
+    }, [currentUserUid]);
+
+
+    const handleNewPost = async (newPostData) => {
+        try {
+            // Fetch current user's icon
+            const userDoc = await getDoc(doc(db, "users", currentUserUid));
+            const currentUserIcon = userDoc.exists() ? userDoc.data().icon : "";
+
+            // Add a new post with the current user's icon
+            await addDoc(collection(db, "posts"), {
+                ...newPostData,
+                uid: currentUserUid,
+                icon: currentUserIcon, // Attach the user's icon to the post
+                timestamp: new Date(),
+            });
+        } catch (error) {
+            console.error("Error creating new post: ", error);
+        }
+    };
+
 
 
     //いいね機能
@@ -138,6 +216,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                        type: "like", // 通知タイプ
                        message: notificationMessage, // 通知メッセージ
                        postId: postId, // 投稿ID
+                       icon: post.icon,
                        tweet: post.tweet || "", // ツイート内容を追加
                        timestamp: new Date(), // タイムスタンプ
                    });
@@ -184,6 +263,7 @@ const Post = ({ userId, searchPost, pageType }) => {
                         }
                         return updatedPosts;
                     });
+
                 }
             }
             console.log("ぽすつ:", post.userId)
@@ -192,8 +272,7 @@ const Post = ({ userId, searchPost, pageType }) => {
         }
     }
 
-    //show reposted post
-    // 元のポストとリポストされたポストを統合して並べ替える関数
+    //show reposted post 元のポストとリポストされたポストを統合して並べ替える
     const getAllPostsIncludingReposts = () => {
         const allPosts = posts.map(post => ({
             ...post,
@@ -201,16 +280,16 @@ const Post = ({ userId, searchPost, pageType }) => {
         }));
 
         const repostedPosts = posts.flatMap(post =>
-            post.repostedBy.map(userId => ({
+            (post.repostedBy || []).map(repostedUserId => ({
                 ...post,
-                userId,  // リポストユーザーのID
-                type: 'repost',  // リポストのマーク
-                repostTimestamp: new Date(),  // リポストのタイムスタンプ
+                repostedUserId,
+                type: 'repost',
+                repostTimestamp: new Date(),
             }))
         );
 
         // 元のポストとリポストを結合してtimestamp順に並べ替え
-        const combinedPosts = [...allPosts, ...repostedPosts].sort(
+        return [...allPosts, ...repostedPosts].sort(
             (a, b) => {
                 // a.timestamp と b.timestamp がすでに Date 型である場合
                 const aTimestamp = a.repostTimestamp || a.timestamp;
@@ -223,8 +302,6 @@ const Post = ({ userId, searchPost, pageType }) => {
                 return bDate.getTime() - aDate.getTime();  // getTime() でミリ秒を比較
             }
         );
-
-        return combinedPosts;
     };
 
     // 表示関連
@@ -284,17 +361,20 @@ const Post = ({ userId, searchPost, pageType }) => {
                 {getAllPostsIncludingReposts()
                     .map((post, index) => (
                     <div key={index} className={`${s.all} ${flameWidth} ${savedPosts.includes(post.id) ? s.saved : ''}`}>   {/*post.idで識別*/}
+                        {post.replyTo && (
+                            <div className={s.replyNotify}>← 返信</div>
+                        )}
                         <div className={s.includeIconsContainer}>
                             <div className={s.iconContainer}>
-                                <img className={s.iconImage} alt="icon" src={post.icon || "/user_default.png"} onClick={() => router.push(`/AnotherScreen/${post.uid}`)} />
+                                <img className={s.iconImage} alt="icon" src={post.icon || "/user_default.png"} onClick={() => router.push(`/Profile/${post.uid}`)} />
                             </div>
 
                             <div className={s.topContainer}>
                                 <div className={s.topMiddleContainer}>
                                     <div className={s.infoContainer}>
 
-                                        <p className={s.name}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
-                                        <p className={s.userID}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
+                                        <p className={s.name} onClick={() => router.push(`/Profile/${post.uid}`)}>{post.name || "Anonymous"}</p>    {/*post.nameがnullのときはAnonymousて表示する*/}
+                                        <p className={s.userID} onClick={() => router.push(`/Profile/${post.uid}`)}>@{post.userId || "user1"}</p>  {/*とりあえずuserIdにしとく*/}
                                         <p className={s.pc}> {post.personalColor || "未設定"}</p>  {/*こっちまだ*/}
                                         <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
 
@@ -319,29 +399,40 @@ const Post = ({ userId, searchPost, pageType }) => {
                                 <p className={s.reactionText}>0</p>
                             </div>
                             <div className={s.flex}>    {/*repost*/}
-                                <img alt="リポストアイコン"
-                                     src={
-                                     hoveredRepostId === post.id ? "/repost_after.png" : post.repostedBy.includes(currentUserUid)
-                                        ? "/repost_after.png" : "/repost_before.png"}
-                                     className={s.repost}
-                                     onClick={() => handleRepostClick(post.id)}
+                                <img
+                                    alt="リポストアイコン"
+                                    src={
+                                        hoveredRepostId === post.id
+                                            ? "/repost_after.png"
+                                            : (Array.isArray(post.repostedBy) && post.repostedBy.includes(currentUserUid))
+                                                ? "/repost_after.png"
+                                                : "/repost_before.png"
+                                    }
+                                    className={s.repost}
+                                    onClick={() => handleRepostClick(post.id)}
                                      onMouseEnter={() => setHoveredRepostId(post.id)}
                                      onMouseLeave={() => setHoveredRepostId(null)}
                                 />
-                                <p className={s.reactionText}>{post.repostedBy.length}</p>
+                               <p className={s.reactionText}>{Array.isArray(post.repostedBy) ? post.repostedBy.length : 0}</p>
                             </div>
                             <div className={s.flex}>    {/*like*/}
                                 {/*post.likedByにcurrentUserIdがあればcutie_heart_after、なければbeforeを表示*/}
-                                <img alt="いいねアイコン"
-                                     src={
-                                     hoveredPostId === post.id ? "/cutie_heart_after.png" : post.likedBy.includes(currentUserUid)
-                                         ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
-                                     className={s.like}
-                                     onClick={() => handleLikeClick(post.id)}
+                                <img
+                                    alt="いいねアイコン"
+                                    src={
+                                        hoveredPostId === post.id
+                                            ? "/cutie_heart_after.png"
+                                            : Array.isArray(post.likedBy) && post.likedBy.includes(currentUserUid)
+                                                ? "/cutie_heart_after.png"
+                                                : "/cutie_heart_before.png"
+                                    }
+                                    className={s.like}
+                                    onClick={() => handleLikeClick(post.id)}
                                      onMouseEnter={() => setHoveredPostId(post.id)}
                                      onMouseLeave={() => setHoveredPostId(null)}
                                 />
-                                <p className={s.reactionText}>{post.likedBy.length}</p> {/* いいねの数を表示 */}
+                                <p className={s.reactionText}>{Array.isArray(post.likedBy) ? post.likedBy.length : 0}</p>
+
                             </div>
                             <div className={s.flex} onClick={() => handleKeepClick(post)}>
                                 <div className={`${s.keep} ${savedPosts.includes(post.id) ? s.keepActive : ''}`} />

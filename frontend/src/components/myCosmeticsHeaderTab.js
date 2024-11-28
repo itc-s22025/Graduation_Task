@@ -11,13 +11,14 @@ import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "@/firebase";
 
 
-const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, secondTabContent }) => {
+const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
     const [cosmeticsData, setCosmeticsData] = useState([]);
     //ログインしているユーザ
     const [currentUserUid, setCurrentUserUid] = useState(null);
     //新規コスメ登録
     const [isAdding, setIsAdding] = useState(false);
     const [formData, setFormData] = useState({
+        selectedTab: '',
         cosmeticsType: '',
         openDate: '',
         brand: '',
@@ -30,7 +31,7 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
     });
 
     // タブ部分　UI
-    const [focusedTab, setFocusedTab] = useState(''); // state
+    const [focusedTab, setFocusedTab] = useState('all'); // state
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
@@ -108,7 +109,7 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
     const handleCancelAdd = () => setIsAdding(false);
     //  新規コスメ追加機能
     const handleAddNewCosmeClick = async () => {
-        const { cosmeticsType, openDate, brand, productName, quantity, price } = formData;
+        const { selectedTab, cosmeticsType, openDate, brand, productName, quantity, price } = formData;
         // バリデーション
         if (!cosmeticsType || !openDate || !brand || !productName || !quantity || !price) {
             alert("必須項目をすべて入力してください");
@@ -117,12 +118,14 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
         try {
             await addDoc(collection(db, "MyCosmetics"), {
                 ...formData,
+                selectedTab: selectedTab || "all", // 選択されたタブ、未選択なら "all"
                 openDate: formData.openDate ? Timestamp.fromDate(new Date(formData.openDate)) : null,
                 updatedDate: Timestamp.now(),
                 user_id: currentUserUid,
             });
             alert("新しいコスメが登録されました");
             setFormData({
+                selectedTab: "all", // 初期化
                 cosmeticsType: '',
                 openDate: '',
                 brand: '',
@@ -182,14 +185,30 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
             <Tabs>
                 <TabList className={s.all}>
                     <ul className={s.ul}>
-                        <Tab className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''}`}
-                             onFocus={() => handleFocus('tabFirst')} tabIndex={0}>
-                            {firstTabText}
-                        </Tab>
-                        <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`}
-                             onFocus={() => handleFocus('tabSecond')} tabIndex={0}>
-                            {secondTabText}
-                        </Tab>
+                        {tabs.map((tab, index) => (
+                            <Tab
+                                key={index}
+                                className={`${s.tabs} ${focusedTab === tab.name ? s.zIndex4 : ''}`}
+                                tabIndex={focusedTab === 'all' ? 0 : index + 1}  // "All" タブを一番最初に表示
+                                onFocus={() => handleFocus(tab.name)}
+                                style={{
+                                    zIndex: focusedTab === tab.name
+                                        ? 4  // フォーカスしているタブが最前面
+                                        : (tab.name === 'favorites' ? 2 : 1),  // favタブは2、他は1
+                                    backgroundColor: tab.name === "all" ? "#fff"
+                                        : tab.name === "favorites" ? "#FFDCDD" : "#FFBFC0", //背景色
+                                    color: tab.name === "all" ? "#FF989A" : tab.name === "favorites" ? "#FF989A" : "#fff",  //文字色
+                                    borderBottom: tab.name === "favorites" ? "none" : tab.name === "tab3" ? "none" : ""
+                                }}
+                            >
+                                {tab.title}
+                                {/* 必須タブ以外の場合に削除ボタンを表示 */}
+                                {!["all", "favorites"].includes(tab.name) && (
+                            <button className={s.deleteTabButton} onClick={() => handleDeleteTab(tab.id)}>×</button>
+                    )}
+                            </Tab>
+                        ))}
+                        <Tab className={s.addTabButton} onClick={handleAddTab}>+</Tab>
                     </ul>
                 </TabList>
 
@@ -206,18 +225,11 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
 
 
                 {/* Tab Panels */}
-                <TabPanel>
-                    <article>
-                        {firstTabContent}
-                    </article>
-                </TabPanel>
-
-                <TabPanel>
-                    <article>
-                        {secondTabContent}
-                    </article>
-                </TabPanel>
-
+                {tabs.map((tab, index) => (
+                    <TabPanel key={index}>
+                        <article className={s.tabContent}>{tab.content}</article>
+                    </TabPanel>
+                ))}
             </Tabs>
 
 
@@ -228,8 +240,23 @@ const MyCosmeticsHeaderTab = ({ firstTabText, secondTabText, firstTabContent, se
                         <h2 className={s.newCosmeticTitle}>新しいコスメを追加</h2>
                         <form>
                             <div className={s.inputContainer}>
-                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange} value={formData.cosmeticsType}>
-                                    <option value="">コスメの種類を選択してください</option>
+                                <label className={s.inputTabLabel}>追加するタブ：
+                                    <select
+                                        name="selectedTab"
+                                        value={formData.selectedTab || "all"}
+                                        className={s.selectTabBox}
+                                        onChange={(e) => setFormData({...formData, selectedTab: e.target.value})}
+                                    >
+                                        {tabs.filter((tab) => tab.name !== "favorites").map((tab) => (
+                                            <option key={tab.name} value={tab.name}>
+                                                {tab.title}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
+                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange}
+                                        value={formData.cosmeticsType}>
+                                    <option value="" disabled>コスメの種類を選択してください</option>
                                     <option value="アイシャドウ">アイシャドウ</option>
                                     <option value="アイブロウ用品">アイブロウ用品</option>
                                     <option value="アイライナー">アイライナー</option>

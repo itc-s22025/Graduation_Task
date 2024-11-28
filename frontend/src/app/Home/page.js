@@ -2,54 +2,35 @@
 
 import MainLayout from "@/components/MainLayout";
 import PostButton from "@/components/post_button";
-import {useRouter} from "next/navigation";
 import HeaderTab from "@/components/headerTab";
-import Post from "@/components/post";
-import s from "@/app/Home/page.module.css"
-import AddTab from "@/components/addTab";
-import {useState} from "react";
+import s from "@/app/Home/page.module.css";
+import { useState, useEffect } from "react";
+import { auth } from "@/firebase";
 
-const Home = ({pageType}) => {
+const Home = () => {
+    const [user, setUser] = useState(null);
 
-    //state
-    const [showAddTab, setShowAddTab] = useState(false);
+    // ログインユーザーを監視
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+            setUser(currentUser || null);
+        });
 
-    const handleAddClick = () => {
-        console.log("handleAddClick");
-        setShowAddTab(true); // AddTabを表示
-    };
+        return () => unsubscribe();
+    }, []);
 
-    const handleCloseAddTab = () => {
-        setShowAddTab(false); // AddTabを非表示
-    };
-
-    const addTab = pageType === 'myCosmetics' ? s.addTabMC : s.addTabHome;
-
-    return(
+    return (
         <>
             <MainLayout>
                 <div className={s.allContainer}>
-                    <HeaderTab firstTabText="Now" secondTabText="Following" thirdTabText="tab3" firstTabContent={<Post/>}
-                               pageType="home"/>
-                    <button className={`${s.addButton} ${addTab}`} onClick={handleAddClick}>+</button>
+                    {/* ユーザー情報を渡す */}
+                    <HeaderTab user={user} />
                 </div>
 
-
-                <PostButton/>
-
-                {/* タブ追加ボタン押したとき */}
-                {showAddTab && (
-                    <div className={s.addTabOverlay}>
-                        <div className={s.addTabContent}>
-                            <AddTab pageType={pageType} /> {/* pageTypeを渡す */}
-                            <button onClick={handleCloseAddTab} className={s.buttonCancel}>Cancel</button>
-                        </div>
-                    </div>
-                )}
-
+                <PostButton />
             </MainLayout>
         </>
-    )
-}
+    );
+};
 
 export default Home;

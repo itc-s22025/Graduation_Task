@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import s from '../styles/question.module.css';
 
-const Question = ({ number, questionText, options = [] }) => {
+const Question = ({ number, questionText, options = [], handleSelectOptions }) => {
     const [selectedOption, setSelectedOption] = useState(null);
 
     const handleClick = (option) => {
         setSelectedOption(option);
+        handleSelectOptions(option);
     };
 
     return (
@@ -24,7 +25,6 @@ const Question = ({ number, questionText, options = [] }) => {
                     </button>
                     ))}
                 </div>
-
         </div>
     );
 };
