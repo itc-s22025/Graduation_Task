@@ -57,23 +57,17 @@ const Edit = ({ onSave }) => {
         if (!currentUser?.uid) return;
 
         try {
-            // トリミングした画像データを File オブジェクトとして取得
             const response = await fetch(croppedImage);
             const blob = await response.blob();
-
-            // ファイル名を設定 (例: headerImage, icon)
             const fileName = isForHeader
                 ? `headers/${currentUser.uid}_header.jpg`
                 : `icons/${currentUser.uid}_icon.jpg`;
 
-            // Firebase Storage にアップロード
             const storageRef = ref(storage, fileName);
             await uploadBytes(storageRef, blob);
 
-            // アップロード後の URL を取得
             const downloadURL = await getDownloadURL(storageRef);
 
-            // Firestore に保存
             const userRef = doc(db, "users", currentUser.uid);
             if (isForHeader) {
                 await updateDoc(userRef, { headerImage: downloadURL });
@@ -90,16 +84,22 @@ const Edit = ({ onSave }) => {
         }
     };
 
-
     const uploadImage = async (file, path) => {
         const storageRef = ref(storage, `images/${path}`);
         await uploadBytes(storageRef, file);
         return await getDownloadURL(storageRef);
     };
 
+    // Bioが20文字を超えた場合にエラーを表示し、保存を無効にする
     const handleSave = async () => {
         if (!currentUser?.uid) {
             alert("You must be signed in to edit your profile.");
+            return;
+        }
+
+        // Bioの文字数チェック
+        if (newBio.length > 20) {
+            alert("Bioは20文字以内で入力してください。");
             return;
         }
 
@@ -125,6 +125,17 @@ const Edit = ({ onSave }) => {
             console.error("Error updating profile:", error);
             alert("プロフィールの更新中にエラーが発生しました。");
         }
+    };
+
+    // preventScroll関数の定義
+    const preventScroll = (e) => {
+        e.preventDefault();
+    };
+
+    const handleEditClick = () => {
+        setShowEditModal(true);
+        window.addEventListener('wheel', preventScroll, { passive: false });
+        window.addEventListener('touchmove', preventScroll, { passive: false });
     };
 
     return (
