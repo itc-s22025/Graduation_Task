@@ -32,6 +32,9 @@ const Profile = ({ imageUrl, params }) => {
     const [isFollowing, setIsFollowing] = useState(false);
     const [userPosts, setUserPosts] = useState([]);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalImageUrl, setModalImageUrl] = useState('');
+
     // ユーザーの認証状態を監視,currentUserUidにログインユーザのuidを入れる
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -187,6 +190,15 @@ const Profile = ({ imageUrl, params }) => {
         }
     };
 
+    const handleImageClick = (imageUrl) => {
+        setModalImageUrl(imageUrl);
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setModalImageUrl('');
+    }
 
 
 
@@ -244,11 +256,19 @@ const Profile = ({ imageUrl, params }) => {
                 <div className={s.headerToTabsContainer}>
                     {/*header*/}
                     <div className={s.header}>
-                        <img src={headerImage} className={s.headerImage}/>
+                        <img
+                            src={headerImage}
+                            className={s.headerImage}
+                            onClick={() => handleImageClick(headerImage)}
+                        />
                     </div>
 
                     <div className={s.container}>
-                        <img src={icon} className={s.profileImage} />
+                        <img
+                            src={icon}
+                            className={s.profileImage}
+                            onClick={() => handleImageClick(headerImage)}
+                        />
                         <div>
                             <a className={`${s.personal}
                                 ${personalColor === '春' ? s.springText : personalColor === '夏' ? s.summerText : personalColor === '秋' ? s.autumnText : personalColor === '冬' ? s.winterText : ''}`}>
@@ -335,6 +355,14 @@ const Profile = ({ imageUrl, params }) => {
                     <div className={s.modalContent}>
                         <Edit onSave={handleSave} />
                         <button onClick={handleCloseEditModal} className={s.closeButton}>Close</button>
+                    </div>
+                </div>
+            )}
+
+            {isModalOpen && (
+                <div className={s.modal} onClick={closeModal}>
+                    <div className={s.modalContent} onClick={(e) => e.stopPropagation()}>
+                        <img src={modalImageUrl} alt="Full screen" className={s.fullScreenImage} />
                     </div>
                 </div>
             )}
