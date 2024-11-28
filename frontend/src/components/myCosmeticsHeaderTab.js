@@ -146,42 +146,20 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
         }
     }
 
-    // // brand名サジェスト
-    // const [brandSuggestions, setBrandSuggestions] = useState([]); // 候補リスト
-    // const handleBrandChange = (e) => {
-    //     const inputValue = e.target.value;
-    //     setFormData({ ...formData, brand: inputValue });
-    //
-    //     // 入力値に応じたブランド候補をフィルタリング
-    //     if (inputValue.trim() !== "") {
-    //         // 全てのカテゴリ内のブランド名を取得
-    //         const allBrands = Object.values(brandData.brands).flat();
-    //
-    //         // 入力値に応じたブランド候補をフィルタリング
-    //         const suggestions = allBrands.filter((brand) =>
-    //             brand.toLowerCase().includes(inputValue.toLowerCase())
-    //         );
-    //         setBrandSuggestions(suggestions);
-    //
-    //     } else {
-    //         setBrandSuggestions([]);
-    //     }
-    // };
-
-    // brand名サジェスト
-    const [brandSuggestions, setBrandSuggestions] = useState([]); // 候補リスト
+    //予測変換
+    const [productNameSuggestions, setProductNameSuggestions] = useState([]);
+    const [brandSuggestions, setBrandSuggestions] = useState([]);
+    // ブランド変更時
     const handleBrandChange = (e) => {
         const inputValue = e.target.value;
         setFormData({ ...formData, brand: inputValue });
 
-        // 入力値に応じたブランド候補をフィルタリング
+        // 入力値に応じてブランド候補をフィルタリング
         if (inputValue.trim() !== "") {
-            // JSONの階層構造を解析し、全てのブランド名を収集
             const allBrands = Object.entries(brandData.brands).flatMap(([category, brands]) =>
                 Object.keys(brands)
             );
 
-            // 入力値に応じたブランド候補をフィルタリング
             const suggestions = allBrands.filter((brand) =>
                 brand.toLowerCase().includes(inputValue.toLowerCase())
             );
@@ -190,46 +168,36 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
         } else {
             setBrandSuggestions([]);
         }
+
+        // 商品名サジェストをクリア
+        setProductNameSuggestions([]);
     };
 
-    //商品名サジェスト
-    const [productNameSuggestions, setProductNameSuggestions] = useState([]);
+    // 商品名変更時
     const handleProductNameChange = (e) => {
         const inputValue = e.target.value;
         setFormData({ ...formData, productName: inputValue });
 
         if (formData.brand && inputValue.trim() !== "") {
+            // 選択されたブランドの商品リストを取得
             let brandProducts = [];
             for (const category in brandData.brands) {
                 if (brandData.brands[category][formData.brand]) {
-                    brandProducts = brandData.brands[category][formData.brand];
+                    brandProducts = Object.keys(brandData.brands[category][formData.brand]);
                     break;
                 }
             }
 
-            if (brandProducts.length > 0) {
-                // 入力値を平仮名とカタカナ両方で検索
-                const normalizedInput = inputValue.normalize("NFKC");
+            // 入力された商品名に基づいてフィルタリング
+            const suggestions = brandProducts.filter((product) =>
+                product.toLowerCase().includes(inputValue.toLowerCase())
+            );
 
-                const suggestions = brandProducts.filter((product) => {
-                    // 商品名を平仮名とカタカナ両方で正規化して照合
-                    const normalizedProduct = product.normalize("NFKC");
-
-                    // 平仮名・カタカナ両方で一致するかチェック
-                    return normalizedProduct.includes(normalizedInput);
-                });
-
-                setProductNameSuggestions(suggestions);
-            } else {
-                console.warn("ブランドが見つかりません:", formData.brand);
-                setProductNameSuggestions([]);
-            }
+            setProductNameSuggestions(suggestions);
         } else {
             setProductNameSuggestions([]);
         }
     };
-
-
 
 
     // myCosmeticItems.jsで編集したとき、その値を反映させるやつ
@@ -292,8 +260,8 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                 {tab.title}
                                 {/* 必須タブ以外の場合に削除ボタンを表示 */}
                                 {!["all", "favorites"].includes(tab.name) && (
-                            <button className={s.deleteTabButton} onClick={() => handleDeleteTab(tab.id)}>×</button>
-                    )}
+                                    <button className={s.deleteTabButton} onClick={() => handleDeleteTab(tab.id)}>×</button>
+                                )}
                             </Tab>
                         ))}
                         <Tab className={s.addTabButton} onClick={handleAddTab}>+</Tab>
@@ -367,8 +335,14 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                 <DateInput/>
                                 {/*brand*/}
                                 <div>
-                                    <input type="text" name="brand" className={s.inputBox}
-                                           placeholder="ブランド" value={formData.brand} onChange={handleBrandChange}/>
+                                    <input
+                                        type="text"
+                                        name="brand"
+                                        className={s.inputBox}
+                                        placeholder="ブランド"
+                                        value={formData.brand}
+                                        onChange={handleBrandChange}
+                                    />
                                     {brandSuggestions.length > 0 && (
                                         <ul className={s.suggestionsList}>
                                             {brandSuggestions.map((suggestion, index) => (
@@ -376,7 +350,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                                     key={index}
                                                     className={s.suggestionItem}
                                                     onClick={() => {
-                                                        setFormData({...formData, brand: suggestion});
+                                                        setFormData({ ...formData, brand: suggestion });
                                                         setBrandSuggestions([]); // 選択後は候補をクリア
                                                     }}
                                                 >
@@ -385,6 +359,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                             ))}
                                         </ul>
                                     )}
+
                                 </div>
 
                                 {/* 商品名入力 */}
@@ -404,7 +379,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                                     key={index}
                                                     className={s.suggestionItem}
                                                     onClick={() => {
-                                                        setFormData({...formData, productName: suggestion});
+                                                        setFormData({ ...formData, productName: suggestion });
                                                         setProductNameSuggestions([]);
                                                     }}
                                                 >
