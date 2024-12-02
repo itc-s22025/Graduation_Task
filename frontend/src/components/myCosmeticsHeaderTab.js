@@ -9,6 +9,8 @@ import home from "@/app/Home/page.module.css";
 import {addDoc, collection, getDocs, query, Timestamp, where} from "firebase/firestore";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth, db} from "@/firebase";
+//json
+import brandData from "@/app/data/brand.json";
 
 
 const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
@@ -27,6 +29,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
         price: '',
         memo: '',
         updatedDate: '',
+        imageUrl:'',
         isFavorite: false,
     });
 
@@ -134,6 +137,7 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                 price: '',
                 memo: '',
                 updatedDate: '',
+                imageUrl: '',
                 isFavorite: false,
             });
             setIsAdding(false);
@@ -143,6 +147,70 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
             alert("コスメの登録中にエラーが発生しました");
         }
     }
+
+    //予測変換
+    const [productNameSuggestions, setProductNameSuggestions] = useState([]);
+    const [brandSuggestions, setBrandSuggestions] = useState([]);
+    // ブランド変更時
+    const handleBrandChange = (e) => {
+        const inputValue = e.target.value;
+        setFormData({ ...formData, brand: inputValue });
+
+        // 入力値に応じてブランド候補をフィルタリング
+        if (inputValue.trim() !== "") {
+            const allBrands = Object.entries(brandData.brands).flatMap(([category, brands]) =>
+                Object.keys(brands)
+            );
+
+            const suggestions = allBrands.filter((brand) =>
+                brand.toLowerCase().includes(inputValue.toLowerCase())
+            );
+
+            setBrandSuggestions(suggestions);
+        } else {
+            setBrandSuggestions([]);
+        }
+
+        // 商品名サジェストをクリア
+        setProductNameSuggestions([]);
+    };
+
+    // 商品名変更時
+    const handleProductNameChange = (e) => {
+        const inputValue = e.target.value;
+        setFormData({ ...formData, productName: inputValue });
+
+        if (formData.brand && inputValue.trim() !== "") {
+            let brandProducts = [];
+            for (const category in brandData.brands) {
+                if (brandData.brands[category][formData.brand]) {
+                    brandProducts = Object.entries(brandData.brands[category][formData.brand]);
+                    break;
+                }
+            }
+
+            const suggestions = brandProducts
+                .filter(([productName]) => productName.toLowerCase().includes(inputValue.toLowerCase()))
+                .map(([productName, details]) => ({
+                    productName,
+                    price: details.price || details[0], // JSON構造に応じて価格取得
+                    imageUrl: details.image || "",  // 画像URLを取得
+                }));
+
+            setProductNameSuggestions(suggestions);
+
+            if (suggestions.length === 1) {
+                const { price, imageUrl } = suggestions[0];
+                setFormData((prev) => ({ ...prev, price, imageUrl }));
+            }
+        } else {
+            setProductNameSuggestions([]);
+            setFormData((prev) => ({ ...prev, price: "", imageUrl: "" }));
+        }
+        console.log("img:::",formData)
+    };
+
+
 
     // myCosmeticItems.jsで編集したとき、その値を反映させるやつ
     const handleInputChange = (e) => {
@@ -204,8 +272,8 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                                 {tab.title}
                                 {/* 必須タブ以外の場合に削除ボタンを表示 */}
                                 {!["all", "favorites"].includes(tab.name) && (
-                            <button className={s.deleteTabButton} onClick={() => handleDeleteTab(tab.id)}>×</button>
-                    )}
+                                    <button className={s.deleteTabButton} onClick={() => handleDeleteTab(tab.id)}>×</button>
+                                )}
                             </Tab>
                         ))}
                         <Tab className={s.addTabButton} onClick={handleAddTab}>+</Tab>
@@ -240,57 +308,135 @@ const MyCosmeticsHeaderTab = ({ tabs, handleAddTab, handleDeleteTab }) => {
                         <h2 className={s.newCosmeticTitle}>新しいコスメを追加</h2>
                         <form>
                             <div className={s.inputContainer}>
-                                <label className={s.inputTabLabel}>追加するタブ：
-                                    <select
-                                        name="selectedTab"
-                                        value={formData.selectedTab || "all"}
-                                        className={s.selectTabBox}
-                                        onChange={(e) => setFormData({...formData, selectedTab: e.target.value})}
-                                    >
-                                        {tabs.filter((tab) => tab.name !== "favorites").map((tab) => (
-                                            <option key={tab.name} value={tab.name}>
-                                                {tab.title}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </label>
-                                <select name="cosmeticsType" className={s.selectBox} onChange={handleInputChange}
-                                        value={formData.cosmeticsType}>
-                                    <option value="" disabled>コスメの種類を選択してください</option>
-                                    <option value="アイシャドウ">アイシャドウ</option>
-                                    <option value="アイブロウ用品">アイブロウ用品</option>
-                                    <option value="アイライナー">アイライナー</option>
-                                    <option value="香水・フレグランス">香水・フレグランス</option>
-                                    <option value="基礎化粧品">基礎化粧品</option>
-                                    <option value="化粧下地">化粧下地</option>
-                                    <option value="コンシーラー">コンシーラー</option>
-                                    <option value="チーク">チーク</option>
-                                    <option value="ハイライター">ハイライター</option>
-                                    <option value="日焼け止め">日焼け止め</option>
-                                    <option value="ファンデーション">ファンデーション</option>
-                                    <option value="フェイスパウダー">フェイスパウダー</option>
-                                    <option value="ヘアケア用品">ヘアケア用品</option>
-                                    <option value="ボディケア用品">ボディケア用品</option>
-                                    <option value="マスカラ">マスカラ</option>
-                                    <option value="メイクアップグッズ">メイクアップグッズ</option>
-                                    <option value="リップ">リップ</option>
-                                    <option value="その他">その他</option>
-                                </select>
-                                <DateInput/>
-                                <input type="text" name="brand" className={s.inputBox} placeholder="ブランド"
-                                       value={formData.brand} onChange={handleInputChange}/>
-                                <input type="text" name="productName" className={s.inputBox} placeholder="商品名"
-                                       value={formData.productName} onChange={handleInputChange}/>
-                                <label className={s.inputLabel}>
-                                    <input type="number" name="quantity" className={s.inputBoxMini}
-                                           placeholder="個数" value={formData.quantity}
-                                           onChange={handleInputChange}/>個
-                                </label>
-                                <label className={s.inputLabel}>
-                                    <input type="number" name="price" className={s.inputBoxMini}
-                                           placeholder="1個あたりの価格" value={formData.price}
-                                           onChange={handleInputChange}/>円
-                                </label>
+
+                                <div className={s.includeImgContainer}>
+
+                                    <div className={s.withOutImgContainer}>
+                                        <label className={s.inputTabLabel}>追加するタブ：
+                                            <select
+                                                name="selectedTab"
+                                                value={formData.selectedTab || "all"}
+                                                className={s.selectTabBox}
+                                                onChange={(e) => setFormData({
+                                                    ...formData,
+                                                    selectedTab: e.target.value
+                                                })}
+                                            >
+                                                {tabs.filter((tab) => tab.name !== "favorites").map((tab) => (
+                                                    <option key={tab.name} value={tab.name}>
+                                                        {tab.title}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </label>
+                                        <select name="cosmeticsType" className={s.selectBox}
+                                                onChange={handleInputChange}
+                                                value={formData.cosmeticsType}>
+                                            <option value="" disabled>コスメの種類を選択してください</option>
+                                            <option value="アイシャドウ">アイシャドウ</option>
+                                            <option value="アイブロウ用品">アイブロウ用品</option>
+                                            <option value="アイライナー">アイライナー</option>
+                                            <option value="香水・フレグランス">香水・フレグランス</option>
+                                            <option value="基礎化粧品">基礎化粧品</option>
+                                            <option value="化粧下地">化粧下地</option>
+                                            <option value="コンシーラー">コンシーラー</option>
+                                            <option value="チーク">チーク</option>
+                                            <option value="ハイライター">ハイライター</option>
+                                            <option value="日焼け止め">日焼け止め</option>
+                                            <option value="ファンデーション">ファンデーション</option>
+                                            <option value="フェイスパウダー">フェイスパウダー</option>
+                                            <option value="ヘアケア用品">ヘアケア用品</option>
+                                            <option value="ボディケア用品">ボディケア用品</option>
+                                            <option value="マスカラ">マスカラ</option>
+                                            <option value="メイクアップグッズ">メイクアップグッズ</option>
+                                            <option value="リップ">リップ</option>
+                                            <option value="その他">その他</option>
+                                        </select>
+                                        <DateInput/>
+
+                                        {/*brand*/}
+                                        <div>
+                                            <input
+                                                type="text"
+                                                name="brand"
+                                                className={s.inputBox}
+                                                placeholder="ブランド"
+                                                value={formData.brand}
+                                                onChange={handleBrandChange}
+                                            />
+                                            {brandSuggestions.length > 0 && (
+                                                <ul className={s.suggestionsList}>
+                                                    {brandSuggestions.map((suggestion, index) => (
+                                                        <li
+                                                            key={index}
+                                                            className={s.suggestionItem}
+                                                            onClick={() => {
+                                                                setFormData({...formData, brand: suggestion});
+                                                                setBrandSuggestions([]); // 選択後は候補をクリア
+                                                            }}
+                                                        >
+                                                            {suggestion}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+
+                                        </div>
+                                    </div>
+
+                                    {/* 商品画像のプレビュー */}
+                                    {formData.imageUrl && (
+                                        <div className={s.imagePreview}>
+                                            <img src={formData.imageUrl} alt={formData.productName}
+                                                 className={s.previewImage}/>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* 商品名入力 */}
+                                <div>
+                                    <input
+                                        type="text"
+                                        name="productName"
+                                        className={s.inputBoxOfProduct}
+                                        placeholder="商品名"
+                                        value={formData.productName}
+                                        onChange={handleProductNameChange}
+                                    />
+                                    {productNameSuggestions.length > 0 && (
+                                        <ul className={s.suggestionsList}>
+                                            {productNameSuggestions.map(({ productName, price }) => (
+                                                <li
+                                                    key={productName}
+                                                    onClick={() => {
+                                                        setFormData((prev) => ({
+                                                            ...prev,
+                                                            productName,
+                                                            price,
+                                                        }));
+                                                        setProductNameSuggestions([]); // サジェスト候補をクリア
+                                                    }}
+                                                >
+                                                    {productName}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+
+                                <div className={s.quantityAndPrice}>
+                                    <label className={s.inputLabel}>
+                                        <input type="number" name="quantity" className={s.inputBoxMini}
+                                               placeholder="個数" value={formData.quantity}
+                                               onChange={handleInputChange}/>個
+                                    </label>
+                                    <label className={s.inputLabel}>
+                                        <input type="number" name="price" className={s.inputBoxMini}
+                                               placeholder="1個あたりの価格" value={formData.price}
+                                               onChange={handleInputChange}/>円
+                                    </label>
+                                </div>
+
                                 <textarea name="memo" className={s.inputMemo} placeholder="メモ"
                                           value={formData.memo} onChange={handleInputChange}/>
                             </div>
