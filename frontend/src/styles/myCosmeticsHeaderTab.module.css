@@ -478,11 +478,12 @@
     height: 120px;
     object-fit: cover;
     border: 1px solid #ff95af;
+    border-radius: 10px;
 }
 
 .previewImage {
     max-width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 8px;
 }
 
