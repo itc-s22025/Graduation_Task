@@ -48,8 +48,13 @@ const ColorDiagnosisPage = (props) => {
                     }
                     ];
 
+                const [isStartScreen, setIsStartScreen] = useState(true);
                 const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
                 const [userAnswers, setUserAnswers] = useState([]);
+
+                const handleStartDiagnosis = () => {
+                    setIsStartScreen(false);
+                };
 
                 const handleNextQuestion = () => {
                     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -81,7 +86,23 @@ const ColorDiagnosisPage = (props) => {
                                 <Leftbar_before_home />
                                 </div>
                             <div className={s.colum2}>
+                                {/* スタート画面の表示　*/}
+                                {isStartScreen ? (
+                                    <div className={s.startScreen}>
                                 <h1 className={s.font}>パーソナルカラー診断</h1>
+                                        <div className={s.colorTypeContainer}>
+                                            <div className={s.colorTypeButton1}>イエベ春</div>
+                                            <div className={s.colorTypeButton2}>ブルベ夏</div>
+                                            <div className={s.colorTypeButton1}>イエベ秋</div>
+                                            <div className={s.colorTypeButton2}>ブルベ冬</div>
+                                        </div>
+
+                                        <button className={s.startButton} onClick={handleStartDiagnosis}>
+                                           START 〉〉　　
+                                        </button>
+                                    </div>
+                                    ) : (
+                                        <>
 
                                 {/* 現在の質問を表示 */}
                                 <Question
@@ -111,6 +132,8 @@ const ColorDiagnosisPage = (props) => {
                         </button>
                         )}
                     </div>
+                  </>
+                )}
                 </div>
             </div>
         </>
