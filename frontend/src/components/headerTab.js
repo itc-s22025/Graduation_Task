@@ -17,49 +17,90 @@ const HeaderTab = ({ user }) => {
     const [followingPosts, setFollowingPosts] = useState([]); // フォロー中ユーザーの投稿
     const [loading, setLoading] = useState(true);
 
+    const blueBase = ["ブルベ夏", "ブルベ冬"]
+    const yellowBase = ["イエベ春", "イエベ秋"]
+
+
     // Firestoreからタブデータを取得
-    const fetchTabs = async () => {
-        if (!user) return;
+   const fetchTabs = async () => {
+    if (!user) return;
 
-        try {
-            const tabsQuery = query(
-                collection(db, "homesTab"),
-                where("uid", "==", user.uid),
-                orderBy("id")
-            );
+    try {
+        const tabsQuery = query(
+            collection(db, "homesTab"),
+            where("uid", "==", user.uid),
+            orderBy("id")
+        );
 
-            const querySnapshot = await getDocs(tabsQuery);
+        const querySnapshot = await getDocs(tabsQuery);
 
-            const fetchedTabs = querySnapshot.docs.map((doc) => {
+        // 非同期処理の結果を Promise.all で解決
+        const fetchedTabs = await Promise.all(
+            querySnapshot.docs.map(async (doc) => {
                 const data = doc.data();
 
-                // optionsに応じてcontentを動的に設定
+                // options に応じて content を動的に設定
                 let content;
                 if (data.options?.all) {
                     content = <Post />; // 全ポスト
                 } else if (data.options?.following) {
                     content = <div>posts of following users</div>; // フォローユーザーの投稿
+                } else if (data.options?.bluebase) {
+                    // "ブルベ" ユーザーの投稿を取得
+                    const blueBaseQuery = query(
+                        collection(db, "users"),
+                        where("personalColor", "in", blueBase)
+                    );
+                    const blueBaseSnap = await getDocs(blueBaseQuery);
+                    const blueBaseUserIds = blueBaseSnap.docs.map(userDoc => userDoc.id);
+
+                    if (blueBaseUserIds.length === 0) {
+                        content = <div>No posts found for Blue Base users.</div>;
+                    } else {
+                        const postsQuery = query(
+                            collection(db, "posts"),
+                            where("uid", "in", blueBaseUserIds),
+                            orderBy("timestamp", "desc")
+                        );
+                        const postsSnap = await getDocs(postsQuery);
+                        const posts = postsSnap.docs.map(postDoc => ({
+                            id: postDoc.id,
+                            ...postDoc.data(),
+                        }));
+
+                        content = posts.length > 0 ? (
+                            <div>
+                                {posts.map(post => (
+                                    <Post key={post.id} searchPost={post} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div>No posts found for Blue Base users.</div>
+                        );
+                    }
                 } else {
                     content = <div>New Content for Tab {data.title}</div>; // デフォルトコンテンツ
                 }
 
                 return {
                     id: data.id,
-                    docId: doc.id, // FirestoreのドキュメントID
+                    docId: doc.id, // Firestore のドキュメント ID
                     title: data.title,
                     content,
                 };
-            });
+            })
+        );
 
-            // `Now` と `Following` タブを維持しつつ、Firestoreのタブを追加
-            setTabs((prevTabs) => [
-                ...prevTabs.filter((tab) => tab.id === "now" || tab.id === "following"),
-                ...fetchedTabs,
-            ]);
-        } catch (error) {
-            console.error("タブデータの取得に失敗しました:", error);
-        }
-    };
+        // `Now` と `Following` タブを維持しつつ、Firestore のタブを追加
+        setTabs((prevTabs) => [
+            ...prevTabs.filter((tab) => tab.id === "now" || tab.id === "following"),
+            ...fetchedTabs,
+        ]);
+    } catch (error) {
+        console.error("タブデータの取得に失敗しました:", error);
+    }
+};
+
 
     //following postsのフェッチ
     const fetchFollowingPosts = async () => {
@@ -109,7 +150,6 @@ const HeaderTab = ({ user }) => {
         }
     };
 
-
     useEffect(() => {
         const fetchData = async () => {
             await fetchTabs();
@@ -157,9 +197,46 @@ const HeaderTab = ({ user }) => {
 
         const newTabId = `tab${tabs.length + 1}`;
 
-        // optionsに応じたコンテンツを設定
+        // optionsに応じたコンテンツを設定 リロード前
         let newContent;
-        if (options.all) {
+        if (options.bluebase) {
+            // "ブルベ"ユーザーのUIDを取得
+            const blueBaseQuery = query(
+                collection(db, "users"),
+                where("personalColor", "in", blueBase)
+            );
+            const blueBaseSnap = await getDocs(blueBaseQuery);
+            const blueBaseUserIds = blueBaseSnap.docs.map(doc => doc.id);
+
+            if (blueBaseUserIds.length === 0) {
+                newContent = <div>No posts found for Blue Base users.</div>;
+            } else {
+                // "ブルベ"ユーザーの投稿を取得
+                const postsQuery = query(
+                    collection(db, "posts"),
+                    where("uid", "in", blueBaseUserIds),
+                    orderBy("timestamp", "desc")
+                );
+                const postsSnap = await getDocs(postsQuery);
+
+                const posts = postsSnap.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                if (posts.length === 0) {
+                    newContent = <div>No posts found for Blue Base users.</div>;
+                } else {
+                    newContent = (
+                        <div>
+                            {posts.map(post => (
+                                <Post key={post.id} searchPost={post}/>
+                            ))}
+                        </div>
+                    );
+                }
+            }
+        }else if (options.all) {
             newContent = <Post />;
         } else if (options.following) {
             newContent = (
