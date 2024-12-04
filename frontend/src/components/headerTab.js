@@ -236,7 +236,46 @@ const HeaderTab = ({ user }) => {
                     );
                 }
             }
-        }else if (options.all) {
+        } else if (options.yellowbase) {
+            // "ブルベ"ユーザーのUIDを取得
+            const yellowBaseQuery = query(
+                collection(db, "users"),
+                where("personalColor", "in", yellowBase)
+            );
+            const yellowBaseSnap = await getDocs(yellowBaseQuery);
+            const yellowBaseUserIds = yellowBaseSnap.docs.map(doc => doc.id);
+
+            if (yellowBaseUserIds.length === 0) {
+                newContent = <div>No posts found for Yellow Base users.</div>;
+            } else {
+                // "イエベ"ユーザーの投稿を取得
+                const postsQuery = query(
+                    collection(db, "posts"),
+                    where("uid", "in", yellowBaseUserIds),
+                    orderBy("timestamp", "desc")
+                );
+                const postsSnap = await getDocs(postsQuery);
+
+                const posts = postsSnap.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                if (posts.length === 0) {
+                    newContent = <div>No posts found for Yellow Base users.</div>;
+                } else {
+                    newContent = (
+                        <div>
+                            {posts.map(post => (
+                                <Post key={post.id} searchPost={post}/>
+                            ))}
+                        </div>
+                    );
+                }
+            }
+        }
+
+        else if (options.all) {
             newContent = <Post />;
         } else if (options.following) {
             newContent = (
