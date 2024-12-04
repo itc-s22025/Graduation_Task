@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/firebase";
-import { collection, query, where, getDocs, Timestamp, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { collection, query, where, orderBy, Timestamp, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
 import MainLayout from "@/components/MainLayout";
 import s from "./page.module.css";
 import home from "@/app/Home/page.module.css";
@@ -81,7 +81,8 @@ const MyCosmetics = () => {
         const cosmeticsCollection = collection(db, "MyCosmetics");
         const cosmeticsQuery = query(
             cosmeticsCollection,
-            where("user_id", "==", currentUserUid)
+            where("user_id", "==", currentUserUid),
+            orderBy("updatedDate","desc")
         );
 
         const unsubscribe = onSnapshot(cosmeticsQuery, (snapshot) => {
