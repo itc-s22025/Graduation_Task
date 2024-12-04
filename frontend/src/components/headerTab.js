@@ -78,6 +78,39 @@ const HeaderTab = ({ user }) => {
                             <div>No posts found for Blue Base users.</div>
                         );
                     }
+                } else if (data.options?.yellowbase) {
+                    // "イエベ" ユーザーの投稿を取得
+                    const yellowBaseQuery = query(
+                        collection(db, "users"),
+                        where("personalColor", "in", yellowBase)
+                    );
+                    const yellowBaseSnap = await getDocs(yellowBaseQuery);
+                    const yellowBaseUserIds = yellowBaseSnap.docs.map(userDoc => userDoc.id);
+
+                    if (yellowBaseUserIds.length === 0) {
+                        content = <div>No posts found for Yellow Base users.</div>;
+                    } else {
+                        const postsQuery = query(
+                            collection(db, "posts"),
+                            where("uid", "in", yellowBaseUserIds),
+                            orderBy("timestamp", "desc")
+                        );
+                        const postsSnap = await getDocs(postsQuery);
+                        const posts = postsSnap.docs.map(postDoc => ({
+                            id: postDoc.id,
+                            ...postDoc.data(),
+                        }));
+
+                        content = posts.length > 0 ? (
+                            <div>
+                                {posts.map(post => (
+                                    <Post key={post.id} searchPost={post} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div>No posts found for Yellow Base users.</div>
+                        );
+                    }
                 } else {
                     content = <div>New Content for Tab {data.title}</div>; // デフォルトコンテンツ
                 }
