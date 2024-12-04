@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
 .container {
     width: 30vw;
@@ -14,6 +15,7 @@
     padding-left: 10px;
 
     font-size: 1.5rem;
+    color: #423a3a;
     border-left: #FF92AD 3px solid;
 }
 
@@ -32,8 +34,15 @@
     padding-left: 10px;
 
     font-size: 1.5rem;
-
     border-bottom: 2px solid #FF92AD;
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #423a3a;
+}
+
+.inputName::placeholder{
+    font-size: 1rem;
 }
 
 .showPostsFromContainer{
@@ -52,6 +61,7 @@
 
 .checkboxLabel{
     margin-right: 10px;
+    color: #423a3a;
 }
 
 .checkboxInput{
@@ -74,4 +84,8 @@
     font-size: 1.2rem;
     color: #FFF;
     font-weight: bold;
+}
+
+.save:hover{
+    transform: scale(1.02);
 }
