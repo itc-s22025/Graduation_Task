@@ -396,9 +396,12 @@ const HeaderTab = ({ user }) => {
                                 style={{
                                     zIndex: focusedTab === tab.id
                                         ? 4  // フォーカスしているタブが最前面
-                                        : (tab.id === 'following' ? 2 : 1),
+                                        : (tab.id === 'following' ? 3 :
+                                            tab.id === 'tab3' ? 2 :
+                                                tab.id === 'tab4' ? 1 : 1),
                                     backgroundColor: tab.id === "now" ? "#fff"
-                                        : tab.id === "following" ? "#FFDCDD" : "#FFBFC0", //背景色
+                                        : tab.id === "following" ? "#FFDCDD"
+                                            : tab.id === "tab3" ? "#FFBFC0" : "#ffa9a9", //背景色
                                     color: tab.id === "now" ? "#FF989A" : tab.id === "following" ? "#FF989A" : "#fff",  //文字色
                                     borderBottom: tab.id !== "now" ? "none" : ""
                                 }}
