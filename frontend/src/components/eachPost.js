@@ -1,5 +1,5 @@
 import { db } from '@/firebase';  // Firestoreのインポート
-import { doc, getDoc, collection, query, where, orderBy, getDocs, addDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import {doc, getDoc, collection, query, where, orderBy, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import s from "@/styles/eachPost.module.css";
 
@@ -10,6 +10,8 @@ const EachPost = ({ post, currentUserUid }) => {
     const [personalColor, setPersonalColor] = useState(null);
     const [replyContent, setReplyContent] = useState("");  // リプライ内容を保持するステート
     const [replies, setReplies] = useState([]);
+    const [liked, setLiked] = useState(false);  // いいねの状態を管理するステート
+    const [likesCount, setLikesCount] = useState(post.likedBy ? post.likedBy.length : 0); // いいねの数を管理
 
     // Firebaseからユーザー情報を取得
     useEffect(() => {
@@ -61,9 +63,50 @@ const EachPost = ({ post, currentUserUid }) => {
         getReplies();
     }, [post.id]);  // post.idが変更される度にリプライを取得
 
+    // いいねのリアルタイム更新
+    useEffect(() => {
+        const likesRef = collection(db, "likes");
+        const q = query(likesRef, where("postId", "==", post.id));
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const likedByUsers = querySnapshot.docs.map(doc => doc.data().userId);
+            setLikesCount(likedByUsers.length); // いいねの数を更新
+            setLiked(likedByUsers.includes(currentUserUid)); // いいねの状態を更新
+        });
+
+        // クリーンアップ関数: コンポーネントがアンマウントされたときにリスナーを解除
+        return () => unsubscribe();
+    }, [post.id, currentUserUid]);
+
+    // いいねボタンがクリックされたときの処理
+    const handleLike = async () => {
+        try {
+            const likesRef = collection(db, "likes");
+            const q = query(likesRef, where("postId", "==", post.id), where("userId", "==", currentUserUid));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                // まだいいねがなければ追加
+                await addDoc(likesRef, {
+                    postId: post.id,
+                    userId: currentUserUid,
+                });
+                setLiked(true);  // いいねした状態に更新
+            } else {
+                // すでにいいねしていた場合、削除
+                querySnapshot.forEach(async (docSnap) => {
+                    await deleteDoc(docSnap.ref);
+                });
+                setLiked(false);  // いいねを取り消した状態に更新
+            }
+        } catch (error) {
+            console.error("いいねの処理に失敗しました:", error);
+        }
+    };
+
+
     if (!post) return null;
 
-    const isLiked = post.likedBy && post.likedBy.includes(currentUserUid);
     const isReposted = post.repostedBy && post.repostedBy.includes(currentUserUid);
 
     // リプライの送信処理
@@ -133,9 +176,9 @@ const EachPost = ({ post, currentUserUid }) => {
                         <img alt="repost" src={isReposted ? "/repost_after.png" : "/repost_before.png"} className={s.repost}/>
                         <p className={s.reactionText}>{post.repostedBy ? post.repostedBy.length : 0}</p>
                     </div>
-                    <div className={s.eachReactionContainer}>
-                        <img alt="like" src={isLiked ? "/cutie_heart_after.png" : "/cutie_heart_before.png"} className={s.like} />
-                        <p className={s.reactionText}>{post.likedBy ? post.likedBy.length : 0}</p>
+                    <div className={s.eachReactionContainer} onClick={handleLike}>
+                        <img alt="like" src={liked ? "/cutie_heart_after.png" : "/cutie_heart_before.png"} className={s.like} />
+                        <p className={s.reactionText}>{likesCount}</p>
                     </div>
                     <div className={s.eachReactionContainer}>
                         <div className={s.keep}/>
@@ -193,7 +236,7 @@ const EachPost = ({ post, currentUserUid }) => {
                                         </div>
                                         <div className={s.eachReactionContainer}>
                                             <img alt="like"
-                                                 src={isLiked ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
+                                                 src={liked ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
                                                  className={s.like}/>
                                             <p className={s.reactionText}>{reply.likedBy ? reply.likedBy.length : 0}</p>
                                         </div>

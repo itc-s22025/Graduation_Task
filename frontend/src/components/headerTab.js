@@ -174,7 +174,6 @@ const HeaderTab = ({ user }) => {
             }));
 
             setFollowingPosts(posts);
-            console.log("Updated followingPosts:", posts); // state update後の値
 
         } catch (error) {
             console.error("フォロー中の投稿取得エラー:", error);
