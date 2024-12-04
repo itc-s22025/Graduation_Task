@@ -101,6 +101,7 @@
     margin-right: 10px;
     margin-left: 10px;
     flex-shrink: 0; /* 画像が縮まないように */
+    object-fit: cover;
 }
 
 /*二段目の中*/
