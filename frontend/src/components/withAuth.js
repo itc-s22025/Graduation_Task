@@ -7,6 +7,7 @@ import { useAuth } from "@/app/context/AuthProvider";
 import LoadingPage from "@/components/loadingPage";
 
 const withAuth = (WrappedComponent) => {
+  // eslint-disable-next-line react/display-name
   return (props) => {
     const { currentUser, loading } = useAuth();
     const router = useRouter();
