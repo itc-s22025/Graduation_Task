@@ -13,7 +13,7 @@
     padding: 20px; /* 余白を追加 */
     position: absolute;
     left: 30vw;
-    }
+}
 
 .font {
     color: black;
@@ -22,7 +22,7 @@
     border-radius: 5px;
     margin-left: 280px;
     margin-top: 200px;
-    }
+}
 
 .buttonContainer {
     display: flex;
@@ -55,7 +55,6 @@
     font-size: 2rem;
     padding: 15px 30px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-bottom: 30px;
@@ -67,7 +66,7 @@
     justify-content: center;
     height: 100vh;
     gap: 20px;
-    }
+}
 
 /*カラータイプしかく*/
 .colorTypeButton1, .colorTypeButton2 {
@@ -94,12 +93,18 @@
 .startButton, .backButton, .nextButton, .resultButton {
     background-color: #ffc0cb;
     color: black;
+    border-radius: 10px;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
     font-size: 30px;
 }
 
-.startButton:hover, .backButton:hover, .nextButton:hover, .resultButton:hover {
-    background-color: #ff69ba;
+.startButton:hover{
+    font-weight: bolder;
+}
+
+.backButton:hover, .nextButton:hover, .resultButton:hover {
+    border: 0.7mm solid lightpink;
+    background-color: white;
 }
