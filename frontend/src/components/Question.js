@@ -18,7 +18,7 @@ const Question = ({ number, questionText, options = [], handleSelectOptions }) =
                 {options.map((option, index) => (
                     <button
                         key={index}
-                        className={`${s.optionButton} ${selectedOption === option ? s.selected : ''}`}
+                        className={`${s.optionAnswer} ${selectedOption === option ? s.selected : ''}`}
                         onClick={() => handleClick(option)}
                     >
                         {option}
