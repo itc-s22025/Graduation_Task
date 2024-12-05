@@ -23,25 +23,8 @@ const Home = () => {
         <>
             <MainLayout>
                 <div className={s.allContainer}>
-
-                    <HeaderTab
-                        firstTabText="Now"
-                        secondTabText="Following"
-                        thirdTabText="tab3"
-                        firstTabContent={
-                        <>
-                            <Post />
-                            <ReviewPosts />
-                        </>}
-                        secondTabContent={<Post tabType={following} />}
-                        pageType="home"
-                    />
-
-                    <button className={`${s.addButton} ${addTab}`} onClick={handleAddClick}>+</button>
-                    {/* ユーザー情報を渡す */}
                     <HeaderTab user={user} />
                 </div>
-
                 <PostButton />
             </MainLayout>
         </>
