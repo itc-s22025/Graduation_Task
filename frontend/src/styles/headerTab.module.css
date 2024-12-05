@@ -10,140 +10,90 @@
 
 .ul{
     display: flex;
-    width: 100%;
+    width: 80%;
+    height: 46px;
+    margin-top: 25px;
     /*border: 1px solid springgreen;*/
 }
 
 .tabs{
     list-style: none;
+    outline: none;
     padding: 0;
+    background-color: #fff;
 
+    border: 1px solid #fff;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom: 2px solid #F8F0F0;
+    width: 80%;
     margin-right: -80px; /* 前のliと重なる量 */
+
+    line-height: 46px;
+    color: #ff839f;
+
+    z-index: 1;
 }
 
-.tabFirst{
-    outline: none;
-    background: #fff;
-    margin-top: 25px;
-    width: 15vw;
-    height: 65%;
+.tabTitle{
+    /*border: 1px solid red;*/
+    margin: 0 auto;
+}
+
+.deleteButton{
+    position: relative;
+    left: -40px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #fff;
+    border-radius: 50px;
+    background-color: #fff;
+    color: #ff839f;
+    padding-right: 1px;
+    margin-top: 2px;
+}
+
+.deleteButton:hover{
+    background-color: #FFBFC0;
+    border: 2px solid #fff;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+/*Addタブ*/
+.addButton{
+    position: fixed;
+    left: 66.8vw;
+    background: #FF989A;
+    height: 46px;
+    width: 60px;
     border: 1px solid #fff;
     border-bottom: none;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-
-    /*順番*/
-    z-index: 3;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 
     /*font*/
-    padding-top: 12px;
-    text-align: center;
-    color: #FF92AD;
-
-}
-
-.tabSecond{
-    outline: none;
-    background: #FFDCDD;
-    margin-top: 25px;
-    width: 15vw;
-    height: 65%;
-    border: #fff 1px solid;
-    border-bottom: none;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-
-    /*順番*/
-    z-index: 2;
-
-    /*font*/
-    padding-top: 12px;
-    text-align: center;
-    color: #FF989A;
-
-}
-
-.tabThird{
-    outline: none;
-    background: #FFBFC0;
-    margin-top: 25px;
-    width: 14vw;
-    height: 65%;
-    border: #fff 1px solid;
-    border-bottom: none;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-
-    /*順番*/
-    z-index: 1;
-
-    /*font*/
-    padding-top: 12px;
-    text-align: center;
+    padding-top: 3px;
     color: #fff;
-}
+    font-size: 20px;
 
-.tabFirst, .tabSecond, .tabThird {
-  position: relative;
-}
-
-.zIndex1 {
-    z-index: 1;
-    border-bottom: #F8F0F0 2px solid;
-}
-
-.zIndex2 {
     z-index: 2;
 }
 
-.zIndex3 {
-    z-index: 3;
+.zIndex4 {
+    z-index: 4;
+    border-bottom: none;
 }
 
-
-
-/* /Home 用のスタイル */
-.headerHome{
-    position: fixed;
-    z-index: 1;
-}
-
-/* /MyCosmetics 用のスタイル */
-.headerMyCosmetics {
-    margin-top: 0;
-    height: 50px;
-}
-
-.tabMyCosmetics{
-    /*border: 1px solid red;*/
-}
-
-.tab1MC{
-    /*border: 1px solid red;*/
-    margin-top: 5px;
-    height: 90%;
-}
-
-.tab2MC{
-    /*border: 1px solid blue;*/
-    margin-top: 5px;
-    height: 90%;
-}
-
-.tab3MC{
-    /*border: 1px solid deeppink;*/
-    margin-top: 5px;
-    height: 90%;
-}
-
-.addTabMC{
-    /*border: 1px solid yellow;*/
-    margin-top: 4px;
-}
 
 .article{
-    position: relative;
+    position: fixed;
+    left: 30vw;
+    overflow-x: hidden;
     top: 100px;
+    height: 88vh;
+    padding-bottom: 100px;
     /*border: 1px solid orange;*/
 }
 

@@ -38,6 +38,7 @@
 }
 
 .profileImage {
+    object-fit: cover;
     width: 150px;
     height: 150px;
     position: absolute;
@@ -141,13 +142,19 @@
 .bio {
     /*border: 1px solid red;*/
     position: absolute;
-    top: 13vh;
+    top: 12.5vh;
     left: 2.1vw;
     margin-top: 10px;
     padding-bottom: 30px;
-    width: 660px;
+    width: 400px;
     height: 100px;
     color: #423a3a;
+    border: none;
+}
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 8px;
 }
 
 /* Edit Button */
@@ -337,6 +344,26 @@
     color: #000;
 }
 
+.imageArticleContainer {
+    display: flex;
+    flex-wrap: wrap; /* 横に並べたアイテムを折り返し */
+    justify-content: flex-start; /* left寄せで配置 */
+    margin-top: 15px;
+    margin-left: 16px;
+}
+
+.postImage{
+    object-fit: cover;
+    width: 12vw;
+    height: 23vh;
+    margin-right: 3px;
+    border: 1px solid #F8F0F0;
+}
+
+.likesArticleContainer{
+    padding-bottom: 100px;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .tabsContainer {
@@ -357,4 +384,29 @@
     position: relative;
     top: 3.5vh;
     left: 0vw;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modalContent {
+    position: relative;
+    max-width: 80%;
+    max-height: 90%;
+    overflow: hidden;
+}
+
+.fullScreenImage {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 }

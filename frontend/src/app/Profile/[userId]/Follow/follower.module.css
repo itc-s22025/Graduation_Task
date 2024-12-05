@@ -141,32 +141,6 @@
     border-radius: 8px;
 }
 
-/*.box:after {*/
-/*    display: flex;*/
-/*    content: 'Unfollow';*/
-/*    position: absolute;*/
-/*    top: -0.2vh;*/
-/*    right: -0.1vw;*/
-/*    height: 50px;*/
-/*    width: 200px;*/
-
-/*    font-size: 1.3rem;*/
-/*    border: 1px solid white;*/
-/*    background-color: #FF92AD;*/
-/*    color: white;*/
-
-/*    -webkit-transition: 0.4s ease all;*/
-/*    transition: 0.4s ease all;*/
-
-/*    align-items: center;*/
-/*    border-radius: 8px;*/
-/*    opacity: 0;*/
-/*}*/
-
-/*.box:hover:after {*/
-/*    opacity: 1;*/
-/*}*/
-
 .not {
     position: absolute;
     top: 10vh;

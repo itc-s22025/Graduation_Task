@@ -1,20 +1,88 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import s from './edit.module.css';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 import { useAuth } from '@/app/context/AuthProvider';
-import { useRouter } from "next/navigation";
+import CropModal from "./components/CropModal";
 
-const Edit = ({ userData, onSave }) => {
-    const [newHeaderImage, setNewHeaderImage] = useState(userData?.headerImage || 'defaultHeader.png');
-    const [newIcon, setNewIcon] = useState(userData?.icon || 'defaultIcon.png');
-    const [newName, setNewName] = useState(userData?.username || 'ユーザー名');
-    const [newBio, setNewBio] = useState(userData?.bio || 'ここにBioが表示されます');
+const Edit = ({ onSave }) => {
+    const [newHeaderImage, setNewHeaderImage] = useState(null);
+    const [newIcon, setNewIcon] = useState(null);
+    const [newName, setNewName] = useState('');
+    const [newBio, setNewBio] = useState('');
+    const [previewHeaderImage, setPreviewHeaderImage] = useState(null);
+    const [previewIcon, setPreviewIcon] = useState(null);
+    const [imageToCrop, setImageToCrop] = useState(null);
+    const [isForHeader, setIsForHeader] = useState(false);
+    const [isCropModalOpen, setIsCropModalOpen] = useState(false);
 
     const { currentUser } = useAuth();
     const db = getFirestore();
-    const router = useRouter();
     const storage = getStorage();
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!currentUser?.uid) return;
+
+            try {
+                const userRef = doc(db, "users", currentUser.uid);
+                const userSnapshot = await getDoc(userRef);
+
+                if (userSnapshot.exists()) {
+                    const data = userSnapshot.data();
+                    setNewHeaderImage(data.headerImage || 'defaultHeader.png');
+                    setPreviewHeaderImage(data.headerImage || 'defaultHeader.png');
+                    setNewIcon(data.icon || 'defaultIcon.png');
+                    setPreviewIcon(data.icon || 'defaultIcon.png');
+                    setNewName(data.username || 'ユーザー名');
+                    setNewBio(data.bio || 'ここにBioが表示されます');
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
+    }, [currentUser, db]);
+
+    const openCropModal = (fileUrl, isHeader) => {
+        setImageToCrop(fileUrl);
+        setIsForHeader(isHeader);
+        setIsCropModalOpen(true);
+    };
+
+    const handleCropComplete = async (croppedImage) => {
+        if (!currentUser?.uid) return;
+
+        try {
+            const response = await fetch(croppedImage);
+            const blob = await response.blob();
+            const fileName = isForHeader
+                ? `headers/${currentUser.uid}_header.jpg`
+                : `icons/${currentUser.uid}_icon.jpg`;
+
+            const storageRef = ref(storage, fileName);
+            await uploadBytes(storageRef, blob);
+
+            const downloadURL = await getDownloadURL(storageRef);
+
+            const userRef = doc(db, "users", currentUser.uid);
+            if (isForHeader) {
+                await updateDoc(userRef, { headerImage: downloadURL });
+                setNewHeaderImage(downloadURL);
+                setPreviewHeaderImage(downloadURL);
+            } else {
+                await updateDoc(userRef, { icon: downloadURL });
+                setNewIcon(downloadURL);
+                setPreviewIcon(downloadURL);
+            }
+        } catch (error) {
+            console.error("Error saving cropped image:", error);
+            alert("トリミング画像の保存中にエラーが発生しました。");
+        }
+    };
 
     const uploadImage = async (file, path) => {
         const storageRef = ref(storage, `images/${path}`);
@@ -22,29 +90,52 @@ const Edit = ({ userData, onSave }) => {
         return await getDownloadURL(storageRef);
     };
 
+    // Bioが20文字を超えた場合にエラーを表示し、保存を無効にする
     const handleSave = async () => {
         if (!currentUser?.uid) {
-            console.error("User is not authenticated.");
             alert("You must be signed in to edit your profile.");
             return;
         }
 
+        // Bioの文字数チェック
+        if (newBio.length > 20) {
+            alert("Bioは20文字以内で入力してください。");
+            return;
+        }
+
         try {
+            const userRef = doc(db, "users", currentUser.uid);
+            const currentData = (await getDoc(userRef)).data();
+
             const updatedData = {
-                headerImage: newHeaderImage instanceof File ? await uploadImage(newHeaderImage, `headers/${currentUser.uid}_header.png`) : newHeaderImage,
-                icon: newIcon instanceof File ? await uploadImage(newIcon, `icons/${currentUser.uid}_icon.png`) : newIcon,
+                ...currentData,
+                headerImage: newHeaderImage instanceof File
+                    ? await uploadImage(newHeaderImage, `headers/${currentUser.uid}_header.png`)
+                    : previewHeaderImage,
+                icon: newIcon instanceof File
+                    ? await uploadImage(newIcon, `icons/${currentUser.uid}_icon.png`)
+                    : previewIcon,
                 username: newName,
-                bio: newBio
+                bio: newBio,
             };
 
-            const userRef = doc(db, "users", currentUser.uid);
             await updateDoc(userRef, updatedData);
-
-            if (typeof onSave === 'function') onSave(updatedData);
+            onSave?.(updatedData);
         } catch (error) {
             console.error("Error updating profile:", error);
-            alert("Error updating profile");
+            alert("プロフィールの更新中にエラーが発生しました。");
         }
+    };
+
+    // preventScroll関数の定義
+    const preventScroll = (e) => {
+        e.preventDefault();
+    };
+
+    const handleEditClick = () => {
+        setShowEditModal(true);
+        window.addEventListener('wheel', preventScroll, { passive: false });
+        window.addEventListener('touchmove', preventScroll, { passive: false });
     };
 
     return (
@@ -58,25 +149,29 @@ const Edit = ({ userData, onSave }) => {
                     id="headerImage"
                     onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
-                            setNewHeaderImage(e.target.files[0]);
+                            const file = e.target.files[0];
+                            const fileUrl = URL.createObjectURL(file);
+                            openCropModal(fileUrl, true);
                         }
                     }}
                 />
-                {typeof newHeaderImage === 'string' && <img src={newHeaderImage} className={s.newHeaderImage} />}
+                {previewHeaderImage && <img src={previewHeaderImage} className={s.newHeaderImage} />}
             </div>
             <div className={s.field}>
-                <label htmlFor="avatar" className={s.label}>Icon</label>
+                <label htmlFor="icon" className={s.label}>Profile Icon</label>
                 <input
                     type="file"
                     accept="image/*"
                     id="icon"
                     onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
-                            setNewIcon(e.target.files[0]);
+                            const file = e.target.files[0];
+                            const fileUrl = URL.createObjectURL(file);
+                            openCropModal(fileUrl, false);
                         }
                     }}
                 />
-                {typeof newIcon === 'string' && <img src={newIcon}  className={s.newAvatar} />}
+                {previewIcon && <img src={previewIcon} className={s.newAvatar} />}
             </div>
             <div className={s.field}>
                 <label htmlFor="username" className={s.label}>Username</label>
@@ -96,6 +191,14 @@ const Edit = ({ userData, onSave }) => {
                 />
             </div>
             <button className={s.edit} onClick={handleSave}>Save</button>
+            {isCropModalOpen && (
+                <CropModal
+                    isOpen={isCropModalOpen}
+                    image={imageToCrop}
+                    onCropComplete={handleCropComplete}
+                    onClose={() => setIsCropModalOpen(false)}
+                />
+            )}
         </div>
     );
 };

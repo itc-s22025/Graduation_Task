@@ -101,6 +101,7 @@
     margin-right: 10px;
     margin-left: 10px;
     flex-shrink: 0; /* 画像が縮まないように */
+    object-fit: cover;
 }
 
 /*二段目の中*/
@@ -264,6 +265,24 @@
 .inputContainer{
     display: grid;
 }
+
+
+.selectBox{
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    width: 235px;
+    height: 30px;
+    background-color: #F8F0F0;
+    color: #5d5757;
+    margin-left: 10px;
+    padding: 0 5px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 
 .inputBox{
     border: none;

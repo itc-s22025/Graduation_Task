@@ -3,66 +3,21 @@
 import MainLayout from "@/components/MainLayout";
 import PostButton from "@/components/post_button";
 import HeaderTab from "@/components/headerTab";
-import Post from "@/components/post";
-import ReviewPosts  from "@/components/ReviewPost";
-import s from "@/app/Home/page.module.css"
-import AddTab from "@/components/addTab";
-import {useEffect, useState} from "react";
-import {doc, getDoc} from "firebase/firestore";
-import {auth, db} from "@/firebase";
+import s from "@/app/Home/page.module.css";
+import { useState, useEffect } from "react";
+import { auth } from "@/firebase";
 
+const Home = () => {
+    const [user, setUser] = useState(null);
 
-const Home = ({ pageType }) => {
-    const [showAddTab, setShowAddTab] = useState(false);
-    const [following, setFollowing] = useState([]);
-    const [user, setUser] = useState(null); // ユーザーの状態を保持
-
+    // ログインユーザーを監視
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-            if (currentUser) {
-                setUser(currentUser); // ユーザーが変更されたときにuserを更新
-            } else {
-                setUser(null); // ユーザーがログアウトした場合
-            }
+            setUser(currentUser || null);
         });
 
-        // コンポーネントがアンマウントされた時に監視を解除
         return () => unsubscribe();
     }, []);
-
-    useEffect(() => {
-        const fetchFollowing = async () => {
-            if (user) {
-                try {
-                    const userDocRef = doc(db, "users", user.uid);
-                    const userDoc = await getDoc(userDocRef);
-
-                    if (userDoc.exists()) {
-                        const userData = userDoc.data();
-                        setFollowing(userData.following || []);
-                        console.log("userData.Following:::::", userData.following);
-                    } else {
-                        console.log("ユーザードキュメントが存在しません");
-                    }
-                } catch (error) {
-                    console.error("users.followingの取得中にエラーが発生しました: ", error);
-                }
-            }
-        };
-
-        fetchFollowing();
-    }, [user]); // userが変更されたときに実行
-
-    const handleAddClick = () => {
-        console.log("handleAddClick");
-        setShowAddTab(true);
-    };
-
-    const handleCloseAddTab = () => {
-        setShowAddTab(false);
-    };
-
-    const addTab = pageType === 'myCosmetics' ? s.addTabMC : s.addTabHome;
 
     return (
         <>
@@ -83,18 +38,11 @@ const Home = ({ pageType }) => {
                     />
 
                     <button className={`${s.addButton} ${addTab}`} onClick={handleAddClick}>+</button>
+                    {/* ユーザー情報を渡す */}
+                    <HeaderTab user={user} />
                 </div>
 
                 <PostButton />
-
-                {showAddTab && (
-                    <div className={s.addTabOverlay}>
-                        <div className={s.addTabContent}>
-                            <AddTab pageType={pageType} />
-                            <button onClick={handleCloseAddTab} className={s.buttonCancel}>Cancel</button>
-                        </div>
-                    </div>
-                )}
             </MainLayout>
         </>
     );

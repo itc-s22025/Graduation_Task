@@ -27,6 +27,72 @@
     scrollbar-width: none;
 }
 
+
+.replyToContainer{
+    /*border: 1px solid #66BAFF;*/
+    margin: 10px;
+    padding: 10px;
+    min-height: 100px;
+}
+
+.replyToIconContainer{
+    display: flex;
+    font-size: 0.9rem;
+}
+
+.replyToWithOutIconContainer{
+    border-left: 2px solid #e2dedb;
+    margin: 10px 20px 0;
+    padding: 5px 10px 10px;
+}
+
+.replyToName{
+    margin-right: 10px;
+}
+
+.replyToIcon{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50px;
+}
+
+.replyToInfoContainer{
+    display: flex;
+    color: #4A4444;
+    margin-left: 10px;
+    margin-top: 8px;
+    height: 25px;
+}
+
+.replyToContentContainer{
+    /*border: 1px solid blue;*/
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.replyToContent{
+    font-size: 0.9rem;
+    color: #423a3a;
+    margin-left: 10px;
+}
+
+.replyToImage{
+    width: 150px;
+    object-fit: cover;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.replyToReactionContainer{
+    display: flex;
+    height: 30px;
+    margin: 10px 1.5vw 30px;
+    padding: 2px 0;
+}
+
+
 .iconAndInfoContainer{
     margin: 10px 0;
     display: flex;
