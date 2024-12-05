@@ -53,12 +53,17 @@ const Keeps = () => {
                         {savedPosts.map((post) => (
                             <div key={post.id} className={s.post}>
                                 <div className={s.flex}>
-                                    <p className={s.icon}/>
+                                    <img
+                                        className={s.icon}
+                                        alt="icon"
+                                        src={post.icon || "/user_default.png"} // keeps.icon を post.icon に修正
+                                        // onClick={() => router.push(`/AnotherScreen/${post.uid}`)} // 必要に応じて
+                                    />
                                     <div>
                                         <div className={s.topContainer}>
                                             <div className={s.infoContainer}>
                                                 <p className={s.name}>{post.name || "Anonymous"}</p>
-                                                <p className={s.userID}>@{post.userID}</p>
+                                                <p className={s.userID}>@{post.userId}</p>
                                                 <p className={s.time}>{post.timestamp?.toDate().toLocaleString()}</p>
                                             </div>
                                         </div>
