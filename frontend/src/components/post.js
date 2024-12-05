@@ -7,10 +7,24 @@ import EachPost from "@/components/eachPost";
 import {isBefore, subDays} from 'date-fns';
 //firebase
 import {auth, db} from "@/firebase";
-import {addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc, where} from "firebase/firestore";
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDocs,
+    onSnapshot,
+    orderBy,
+    query,
+    setDoc,
+    updateDoc,
+    where
+} from "firebase/firestore";
 import {onAuthStateChanged} from "firebase/auth";
+import { increment } from "firebase/firestore";
 
-const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
+
+const Post = ({ userId, searchPost, ownPost, tabType, pageType, pollOptions }) => {
 
     const [posts, setPosts] = useState([]); // 投稿リスト
     const [showEachPost, setShowEachPost] = useState(false);
@@ -279,6 +293,11 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
     //postのレイアウト
     const paddingLeft = pageType === 'profile' ? s.forProfilePadding : '';
     const flameWidth = pageType === 'profile' ? s.forProfileFlame : '';
+    const [answer, setAnswer] = useState(""); // ユーザーの入力内容を保持するステート
+    const [hasVoted, setHasVoted] = useState(false); // 初期状態は未投票
+    const [selectedOption, setSelectedOption] = useState(null); // ユーザーが選択したオプション
+
+
 
     //投稿時刻のフォーマット
     const formatTimestamp = (timestamp) => {
@@ -314,6 +333,38 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
         );
     };
 
+    const updatePollOptions = () => {
+        setPollOptions(["Option 1", "Option 2"]); // 状態を正しく更新
+    };
+
+
+
+
+    const handleVote = async (option, post) => {
+        try {
+            if (!post || !post.pollOptions || !Array.isArray(post.pollOptions) || post.pollOptions.length === 0) {
+                console.error("Invalid poll options");
+                return;
+            }
+
+            if (!post.pollResults) {
+                post.pollResults = {};
+            }
+
+            const postRef = doc(db, "posts", post.id);
+
+            await updateDoc(postRef, {
+                [`pollResults.${option}`]: increment(1),
+            });
+
+            setSelectedOption(option); // 選択されたオプションを更新
+            setHasVoted(true);
+        } catch (error) {
+            console.error("Error during voting:", error.message, error.stack);
+        }
+    };
+
+
     return (
         <>
             <div className={`${s.allContainer} ${paddingLeft}`}>
@@ -339,9 +390,70 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
                                         <p className={s.time}>{formatTimestamp(post.timestamp)}</p>
 
                                     </div>
-                                    <div className={s.contentContainer} onClick={() => handleEachPostClick(post)}>
+                                    <div className={s.contentContainer} >
+                                         {/*// onClick={() => handleEachPostClick(post)}>*/}
                                         {/*content...onClickでpostのデータをeachPostに渡し、eachPostを表示させる*/}
                                         <p className={s.content}>{post.tweet}</p>
+
+                                        {post.pollOptions && Array.isArray(post.pollOptions) && post.pollOptions.length > 0 ? (
+                                            <div className="poll-container">
+                                                <ul className="poll-options-list">
+                                                    {post.pollOptions.map((option, index) => {
+                                                        const count = post.pollResults?.[option] || 0;
+                                                        const totalVotes = post.pollResults
+                                                            ? Object.values(post.pollResults).reduce((sum, num) => sum + num, 0)
+                                                            : 0;
+                                                        const percentage = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
+
+                                                        return (
+                                                            <li
+                                                                key={index}
+                                                                className={`${s.inputField} ${selectedOption === option ? "selected" : ""}`}
+                                                                onClick={() => handleVote(option, post)} // 必ずpostを渡す
+                                                                disabled={hasVoted}
+                                                            >
+                                                                <span>{option}</span>
+                                                                {hasVoted && (
+                                                                    <div className="poll-result-bar">
+                                                                        <div
+                                                                            className="poll-result-fill"
+                                                                            style={{width: `${percentage}%`}}
+                                                                        ></div>
+                                                                    </div>
+                                                                )}
+                                                                {hasVoted && <span
+                                                                    className="poll-percentage">{percentage}%</span>}
+                                                            </li>
+
+                                                        );
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        ) : null}
+
+
+                                        {/* 質問とその回答フィールドの表示 */}
+                                        {post.question && post.question.length > 0 && (
+                                            <div className="question-container">
+                                            <h3 className="question-title">{post.question}</h3> {/* 質問タイトル */}
+                                                <div className="question-answer-container">
+                                                    <textarea
+                                                        className="question-answer-field"
+                                                        placeholder="質問に答えてください..."
+                                                        value={answer} // ユーザーの入力を保持
+                                                        onChange={(e) => setAnswer(e.target.value)} // 入力内容を更新
+                                                    />
+                                                    <button
+                                                        className="submit-answer-btn"
+                                                        onClick={handleSubmitAnswer} // 回答を送信する関数
+                                                    >
+                                                        回答を送信
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+
+
                                         {/*もしimageUrlがあれば*/}
                                         {post.imageUrl && <img src={post.imageUrl} alt="投稿画像" className={s.image}/>}
                                     </div>
@@ -350,6 +462,7 @@ const Post = ({ userId, searchPost, ownPost, tabType, pageType }) => {
                                 </button>
                             </div>
                         </div>
+
 
                         {/*リプライとか reaction*/}
                         <div className={s.reactionContainer}>

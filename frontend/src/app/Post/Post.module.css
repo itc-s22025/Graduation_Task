@@ -54,8 +54,8 @@
 
 .userId{
     font-size: 0.9rem;
-    margin-top: 27px;
-    margin-left: 52px;
+    margin-top: 7px;
+    margin-left: 100px;
     color: #6E665C;
 }
 
@@ -127,24 +127,37 @@
     margin-left: 60px;
 }
 
+.optionBox{
+    border: 1px solid #FF92AD;
+    border-radius: 20px;
+    padding: 20px;
+    margin-right: 60px;
+    position: relative;
+
+}
+
 .survey {
     margin-top: 20px;
     margin-left: 65px;
 }
 
 .inputField{
-    padding: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-right: 150px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    margin-left: 50px;
     border: 1px solid #FF92AD;
-    border-radius: 30px;
+    border-radius: 6px;
 }
 
 .addbutton {
     padding: 5px;
-    margin-left: 155px;
+    margin-left: 220px;
     background-color: #FFFFFF;
     border: 1px solid #FF92AD ;
-    border-radius: 1px;
+    border-radius: 6px;
     color: #FF92AD;
 }
 
@@ -153,15 +166,15 @@
     margin-left: 20px;
     background-color: #FFFFFF;
     border: 1px solid #FF92AD ;
-    border-radius: 1px;
+    border-radius: 6px;
     color: #FF92AD;
 }
 
 .removeButton {
-    padding: 5px;
-    margin-left: -170px;
+    padding: 13px 130px;
+    margin-left: 50px;
     border: 1px solid #FF92AD ;
-    border-radius: 1px;
+    border-radius: 6px;
     background-color: #FFFFFF;
     color: #FF92AD;
 }
@@ -171,7 +184,7 @@
     font-weight: bold;
     font-size: 12px;
     margin-top: 10px;
-    margin-left: 60px;
+    margin-left: 0px;
     border: 1px solid #FF92AD ;
     border-radius: 6px;
     background-color: #FF92AD;
@@ -186,6 +199,82 @@
     flex-direction: row;
     border: none;
 }
+
+.touhyou{
+    color: #FF92AD;
+    font-size: 15px;
+    padding: 20px 0;
+    margin-left: 52px;
+}
+
+.smallboxContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    margin-right: 85px;
+    gap: 10px;
+}
+
+.smallbox{
+    border: 1px solid #FF92AD ;
+    align-items: center;
+    border-radius: 6px;
+    padding: 4px 22px 20px 6px;
+    font-size: 12px;
+    color: #999999;
+    background-color: #FFFFFF;
+    margin-bottom: 10px;
+    margin-left: 52px;
+}
+
+.date {
+    margin-left: 40px;
+    font-size: 12px;
+}
+
+
+.popup {
+    position: fixed;
+    top: 400px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFCFD2;
+    padding: 20px;
+    border: 1px solid #FFCFD2;
+    border-radius: 30px;
+    width: 450px;
+    text-align: center;
+}
+
+.popup .textareaContainer {
+    display: flex; /* 横並び */
+    align-items: center; /* 縦方向の位置を揃える */
+    justify-content: space-between; /* スペースを適切に分ける */
+    margin-bottom: 10px;
+}
+
+.popup .textarea {
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    background-color: #FFCFD2;
+    border: 1px solid #FFFFff;
+    border-radius: 10px;
+    color: #FFFFFF;
+    resize: none;
+}
+
+.popup .cancelButton {
+    background-color: #FFFFFF;
+    color: #FFCFD2;
+    border: 1px solid #FFCFD2;
+    border-radius: 30px;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
 
 
 
