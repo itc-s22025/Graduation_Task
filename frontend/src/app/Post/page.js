@@ -221,10 +221,10 @@ const Post = () => {
                     <div className={s.iconContainer}>
 
                         {selectedImage && (
-                            <img src={URL.createObjectURL(selectedImage)} className={s.selectedImage} alt="Selected"/>
+                            <img src={URL.createObjectURL(selectedImage) || null} className={s.selectedImage} alt="Selected"/>
                         )}
 
-                        <img src={icon} className={s.icon} alt="icon"/>
+                        <img src={icon || null} className={s.icon} alt="icon"/>
 
                     </div>
                     {/*<img src={icon} className={s.icon} alt="User icon"/>*/}
@@ -254,7 +254,7 @@ const Post = () => {
 
                 {selectedImage && (
                     <img
-                        src={URL.createObjectURL(selectedImage)}
+                        src={URL.createObjectURL(selectedImage) || null}
                         alt="Selected"
                         className={s.selectedImage}
                     />

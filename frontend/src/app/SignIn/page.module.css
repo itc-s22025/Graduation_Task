@@ -17,10 +17,10 @@
     border: 3px solid #FF92AD;
     border-radius: 10px;
 
-    width: 400px;
+    width: 420px;
     height: 500px;
 
-    margin-top: 23vh;
+    margin-top: 27vh;
     margin-left: 12vw;
     padding: 10px;
 }
@@ -32,11 +32,9 @@
 .title{
     color: #4A4444;
     font-size: 1.9rem;
-
     width: 100%;
     max-width: 200px;
-
-    margin: 30px 140px 30px;
+    margin: 30px 125px 30px;
 }
 
 .input{
@@ -47,11 +45,11 @@
     border: 1px solid #FF92AD;
     outline: none;
 
-    width: 280px;
+    width: 300px;
     height: 40px;
 
     margin: 0 50px 10px;
-    padding: 5px 20px 5px;
+    padding: 5px 10px 5px;
 
     font-size: 1rem;
     color: #423a3a;
@@ -60,11 +58,11 @@
 .forgotPwd{
     outline: none;
     border: none;
-    width: 150px;
+    width: 200px;
     background-color: #fff;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #ff839f;
-    margin: 0 50px 10px;
+    margin: 0 35px 10px;
 }
 
 .forgotPwd:hover{
@@ -82,7 +80,7 @@
 
     background-color: #FF92AD;
 
-    width: 280px;
+    width: 300px;
     height: 45px;
 
     margin: 20px 50px 10px;
@@ -105,12 +103,13 @@
 
 .or {
     color: #4A4444;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 
-    margin: 10px 170px 10px;
+    margin: 10px 180px 10px;
     display: inline-block;
     position: relative;
-    padding: 0 10px;
+    width: 44px;
+    /*border: 1px solid red;*/
 }
 
 .or::before,
@@ -118,17 +117,17 @@
     content: "";
     position: absolute;
     top: 50%;
-    width: 110px; /* 線の長さを調整 */
+    width: 120px; /* 線の長さを調整 */
     height: 2px; /* 線の太さ */
-    background-color: #ff87a3; /* 線の色 */
+    background-color: #ff87a3;
 }
 
 .or::before {
-    left: -118px; /* 「または」の前の線 */
+    left: -128px; /* 「または」の前の線 */
 }
 
 .or::after {
-    right: -118px; /* 「または」の後の線 */
+    right: -126px; /* 「または」の後の線 */
 }
 
 .google{
@@ -142,7 +141,7 @@
 
     background-color: #FFF;
 
-    width: 280px;
+    width: 300px;
     height: 45px;
 
     margin: 10px 50px 10px;
@@ -168,14 +167,15 @@
 
 .signUpText{
     color: #4A4444;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    margin-top: 3px;
 }
 
 .signUp{
     border: none;
     background-color: #fff;
-    margin-left: 10px;
-    font-size: 1rem;
+    /*margin-left: 10px;*/
+    font-size: 0.9rem;
     color: #ff839f;
 }
 
