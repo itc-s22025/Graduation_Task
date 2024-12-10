@@ -1,0 +1,42 @@
+.auTitle{
+    border-bottom: 2px solid #fab186;
+    width: 600px;
+    padding: 0 130px;
+    color: #3a3d42;
+    margin: 0 auto 10px;
+    font-size: 2.5rem;
+}
+
+.colors{
+    display: flex;
+    margin: 10px auto;
+    width: 775px;
+}
+
+.auColor1, .auColor2, .auColor3, .auColor4, .auColor5, .auColor6, .auColor7, .auColor8, .auColor9, .auColor10, .auColor11{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin: 5px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+}
+
+.auColor1{ background-color: #d0a544; }
+.auColor2{ background-color: #e8ca2d; }
+.auColor3{ background-color: #e2983e; }
+.auColor4{ background-color: #d37020; }
+.auColor5{ background-color: #abb138; }
+.auColor6{ background-color: #498d37; }
+.auColor7{ background-color: #43a6a0; }
+.auColor8{ background-color: #176972; }
+.auColor9{ background-color: #8f1e22; }
+.auColor10{ background-color: #61451f; }
+.auColor11{ background-color: #452d5f; }
+
+.colorsContainer, .auCharacterContainer, .auArtistContainer{
+    /*border: 1px solid deeppink;*/
+    margin: 10px 10px 20px;
+    padding: 10px;
+}

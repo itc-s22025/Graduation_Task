@@ -227,7 +227,7 @@ const Post = () => {
                         <img src={icon} className={s.icon} alt="icon"/>
 
                     </div>
-                    <img src={icon} className={s.icon} alt="User icon"/>
+                    {/*<img src={icon} className={s.icon} alt="User icon"/>*/}
                     <p className={s.name}>{name || "name"}</p>
                     <p className={s.userId}> @{displayId || "unknown"}</p>
                 </div>
