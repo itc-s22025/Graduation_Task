@@ -42,7 +42,7 @@ const Tweet = () => {
                             tabIndex={0}>Following
                         </Tab>
 
-                    </ul>
+                     </ul>
                 </TabList>
 
                 <TabPanel>

@@ -10,7 +10,7 @@ import { query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, 
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import Post from "@/components/post";
-import {useParams, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
 import {use} from 'react';
 
 const Profile = ({ imageUrl, params }) => {
@@ -288,10 +288,10 @@ const Profile = ({ imageUrl, params }) => {
                                 <div className={s.idAndFollow}>
                                     <p className={s.userId}>@{displayId || 'unknown'}</p>
                                     <div className={s.followContainer}>
-                                        <Link href={`/Profile/${userId}/Follow`} className={s.add}>
+                                        <Link href={`/Profile/${userId}/Following`} className={s.add}>
                                             <span className={s.follow}><strong>{userData?.following?.length || 0}</strong> Following</span>
                                         </Link>
-                                        <Link href={`/Profile/${userId}/Follow`} className={s.add}>
+                                        <Link href={`/Profile/${userId}/Following/Follower`} className={s.add}>
                                             <span className={s.follower}><strong>{userData?.followers?.length || 0}</strong> Followers</span>
                                         </Link>
                                     </div>
@@ -301,54 +301,54 @@ const Profile = ({ imageUrl, params }) => {
                         </div>
 
 
-                    <Tabs>
-                        <TabList className={`${s.tabsContainer} ${isFixed ? s.fixed : ''}`}>
-                            <Tab
-                                className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`}
-                                onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
-                            <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
-                            <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
-                        </TabList>
+                        <Tabs>
+                            <TabList className={`${s.tabsContainer} ${isFixed ? s.fixed : ''}`}>
+                                <Tab
+                                    className={`${s.tabs} ${s.tabFirst} ${focusedTab === 'tabSecond' ? s.zIndex1 : ''} ${focusedTab === 'tabThird' ? s.zIndex1 : ''}`}
+                                    onFocus={() => handleFocus('tabFirst')} tabIndex={0}>Posts</Tab>
+                                <Tab className={`${s.tabs} ${s.tabSecond} ${focusedTab === 'tabSecond' ? s.zIndex2 : ''}`} onFocus={() => handleFocus('tabSecond')} tabIndex={0}>Media</Tab>
+                                <Tab className={`${s.tabs} ${s.tabThird} ${focusedTab === 'tabThird' ? s.zIndex3 : ''}`} onFocus={() => handleFocus('tabThird')} tabIndex={0}>Likes</Tab>
+                            </TabList>
 
-                       <TabPanel>
-                           <article className={s.articleContainer}>
-                               <div>
-                                   {userPosts.length > 0 ? (userPosts
-                                           .map((post) => (
-                                               <Post key={post.id} ownPost={post} pageType="profile"/>
-                                           ))) : (<p>投稿がありません</p>)}
-                               </div>
-                           </article>
-                       </TabPanel>
-
-
-                        <TabPanel>
-                            <article className={s.imageArticleContainer}>
-                                {userPosts.length > 0 ? (userPosts.filter(post => post.imageUrl) // imageUrl が null または undefined でない投稿をフィルタリング
-                                    .map((post) => (
-                                        <div key={post.id}>
-                                            {post.imageUrl && <img src={post.imageUrl} alt="Post image" className={s.postImage} />}
-                                        </div>
-                                    ))) : (<p>投稿がありません</p>)}
-                            </article>
-                        </TabPanel>
+                            <TabPanel>
+                                <article className={s.articleContainer}>
+                                    <div>
+                                        {userPosts.length > 0 ? (userPosts
+                                            .map((post) => (
+                                                <Post key={post.id} ownPost={post} pageType="profile"/>
+                                            ))) : (<p>投稿がありません</p>)}
+                                    </div>
+                                </article>
+                            </TabPanel>
 
 
-                        <TabPanel>
-                            <article className={s.likesArticleContainer}>
-                                {likesPosts.length > 0 ? (
-                                    likesPosts.map(post => (
-                                        <div key={post.id}>
-                                            <Post key={post.id} ownPost={post} pageType="profile"/>
-                                        </div>
-                                    ))
-                                ) : (<p>いいねがありません</p>)}
-                            </article>
-                        </TabPanel>
-                    </Tabs>
+                            <TabPanel>
+                                <article className={s.imageArticleContainer}>
+                                    {userPosts.length > 0 ? (userPosts.filter(post => post.imageUrl) // imageUrl が null または undefined でない投稿をフィルタリング
+                                        .map((post) => (
+                                            <div key={post.id}>
+                                                {post.imageUrl && <img src={post.imageUrl} alt="Post image" className={s.postImage} />}
+                                            </div>
+                                        ))) : (<p>投稿がありません</p>)}
+                                </article>
+                            </TabPanel>
+
+
+                            <TabPanel>
+                                <article className={s.likesArticleContainer}>
+                                    {likesPosts.length > 0 ? (
+                                        likesPosts.map(post => (
+                                            <div key={post.id}>
+                                                <Post key={post.id} ownPost={post} pageType="profile"/>
+                                            </div>
+                                        ))
+                                    ) : (<p>いいねがありません</p>)}
+                                </article>
+                            </TabPanel>
+                        </Tabs>
+                    </div>
                 </div>
             </div>
-        </div>
 
             {showEditModal && (
                 <div className={s.modalOverlay}>
