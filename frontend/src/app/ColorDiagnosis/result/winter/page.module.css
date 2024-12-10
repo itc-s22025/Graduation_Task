@@ -1,0 +1,42 @@
+.wnTitle{
+    border-bottom: 2px solid #9293FF;
+    width: 600px;
+    padding: 0 130px;
+    color: #3a3d42;
+    margin: 0 auto 10px;
+    font-size: 2.5rem;
+}
+
+.colors{
+    display: flex;
+    margin: 10px auto;
+    width: 775px;
+}
+
+.wnColor1, .wnColor2, .wnColor3, .wnColor4, .wnColor5, .wnColor6, .wnColor7, .wnColor8, .wnColor9, .wnColor10, .wnColor11{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin: 5px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+}
+
+.wnColor1{ background-color: #e899bb; }
+.wnColor2{ background-color: #d31176; }
+.wnColor3{ background-color: #a61e2c; }
+.wnColor4{ background-color: #e9e683; }
+.wnColor5{ background-color: #1fa258; }
+.wnColor6{ background-color: #1797cf; }
+.wnColor7{ background-color: #144493; }
+.wnColor8{ background-color: #11337b; }
+.wnColor9{ background-color: #2f204c; }
+.wnColor10{ background-color: #c9c9ca; }
+.wnColor11{ background-color: #040000; }
+
+.colorsContainer, .wnCharacterContainer, .wnArtistContainer{
+    /*border: 1px solid deeppink;*/
+    margin: 10px 10px 20px;
+    padding: 10px;
+}
