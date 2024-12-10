@@ -44,33 +44,33 @@ const SignIn = () => {
           <div className={s.allContainer}>
               <h1 className={s.logo}>♥Prettie</h1>
               <div className={s.MainContainer}>
-                  <h1 className={s.title}>Sign in</h1>
+                  <h1 className={s.title}>サインイン</h1>
                   <form onSubmit={handleEmailLogin} className={s.grid}>
                       <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          placeholder="Email"
+                          placeholder="メールアドレス"
                           className={s.input}
                       />
                       <input
                           type="password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          placeholder="Password"
+                          placeholder="パスワード"
                           className={s.input}
                       />
-                      <button type="button" className={s.forgotPwd}>Forgot your password?</button>
-                      <button type="submit" className={s.submit}>Sign in</button>
+                      <button type="button" className={s.forgotPwd}>パスワードをお忘れですか？</button>
+                      <button type="submit" className={s.submit}>サインイン</button>
                   </form>
 
-                  <p className={s.or}>OR</p>
-                  <button onClick={handleGoogleLogin} className={s.google}>Sign in with Google</button>
+                  <p className={s.or}>または</p>
+                  <button onClick={handleGoogleLogin} className={s.google}>Googleでサインイン</button>
 
                   <div className={s.signUpContainer}>
                       {/* eslint-disable-next-line react/no-unescaped-entities */}
-                      <p className={s.signUpText}>Don't have an account yet?</p>
-                      <button type="button" className={s.signUp} onClick={() => router.push('/SignUp')}>Sign up now</button>
+                      <p className={s.signUpText}>アカウントをお持ちでないですか？</p>
+                      <button type="button" className={s.signUp} onClick={() => router.push('/SignUp')}>サインアップ</button>
                   </div>
                   {error && <p>{error}</p>}
               </div>
