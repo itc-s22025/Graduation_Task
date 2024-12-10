@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
 .parent {
     display: flex;
     overflow: hidden; /* スクロールを発生させない */
@@ -10,9 +12,10 @@
 .colum2 {
     grid-template-columns: 1fr 1fr;
     flex-grow: 3; /* 質問のスペースを広く */
-    padding: 20px; /* 余白を追加 */
+    padding: 0 20px; /* 余白を追加 */
     position: absolute;
-    left: 30vw;
+    left: 33vw;
+    height: 100vh;
 }
 
 .font {
@@ -57,7 +60,7 @@
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-bottom: 30px;
+    margin-bottom: 200px;
 }
 
 /*カラータイプの表示*/
@@ -98,6 +101,10 @@
     border: none;
     cursor: pointer;
     font-size: 30px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .startButton:hover{

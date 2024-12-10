@@ -4,12 +4,14 @@ import { useState,useEffect } from 'react';
 import Detail from "@/app/SignUp/detail";
 import FirstLayout from "@/components/FirstLayout";
 import s from "@/app/SignUp/page.module.css";
-import {useSearchParams} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 
 const SignUp = () => {
     //state
     const [selectedColor, setSelectedColor] = useState(null); // 選択された色を管理
     const [isDetail, setIsDetail] = useState(false);
+
+    const router = useRouter()
 
     // クエリパラメータを取得
     const searchParams = useSearchParams();
@@ -118,11 +120,7 @@ const SignUp = () => {
                                         次へ
                                     </button>
                                     <p className={s.or}>or</p>
-                                    <input
-                                        type="submit"
-                                        value="わからないので診断してみる"
-                                        className={s.toTest}
-                                    />
+                                    <button type="button" className={s.toTest} onClick={() => router.push('/ColorDiagnosis')}>わからないので診断してみる</button>
                                 </div>
                             </form>
 

@@ -6,7 +6,7 @@
     /*border:1px solid red;*/
     width: 70vw;
     height: 100vh;
-    padding: 10px 20px;
+    padding: 10px 40px;
 }
 
 .titleContainer{
@@ -52,7 +52,7 @@
 .bottomContainer{
     position: absolute;
     bottom: 80px;
-    left: 11vw;
+    left: 12vw;
     /*border: 1px solid springgreen;*/
     margin: 10px auto;
     padding: 10px;
