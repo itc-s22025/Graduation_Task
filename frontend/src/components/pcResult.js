@@ -14,7 +14,7 @@ const ButtonGroup = ({ colorType }) => {
             <div className={s.bottomContainer}>
                 <div>
                     <button type="button" className={s.whatIsPcButton}>そもそもパーソナルカラーって？</button>
-                    <button type="button" className={s.goBackToTopButton}>診断TOPに戻る</button>
+                    <button type="button" className={s.goBackToTopButton} onClick={() => router.push('/ColorDiagnosis')}>診断TOPに戻る</button>
                 </div>
                 <button
                     type="button"

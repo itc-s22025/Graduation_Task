@@ -51,33 +51,57 @@ const ColorDiagnosisPage = (props) => {
     const [isStartScreen, setIsStartScreen] = useState(true);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState([]);
+    const [scores, setScores] = useState(new Array(questions.length).fill(0)); // 質問ごとのスコアを保存する
+    const [selectedOption, setSelectedOption] = useState(null); // 選択されたオプションのインデックス
 
     const handleStartDiagnosis = () => {
         setIsStartScreen(false);
     };
 
     const handleNextQuestion = () => {
+        setSelectedOption(null); // 質問が切り替わるたびに選択肢をリセット
         setCurrentQuestionIndex(currentQuestionIndex + 1);
     };
 
     const handlePreviousQuestion = () => {
+        setSelectedOption(null); // 質問が切り替わるたびに選択肢をリセット
         setCurrentQuestionIndex(currentQuestionIndex - 1);
     };
 
-    const handleSelectOption = (option) => {
+    const handleSelectOption = (index) => {
+        setSelectedOption(index); // 選択されたオプションを設定
+        const optionScores = [10, 6, 3, 0]; // 各選択肢のスコア
+        setScores((prevScores) => {
+            const updatedScores = [...prevScores];
+            updatedScores[currentQuestionIndex] = optionScores[index] !== undefined ? optionScores[index] : 0;
+            return updatedScores;
+        });
         setUserAnswers((prevAnswers) => {
             const updatedAnswers = [...prevAnswers];
-            updatedAnswers[currentQuestionIndex] = option;
+            updatedAnswers[currentQuestionIndex] = index;
             return updatedAnswers;
         });
     };
 
+
+
     const handleShowResult = () => {
-        router.push({
-            pathname: '/result',
-            query: { userAnswers: JSON.stringify(userAnswers) }
-        });
+        // 合計スコアを計算
+        const totalScore = scores.reduce((acc, score) => acc + (score || 0), 0); // undefined を 0 に変換
+        // alert(totalScore);
+
+        // スコアに応じた結果ページへのルーティング
+        if (totalScore > 65) {
+            router.push("/ColorDiagnosis/result/winter");
+        } else if (totalScore > 40) {
+            router.push("/ColorDiagnosis/result/summer");
+        } else if (totalScore > 20) {
+            router.push("/ColorDiagnosis/result/spring");
+        } else {
+            router.push("/ColorDiagnosis/result/autumn");
+        }
     };
+
 
     return (
         <>
@@ -110,6 +134,7 @@ const ColorDiagnosisPage = (props) => {
                                 questionText={questions[currentQuestionIndex].question}
                                 options={questions[currentQuestionIndex].options}
                                 handleSelectOptions={handleSelectOption}
+                                selectedOption={selectedOption}
                             />
 
                             {/* 戻る・次へボタンの表示 */}
