@@ -252,11 +252,13 @@
     font-weight: 600;
 }
 
+
 /*新しいコスメを追加*/
 .addTabContent {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
+    width: 600px;
 }
 
 .newCosmeticContainer{
@@ -278,6 +280,17 @@
     padding-left: 10px;
 }
 
+
+.includeImgContainer{
+    /*border: 1px solid red;*/
+    display: flex;
+}
+
+.withOutImgContainer{
+    /*border: 1px solid blue;*/
+    width: 280px;
+}
+
 .inputTabLabel{
     color: #4A4444;
     font-size: 0.9rem;
@@ -293,6 +306,7 @@
     background-color: #F8F0F0;
     color: #5d5757;
     padding: 0 5px;
+    margin-bottom: 10px;
 
     font-family: "Zen Maru Gothic", serif;
     font-weight: 400;
@@ -323,11 +337,10 @@
     padding: 30px 10px;
 }
 
-.inputBox{
+.inputBox, .inputBoxOfProduct{
     outline: none;
     border: none;
     border-bottom: 1px solid #FF92AD;
-    width: 210px;
     margin: 10px;
     padding: 0 0 0 10px;
     color: #423a3a;
@@ -335,6 +348,14 @@
     font-family: "Zen Maru Gothic", serif;
     font-weight: 400;
     font-style: normal;
+}
+
+.inputBox{
+    width: 210px;
+}
+
+.inputBoxOfProduct{
+    width: 418px;
 }
 
 .inputBoxMini{
@@ -370,6 +391,10 @@
 
 .inputBox::placeholder, .inputBox[type="date"], .inputMemo::placeholder, .inputBoxMini::placeholder, .inputTabBox::placeholder{
     color: #aaa;
+}
+
+.quantityAndPrice{
+    display: flex;
 }
 
 .inputButtonContainer{
@@ -417,3 +442,50 @@
     scale: calc(1.03);
     font-weight: 500;
 }
+
+
+/*brand auto correct*/
+.suggestionsList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    scrollbar-width: thin;
+    max-height: 120px;
+    overflow-y: auto;
+    position: absolute;
+    left: 38.7vw;
+    background: #fff;
+    z-index: 10;
+    width: 419px;
+    color: #4A4444;
+}
+
+.suggestionItem {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestionItem:hover {
+    background: #ff92AD;
+    color: #fff;
+}
+
+.imagePreview {
+    margin: 10px;
+    text-align: center;
+    width: 120px;
+    height: 120px;
+    /*object-fit: cover;*/
+    border: 1px solid #ff95af;
+    border-radius: 10px;
+}
+
+.previewImage {
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+

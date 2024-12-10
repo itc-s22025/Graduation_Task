@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
+.allContainer{
+    position: absolute;
+    left: 30vw;
+}
+
 .question{
     /*border: 1px solid red;*/
     margin: 12vh 3vw 0;

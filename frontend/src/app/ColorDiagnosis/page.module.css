@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
 .parent {
     display: flex;
+    overflow: hidden; /* スクロールを発生させない */
 }
 
 .colum1 {
@@ -9,17 +12,19 @@
 .colum2 {
     grid-template-columns: 1fr 1fr;
     flex-grow: 3; /* 質問のスペースを広く */
-    padding: 20px; /* 余白を追加 */
+    padding: 0 20px; /* 余白を追加 */
     position: absolute;
-    left: 30vw;
-    }
+    left: 33vw;
+    height: 100vh;
+}
 
 .font {
-    font-family: "Zen Maru Gothic", serif;
-    color: #FF92AD;
-    padding: 10px;
+    color: black;
+    font-weight: normal;
+    padding: 40px;
     border-radius: 5px;
-    text-align: center;
+    margin-left: 280px;
+    margin-top: 200px;
 }
 
 .buttonContainer {
@@ -28,17 +33,85 @@
     justify-content: center;
 }
 
-.backButton, .nextButton, .resultButton {
+/*スタート画面*/
+.startScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/*スタート画面タイトル*/
+.startScreen h1 {
+    font-size: 3.5rem;
+    margin-right: 200px;
+}
+
+/*スタートボタン*/
+.startButton {
+    display: inline-block;
+    position: relative;
+    font-size: 2rem;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 200px;
+}
+
+/*カラータイプの表示*/
+.colorTypeContainer {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    gap: 20px;
+}
+
+/*カラータイプしかく*/
+.colorTypeButton1, .colorTypeButton2 {
+    border-radius: 8px; /* 角を少し丸める */
+    width: 200px; /* 横幅 */
+    height: 200px; /* 縦幅 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: lighter;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.colorTypeButton1 {
+    border: 3px solid #f0e68c;
+}
+
+.colorTypeButton2 {
+    border: 3px solid #87cefa;
+}
+
+.startButton, .backButton, .nextButton, .resultButton {
     background-color: #ffc0cb;
     color: black;
+    border-radius: 10px;
     padding: 10px 20px;
-    margin-top: 20px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 30px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.startButton:hover{
+    font-weight: bolder;
 }
 
 .backButton:hover, .nextButton:hover, .resultButton:hover {
-    background-color: #ff69ba;
+    border: 0.7mm solid lightpink;
+    background-color: white;
 }

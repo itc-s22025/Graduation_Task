@@ -1,5 +1,5 @@
 import { db } from '@/firebase';  // Firestoreのインポート
-import { doc, getDoc, collection, query, where, orderBy, getDocs, addDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import {doc, getDoc, collection, query, where, orderBy, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import s from "@/styles/eachPost.module.css";
 
@@ -10,6 +10,9 @@ const EachPost = ({ post, currentUserUid }) => {
     const [personalColor, setPersonalColor] = useState(null);
     const [replyContent, setReplyContent] = useState("");  // リプライ内容を保持するステート
     const [replies, setReplies] = useState([]);
+    const [liked, setLiked] = useState(false);  // いいねの状態を管理するステート
+    const [likesCount, setLikesCount] = useState(post.likedBy ? post.likedBy.length : 0); // いいねの数を管理
+    const [replyToPost, setReplyToPost] = useState(null); // 返信先ポストのデータ
 
     // Firebaseからユーザー情報を取得
     useEffect(() => {
@@ -40,6 +43,28 @@ const EachPost = ({ post, currentUserUid }) => {
         }
     }, [currentUserUid]);  // currentUserUidが変わった時に再取得
 
+    // 返信先ポストの情報を取得
+    useEffect(() => {
+        const fetchReplyToPost = async () => {
+            if (post.replyTo) {
+                try {
+                    const replyToRef = doc(db, "posts", post.replyTo);
+                    const replyToDoc = await getDoc(replyToRef);
+
+                    if (replyToDoc.exists()) {
+                        setReplyToPost(replyToDoc.data());
+                    } else {
+                        console.warn("返信先のポストが見つかりません。");
+                    }
+                } catch (error) {
+                    console.error("返信先のポスト情報取得エラー:", error);
+                }
+            }
+        };
+
+        fetchReplyToPost();
+    }, [post.replyTo]);
+
     const getReplies = async () => {
         if (post.repliedCount) {
             // リプライ元のポストIDを基にリプライを検索
@@ -61,9 +86,50 @@ const EachPost = ({ post, currentUserUid }) => {
         getReplies();
     }, [post.id]);  // post.idが変更される度にリプライを取得
 
+    // いいねのリアルタイム更新
+    useEffect(() => {
+        const likesRef = collection(db, "likes");
+        const q = query(likesRef, where("postId", "==", post.id));
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const likedByUsers = querySnapshot.docs.map(doc => doc.data().userId);
+            setLikesCount(likedByUsers.length); // いいねの数を更新
+            setLiked(likedByUsers.includes(currentUserUid)); // いいねの状態を更新
+        });
+
+        // クリーンアップ関数: コンポーネントがアンマウントされたときにリスナーを解除
+        return () => unsubscribe();
+    }, [post.id, currentUserUid]);
+
+    // いいねボタンがクリックされたときの処理
+    const handleLike = async () => {
+        try {
+            const likesRef = collection(db, "likes");
+            const q = query(likesRef, where("postId", "==", post.id), where("userId", "==", currentUserUid));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                // まだいいねがなければ追加
+                await addDoc(likesRef, {
+                    postId: post.id,
+                    userId: currentUserUid,
+                });
+                setLiked(true);  // いいねした状態に更新
+            } else {
+                // すでにいいねしていた場合、削除
+                querySnapshot.forEach(async (docSnap) => {
+                    await deleteDoc(docSnap.ref);
+                });
+                setLiked(false);  // いいねを取り消した状態に更新
+            }
+        } catch (error) {
+            console.error("いいねの処理に失敗しました:", error);
+        }
+    };
+
+
     if (!post) return null;
 
-    const isLiked = post.likedBy && post.likedBy.includes(currentUserUid);
     const isReposted = post.repostedBy && post.repostedBy.includes(currentUserUid);
 
     // リプライの送信処理
@@ -107,6 +173,53 @@ const EachPost = ({ post, currentUserUid }) => {
     return (
         <div className={s.allContainer}>
             <div className={s.postContainer}>
+                {/* 返信先ポスト情報の表示 */}
+                {replyToPost && (
+                    <div className={s.replyToContainer}>
+                        <div >
+                            <div className={s.replyToIconContainer}>
+                                <img src={replyToPost.icon || "/default-icon.png"} alt="Reply to User Icon"
+                                     className={s.replyToIcon}/>
+                                <div className={s.replyToInfoContainer}>
+                                    <p className={s.replyToName}>{replyToPost.name || "Anonymous"}</p>
+                                    <p className={s.replyToUserId}>@{replyToPost.userId || "unknown"}</p>
+                                </div>
+                            </div>
+
+                            <div className={s.replyToWithOutIconContainer}>
+                                <div className={s.replyToContentContainer}>
+                                    <p className={s.replyToContent}>{replyToPost.tweet || "Content not available"}</p>
+                                    {replyToPost.imageUrl && (
+                                        <img src={replyToPost.imageUrl} alt="post image" className={s.replyToImage}/>
+                                    )}
+                                </div>
+                                <div className={s.replyToReactionContainer}>
+                                    <div className={s.eachReactionContainer}>
+                                        <img alt="reply" src="/comment.png" className={s.reply}/>
+                                        <p className={s.reactionText}>{replyToPost.repliedCount ? replyToPost.repliedCount : 0}</p>
+                                    </div>
+                                    <div className={s.eachReactionContainer}>
+                                        <img alt="repost" src={isReposted ? "/repost_after.png" : "/repost_before.png"}
+                                             className={s.repost}/>
+                                        <p className={s.reactionText}>{replyToPost.repostedBy ? replyToPost.repostedBy.length : 0}</p>
+                                    </div>
+                                    <div className={s.eachReactionContainer}>
+                                        <img alt="like" src="/cutie_heart_before.png"
+                                             className={s.like}/>
+                                        <p className={s.reactionText}>{replyToPost.likesCount ? replyToPost.likesCount : 0}</p>
+                                    </div>
+                                    <div className={s.eachReactionContainer}>
+                                        <div className={s.keep}/>
+                                        <p className={s.reactionText}>0</p>
+                                    </div>
+                                    <img src="/share_before.png" className={s.share}/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <div className={s.iconAndInfoContainer}>
                     <div className={s.iconContainer}>
                         <img className={s.icon} src={post.icon} alt="User Icon"/>
@@ -121,7 +234,7 @@ const EachPost = ({ post, currentUserUid }) => {
                 <p className={s.content}>{post.tweet}</p>
 
                 {post.imageUrl && (
-                    <img src={post.imageUrl} alt="Post Image" className={s.postImage} />
+                    <img src={post.imageUrl} alt="Post Image" className={s.postImage}/>
                 )}
 
                 <div className={s.reactionContainer}>
@@ -130,12 +243,14 @@ const EachPost = ({ post, currentUserUid }) => {
                         <p className={s.reactionText}>{post.repliedCount ? post.repliedCount : 0}</p>
                     </div>
                     <div className={s.eachReactionContainer}>
-                        <img alt="repost" src={isReposted ? "/repost_after.png" : "/repost_before.png"} className={s.repost}/>
+                        <img alt="repost" src={isReposted ? "/repost_after.png" : "/repost_before.png"}
+                             className={s.repost}/>
                         <p className={s.reactionText}>{post.repostedBy ? post.repostedBy.length : 0}</p>
                     </div>
-                    <div className={s.eachReactionContainer}>
-                        <img alt="like" src={isLiked ? "/cutie_heart_after.png" : "/cutie_heart_before.png"} className={s.like} />
-                        <p className={s.reactionText}>{post.likedBy ? post.likedBy.length : 0}</p>
+                    <div className={s.eachReactionContainer} onClick={handleLike}>
+                        <img alt="like" src={liked ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
+                             className={s.like}/>
+                        <p className={s.reactionText}>{likesCount}</p>
                     </div>
                     <div className={s.eachReactionContainer}>
                         <div className={s.keep}/>
@@ -172,7 +287,7 @@ const EachPost = ({ post, currentUserUid }) => {
                                         <p className={s.replyUserId}>@{reply.userId || "user1"}</p>
                                     </div>
                                     <p className={s.replyDate}> {reply.timestamp ? reply.timestamp.toDate // Firebase Timestamp 型の場合
-                                        ? reply.timestamp.toDate().toLocaleString() : new Date(reply.timestamp).toLocaleString() // Date 型または文字列の場合
+                                            ? reply.timestamp.toDate().toLocaleString() : new Date(reply.timestamp).toLocaleString() // Date 型または文字列の場合
                                         : "Date not available"}</p>
 
                                 </div>
@@ -193,7 +308,7 @@ const EachPost = ({ post, currentUserUid }) => {
                                         </div>
                                         <div className={s.eachReactionContainer}>
                                             <img alt="like"
-                                                 src={isLiked ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
+                                                 src={liked ? "/cutie_heart_after.png" : "/cutie_heart_before.png"}
                                                  className={s.like}/>
                                             <p className={s.reactionText}>{reply.likedBy ? reply.likedBy.length : 0}</p>
                                         </div>

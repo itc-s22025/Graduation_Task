@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.allContainer{
+    position: absolute;
+    left: 30vw;
+    /*border:1px solid red;*/
+    width: 70vw;
+    height: 100vh;
+    padding: 10px 40px;
+}
+
+.titleContainer{
+    /*border: 1px solid blue;*/
+    margin: 40px 10px 30px;
+
+}
+
+.titleText{
+    /*border: 1px solid yellowgreen;*/
+    width: 280px;
+    margin: 10px 20px 0;
+}
+
+.mainContainer{
+    /*border: 1px solid peru;*/
+    margin: 10px;
+    padding: 10px;
+    color: #423a3a;
+}
+
+.explainText{
+    /*border: 1px solid #FFCC92;*/
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.pointContainer{
+    /*border: 1px solid red;*/
+    text-align: left;
+    padding-left: 20px;
+}
+
+
+.colors{
+    display: flex;
+    margin: 10px auto;
+    /*border: 1px solid red;*/
+    width: 775px;
+}
+
+/*ボタングループ*/
+.bottomContainer{
+    position: absolute;
+    bottom: 80px;
+    left: 12vw;
+    /*border: 1px solid springgreen;*/
+    margin: 10px auto;
+    padding: 10px;
+    width: 870px;
+}
+
+.whatIsPcButton, .goBackToTopButton, .toSignUpButton{
+    border: 2px solid #ff92AD;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 50px;
+    height: 40px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.whatIsPcButton{
+    width: 500px;
+    color: #423a3a;
+}
+
+.goBackToTopButton{
+    width: 300px;
+    background-color: #ff92AD;
+    color: #fff;
+}
+
+.toSignUpButton{
+    width: 820px;
+    color: #423a3a;
+}

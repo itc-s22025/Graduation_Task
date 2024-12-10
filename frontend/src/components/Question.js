@@ -1,30 +1,26 @@
-"use client";
+import React from 'react';
+import s from "@/styles/question.module.css";
 
-import React, { useState } from 'react';
-import s from '../styles/question.module.css';
+const Question = ({ number, questionText, options, handleSelectOptions, selectedOption }) => {
 
-const Question = ({ number, questionText, options = [], handleSelectOptions }) => {
-    const [selectedOption, setSelectedOption] = useState(null);
-
-    const handleClick = (option) => {
-        setSelectedOption(option);
-        handleSelectOptions(option);
+    const handleClick = (index) => {
+        handleSelectOptions(index); // 親コンポーネントにインデックスを渡す
     };
 
     return (
         <div className={s.questionContainer}>
-            <h2>Q{number}. {questionText}</h2>
+            <h2>Q.{number}. {questionText}</h2>
             <div className={s.options}>
                 {options.map((option, index) => (
                     <button
                         key={index}
-                        className={`${s.optionButton} ${selectedOption === option ? s.selected : ''}`}
-                        onClick={() => handleClick(option)}
+                        className={`${s.optionAnswer} ${selectedOption === index ? s.selected : ''}`}
+                        onClick={() => handleClick(index)} // インデックスを親コンポーネントに渡す
                     >
                         {option}
                     </button>
-                    ))}
-                </div>
+                ))}
+            </div>
         </div>
     );
 };

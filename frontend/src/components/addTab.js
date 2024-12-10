@@ -39,7 +39,7 @@ const AddTab = ({ onSubmit }) => {
                         name="newTabName"
                         onChange={(e) => setNewTabName(e.target.value)}
                         value={newTabName}
-                        placeholder="enter tab name"
+                        placeholder="タブの名前を入力してください"
                         className={s.inputName}
                         required
                     />
@@ -104,7 +104,7 @@ const AddTab = ({ onSubmit }) => {
                                 className={s.checkbox}
                                 onChange={(e) => setShowUsers(prev => ({ ...prev, likeUsers: e.target.checked ? '' : prev.likeUsers }))}
                             />
-                            <label htmlFor="likeUsers" className={s.checkboxLabel}>users who like:</label>
+                            <label htmlFor="likeUsers" className={s.checkboxLabel}>
                             {showUsers.likeUsers !== false && (
                                 <input
                                     type="text"
@@ -115,7 +115,7 @@ const AddTab = ({ onSubmit }) => {
                                     value={showUsers.likeUsers}
                                     onChange={(e) => setShowUsers(prev => ({ ...prev, likeUsers: e.target.value }))}
                                 />
-                            )}
+                            )} が好きなユーザ</label>
                         </div>
                     </div>
                 </div>

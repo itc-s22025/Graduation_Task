@@ -1,0 +1,43 @@
+.smTitle{
+    border-bottom: 2px solid #66BAFF;
+    width: 600px;
+    padding: 0 130px;
+    color: #423a3a;
+    margin: 0 auto 10px;
+    font-size: 2.5rem;
+}
+
+.colors{
+    display: flex;
+    margin: 10px auto;
+    /*border: 1px solid red;*/
+    width: 775px;
+}
+
+.smColor1, .smColor2, .smColor3, .smColor4, .smColor5, .smColor6, .smColor7, .smColor8, .smColor9, .smColor10, .smColor11{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin: 5px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+}
+
+.smColor1{ background-color: #f0ebb5; }
+.smColor2{ background-color: #e899bb; }
+.smColor3{ background-color: #d66891; }
+.smColor4{ background-color: #be2838; }
+.smColor5{ background-color: #a1cda8; }
+.smColor6{ background-color: #109f76; }
+.smColor7{ background-color: #b1d6e2; }
+.smColor8{ background-color: #70b2de; }
+.smColor9{ background-color: #c3bddb; }
+.smColor10{ background-color: #9593b9; }
+.smColor11{ background-color: #5c6063; }
+
+.colorsContainer, .smCharacterContainer, .smArtistContainer{
+    /*border: 1px solid deeppink;*/
+    margin: 10px 10px 20px;
+    padding: 10px;
+}

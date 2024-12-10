@@ -4,12 +4,13 @@
     position: relative;
     /*border: 1px solid red;*/
     left: -1vw;
-    padding: 5px 38px 10px;
+    padding: 0px 38px 10px;
     width: 40vw;
+    margin-left: 20px;
 }
 
 .all{
-    margin: 10px auto 10px;
+    margin: 20px auto 10px;
     padding: 0 10px 8px;
     background-color: #fff;
     height: auto;

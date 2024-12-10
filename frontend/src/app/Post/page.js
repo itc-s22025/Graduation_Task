@@ -12,6 +12,7 @@ import { getAuth } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 
+
 const Post = () => {
     const router = useRouter();
 
@@ -24,6 +25,8 @@ const Post = () => {
     const [pollOptions, setPollOptions] = useState(["", ""]);
     const [inMenuVisible, setInMenuVisible] = useState(false);
     const [menu, setMenu] = useState('');
+    const [showQuestionBox, setShowQuestionBox] = useState(false); // 質問ボックスの表示状態
+    const [question, setQuestion] = useState(""); // 質問内容
     const inputRef = useRef(null);
 
 
@@ -131,7 +134,18 @@ const Post = () => {
                   personalColor: personalColor, //取得したPC
                   userId : displayId,  //取得したdisplayIDをuserIDとして表示
                   imageUrl: imageUrl || null,
-                  pollOptions: pollVisible ? pollOptions.filter(option => option.trim() !== "") : null,
+                   pollOptions: pollVisible
+                       ? pollOptions.filter(option => option.trim() !== "") // 空の選択肢を除外
+                       : null,
+                   pollResults: pollVisible
+                       ? pollOptions.reduce((results, option) => {
+                           if (option.trim() !== "") {
+                               results[option] = 0; // 各選択肢の投票数を0で初期化
+                           }
+                           return results;
+                       }, {})
+                       : null,
+                   question: question,
                   timestamp: serverTimestamp(),
                   replyTo: '',    //リプライのとき、リプライ先のポストIDを入れる
                   repliedCount: '', //投稿自体が持つリプライの数
@@ -189,6 +203,12 @@ const Post = () => {
         setInMenuVisible(!inMenuVisible);
     };
 
+    const handleQuestionClick = () => {
+        setShowQuestionBox(true); // 質問ボックスを表示
+    };
+
+
+
     return (
         <>
             <MainLayout>
@@ -199,8 +219,15 @@ const Post = () => {
             <div className={s.box}>
                 <div className={s.flex}>
                     <div className={s.iconContainer}>
+
+                        {selectedImage && (
+                            <img src={URL.createObjectURL(selectedImage)} className={s.selectedImage} alt="Selected"/>
+                        )}
+
                         <img src={icon} className={s.icon} alt="icon"/>
+
                     </div>
+                    {/*<img src={icon} className={s.icon} alt="User icon"/>*/}
                     <p className={s.name}>{name || "name"}</p>
                     <p className={s.userId}> @{displayId || "unknown"}</p>
                 </div>
@@ -235,56 +262,110 @@ const Post = () => {
 
                 {pollVisible && (
                     <div className={s.survey}>
-                        {pollOptions.map((option, index) => (
-                            <div key={index} className={s.pollOption}>
-                                <input
-                                    type="text"
-                                    value={option}
-                                    onChange={(e) => handlePollOptionChange(index, e.target.value)}
-                                    placeholder={`選択肢 ${index + 1}`}
-                                    className={s.inputField}
-                                />
-                                {pollOptions.length > 2 && (
-                                    <button className={s.crossbutton} onClick={() => removePollOption(index)}>✕</button>
-                                )}
+                        <div className={s.optionBox}>
+                            {pollOptions.map((option, index) => (
+                                <div key={index} className={s.pollOption}>
+                                    <input
+                                        type="text"
+                                        value={option}
+                                        onChange={(e) => handlePollOptionChange(index, e.target.value)}
+                                        placeholder={`選択肢 ${index + 1}`}
+                                        className={s.inputField}
+                                    />
+                                    {pollOptions.length > 2 && (
+                                        <button className={s.crossbutton}
+                                                onClick={() => removePollOption(index)}>✕</button>
+                                    )}
+                                </div>
+                            ))}
+                            {pollOptions.length < 4 && (
+                                <button className={s.addbutton} onClick={addOption}>＋</button>
+                            )}
+                            <p className={s.touhyou}>投票期間</p>
+                            <div className={s.smallboxContainer}>
+                                {/* 日の選択 */}
+                                <select id="daySelect" className={s.smallbox}>
+                                    {Array.from({ length: 6 }, (_, i) => (
+                                        <option key={i + 1} value={i + 1}>{i + 1} 日</option>
+                                    ))}
+                                </select>
+
+                                {/* 時の選択 */}
+                                <select id="hourSelect" className={s.smallbox}>
+                                    {Array.from({ length: 23 }, (_, i) => (
+                                        <option key={i} value={i}>{i}時間</option>
+                                    ))}
+                                </select>
+
+                                {/* 分の選択 */}
+                                <select id="minuteSelect" className={s.smallbox}>
+                                    {Array.from({ length: 59 }, (_, i) => (
+                                        <option key={i} value={i}>{i} 分</option>
+                                    ))}
+                                </select>
                             </div>
-                        ))}
-                        {pollOptions.length < 4 && (
-                            <button className={s.addbutton} onClick={addOption}>＋</button>
-                        )}
-                        <button onClick={removePoll} className={s.removeButton}>アンケートを削除</button>
+
+                            <button onClick={removePoll} className={s.removeButton}>アンケートを削除</button>
+                        </div>
                     </div>
                 )}
 
+                {showQuestionBox && (
+                    <div className={s.popup}>
+                        <div className={s.textareaContainer}> {/* スタイルに変更 */}
+                            <textarea
+                                value={question}
+                                onChange={(e) => setQuestion(e.target.value)}
+                                placeholder="回答する"
+                                className={s.textarea}
+                            />
+                            <button
+                                onClick={() => setShowQuestionBox(false)}
+                                className={s.cancelButton}
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+
                 <div className={s.iconWrapper}>
-                    <label className={s.iconLabel} onClick={handleLabelClick}>
+                <label className={s.iconLabel} onClick={handleLabelClick}>
                         <img src="/pic.jpeg" className={s.iconImg} alt="Select image" />
                     </label>
 
-                    <img src="/comments.jpeg" className={s.iconImg} alt="Comments" />
+                    <img
+                        src="/comments.jpeg"
+                        className={s.iconImg}
+                        alt="Comments"
+                        onClick={handleQuestionClick}
+                    />
+
+
                     <img
                         src="/data.jpeg"
                         className={s.iconImg}
                         alt="Poll"
                         onClick={() => setPollVisible(!pollVisible)}
                     />
-                    <button className={s.post} onClick={handleSubmit}>P o s t</button>
-                    <input
-                        id="imageInput"
-                        type="file"
-                        ref={inputRef}
-                        style={{display: 'none'}}
-                        onChange={(e) => {
-                            const file = e.target.files ? e.target.files[0] : null;
-                            if (file) {
-                                setSelectedImage(file);
-                            }
-                        }}
-                    />
-                </div>
-            </div>
-        </>
-    );
-};
+                            <button className={s.post} onClick={handleSubmit}>P o s t</button>
+                            <input
+                                id="imageInput"
+                                type="file"
+                                ref={inputRef}
+                                style={{display: 'none'}}
+                                onChange={(e) => {
+                                    const file = e.target.files ? e.target.files[0] : null;
+                                    if (file) {
+                                        setSelectedImage(file);
+                                    }
+                                }}
+                            />
+                        </div>
+                        </div>
+                        </>
+                        );
+                    };
 
 export default Post;

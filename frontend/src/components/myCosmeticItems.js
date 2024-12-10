@@ -6,7 +6,7 @@ import { useState } from "react";
 import { db } from "@/firebase";
 import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 
-const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quantity, price, memo, updatedDate, isFavorite, fetchCosmeticsData }) => {
+const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quantity, price, memo, updatedDate, imageUrl, isFavorite }) => {
     // state
     const [isEdit, setIsEdit] = useState(false);
     const [editItems, setEditItems] = useState(false);
@@ -31,7 +31,6 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
             alert('マイコスメの情報を更新しました');
             setEditItems(false);
             setIsEdit(false);
-            fetchCosmeticsData();
         } catch (error) {
             console.error("Error updating document: ", error);
         }
@@ -106,7 +105,7 @@ const MyCosmeticItems = ({ id, cosmeticsType, openDate, brand, productName, quan
                     </div>
 
                     <div className={s.middleContainer}>
-                        <p className={s.img}/>
+                        <img src={imageUrl? imageUrl:"no image"} className={s.img} alt="no image"/>
                         <div className={s.mMContainer}>
                             <div className={s.eachContainer}>
                                 <p className={s.category}>ブランド：</p>

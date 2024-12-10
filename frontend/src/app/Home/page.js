@@ -23,10 +23,8 @@ const Home = () => {
         <>
             <MainLayout>
                 <div className={s.allContainer}>
-                    {/* ユーザー情報を渡す */}
                     <HeaderTab user={user} />
                 </div>
-
                 <PostButton />
             </MainLayout>
         </>

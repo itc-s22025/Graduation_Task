@@ -1,42 +1,37 @@
-.optionButton {
-    border: 1px solid gray;
-    padding: 12px;
-    margin: 20px;
-    cursor: pointer;
-    font-size: 19px;
-    border-radius: 5px;
-    background-color: white;
-    text-align: left;
-}
-
-.selected {
-    border: 2px solid #ff1493;
-}
-
-.selectedAnswer {
-    margin-top: 10px;
-    font-weight: bold;
-}
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
 
 .questionContainer {
-    margin-bottom: 20px;
-    /*padding: 10px;*/
-    /*border-radius: 8px;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    text-align: center;
+    margin-left: 100px;
+    padding: 0;
 }
 
 .options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
+    align-items: center;
+    margin-top: 20px;
 }
 
-.questionTitle {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 8px;
+.optionAnswer {
+    border: 0.7mm solid silver;
+    font-size: 25px;
+    background-color: white;
+    width: 980px;
+    /*max-width: 600px;*/
+    padding: 10px 20px;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
-.questionText {
-    font-size: 10rem;
-    color: #0d1117;
+.selected {
+    border: 2px solid deeppink;
 }

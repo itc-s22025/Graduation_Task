@@ -103,7 +103,7 @@ const Detail = ({ myPC }) => {
             </select>
           </div>
 
-          <button type="button" className={s.pcText}>診断してみる</button>
+          <button type="button" className={s.pcText} onClick={() => router.push('/ColorDiagnosis')}>診断してみる</button>
 
           <div className={s.inputContainer}>
             <label htmlFor="email" className={s.label}>メールアドレス</label>
