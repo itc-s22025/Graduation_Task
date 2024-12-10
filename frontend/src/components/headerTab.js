@@ -51,7 +51,7 @@ const HeaderTab = ({ user }) => {
                 };
             });
 
-            // `Now` と `Following` タブを維持しつつ、Firestoreのタブを追加
+            // `Now` と `Page` タブを維持しつつ、Firestoreのタブを追加
             setTabs((prevTabs) => [
                 ...prevTabs.filter((tab) => tab.id === "now" || tab.id === "following"),
                 ...fetchedTabs,
