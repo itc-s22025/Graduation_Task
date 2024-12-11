@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Leftbar_before_home from "@/components/leftbar_before_home";
 import s from './page.module.css';
 import Question from '@/components/Question';
+//firebase
+import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const ColorDiagnosisPage = (props) => {
     const router = useRouter();
+    const [isStartScreen, setIsStartScreen] = useState(true);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [userAnswers, setUserAnswers] = useState([]);
+    const [scores, setScores] = useState(new Array(9).fill(0)); // 質問のスコア
+    const [selectedOption, setSelectedOption] = useState(null);
 
     const questions = [
         {
@@ -48,11 +56,51 @@ const ColorDiagnosisPage = (props) => {
         }
     ];
 
-    const [isStartScreen, setIsStartScreen] = useState(true);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [userAnswers, setUserAnswers] = useState([]);
-    const [scores, setScores] = useState(new Array(questions.length).fill(0)); // 質問ごとのスコアを保存する
-    const [selectedOption, setSelectedOption] = useState(null); // 選択されたオプションのインデックス
+    // const [isStartScreen, setIsStartScreen] = useState(true);
+    // const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    // const [userAnswers, setUserAnswers] = useState([]);
+    // const [scores, setScores] = useState(new Array(questions.length).fill(0)); // 質問ごとのスコアを保存する
+    // const [selectedOption, setSelectedOption] = useState(null); // 選択されたオプションのインデックス
+
+    useEffect(() => {
+        const auth = getAuth();
+        const db = getFirestore();
+        const user = auth.currentUser;
+
+        if (user) {
+            const userRef = doc(db, "users", user.uid);
+
+            getDoc(userRef)
+                .then((docSnap) => {
+                    if (docSnap.exists()) {
+                        const personalColor = docSnap.data().personalColor;
+                        // personalColor の値に応じてリダイレクト
+                        switch (personalColor) {
+                            case "イエベ春":
+                                router.replace("/ColorDiagnosis/result/spring");
+                                break;
+                            case "ブルベ夏":
+                                router.replace("/ColorDiagnosis/result/summer");
+                                break;
+                            case "イエベ秋":
+                                router.replace("/ColorDiagnosis/result/autumn");
+                                break;
+                            case "ブルベ冬":
+                                router.replace("/ColorDiagnosis/result/winter");
+                                break;
+                            default:
+                                // 診断結果が未設定の場合は診断を続ける
+                                break;
+                        }
+                    } else {
+                        console.error("ユーザードキュメントが存在しません");
+                    }
+                })
+                .catch((error) => {
+                    console.error("エラーが発生しました:", error);
+                });
+        }
+    }, [router]);
 
     const handleStartDiagnosis = () => {
         setIsStartScreen(false);
@@ -82,8 +130,6 @@ const ColorDiagnosisPage = (props) => {
             return updatedAnswers;
         });
     };
-
-
 
     const handleShowResult = () => {
         // 合計スコアを計算

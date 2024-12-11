@@ -1,7 +1,7 @@
 import common from "@/styles/pcResult.module.css"
 import s from "./page.module.css";
 import FirstLayout from "@/components/FirstLayout"
-import ButtonGroup from "@/components/pcResult"
+import {ButtonGroup} from "@/components/pcResult"
 
 const Summer = () => {
     return (
