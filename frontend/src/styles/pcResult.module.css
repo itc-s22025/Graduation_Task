@@ -45,7 +45,8 @@
     display: flex;
     margin: 10px auto;
     /*border: 1px solid red;*/
-    width: 775px;
+    flex-wrap: wrap; /* 色の要素が折り返して表示されるようにする */
+    justify-content: center; /* 色を中央に配置 */
 }
 
 /*ボタングループ*/
@@ -59,7 +60,7 @@
     width: 870px;
 }
 
-.whatIsPcButton, .goBackToTopButton, .toSignUpButton{
+.whatIsPcButton, .goBackToTopButton, .toSignUpButton, .loggedInWhatIsPcButton{
     border: 2px solid #ff92AD;
     margin: 10px;
     background-color: #fff;
@@ -88,6 +89,23 @@
 }
 
 
+/*ログイン済みのとき用*/
+.loggedInAllContainer{
+    /*border: 1px solid red;*/
+    width: 40vw;
+    position: absolute;
+    left: 30vw;
+    height: 100vh;
+    padding: 10px 40px;
+}
+
+.loggedInWhatIsPcButton{
+    width: 600px;
+    color: #423a3a;
+    margin-left: 30px;
+    margin-bottom: 100px;
+}
+
 /*autumn*/
 .auTitle{
     border-bottom: 2px solid #fab186;
@@ -96,12 +114,6 @@
     color: #3a3d42;
     margin: 0 auto 10px;
     font-size: 2.5rem;
-}
-
-.colors{
-    display: flex;
-    margin: 10px auto;
-    width: 775px;
 }
 
 .auColor1, .auColor2, .auColor3, .auColor4, .auColor5, .auColor6, .auColor7, .auColor8, .auColor9, .auColor10, .auColor11{

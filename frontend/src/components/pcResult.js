@@ -33,16 +33,19 @@ const Autumn = () => {
     return(
         <>
 
-            <div className={s.allContainer}>
+            <div className={s.loggedInAllContainer}>
                 <div className={s.titleContainer}>
                     <p className={s.titleText}>あなたのパーソナルカラーは・・・</p>
                     <h1 className={s.auTitle}>イエベ秋 (autumn)</h1>
                 </div>
                 <div className={s.mainContainer}>
                     <p className={s.explainText}>
-                        イエベ秋タイプのベースカラーはイエローで、落ち着いた都会的な雰囲気。シックで暖かみのある印象を持っています。<br/>
-                        肌はやや冷たい黄身がかった濃い肌色で、マットな質感です。瞳の色はダークブラウン系の色。<br/>
-                        髪色はダークブラウン〜黒。質感はハリがあり、ツヤは少なめです。くすみカラーやアースカラーが似合います。<br/>
+                        イエベ秋タイプのベースカラーはイエローで、落ち着いた都会的な雰囲気。<br/>
+                        シックで暖かみのある印象を持っています。<br/>
+                        肌はやや冷たい黄身がかった濃い肌色で、マットな質感です。<br/>
+                        瞳の色はダークブラウン系の色。<br/>
+                        髪色はダークブラウン〜黒。質感はハリがあり、ツヤは少なめです。<br/>
+                        くすみカラーやアースカラーが似合います。<br/>
                     </p>
                     <p className={s.pointContainer}>
                         <strong>似合うベースメイク：</strong> オークル系やベージュ系など、明るすぎない、落ち着いたトーン。マット肌、セミマット肌<br/>
@@ -79,7 +82,8 @@ const Autumn = () => {
                             など</p>
                     </div>
                 </div>
-                <ButtonGroup colorType="autumn"/>
+                {/*<ButtonGroup colorType="autumn"/>*/}
+                <button type="button" className={s.loggedInWhatIsPcButton}>そもそもパーソナルカラーって？</button>
             </div>
         </>
     )
