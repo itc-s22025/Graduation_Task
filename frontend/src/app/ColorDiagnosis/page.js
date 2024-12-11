@@ -4,14 +4,10 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/firebase"; // Firebaseの設定をインポート
 import { doc, getDoc } from "firebase/firestore";
-// import { firestore } from "@/firebase"; // Firestoreの設定をインポート
 import MainLayout from "@/components/MainLayout";
-// import Spring from "@/components/Spring";  // イエベ春
-// import Summer from "@/components/Summer";  // ブルベ夏
-import {Autumn} from "@/components/pcResult";
+import { Spring, Summer, Autumn, Winter } from "@/components/pcResult";
 import ColorAnalyze from "@/components/colorAnalyze";
-import LoadingPage from "@/components/loadingPage";  // イエベ秋
-// import Winter from "@/components/Winter";  // ブルベ冬
+import LoadingPage from "@/components/loadingPage";
 
 const ColorDiagnosis = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(null); // ログイン状態
@@ -51,13 +47,13 @@ const ColorDiagnosis = () => {
     const renderPersonalColorComponent = () => {
         switch (personalColor) {
             case "イエベ春":
-                // return <Spring />;
+                return <Spring />;
             case "ブルベ夏":
-                // return <Summer />;
+                return <Summer />;
             case "イエベ秋":
                 return <Autumn />;
             case "ブルベ冬":
-                // return <Winter />;
+                return <Winter />;
             default:
                 return <div>お客様のパーソナルカラーが設定されていません。</div>;
         }
