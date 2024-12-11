@@ -43,8 +43,8 @@ const Spring = () => {
                         </div>
 
                         <div className={s.spCharacterContainer}>
-                            <h3>⦿ イエベ春のキャラクター(※たぶん)</h3>
-                            <p>日向翔陽(ハイキュー‼)</p>
+                            <h3>⦿ イエベ春のカラーをもつキャラクター(※たぶん)</h3>
+                            <p>孫悟空(超サイヤ人)/『DRAGON BALL』、バターカップ/『The Powerpuff Girls』、セーラーマーキュリー/『美少女戦士セーラームーン』、夏目貴志/『夏目友人帳』</p>
                         </div>
 
                         <div className={s.spArtistContainer}>

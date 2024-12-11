@@ -42,8 +42,9 @@ const Winter = () => {
                         </div>
 
                         <div className={s.wnCharacterContainer}>
-                            <h3>⦿ ブルベ冬のキャラクター(※たぶん)</h3>
-                            <p>日向翔陽(ハイキュー‼)</p>
+                            <h3>⦿ ブルベ冬のカラーをもつキャラクター</h3>
+                            <p>飴村乱数(ヒプノシスマイク)、緑谷出久(僕のヒーローアカデミア)、アラジン(マギ)、轟焦凍(僕のヒーローアカデミア)、赤羽業(暗殺教室)、<br/>
+                                クロロ＝ルシルフル(HUNTER×HUNTER)</p>
                         </div>
 
                         <div className={s.wnArtistContainer}>
