@@ -4,7 +4,42 @@ import { useState, useEffect, Suspense } from 'react';
 import Detail from "@/app/SignUp/detail";
 import FirstLayout from "@/components/FirstLayout";
 import s from "@/app/SignUp/page.module.css";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import LoadingPage from "@/components/loadingPage";
+
+const ColorSelector = ({ onSelect, onSetDetail }) => {
+    useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+        const colorQuery = searchParams.get("color");
+
+        if (colorQuery) {
+            let color = null;
+            switch (colorQuery) {
+                case "spring":
+                    color = "イエベ春";
+                    break;
+                case "summer":
+                    color = "ブルベ夏";
+                    break;
+                case "autumn":
+                    color = "イエベ秋";
+                    break;
+                case "winter":
+                    color = "ブルベ冬";
+                    break;
+                default:
+                    color = null;
+            }
+
+            if (color) {
+                onSelect(color);
+                onSetDetail(true);
+            }
+        }
+    }, [onSelect, onSetDetail]);
+
+    return null;
+};
 
 const SignUp = () => {
     // state
@@ -13,46 +48,21 @@ const SignUp = () => {
 
     const router = useRouter();
 
-    // クエリパラメータを取得
-    const searchParams = useSearchParams();
-    const colorQuery = searchParams.get("color");
-
-    // クエリパラメータが存在する場合の処理
-    useEffect(() => {
-        if (colorQuery) {
-            // クエリパラメータに基づいて selectedColor を設定
-            switch (colorQuery) {
-                case "spring":
-                    setSelectedColor("イエベ春");
-                    break;
-                case "summer":
-                    setSelectedColor("ブルベ夏");
-                    break;
-                case "autumn":
-                    setSelectedColor("イエベ秋");
-                    break;
-                case "winter":
-                    setSelectedColor("ブルベ冬");
-                    break;
-                default:
-                    setSelectedColor(null); // 不明なクエリの場合は null に設定
-            }
-            setIsDetail(true); // isDetail を true に設定
-        }
-    }, [colorQuery]);
-
     const handleColorSelect = (color) => {
         setSelectedColor(color);
     };
 
     const handleNextClick = () => {
-        console.log("ハンドルネクストクリック：", selectedColor);
         setIsDetail(true);
     };
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <FirstLayout>
+        <FirstLayout>
+            <Suspense fallback={<LoadingPage />}>
+                <ColorSelector
+                    onSelect={setSelectedColor}
+                    onSetDetail={setIsDetail}
+                />
                 <div className={s.allContainer}>
                     <h1 className={s.question}>
                         <span className={s.letter}>Q</span>
@@ -124,8 +134,8 @@ const SignUp = () => {
 
                     {isDetail ? (<Detail myPC={selectedColor} />) : null}
                 </div>
-            </FirstLayout>
-        </Suspense>
+            </Suspense>
+        </FirstLayout>
     );
 };
 
