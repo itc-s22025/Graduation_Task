@@ -200,14 +200,16 @@ const Autumn = () => {
                             など</p>
                     </div>
                 </div>
-                <button type="button" className={s.loggedInWhatIsPcButton}>そもそもパーソナルカラーって？</button>
+                <button type="button" className={s.loggedInWhatIsPcButton}
+                        onClick={() => router.push('/ColorDiagnosis/WhatIsPersonalColor')}>そもそもパーソナルカラーって？
+                </button>
             </div>
         </>
     )
 }
 
 const Winter = () => {
-    return(
+    return (
         <>
             <div className={s.loggedInAllContainer}>
                 <div className={s.titleContainer}>
@@ -249,7 +251,8 @@ const Winter = () => {
 
                     <div className={s.characterContainer}>
                         <h3>⦿ ブルベ冬のカラーをもつキャラクター</h3>
-                        <p>飴村乱数(ヒプノシスマイク)、緑谷出久(僕のヒーローアカデミア)、アラジン(マギ)、轟焦凍(僕のヒーローアカデミア)、赤羽業(暗殺教室)、 クロロ＝ルシルフル(HUNTER×HUNTER)</p>
+                        <p>飴村乱数(ヒプノシスマイク)、緑谷出久(僕のヒーローアカデミア)、アラジン(マギ)、轟焦凍(僕のヒーローアカデミア)、赤羽業(暗殺教室)、
+                            クロロ＝ルシルフル(HUNTER×HUNTER)</p>
                     </div>
 
                     <div className={s.artistContainer}>
@@ -258,7 +261,9 @@ const Winter = () => {
                             など</p>
                     </div>
                 </div>
-                <button type="button" className={s.loggedInWhatIsPcButton}>そもそもパーソナルカラーって？</button>
+                <button type="button" className={s.loggedInWhatIsPcButton}
+                        onClick={() => router.push('/ColorDiagnosis/WhatIsPersonalColor')}>そもそもパーソナルカラーって？
+                </button>
             </div>
         </>
     )
