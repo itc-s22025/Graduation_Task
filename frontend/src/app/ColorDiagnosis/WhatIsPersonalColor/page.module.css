@@ -5,8 +5,15 @@
     position: absolute;
     left: 30vw;
     width: 40vw;
-    /*height: 100vh;*/
     padding: 10px 10px 100px;
+    color: #423a3a;
+}
+
+.logOutAllContainer {
+    position: absolute;
+    left: 30vw;
+    width: 70vw;
+    padding: 20px 20px 100px;
     color: #423a3a;
 }
 
@@ -59,7 +66,6 @@
     border-bottom: 10px solid transparent;
 }
 
-
 .quote23BlockquoteH3 {
     position: relative;
     padding: 0;
@@ -93,11 +99,26 @@
     display: flex;
 }
 
+.logOutSecondContainer{
+    display: flex;
+    margin: 30px 80px;
+}
+
 .colorExContainer{
     /*border: 1px solid springgreen;*/
     margin-left: 20px;
+    padding: 10px 0 10px 10px;
+}
+
+.secondText{
+    width: 700px;
+    padding: 20px;
+}
+
+.logOutColorExContainer{
+    /*border: 1px solid springgreen;*/
+    margin-left: 20px;
     padding: 10px;
-    padding-right: 0;
 }
 
 .miniText{

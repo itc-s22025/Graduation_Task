@@ -1,33 +1,17 @@
 "use client";
 
-import MainLayout from "@/components/MainLayout";
-import s from "./page.module.css"
+import FirstLayout from "@/components/FirstLayout";
+import s from "@/app/ColorDiagnosis/WhatIsPersonalColor/page.module.css"
 import {useRouter} from "next/navigation";
 import Link from "next/link";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase";
-import WhatIsPC from "@/components/whatIsPc"
-import LoadingPage from "@/components/loadingPage";
 
-
-const WhatIsPersonalColorPage = () => {
+const WhatIsPC = () => {
     const router = useRouter();
-    const [user, loading] = useAuthState(auth);
-
-    // ローディング中の状態をハンドリング
-    if (loading) {
-        return <LoadingPage/>;
-    }
-
-    // ユーザーがログインしていない場合
-    if (!user) {
-        return <WhatIsPC />;
-    }
 
     return(
         <>
-            <MainLayout>
-                <div className={s.allContainer}>
+            <FirstLayout>
+                <div className={s.logOutAllContainer}>
                     <div className={s.firstContainer}>
                         <h1 className={s.title}>パーソナルカラーって？</h1>
                     </div>
@@ -41,8 +25,8 @@ const WhatIsPersonalColorPage = () => {
                         </p>
                         <cite className={s.blockquoteCite}>── NPO法人日本パーソナルカラー協会ホームページより引用</cite>
                     </blockquote>
-                    <div className={s.secondContainer}>
-                        <p>パーソナルカラーはふつう、「イエローベース」と「ブルーベース」に分かれます。<br/>
+                    <div className={s.logOutSecondContainer}>
+                        <p className={s.secondText}>パーソナルカラーはふつう、「イエローベース」と「ブルーベース」に分かれます。<br/>
                             そこから更に、似合う色の明度・彩度や質感から、イエローベースの中でも「<span
                                 className={s.spText}>春(spring)</span>」と「<span className={s.auText}>秋(autumn)</span>」、
                             ブルーベースの中でも「<span className={s.smText}>夏(summer)</span>」と「<span
@@ -50,7 +34,7 @@ const WhatIsPersonalColorPage = () => {
                             最近では、そこから更にセカンドシーズンごとにグループ分けをした16パーソナルカラーなども出てきています。<br/>
                             同じイエローベースでも、春タイプの人と秋タイプの人では似合う色や素材などが全く変わってきます。
                         </p>
-                        <div className={s.colorExContainer}>
+                        <div className={s.logOutColorExContainer}>
                             <p className={s.miniText}>似合う色の違い</p>
                             <div className={s.colorsContainer}>
                                 <div className={s.seasonContainer}>
@@ -121,12 +105,12 @@ const WhatIsPersonalColorPage = () => {
                         </div>
                     </div>
                     <button type="button" className={s.backToResultButton}
-                            onClick={() => router.push('/ColorDiagnosis')}>〈〈　診断結果に戻る
+                            onClick={() => router.back()}>〈〈　診断結果に戻る
                     </button>
                 </div>
-            </MainLayout>
+            </FirstLayout>
         </>
     )
 }
 
-export default WhatIsPersonalColorPage;
+export default WhatIsPC;
