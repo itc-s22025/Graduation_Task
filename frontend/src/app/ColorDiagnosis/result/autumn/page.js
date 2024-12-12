@@ -43,7 +43,7 @@ const Autumn = () => {
 
                         <div className={s.auCharacterContainer}>
                             <h3>⦿ イエベ秋のキャラクター(※たぶん)</h3>
-                            <p>日向翔陽(ハイキュー‼)</p>
+                            <p>藤堂平助(薄桜鬼)、七海健人(呪術廻戦)、花垣武道・佐野万次郎(東京卍リベンジャーズ)、草摩はとり(フルーツバスケット)、<br />エレン・イェーガー(進撃の巨人)、リサリサ(ジョジョの奇妙な冒険)</p>
                         </div>
 
                         <div className={s.auArtistContainer}>
