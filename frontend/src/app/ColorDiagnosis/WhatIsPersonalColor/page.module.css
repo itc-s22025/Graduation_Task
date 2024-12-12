@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap');
+
+.allContainer {
+    /*border: 1px solid red;*/
+    position: absolute;
+    left: 30vw;
+    width: 40vw;
+    /*height: 100vh;*/
+    padding: 10px 10px 100px;
+    color: #423a3a;
+}
+
+.firstContainer{
+    display: flex;
+    /*border: 1px solid deeppink;*/
+    margin: 40px 20px 20px;
+}
+
+.title{
+    /*border: 1px solid brown;*/
+}
+
+.blockquote {
+    position: relative;
+    padding: 20px 25px 20px 55px;
+    box-sizing: border-box;
+    font-style: italic;
+    color: #464646;
+    background: #fbf2f2;
+    margin: 40px;
+    border-radius: 5px;
+}
+
+.blockquote:before {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 8px;
+    width: 38px;
+    height: 30px;
+    text-align: center;
+    content: "“";
+    color: #FFF;
+    font-size: 35px;
+    line-height: 40px;
+    background: #ff92AD;
+    font-weight: 900;
+}
+
+.blockquote:after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 30px;
+    height: 0;
+    width: 0;
+    border-left: 19px solid #ff92AD;
+    border-right: 19px solid #ff92AD;
+    border-bottom: 10px solid transparent;
+}
+
+
+.quote23BlockquoteH3 {
+    position: relative;
+    padding: 0;
+    margin: 20px 0 10px;
+    z-index: 3;
+    line-height: 1.7;
+    border-bottom: 2px solid #fff;
+}
+
+.quote23BlockquoteP {
+    position: relative;
+    padding: 0;
+    margin: 10px 0;
+    z-index: 3;
+    line-height: 1.7;
+}
+
+.blockquoteCite {
+    display: block;
+    text-align: right;
+    color: #888888;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+
+/*２段め*/
+.secondContainer {
+    /*border: 1px solid red;*/
+    margin: 30px 50px;
+    display: flex;
+}
+
+.colorExContainer{
+    /*border: 1px solid springgreen;*/
+    margin-left: 20px;
+    padding: 10px;
+    padding-right: 0;
+}
+
+.miniText{
+    font-size: 0.8rem;
+    text-align: center;
+    color: #6E665C;
+}
+
+.colorsContainer{
+    /*border: 2px solid #ff92AD;*/
+    width: 120px;
+    padding: 30px 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: #fbf2f2;
+}
+
+.seasonContainer{
+    display: flex;
+    margin: 5px;
+}
+
+
+.spColor1, .smColor1, .auColor1, .wnColor1, .spColor2, .smColor2, .auColor2, .wnColor2, .spColor3, .smColor3, .auColor3, .wnColor3{
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    margin-left: 5px;
+    border: 2px solid #fff;
+}
+
+.spText{border-bottom: 2px dotted #FFCC92}
+.smText{border-bottom: 2px dotted #66BAFF}
+.auText{border-bottom: 2px dotted #FF989A}
+.wnText{border-bottom: 2px dotted #9293FF}
+
+.spColor1{background-color: #ebd262;}
+.smColor1{background-color: #f0ebb5;}
+.auColor1{background-color: #e8ca2d;}
+.wnColor1{background-color: #e9e683;}
+.spColor2{background-color: #9dd1d7;}
+.smColor2{background-color: #70b2de;}
+.auColor2{background-color: #43a6a0;}
+.wnColor2{background-color: #1797cf;}
+.spColor3{background-color: #f4cdc2}
+.smColor3{background-color: #e899bb}
+.auColor3{background-color: #d7674c}
+.wnColor3{background-color: #d31176}
+
+
+/*３段目*/
+.thirdContainer{
+    /*border: 1px solid red;*/
+    margin: 50px;
+}
+
+.yBOrBBTitle{
+    border-bottom: 2px solid #ff92AD;
+    margin-bottom: 5px;
+}
+
+.yBOrBBText{
+    margin: 20px 10px 30px;
+}
+
+.yBOrBBBorder{
+    border-bottom: #ff92AD 2px dotted;
+}
+
+.skinContainer{
+    display: flex;
+    border: 2px solid #f8e8e8;
+    border-radius: 50px;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.skinText{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.spSkin, .smSkin, .auSkin{
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+}
+
+.wnSkinContainer{
+    display: flex;
+}
+
+.wnSkin1,.wnSkin2{
+    width: 35px;
+    height: 70px;
+}
+.wnSkin1{
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+.wnSkin2{
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.spSkin{background-color: #ffe8c6}
+.smSkin{background-color: #ffdcc6}
+.auSkin{background-color: #fddeb3}
+.wnSkin1{background-color: #ffeade}
+.wnSkin2{background-color: #f8cfb7}
+
+.tipsContainer{
+    border: 1px solid #ff92AD;
+    margin: 40px 0;
+    padding: 0 20px 10px;
+    border-radius: 5px;
+}
+
+.tipsTitle{
+    position: relative;
+    top: -10px;
+    padding: 0 10px 0 20px;
+    width: 80px;
+    border-radius: 50px;
+    background-color: #ff92AD;
+    color: #fff;
+    font-weight: 500;
+}
+
+.tipsText{
+    font-size: 0.8rem;
+}
+
+.backToResultButton{
+    width: 300px;
+    height: 30px;
+    margin: 12px 50px 0;
+    border: none;
+    border-radius: 50px;
+    background-color: #ff92AD;
+    color: #fff;
+
+    font-family: "Zen Maru Gothic", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.backToResultButton:hover{
+    scale: calc(1.02);
+}
+
+.link{
+    color: #ff92AD;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+.link:hover{
+    color: #ffc0cb;
+}
+
