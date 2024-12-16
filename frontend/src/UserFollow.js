@@ -3,21 +3,18 @@ import { db } from '@/firebase';
 
 // フォロー
 export const followUser = async (currentUserId, targetUserId) => {
-    if (!currentUserId || !targetUserId) {
-        console.error("ユーザーIDが無効です");
-        return;
-    }
-
-    const currentUserRef = doc(db, "users", currentUserId);
-    const targetUserRef = doc(db, "users", targetUserId);
-
     try {
-        await updateDoc(currentUserRef, {
-            following: arrayUnion(targetUserId),
+        const userRef = doc(db, "users", currentUserId);
+        await updateDoc(userRef, {
+            following: arrayUnion(targetUserId) // 追従リストに追加
         });
+
+        const targetUserRef = doc(db, "users", targetUserId);
         await updateDoc(targetUserRef, {
-            followers: arrayUnion(currentUserId),
+            followers: arrayUnion(currentUserId) // フォロワーリストに追加
         });
+
+        console.log(`ユーザー ${targetUserId} をフォローしました。`);
     } catch (error) {
         console.error("フォロー中にエラーが発生しました:", error);
     }
