@@ -1,0 +1,130 @@
+.allContent {
+    margin-left: 556px;
+    background-color: #FF92AD;
+    padding: 10px 650px 10px 40px;
+    color: white;
+    font-family: "Zen Maru Gothic", sans-serif;
+    font-weight: 500;
+    font-size: 1.8rem;
+    text-align: center;
+    top: 0;
+    position: fixed;
+}
+.content {
+    position: absolute;
+    top: 16vh;
+    left: 30vw;
+}
+.userCard {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 20px;
+    margin: 1rem auto; /* 中央揃え */
+    max-width: 500px;
+    border-radius: 10px;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+}
+/*.userCard {*/
+/*    position: absolute;*/
+/*    top: 15vh;*/
+/*    left: 60vh;*/
+/*    display: flex;*/
+/*    width: 650px;*/
+/*    align-items: center;*/
+/*    !*background-color: #FFF;*!*/
+/*    padding: 10px 20px;*/
+/*    margin: 1rem 0;*/
+/*    border-radius: 10px;*/
+/*    !*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*!*/
+/*}*/
+.userIcon {
+    position: relative;
+    top: -2.5vh;
+    left: 3vw;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+}
+.userName {
+    position: relative;
+    left: 3vw;
+    top: 5px;
+    font-weight: bold;
+    color: #333;
+}
+.userId {
+    position: relative;
+    top: 5px;
+    left: 3vw;
+    color: #666;
+}
+.bio {
+    position: relative;
+    top: -3px;
+    left: 3vw;
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+.info {
+    position: absolute;
+    top: 10vh;
+    right: 2.5vw;
+}
+.box {
+    position: absolute;
+    left: 23vw;
+    display: block;
+    width: 200px;
+    height: 50px;
+    margin-top: 18px;
+    font-size: 1.3rem;
+    text-decoration: none;
+    border: 1px solid #FF92AD;
+    background-color: white;
+    color: #FF92AD;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.not {
+    position: absolute;
+    top: 10vh;
+    left: 1vw;
+}
+
+.followText{
+    color: #6E665C;
+    margin-right: 13vw;
+}
+.unfollow {
+    position: relative;
+    right: -20vw;
+    top: -7vh;
+    margin-top: 12px;
+    display: block;
+    height: 50px;
+    width: 150px;
+    border-radius: 8px;
+    border: 1px solid #ff92AD;
+    background-color: white;
+    font-size: 1.3rem;
+    color: #ff92AD;
+    font-weight: bold;
+    padding: 8px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.unfollow:hover {
+    transform: scale(1.1, 1.1);
+
+}
