@@ -35,6 +35,15 @@ const Profile = ({ imageUrl, params }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalImageUrl, setModalImageUrl] = useState('');
 
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    useEffect(() => {
+        document.body.style.overflow = showEditModal ? 'hidden' : 'auto';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [showEditModal]);
+
     // ユーザーの認証状態を監視,currentUserUidにログインユーザのuidを入れる
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -42,6 +51,7 @@ const Profile = ({ imageUrl, params }) => {
         });
         return () => unsubscribe();
     }, []);
+
 
     const preventScroll = (e) => e.preventDefault();
 
@@ -70,6 +80,8 @@ const Profile = ({ imageUrl, params }) => {
             fetchUserData();
         }
     }, [userId]);
+
+
 
 
     // ユーザのポストをフェッチ
@@ -122,25 +134,44 @@ const Profile = ({ imageUrl, params }) => {
                 ]);
 
                 // ローカル状態の即時反映
-                setIsFollowing(!isFollowing);
-                setUserData((prevUserData) => ({
+                setUserData(prevUserData => ({
                     ...prevUserData,
                     followers: isFollowing
-                        ? prevUserData.followers.filter((follower) => follower !== user.uid)
-                        : [...prevUserData.followers, user.uid],
+                        ? (prevUserData.followers || []).filter((follower) => follower !== user.uid) // fallback to empty array
+                        : [...(prevUserData.followers || []), user.uid], // fallback to empty array
                 }));
+
             } catch (error) {
                 console.error("フォロー/アンフォローに失敗しました", error);
             }
         }
     };
 
+    const useUserData = (userId) => {
+        const [data, setData] = useState(null);
+
+        useEffect(() => {
+            if (!userId) return;
+            const fetchData = async () => {
+                try {
+                    const userDoc = await getDoc(doc(db, "users", userId));
+                    if (userDoc.exists()) setData(userDoc.data());
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            };
+            fetchData();
+        }, [userId]);
+
+        return data;
+    };
+
+
 
     const handleFocus = (tabName) => {
         setFocusedTab(tabName);
     };
 
-    const [showEditModal, setShowEditModal] = useState(false);
     const handleEditClick = () => {
         setShowEditModal(true);
         window.addEventListener('wheel', preventScroll, { passive: false });

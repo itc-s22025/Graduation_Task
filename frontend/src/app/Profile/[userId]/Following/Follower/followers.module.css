@@ -8,12 +8,13 @@
     font-size: 1.8rem;
     text-align: center;
     top: 0;
+    left: 1vw;
     position: fixed;
 }
 .userCard {
     position: absolute;
     top: 15vh;
-    left: 60vh;
+    left: 55vh;
     display: flex;
     width: 650px;
     align-items: center;
@@ -25,7 +26,7 @@
 }
 .userIcon {
     position: relative;
-    top: 3px;
+    top: -2vh;
     left: 3vw;
     width: 50px;
     height: 50px;
@@ -92,8 +93,9 @@
 }
 .follow {
     position: relative;
-    right: -17vw;
-    margin-top: 12px;
+    right: -20vw;
+    /*margin-top: 12px;*/
+    top: -5.5vh;
     display: block;
     height: 50px;
     width: 150px;
@@ -106,7 +108,7 @@
     padding: 8px 16px;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    /*transition: transform 0.2s ease;*/
 }
 .follow:hover {
     transform: scale(1.1, 1.1);
