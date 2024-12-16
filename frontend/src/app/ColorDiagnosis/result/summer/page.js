@@ -1,7 +1,7 @@
 import common from "@/styles/pcResult.module.css"
 import s from "./page.module.css";
 import FirstLayout from "@/components/FirstLayout"
-import ButtonGroup from "@/components/pcResult"
+import {ButtonGroup} from "@/components/pcResult"
 
 const Summer = () => {
     return (
@@ -45,7 +45,7 @@ const Summer = () => {
 
                         <div className={s.smCharacterContainer}>
                             <h3>⦿ ブルベ夏のキャラクター(※たぶん)</h3>
-                            <p>日向翔陽(ハイキュー‼)</p>
+                            <p>綾波レイ(新世紀エヴァンゲリオン)、朽木ルキア(BLEACH)、初音ミク、三ツ谷隆(東京卍リベンジャーズ)、<br />及川徹(ハイキュー‼)、暁美ほむら(魔法少女まどか☆マギカ)</p>
                         </div>
 
                         <div className={s.smArtistContainer}>

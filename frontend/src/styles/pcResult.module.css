@@ -40,12 +40,18 @@
     padding-left: 20px;
 }
 
-
 .colors{
     display: flex;
     margin: 10px auto;
     /*border: 1px solid red;*/
-    width: 775px;
+    flex-wrap: wrap; /* 色の要素が折り返して表示されるようにする */
+    justify-content: center; /* 色を中央に配置 */
+}
+
+.colorsContainer, .characterContainer, .artistContainer{
+    /*border: 1px solid deeppink;*/
+    margin: 10px 10px 20px;
+    padding: 10px;
 }
 
 /*ボタングループ*/
@@ -59,7 +65,7 @@
     width: 870px;
 }
 
-.whatIsPcButton, .goBackToTopButton, .toSignUpButton{
+.whatIsPcButton, .goBackToTopButton, .toSignUpButton, .loggedInWhatIsPcButton{
     border: 2px solid #ff92AD;
     margin: 10px;
     background-color: #fff;
@@ -86,3 +92,153 @@
     width: 820px;
     color: #423a3a;
 }
+
+
+/*ログイン済みのとき用*/
+.loggedInAllContainer{
+    /*border: 1px solid red;*/
+    width: 40vw;
+    position: absolute;
+    left: 30vw;
+    height: 100vh;
+    padding: 10px 40px;
+}
+
+.loggedInWhatIsPcButton{
+    width: 600px;
+    color: #423a3a;
+    margin-left: 30px;
+    margin-bottom: 100px;
+}
+
+
+/*spring*/
+.spTitle{
+    border-bottom: 2px solid #FFCC92;
+    width: 600px;
+    padding: 0 130px;
+    color: #3a3d42;
+    margin: 0 auto 10px;
+    font-size: 2.5rem;
+}
+
+.spColor1, .spColor2, .spColor3, .spColor4, .spColor5, .spColor6, .spColor7, .spColor8, .spColor9, .spColor10, .spColor11{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin: 5px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+}
+
+.spColor1 { background-color: #f4e158; }
+.spColor2{ background-color: #e5ad26; }
+.spColor3{ background-color: #a5c860; }
+.spColor4{ background-color: #309e39; }
+.spColor5{ background-color: #9dd1d7; }
+.spColor6{ background-color: #0a679d; }
+.spColor7{ background-color: #e1c589; }
+.spColor8{ background-color: #904d23; }
+.spColor9{ background-color: #f4cdc2; }
+.spColor10{ background-color: #dd5e6b; }
+.spColor11{ background-color: #8a4788; }
+
+
+/*summer*/
+.smTitle{
+    border-bottom: 2px solid #66BAFF;
+    width: 600px;
+    padding: 0 130px;
+    color: #423a3a;
+    margin: 0 auto 10px;
+    font-size: 2.5rem;
+}
+
+.smColor1, .smColor2, .smColor3, .smColor4, .smColor5, .smColor6, .smColor7, .smColor8, .smColor9, .smColor10, .smColor11{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin: 5px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+}
+
+.smColor1{ background-color: #f0ebb5; }
+.smColor2{ background-color: #e899bb; }
+.smColor3{ background-color: #d66891; }
+.smColor4{ background-color: #be2838; }
+.smColor5{ background-color: #a1cda8; }
+.smColor6{ background-color: #109f76; }
+.smColor7{ background-color: #b1d6e2; }
+.smColor8{ background-color: #70b2de; }
+.smColor9{ background-color: #c3bddb; }
+.smColor10{ background-color: #9593b9; }
+.smColor11{ background-color: #5c6063; }
+
+
+/*autumn*/
+.auTitle{
+    border-bottom: 2px solid #fab186;
+    width: 600px;
+    padding: 0 130px;
+    color: #3a3d42;
+    margin: 0 auto 10px;
+    font-size: 2.5rem;
+}
+
+.auColor1, .auColor2, .auColor3, .auColor4, .auColor5, .auColor6, .auColor7, .auColor8, .auColor9, .auColor10, .auColor11{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin: 5px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+}
+
+.auColor1{ background-color: #d0a544; }
+.auColor2{ background-color: #e8ca2d; }
+.auColor3{ background-color: #e2983e; }
+.auColor4{ background-color: #d37020; }
+.auColor5{ background-color: #abb138; }
+.auColor6{ background-color: #498d37; }
+.auColor7{ background-color: #43a6a0; }
+.auColor8{ background-color: #176972; }
+.auColor9{ background-color: #8f1e22; }
+.auColor10{ background-color: #61451f; }
+.auColor11{ background-color: #452d5f; }
+
+
+/*winter*/
+.wnTitle{
+    border-bottom: 2px solid #9293FF;
+    width: 600px;
+    padding: 0 130px;
+    color: #3a3d42;
+    margin: 0 auto 10px;
+    font-size: 2.5rem;
+}
+
+.wnColor1, .wnColor2, .wnColor3, .wnColor4, .wnColor5, .wnColor6, .wnColor7, .wnColor8, .wnColor9, .wnColor10, .wnColor11{
+    width: 60px;
+    height: 60px;
+    border-radius: 50px;
+    margin: 5px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+}
+
+.wnColor1{ background-color: #e899bb; }
+.wnColor2{ background-color: #d31176; }
+.wnColor3{ background-color: #a61e2c; }
+.wnColor4{ background-color: #e9e683; }
+.wnColor5{ background-color: #1fa258; }
+.wnColor6{ background-color: #1797cf; }
+.wnColor7{ background-color: #144493; }
+.wnColor8{ background-color: #11337b; }
+.wnColor9{ background-color: #2f204c; }
+.wnColor10{ background-color: #c9c9ca; }
+.wnColor11{ background-color: #040000; }

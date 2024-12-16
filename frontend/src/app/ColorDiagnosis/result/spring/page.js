@@ -1,7 +1,7 @@
 import common from "@/styles/pcResult.module.css"
 import s from "./page.module.css";
 import FirstLayout from "@/components/FirstLayout"
-import ButtonGroup from "@/components/pcResult"
+import {ButtonGroup} from "@/components/pcResult"
 
 const Spring = () => {
     return (
@@ -43,8 +43,9 @@ const Spring = () => {
                         </div>
 
                         <div className={s.spCharacterContainer}>
-                            <h3>⦿ イエベ春のキャラクター(※たぶん)</h3>
-                            <p>日向翔陽(ハイキュー‼)</p>
+                            <h3>⦿ イエベ春のカラーをもつキャラクター(※たぶん)</h3>
+                            <p>孫悟空/超サイヤ人(DRAGON BALL)、バターカップ(The Powerpuff Girls)、セーラーマーキュリー(美少女戦士セーラームーン)、夏目貴志(夏目友人帳)、<br />
+                                モンキー・D・ルフィ(ONEPIECE)、小野寺小咲(ニセコイ)</p>
                         </div>
 
                         <div className={s.spArtistContainer}>

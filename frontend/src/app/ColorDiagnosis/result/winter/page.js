@@ -1,7 +1,7 @@
 import common from "@/styles/pcResult.module.css"
 import s from "./page.module.css";
 import FirstLayout from "@/components/FirstLayout"
-import ButtonGroup from "@/components/pcResult"
+import {ButtonGroup} from "@/components/pcResult"
 
 const Winter = () => {
     return (
@@ -42,8 +42,9 @@ const Winter = () => {
                         </div>
 
                         <div className={s.wnCharacterContainer}>
-                            <h3>⦿ ブルベ冬のキャラクター(※たぶん)</h3>
-                            <p>日向翔陽(ハイキュー‼)</p>
+                            <h3>⦿ ブルベ冬のカラーをもつキャラクター</h3>
+                            <p>飴村乱数(ヒプノシスマイク)、緑谷出久(僕のヒーローアカデミア)、アラジン(マギ)、轟焦凍(僕のヒーローアカデミア)、赤羽業(暗殺教室)、<br/>
+                                クロロ＝ルシルフル(HUNTER×HUNTER)</p>
                         </div>
 
                         <div className={s.wnArtistContainer}>
