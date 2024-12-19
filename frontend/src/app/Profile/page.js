@@ -20,7 +20,7 @@
 //     const [focusedTab, setFocusedTab] = useState('');
 //     const [showEditModal, setShowEditModal] = useState(false);
 //     const [personalColor, setPersonalColor] = useState('');
-//     const [Following, setFollowing] = useState([]);
+//     const [Page, setFollowing] = useState([]);
 //     const [Followers, setFollowers] = useState([]);
 //
 //     const [headerImage, setHeaderImage] = useState('');
@@ -190,11 +190,11 @@
 //
 //
 //                                     <div className={s.followContainer}>
-//                                         <Link href="/Profile/Follow" className={s.add}>
+//                                         <Link href="/Profile/Follower" className={s.add}>
 //                                             <span
-//                                                 className={s.follow}><strong>{Following.length}</strong> Following</span>
+//                                                 className={s.follow}><strong>{Page.length}</strong> Page</span>
 //                                         </Link>
-//                                         <Link href="/Profile/Follow" className={s.add}>
+//                                         <Link href="/Profile/Follower" className={s.add}>
 //                                             <span
 //                                                 className={s.follower}><strong>{Followers.length}</strong> Follower</span>
 //                                         </Link>
