@@ -33,5 +33,19 @@
 }
 
 .selected {
-    border: 2px solid deeppink;
+    border: 2px solid #ff92AD;
+}
+
+@media screen and (max-width: 390px) {
+    .questionContainer{
+        border: 1px solid blue;
+        width: 100vw;
+        margin-left: -20px;
+        height: 75vh;
+    }
+
+    .optionAnswer{
+        width: 300px;
+        font-size: 20px;
+    }
 }
