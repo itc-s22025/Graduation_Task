@@ -10,14 +10,15 @@ import { query, where, doc, getDoc, updateDoc, arrayUnion, arrayRemove, addDoc, 
 import {db, auth} from "@/firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import Post from "@/components/post";
+// import {useRouter} from 'next/router';
 import {useRouter} from "next/navigation";
 import {use} from 'react';
 
-const Profile = ({ imageUrl, params }) => {
+const Profile = ({ imageUrl }) => {
     const router = useRouter()
+    // const { userId } = router.query || {};
 
-    const resolvedParams = use(params);
-    const userId = resolvedParams.userId;
+    // const resolvedParams = use(params);
     const [userData, setUserData] = useState(null);
     const [focusedTab, setFocusedTab] = useState('');
     const [personalColor, setPersonalColor] = useState('');
@@ -28,6 +29,7 @@ const Profile = ({ imageUrl, params }) => {
     const [bio, setBio] = useState(null);
     const [isFixed, setIsFixed] = useState(false);
     const [likesPosts, setLikesPosts] = useState([]);
+    const [userId, setUserId] = useState(null);
 
     const [isFollowing, setIsFollowing] = useState(false);
     const [userPosts, setUserPosts] = useState([]);
@@ -47,10 +49,23 @@ const Profile = ({ imageUrl, params }) => {
     // ユーザーの認証状態を監視,currentUserUidにログインユーザのuidを入れる
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setCurrentUserUid(user ? user.uid : null);
+            if (user) {
+                setCurrentUserUid(user.uid);
+                setUserId(user.uid); // userIdを設定
+            } else {
+                setCurrentUserUid(null);
+                setUserId(null);
+            }
         });
         return () => unsubscribe();
     }, []);
+
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //         setCurrentUserUid(user ? user.uid : null);
+    //     });
+    //     return () => unsubscribe();
+    // }, []);
 
 
     const preventScroll = (e) => e.preventDefault();
@@ -80,9 +95,6 @@ const Profile = ({ imageUrl, params }) => {
             fetchUserData();
         }
     }, [userId]);
-
-
-
 
     // ユーザのポストをフェッチ
     useEffect(() => {
