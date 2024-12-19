@@ -242,3 +242,31 @@
 .wnColor9{ background-color: #2f204c; }
 .wnColor10{ background-color: #c9c9ca; }
 .wnColor11{ background-color: #040000; }
+
+@media screen and (max-width: 390px){
+    .allContainer{
+        left: 0;
+        width: 100vw;
+        top: 80px;
+        height: auto;
+    }
+
+    .mainContainer{
+        margin: 0;
+    }
+
+    .pointContainer{
+        padding: 0;
+    }
+
+    .bottomContainer{
+        width: 100vw;
+        left: 0;
+        top: 200vh;
+    }
+
+    .whatIsPcButton, .goBackToTopButton, .toSignUpButton, .loggedInWhatIsPcButton{
+        width: 350px;
+    }
+
+}
