@@ -42,7 +42,7 @@
     padding: 10px;
 }
 
-@media screen and (max-width: 390px){
+@media screen and (max-width: 440px){
     .smTitle{
         width: 300px;
         padding: 30px 20px 0;

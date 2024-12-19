@@ -243,7 +243,7 @@
 .wnColor10{ background-color: #c9c9ca; }
 .wnColor11{ background-color: #040000; }
 
-@media screen and (max-width: 390px){
+@media screen and (max-width: 440px){
     .allContainer{
         left: 0;
         width: 100vw;

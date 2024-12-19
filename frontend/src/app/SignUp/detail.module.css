@@ -123,7 +123,7 @@
     color: #ff839f;
 }
 
-@media screen and (max-width: 390px){
+@media screen and (max-width: 440px){
     .allContainer{
         width: 300px;
         margin: 100px 45px;
