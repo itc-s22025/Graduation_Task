@@ -192,7 +192,7 @@
 
     .logo{
         font-size: 2rem;
-        margin: 10vh auto 0;
+        margin: 20vh auto 0;
         width: 150px;
         height: 50px;
     }
@@ -201,6 +201,8 @@
         width: 300px;
         height: 350px;
         margin-top: 0;
+        position: absolute;
+        top: 28vh;
     }
 
     .title{

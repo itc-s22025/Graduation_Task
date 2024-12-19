@@ -40,3 +40,18 @@
     margin: 10px 10px 20px;
     padding: 10px;
 }
+
+@media screen and (max-width: 390px){
+    .wnTitle{
+        width: 300px;
+        padding: 30px 30px 0;
+        font-size: 1.8rem;
+    }
+
+    .colors{
+        width: 250px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+}
