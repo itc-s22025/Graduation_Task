@@ -182,3 +182,72 @@
 .signUp:hover{
     color: #ff95af;
 }
+
+@media screen and (max-width: 390px) {
+    .allContainer{
+        display: grid;
+        height: 100vh;
+        /*border: 1px solid red;*/
+    }
+
+    .logo{
+        font-size: 2rem;
+        margin: 10vh auto 0;
+        width: 150px;
+        height: 50px;
+    }
+
+    .MainContainer{
+        width: 300px;
+        height: 350px;
+        margin-top: 0;
+    }
+
+    .title{
+        /*border: 1px solid red;*/
+        width: 125px;
+        font-size: 1.5rem;
+        margin: 10px auto;
+    }
+
+    .input{
+        width: 200px;
+        height: 35px;
+
+        font-size: 0.8rem;
+        margin: 0 40px 10px;
+        padding: 5px 10px 5px;
+    }
+
+    .forgotPwd{
+        font-size: 0.7rem;
+    }
+
+    .submit{
+        width: 200px;
+        height: 40px;
+        margin: 15px 40px 10px;
+        padding: 6px 20px 5px;
+    }
+
+    .or{
+        display: none;
+    }
+
+    .google{
+        display: none;
+    }
+
+    .signUpContainer{
+        margin: 10px 10px 50px 40px;
+        width: 200px;
+    }
+
+    .signUpText{
+        font-size: 0.7rem;
+    }
+
+    .signUp{
+        font-size: 0.8rem;
+    }
+}
