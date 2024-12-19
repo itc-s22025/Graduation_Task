@@ -43,7 +43,7 @@
     color: #fff;
 }
 
-@media screen and (max-width: 390px){
+@media screen and (max-width: 440px){
     .all{
         /*display: none;*/
         height: 80px;

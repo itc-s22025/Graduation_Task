@@ -263,7 +263,7 @@
 }
 
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 440px) {
     .allContainer{
         left: 0;
         top: 80px;

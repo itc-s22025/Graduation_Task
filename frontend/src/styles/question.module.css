@@ -36,7 +36,7 @@
     border: 2px solid #ff92AD;
 }
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 440px) {
     .questionContainer{
         /*border: 1px solid blue;*/
         width: 100vw;
