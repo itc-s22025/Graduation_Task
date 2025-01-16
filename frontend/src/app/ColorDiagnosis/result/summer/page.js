@@ -45,7 +45,7 @@ const Summer = () => {
 
                         <div className={s.smCharacterContainer}>
                             <h3>⦿ ブルベ夏のキャラクター(※たぶん)</h3>
-                            <p>綾波レイ(新世紀エヴァンゲリオン)、朽木ルキア(BLEACH)、初音ミク、三ツ谷隆(東京卍リベンジャーズ)、<br />及川徹(ハイキュー‼)、暁美ほむら(魔法少女まどか☆マギカ)</p>
+                            <p>日向翔陽(ハイキュー‼)</p>
                         </div>
 
                         <div className={s.smArtistContainer}>
