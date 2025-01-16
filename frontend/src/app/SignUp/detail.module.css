@@ -122,3 +122,45 @@
     border: 2px solid #ff839f;
     color: #ff839f;
 }
+
+@media screen and (max-width: 440px){
+    .allContainer{
+        width: 300px;
+        margin: 100px 45px;
+    }
+
+    .title {
+        font-size: 1.1rem;
+        margin: 10px auto;
+        width: 110px;
+    }
+
+    .inputContainer{
+        display: grid;
+        /*border: 1px solid #FF92AD;*/
+        width: 270px;
+        margin: 10px 0;
+        padding: 0 10px;
+    }
+
+    .label{
+        font-size: 0.9rem;
+    }
+
+    .inputBox{
+        width: 250px;
+        margin: 0 auto;
+    }
+
+    .pcText{
+        margin: 5px 0;
+        font-size: 0.8rem;
+    }
+
+    .submit{
+        margin: 60px 0 0;
+        /*width: 300px;*/
+        height: 55px;
+    }
+
+}

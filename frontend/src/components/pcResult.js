@@ -13,7 +13,7 @@ const ButtonGroup = ({ colorType }) => {
         <>
             <div className={s.bottomContainer}>
                 <div>
-                    <button type="button" className={s.whatIsPcButton}>そもそもパーソナルカラーって？</button>
+                    <button type="button" className={s.whatIsPcButton} onClick={() => router.push('/ColorDiagnosis/WhatIsPersonalColor')}>そもそもパーソナルカラーって？</button>
                     <button type="button" className={s.goBackToTopButton} onClick={() => router.push('/ColorDiagnosis')}>診断TOPに戻る</button>
                 </div>
                 <button
@@ -28,8 +28,9 @@ const ButtonGroup = ({ colorType }) => {
     );
 };
 
-
 const Spring = () => {
+    const router = useRouter();
+
     return(
         <>
             <div className={s.loggedInAllContainer}>
@@ -80,13 +81,15 @@ const Spring = () => {
                             など</p>
                     </div>
                 </div>
-                <button type="button" className={s.loggedInWhatIsPcButton}>そもそもパーソナルカラーって？</button>
+                <button type="button" className={s.loggedInWhatIsPcButton} onClick={() => router.push('/ColorDiagnosis/WhatIsPersonalColor')}>そもそもパーソナルカラーって？</button>
             </div>
         </>
     )
 }
 
 const Summer = () => {
+    const router = useRouter();
+
     return(
         <>
             <div className={s.loggedInAllContainer}>
@@ -139,7 +142,7 @@ const Summer = () => {
                             など</p>
                     </div>
                 </div>
-                <button type="button" className={s.loggedInWhatIsPcButton}>そもそもパーソナルカラーって？</button>
+                <button type="button" className={s.loggedInWhatIsPcButton} onClick={() => router.push('/ColorDiagnosis/WhatIsPersonalColor')}>そもそもパーソナルカラーって？</button>
             </div>
         </>
     )
@@ -197,14 +200,16 @@ const Autumn = () => {
                             など</p>
                     </div>
                 </div>
-                <button type="button" className={s.loggedInWhatIsPcButton}>そもそもパーソナルカラーって？</button>
+                <button type="button" className={s.loggedInWhatIsPcButton}
+                        onClick={() => router.push('/ColorDiagnosis/WhatIsPersonalColor')}>そもそもパーソナルカラーって？
+                </button>
             </div>
         </>
     )
 }
 
 const Winter = () => {
-    return(
+    return (
         <>
             <div className={s.loggedInAllContainer}>
                 <div className={s.titleContainer}>
@@ -246,7 +251,8 @@ const Winter = () => {
 
                     <div className={s.characterContainer}>
                         <h3>⦿ ブルベ冬のカラーをもつキャラクター</h3>
-                        <p>飴村乱数(ヒプノシスマイク)、緑谷出久(僕のヒーローアカデミア)、アラジン(マギ)、轟焦凍(僕のヒーローアカデミア)、赤羽業(暗殺教室)、 クロロ＝ルシルフル(HUNTER×HUNTER)</p>
+                        <p>飴村乱数(ヒプノシスマイク)、緑谷出久(僕のヒーローアカデミア)、アラジン(マギ)、轟焦凍(僕のヒーローアカデミア)、赤羽業(暗殺教室)、
+                            クロロ＝ルシルフル(HUNTER×HUNTER)</p>
                     </div>
 
                     <div className={s.artistContainer}>
@@ -255,7 +261,9 @@ const Winter = () => {
                             など</p>
                     </div>
                 </div>
-                <button type="button" className={s.loggedInWhatIsPcButton}>そもそもパーソナルカラーって？</button>
+                <button type="button" className={s.loggedInWhatIsPcButton}
+                        onClick={() => router.push('/ColorDiagnosis/WhatIsPersonalColor')}>そもそもパーソナルカラーって？
+                </button>
             </div>
         </>
     )
