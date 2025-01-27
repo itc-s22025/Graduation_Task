@@ -261,3 +261,52 @@
     border: 3px solid #FF92AD;
     font-size: 1.23rem;
 }
+
+
+@media screen and (max-width: 440px) {
+    .allContainer{
+        left: 0;
+        top: 80px;
+        /*border: 1px solid red;*/
+        width: 100vw;
+        /*height: 100vh;*/
+        margin: 0;
+    }
+
+    .question{
+        font-size: 1.1rem;
+        margin-top: 50px;
+        margin-left: 30px;
+    }
+
+    .pcContainer{
+        width: 100vw;
+        margin-left: 0;
+        margin-top: 20px;
+        padding: 50px;
+        /*border: 1px solid blue;*/
+    }
+
+    .spring, .summer, .autumn, .winter{
+        width: 120px;
+        height: 120px;
+        font-size: 1rem;
+    }
+
+    .submitContainer{
+        margin: 30px 0;
+        /*border: 1px solid yellow;*/
+        width: 100vw;
+        display: grid;
+    }
+
+    .next, .toTest{
+        height: 50px;
+        font-size: 0.8rem;margin: 5px auto;
+        width: 300px;
+    }
+
+    .or{
+        margin: 10px auto;
+    }
+}
