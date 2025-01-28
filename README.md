@@ -12,7 +12,7 @@
 ## 使用環境
 - Vercel（ホスティング/デプロイ）
   
-ここから▽
+「Prettie」⇩
 
    https://graduation-task-ppg.vercel.app/
 
